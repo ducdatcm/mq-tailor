@@ -9,6 +9,7 @@ const flash = require('connect-flash');
 const helmet = require('helmet');
 
 const { runStartupTasks } = require('./src/config/bootstrap');
+const privateDomainGate = require('./src/middleware/privateDomain');
 const siteSettingsMiddleware = require('./src/middleware/siteSettings');
 const publicRouter = require('./src/routes/public');
 const adminRouter = require('./src/routes/admin');
@@ -18,6 +19,7 @@ const app = express();
 const isProd = process.env.NODE_ENV === 'production';
 
 app.set('trust proxy', 1);
+app.use(privateDomainGate);
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'src', 'views'));
 app.use(expressLayouts);
