@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "clean-css": "^5.3.3",
     "connect-flash": "^0.1.1",
     "dotenv": "^16.4.5",
     "ejs": "^3.1.10",
@@ -33,12 +34,11 @@
     "mysql2": "^3.10.1",
     "nodemailer": "^9.0.5",
     "sharp": "^0.35.3",
-    "slugify": "^1.6.6"
+    "slugify": "^1.6.6",
+    "terser": "^5.31.0"
   },
   "devDependencies": {
-    "clean-css": "^5.3.3",
-    "nodemon": "^3.1.4",
-    "terser": "^5.31.0"
+    "nodemon": "^3.1.4"
   },
   "overrides": {
     "tar": "^7.5.21"
