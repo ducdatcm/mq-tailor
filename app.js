@@ -8,6 +8,7 @@ const MySQLStore = require('express-mysql-session')(session);
 const flash = require('connect-flash');
 const helmet = require('helmet');
 
+const { runStartupTasks } = require('./src/config/bootstrap');
 const siteSettingsMiddleware = require('./src/middleware/siteSettings');
 const publicRouter = require('./src/routes/public');
 const adminRouter = require('./src/routes/admin');
@@ -106,6 +107,14 @@ app.use((err, req, res, next) => {
 });
 
 const port = Number(process.env.PORT) || 3000;
-app.listen(port, () => {
-  console.log(`Minh Quang website listening on port ${port}`);
-});
+
+// Run migrations/first-boot seed/admin-account setup before accepting
+// traffic — see src/config/bootstrap.js for why this replaces the usual
+// `npm run migrate && npm run seed` manual steps on this host.
+runStartupTasks()
+  .catch((err) => console.error('[bootstrap] unexpected startup error:', err))
+  .finally(() => {
+    app.listen(port, () => {
+      console.log(`Minh Quang website listening on port ${port}`);
+    });
+  });

@@ -1,149 +1,191 @@
-# Deploying to Hostinger (Business hosting, Node.js App)
+# Deploying to Hostinger
 
-This site is a plain Node.js/Express app with a MySQL database — no build
-tools beyond a small asset-minify step. Hostinger's **Node.js App** feature
-(hPanel → Advanced → Node.js) runs it for you via Passenger.
+Hostinger has two different ways of hosting a Node.js app, and which one
+you get depends on your account. **This project is set up for both**, but
+the steps differ. Check which one you have before following a section.
 
-## 1. One-time hPanel setup
+- **Method A — "Deploy Web App" (Git-connected)**: hPanel → Websites →
+  Add Website → **Deploy Web App** → **Import Git Repository**. This is a
+  newer, Vercel/Netlify-style flow: it builds straight from GitHub, has no
+  reliable `npm`-on-PATH shell access, and manages environment variables
+  through its own UI. **This is what worked for minhquanghanoi.com** — use
+  this section if that's what you see.
+- **Method B — classic "Node.js App"**: hPanel → Advanced → Node.js →
+  Create Application, with SSH access and a `nodevenv` you `source` to get
+  `npm`. Kept below as an appendix in case a different Hostinger account
+  offers this instead.
 
-### 1a. Create the MySQL database
-hPanel → **Databases → MySQL Databases**
-1. Create a database (e.g. `u123_mqtailor`) and a database user with a strong
-   password, and attach the user to the database with **all privileges**.
-2. Note the DB host (usually `localhost`), database name, username, password.
+Because Method A often has no usable `npm` shell, the app **migrates its
+own database schema and loads its starter content automatically on
+every boot** (see `src/config/bootstrap.js`) — you don't run
+`npm run migrate` / `npm run seed` by hand at all in Method A. It's safe:
+migrations only ever apply forward, and the content seed is guarded to run
+once, ever, so it can never overwrite anything you've since edited from
+`/admin`.
 
-### 1b. Create the Node.js App
-hPanel → **Advanced → Node.js**
-1. Click **Create Application**.
-2. Node.js version: pick the latest available **LTS** (18.x or 20.x+).
-3. Application root: the folder you'll deploy the code into (e.g.
-   `mqtailor.com`, or a subfolder).
-4. Application URL: your domain (e.g. `https://minhquangtailor.com`).
-5. Application startup file: **`app.js`**.
-6. Save. Hostinger will show you an SSH command / path to the app's virtual
-   environment and a **"Run NPM Install"** button — you'll use both below.
+---
 
-### 1c. Point your domain
-If the domain isn't already pointed at this Hostinger account, do that in
-hPanel → **Domains** first. SSL (Let's Encrypt) can be issued for free from
-hPanel → **SSL**once the domain resolves.
+## Method A — Deploy Web App / Import Git Repository
 
-## 2. Get the code onto the server
+### 1. Create the MySQL database
+hPanel → **Databases → Management** (not "Remote MySQL" — that's a
+different thing) → **Create a New MySQL Database And Database User**.
+Note down the full database name, username, password, and host (usually
+`localhost`).
 
-From the Node.js App page, open **SSH access** (hPanel gives you a command
-like `ssh u123456@your-server.hostinger.com`). Then, inside the application
-root folder:
+### 2. Create the website
+hPanel → **Websites → Add Website → Deploy Web App → Import Git
+Repository**. Connect/authorize GitHub, pick the `mq-tailor` repo, branch
+`main`. On the settings screen:
+- Framework preset: **Express** if offered, else **Other**
+- **Node.js version: 20 or 22** (not 18 — `sharp` requires ≥20 and will
+  crash the app on boot if it's set to 18)
+- **Build command: `npm run build`**
+- **Entry file: `app.js`**
+- Output directory: leave blank
 
+### 3. Environment variables
+In the app's dashboard, find **Environment Variables** and add each of
+these as a Key/Value pair (there's no `.env` file to edit by hand here):
+
+| Key | Value |
+|---|---|
+| `NODE_ENV` | `production` |
+| `BASE_URL` | your site's URL, e.g. `https://minhquanghanoi.com` |
+| `DB_HOST` | `localhost` (or whatever step 1 showed) |
+| `DB_PORT` | `3306` |
+| `DB_USER` | from step 1 |
+| `DB_PASSWORD` | from step 1 |
+| `DB_NAME` | from step 1 |
+| `SESSION_SECRET` | any long random string — generate with `node -e "console.log(require('crypto').randomBytes(48).toString('hex'))"` |
+| `ADMIN_SEED_USERNAME` | the username you want to log into `/admin` with |
+| `ADMIN_SEED_PASSWORD` | the password for that account — this becomes your real login |
+| `ENQUIRY_NOTIFY_TO` | `minhquanghotline@gmail.com` |
+
+`SMTP_*` and `GA_MEASUREMENT_ID` are optional — see §6/§7 below.
+
+### 4. Redeploy
+Save the environment variables, then trigger a fresh deploy (pushing to
+GitHub `main` auto-deploys; there's also a Redeploy button, though note it
+can re-run an **old** commit rather than pulling latest — check the
+"Commit" hash shown on the deployment matches your latest push).
+
+On this boot, the app will automatically: create all database tables,
+load the starter bilingual content, and create your admin login. Watch the
+runtime logs for lines starting with `[bootstrap]` to confirm.
+
+### 5. Verify
+Visit your site — `/en/` should load with full content, and
+`/admin/login` should accept the `ADMIN_SEED_USERNAME` /
+`ADMIN_SEED_PASSWORD` you set. Once confirmed, you can remove those two
+environment variables (optional tidiness — leaving them is harmless since
+the app won't recreate/reset the account once it exists).
+
+### Finding a terminal, if you ever need one
+hPanel → **Advanced → SSH Access** → **Enable**, set a password, then
+`ssh <username>@<ip> -p <port>` from PowerShell/Terminal. Useful for
+poking around files, but note **this shell usually has no `npm`/`node` on
+its PATH** in Method A — the actual app runs in a separate build
+container. That's exactly why the self-migrating bootstrap exists.
+
+---
+
+## Method B — classic "Node.js App" (Advanced → Node.js)
+
+Use this appendix only if your hPanel actually shows **Advanced → Node.js**
+with a "Create Application" button (it didn't for this project's account).
+
+### 1. Create the MySQL database
+Same as Method A, step 1.
+
+### 2. Create the Node.js App
+hPanel → **Advanced → Node.js → Create Application**.
+- Node.js version: 20+ (not 18)
+- Application root: the folder to deploy into
+- Application URL: your domain
+- Application startup file: `app.js`
+
+### 3. Get the code onto the server
 ```bash
 cd ~/domains/your-domain.com/mqtailor   # the app root hPanel created
 git clone https://github.com/ducdatcm/mq-tailor.git .
 ```
 
-(If the folder already has hPanel's placeholder files, delete them first, or
-clone into a temp folder and move the contents in.)
-
-## 3. Configure environment variables
-
+### 4. Configure `.env`
 ```bash
 cp .env.example .env
-nano .env   # or use hPanel's File Manager to edit it
+nano .env
 ```
+Fill in the same values as the table in Method A §3, but as `KEY=value`
+lines in this file instead of a UI. **Never commit `.env`.**
 
-Fill in:
-- `DB_HOST` / `DB_PORT` / `DB_USER` / `DB_PASSWORD` / `DB_NAME` — from step 1a
-- `SESSION_SECRET` — generate one: `node -e "console.log(require('crypto').randomBytes(48).toString('hex'))"`
-- `BASE_URL` — your live domain, e.g. `https://minhquangtailor.com`
-- `NODE_ENV=production`
-- `ADMIN_SEED_USERNAME` / `ADMIN_SEED_PASSWORD` — a temporary admin login,
-  used once in step 5 then removed
-- `SMTP_*` / `ENQUIRY_NOTIFY_TO` — optional, only if you want enquiry emails
-  relayed (see §6)
-- `GA_MEASUREMENT_ID` — optional, only if you want Google Analytics
-
-**Never commit `.env`** — it's already git-ignored.
-
-## 4. Install dependencies
-
-Use the "Run NPM Install" button on the Node.js App page in hPanel (it runs
-`npm install` inside the app's managed Node environment), **or** via SSH:
-
+### 5. Install dependencies
+Use the "Run NPM Install" button in hPanel, or via SSH:
 ```bash
 source /home/USERNAME/nodevenv/PATH_TO_APP/20/bin/activate   # hPanel shows the exact path
 npm install --omit=dev
 ```
 
-This also downloads the correct prebuilt `sharp` binary for the server's
-Linux environment automatically — no compiler needed.
-
-## 5. Set up the database and the admin account
-
-Still with the Node virtual environment activated:
-
-```bash
-npm run migrate       # creates all tables
-npm run seed          # loads starter bilingual content, settings, journal posts
-npm run seed:admin    # creates the admin login from ADMIN_SEED_* in .env
-```
-
-Then **edit `.env` again and remove the `ADMIN_SEED_USERNAME` /
-`ADMIN_SEED_PASSWORD` lines** — they're only needed for that one command.
-
-## 6. (Optional) Enquiry email notifications
-
-The "Visit" page's enquiry form always saves to the database — you'll always
-see submissions in **Admin → Enquiries** even without this step. To also get
-an email:
-
-1. Use a Gmail account (or any SMTP provider) and create an
-   [App Password](https://myaccount.google.com/apppasswords) if using Gmail.
-2. Fill in `SMTP_HOST=smtp.gmail.com`, `SMTP_PORT=587`, `SMTP_USER`,
-   `SMTP_PASSWORD` (the app password), `SMTP_FROM`, and
-   `ENQUIRY_NOTIFY_TO=minhquanghotline@gmail.com` in `.env`.
-3. Restart the app (step 8).
-
-## 7. Build and minify assets
-
+### 6. Build assets
 ```bash
 npm run build
 ```
 
-Regenerates `public/css/style.min.css` and `public/js/main.min.js`, which
-`NODE_ENV=production` templates use automatically. Re-run this any time you
-hand-edit `public/css/style.css` or `public/js/main.js`.
-
-## 8. Start / restart the app
-
-Use the **Restart** button on the hPanel Node.js App page. (Passenger also
-restarts automatically if you `touch tmp/restart.txt` in the app root via
-SSH.)
-
-Visit your domain — you should land on `/en/` with full content, and
-`/admin/login` should let you log in with the account from step 5.
-
-## 9. Ongoing updates
-
-Whenever you (or Claude) push new code to
-`https://github.com/ducdatcm/mq-tailor`:
-
+### 7. Start the app
+Because the bootstrap step in `app.js` runs on every boot regardless of
+hosting method, simply starting the app (via the hPanel Restart button, or
+`touch tmp/restart.txt`) also creates the tables, loads starter content,
+and creates the admin account — no manual `npm run migrate`/`seed`
+required here either, though you can still run them by hand if you'd
+rather:
 ```bash
-cd ~/domains/your-domain.com/mqtailor
-git pull
-npm install --omit=dev     # only if package.json changed
-npm run migrate            # only if new migrations were added
-npm run build               # if CSS/JS changed
-touch tmp/restart.txt       # or use the hPanel Restart button
+npm run migrate
+npm run seed
+npm run seed:admin
 ```
 
-Day-to-day content changes (journal posts, photos, hours, team, cloth mills,
-page copy) don't need any of this — they're all done live through
-**`/admin`**, no redeploy required.
+---
+
+## 6. (Optional) Enquiry email notifications
+
+The "Visit" page's enquiry form always saves to the database — you'll
+always see submissions in **Admin → Enquiries** with or without this. To
+also get an email:
+
+1. Use a Gmail account (or any SMTP provider) and create an
+   [App Password](https://myaccount.google.com/apppasswords) if using Gmail.
+2. Set `SMTP_HOST=smtp.gmail.com`, `SMTP_PORT=587`, `SMTP_USER`,
+   `SMTP_PASSWORD` (the app password), `SMTP_FROM`, and
+   `ENQUIRY_NOTIFY_TO=minhquanghotline@gmail.com`.
+3. Redeploy/restart.
+
+## 7. (Optional) Analytics
+
+Set `GA_MEASUREMENT_ID` to your Google Analytics 4 Measurement ID
+(`G-XXXXXXX`) and redeploy/restart. Leave blank to disable analytics
+entirely.
+
+## Ongoing updates
+
+Push to `https://github.com/ducdatcm/mq-tailor` `main` — Method A
+auto-deploys and self-migrates on every boot. Method B needs a manual
+`git pull` + restart (see §7 there). Either way, day-to-day content
+changes (journal posts, photos, hours, team, cloth mills, page copy) never
+need a redeploy — they're all done live through **`/admin`**.
 
 ## Troubleshooting
 
-- **502 / app won't start**: check the Node.js App's log viewer in hPanel,
-  or `tail -f ~/domains/.../mqtailor/logs/*.log` if present. Almost always a
-  missing/incorrect `.env` value.
-- **Images fail to upload**: confirm the app's `public/uploads/` folder is
-  writable by the app user (it is by default under the app root).
-- **Styles look unminified/unstyled after deploy**: run `npm run build` and
-  confirm `NODE_ENV=production` is set in `.env`.
+- **503 "Service Unavailable"** with Hostinger's own generic page
+  (`Server: hcdn` in the response headers): the app process itself never
+  started — check the build/runtime logs, most commonly a wrong Node
+  version or a missing dependency.
+- **500 "Something went wrong"** (our own app's error page): the app is
+  running, something inside it failed — almost always the database isn't
+  reachable yet or hasn't been created. Check the environment variables.
+- **Build fails with "Cannot find module 'X'"**: a package needed by
+  `npm run build` or `app.js` at startup got classified as a
+  `devDependency` and skipped by a production-only install. Move it to
+  regular `dependencies` in `package.json`.
+- **Styles look unminified/unstyled**: confirm `NODE_ENV=production` is
+  set and the build command (`npm run build`) actually ran in the deploy
+  log.
