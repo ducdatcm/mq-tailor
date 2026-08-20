@@ -1,0 +1,41 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title><%= typeof title !== 'undefined' && title ? title + ' — ' + t('meta.site_name') : t('meta.site_name') %></title>
+<% if (typeof metaDescription !== 'undefined' && metaDescription) { %>
+<meta name="description" content="<%= metaDescription.slice(0, 300) %>">
+<% } %>
+
+<link rel="canonical" href="<%= baseUrl %><%= currentPath %>">
+<link rel="alternate" hreflang="en" href="<%= baseUrl %><%= lang === 'en' ? currentPath : altLangPath %>">
+<link rel="alternate" hreflang="vi" href="<%= baseUrl %><%= lang === 'vi' ? currentPath : altLangPath %>">
+<link rel="alternate" hreflang="x-default" href="<%= baseUrl %>/en/">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="<%= t('meta.site_name') %>">
+<meta property="og:title" content="<%= typeof title !== 'undefined' ? title : t('meta.site_name') %>">
+<% if (typeof metaDescription !== 'undefined' && metaDescription) { %>
+<meta property="og:description" content="<%= metaDescription.slice(0, 300) %>">
+<% } %>
+<meta property="og:locale" content="<%= lang === 'vi' ? 'vi_VN' : 'en_US' %>">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%232B2620'/%3E%3Ctext x='32' y='42' font-family='Georgia,serif' font-size='26' fill='%23F5F1EA' text-anchor='middle'%3EMQ%3C/text%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..600;1,400..500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="<%= process.env.NODE_ENV === 'production' ? '/css/style.min.css' : '/css/style.css' %>">
+
+<% if (typeof jsonld !== 'undefined' && jsonld) { %>
+<script type="application/ld+json"><%- JSON.stringify(jsonld) %></script>
+<% } %>
+
+<% if (gaId) { %>
+<script async src="https://www.googletagmanager.com/gtag/js?id=<%= gaId %>"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', '<%= gaId %>', { anonymize_ip: true });
+</script>
+<% } %>

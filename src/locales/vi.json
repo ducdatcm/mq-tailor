@@ -1,0 +1,86 @@
+{
+  "meta": {
+    "site_name": "Nhà May Minh Quang",
+    "site_tagline": "Một nhà may ở Hà Nội"
+  },
+  "nav": {
+    "home": "Trang Chủ",
+    "house": "Nhà May",
+    "tailoring": "May Đo",
+    "process": "Quy Trình",
+    "people": "Con Người",
+    "cloth": "Vải",
+    "journal": "Journal",
+    "visit": "Ghé Thăm"
+  },
+  "cta": {
+    "visit_the_house": "Ghé Thăm Nhà May",
+    "discover_the_house": "Khám Phá Nhà May",
+    "meet_the_people": "Gặp gỡ những con người của nhà may",
+    "read_the_journal": "Đọc Journal",
+    "view_tailoring": "Xem May Đo",
+    "get_directions": "Chỉ Đường",
+    "call": "Gọi Điện",
+    "message_zalo": "Nhắn Zalo",
+    "message_whatsapp": "Nhắn WhatsApp",
+    "follow_instagram": "Theo Dõi Instagram",
+    "send_email": "Gửi Email",
+    "read_more": "Đọc thêm",
+    "back_to_journal": "Quay Lại Journal",
+    "send_enquiry": "Gửi Liên Hệ"
+  },
+  "home": {
+    "journal_heading": "Từ Journal"
+  },
+  "process": {
+    "heading": "Quy Trình"
+  },
+  "people": {
+    "heading": "Con Người"
+  },
+  "cloth": {
+    "heading": "Vải",
+    "mills_heading": "Một Số Xưởng Dệt Chúng Tôi Hợp Tác",
+    "mills_empty": "Danh sách vải hiện có đang được cập nhật tại đây — ghé trực tiếp để xem những gì đang có sẵn trên bàn."
+  },
+  "journal": {
+    "heading": "Journal",
+    "empty": "Những câu chuyện mới sẽ sớm được cập nhật.",
+    "categories": {
+      "craft": "Tay Nghề",
+      "cloth": "Vải",
+      "house-stories": "Chuyện Nhà May",
+      "hanoi": "Hà Nội",
+      "wardrobe": "Tủ Đồ"
+    }
+  },
+  "visit": {
+    "heading": "Ghé Thăm",
+    "address_label": "Địa Chỉ",
+    "hours_label": "Giờ Mở Cửa",
+    "closed": "Đóng Cửa",
+    "contact_label": "Liên Hệ",
+    "form_heading": "Gửi Liên Hệ",
+    "form_intro": "Muốn liên hệ trước bằng tin nhắn? Gửi vài thông tin và chúng tôi sẽ phản hồi sớm nhất.",
+    "form_name": "Họ Tên",
+    "form_phone": "Số Điện Thoại",
+    "form_email": "Email",
+    "form_message": "Lời Nhắn",
+    "form_message_placeholder": "Bạn muốn may gì, và dự kiến cần vào khi nào?",
+    "form_submit": "Gửi Liên Hệ",
+    "form_success": "Cảm ơn bạn — chúng tôi đã nhận được lời nhắn. Chúng tôi sẽ phản hồi sớm nhất có thể.",
+    "form_error": "Đã có lỗi khi gửi lời nhắn. Vui lòng thử lại, hoặc liên hệ trực tiếp qua Zalo hoặc điện thoại."
+  },
+  "footer": {
+    "rights": "Đã đăng ký bản quyền.",
+    "language": "Ngôn Ngữ"
+  },
+  "placeholder": {
+    "photo_pending": "Hình ảnh đang được cập nhật"
+  },
+  "not_found": {
+    "heading": "Không Tìm Thấy Trang",
+    "body": "Trang bạn đang tìm không tồn tại, hoặc đã được chuyển đi.",
+    "back_home": "Về Trang Chủ"
+  }
+}

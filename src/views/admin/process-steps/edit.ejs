@@ -1,0 +1,40 @@
+<h1>The Process</h1>
+<p style="color:var(--admin-muted);">The eight steps and their order are fixed by design — edit the wording and photo for each here.</p>
+
+<% steps.forEach(function (step, i) { %>
+  <div class="panel">
+    <h2 style="margin-top:0;font-size:1rem;"><%= i + 1 %>. <%= step.step_key %></h2>
+    <form method="POST" action="/admin/process-steps/<%= step.id %>">
+      <div class="field-row">
+        <div class="field">
+          <label>Title (English)</label>
+          <input type="text" name="title_en" value="<%= step.title_en %>">
+        </div>
+        <div class="field">
+          <label>Title (Vietnamese)</label>
+          <input type="text" name="title_vi" value="<%= step.title_vi %>">
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Body (English)</label>
+          <textarea name="body_en"><%= step.body_en || '' %></textarea>
+        </div>
+        <div class="field">
+          <label>Body (Vietnamese)</label>
+          <textarea name="body_vi"><%= step.body_vi || '' %></textarea>
+        </div>
+      </div>
+      <div class="field">
+        <label>Image</label>
+        <select name="media_id">
+          <option value="">— None (placeholder shown) —</option>
+          <% media.forEach(function (m) { %>
+            <option value="<%= m.id %>" <%= step.media_id === m.id ? 'selected' : '' %>><%= m.filename %> (<%= m.group %>)</option>
+          <% }); %>
+        </select>
+      </div>
+      <button type="submit" class="btn btn--sm">Save</button>
+    </form>
+  </div>
+<% }); %>

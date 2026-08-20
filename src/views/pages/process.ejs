@@ -1,0 +1,30 @@
+<section class="section container container--narrow reveal">
+  <span class="eyebrow"><%= t('process.heading') %></span>
+  <h1><%= t('process.heading') %></h1>
+  <p class="lede"><%= content.intro ? content.intro['body_' + lang] : '' %></p>
+</section>
+
+<section class="section section--alt">
+  <div class="container">
+    <ol class="process-list" style="list-style:none;padding:0;">
+      <% steps.forEach(function (step, i) { %>
+        <li class="process-step reveal">
+          <span class="process-step__number"><%= String(i + 1).padStart(2, '0') %></span>
+          <div>
+            <h3><%= step['title_' + lang] %></h3>
+            <p class="text-muted"><%= step['body_' + lang] %></p>
+          </div>
+          <div class="media-frame">
+            <%- include('../partials/image', { media: step.media, alt: step['title_' + lang], ratio: '4/3' }) %>
+          </div>
+        </li>
+      <% }); %>
+    </ol>
+  </div>
+</section>
+
+<section class="section text-center reveal">
+  <div class="container container--narrow">
+    <a class="btn" href="/<%= lang %>/visit"><%= t('cta.visit_the_house') %></a>
+  </div>
+</section>

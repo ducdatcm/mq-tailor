@@ -1,0 +1,31 @@
+<h1>Dashboard</h1>
+
+<div class="stat-grid">
+  <div class="stat-card"><div class="num"><%= stats.journal %></div><div class="label">Journal posts</div></div>
+  <div class="stat-card"><div class="num"><%= stats.people %></div><div class="label">People</div></div>
+  <div class="stat-card"><div class="num"><%= stats.mills %></div><div class="label">Cloth mills</div></div>
+  <div class="stat-card"><div class="num"><%= stats.newEnquiries %></div><div class="label">New enquiries</div></div>
+</div>
+
+<div class="panel">
+  <h2 style="margin-top:0;font-size:1.1rem;">Recent Enquiries</h2>
+  <% if (recentEnquiries.length === 0) { %>
+    <p style="color:var(--admin-muted);">No enquiries yet.</p>
+  <% } else { %>
+    <table class="admin-table">
+      <thead><tr><th>Name</th><th>Contact</th><th>Message</th><th>When</th><th>Status</th></tr></thead>
+      <tbody>
+        <% recentEnquiries.forEach(function (e) { %>
+          <tr>
+            <td><%= e.name %></td>
+            <td><%= e.phone || '' %> <%= e.email || '' %></td>
+            <td><%= (e.message || '').slice(0, 60) %></td>
+            <td><%= new Date(e.created_at).toLocaleString() %></td>
+            <td><span class="tag <%= e.status === 'new' ? 'tag--new' : '' %>"><%= e.status %></span></td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+    <p style="margin-top:1rem;"><a href="/admin/enquiries">View all enquiries →</a></p>
+  <% } %>
+</div>

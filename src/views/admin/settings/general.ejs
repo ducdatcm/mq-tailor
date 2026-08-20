@@ -1,0 +1,109 @@
+<h1>Site Settings</h1>
+
+<form method="POST" action="/admin/settings" enctype="multipart/form-data">
+  <div class="panel">
+    <h2 style="margin-top:0;font-size:1rem;">Logo</h2>
+    <div class="field-row">
+      <div class="field">
+        <label for="logo">Upload a new logo (replaces the text wordmark in the header)</label>
+        <input type="file" id="logo" name="logo" accept="image/jpeg,image/png,image/webp">
+      </div>
+      <div class="field">
+        <% if (settings && settings.logo_media_id) { %>
+          <label>Current logo</label>
+          <% var current = media.find(function(m){ return m.id === settings.logo_media_id; }); %>
+          <% if (current && current.variants && current.variants.webp) { %>
+            <img src="<%= Object.values(current.variants.webp)[0] %>" alt="Current logo" style="max-height:60px;">
+          <% } %>
+        <% } else { %>
+          <p class="field-hint">No logo uploaded yet — the header shows a text wordmark.</p>
+        <% } %>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2 style="margin-top:0;font-size:1rem;">Address &amp; Map</h2>
+    <div class="field">
+      <label for="address_line">Address</label>
+      <input type="text" id="address_line" name="address_line" value="<%= settings ? settings.address_line || '' : '' %>">
+    </div>
+    <div class="field">
+      <label for="map_embed_url">Google Maps embed URL</label>
+      <input type="text" id="map_embed_url" name="map_embed_url" value="<%= settings ? settings.map_embed_url || '' : '' %>">
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2 style="margin-top:0;font-size:1rem;">Contact &amp; Social</h2>
+    <div class="field-row">
+      <div class="field">
+        <label for="phone">Phone</label>
+        <input type="text" id="phone" name="phone" value="<%= settings ? settings.phone || '' : '' %>">
+      </div>
+      <div class="field">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" value="<%= settings ? settings.email || '' : '' %>">
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label for="zalo_url">Zalo link</label>
+        <input type="text" id="zalo_url" name="zalo_url" value="<%= settings ? settings.zalo_url || '' : '' %>">
+      </div>
+      <div class="field">
+        <label for="whatsapp_url">WhatsApp link (leave blank to hide)</label>
+        <input type="text" id="whatsapp_url" name="whatsapp_url" value="<%= settings ? settings.whatsapp_url || '' : '' %>">
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label for="instagram_handle">Instagram handle</label>
+        <input type="text" id="instagram_handle" name="instagram_handle" value="<%= settings ? settings.instagram_handle || '' : '' %>">
+      </div>
+      <div class="field">
+        <label for="instagram_url">Instagram URL</label>
+        <input type="text" id="instagram_url" name="instagram_url" value="<%= settings ? settings.instagram_url || '' : '' %>">
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2 style="margin-top:0;font-size:1rem;">Heritage note (shown in the footer)</h2>
+    <div class="field-row">
+      <div class="field">
+        <label for="founding_note_en">English</label>
+        <input type="text" id="founding_note_en" name="founding_note_en" value="<%= settings ? settings.founding_note_en || '' : '' %>">
+      </div>
+      <div class="field">
+        <label for="founding_note_vi">Vietnamese</label>
+        <input type="text" id="founding_note_vi" name="founding_note_vi" value="<%= settings ? settings.founding_note_vi || '' : '' %>">
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2 style="margin-top:0;font-size:1rem;">Opening Hours</h2>
+    <% (settings && settings.hours ? settings.hours : dayKeys.map(function(d){return {day_en:d};})).forEach(function (h) { %>
+      <div class="field-row" style="align-items:center;margin-bottom:0.5rem;">
+        <div style="min-width:110px;font-size:0.9rem;"><%= h.day_en %></div>
+        <div class="field" style="margin-bottom:0;"><input type="time" name="open_<%= h.day_en %>" value="<%= h.open || '' %>"></div>
+        <div class="field" style="margin-bottom:0;"><input type="time" name="close_<%= h.day_en %>" value="<%= h.close || '' %>"></div>
+        <div class="field" style="margin-bottom:0;"><input type="time" name="open2_<%= h.day_en %>" value="<%= h.open2 || '' %>" placeholder="afternoon open"></div>
+        <div class="field" style="margin-bottom:0;"><input type="time" name="close2_<%= h.day_en %>" value="<%= h.close2 || '' %>" placeholder="afternoon close"></div>
+        <label style="font-size:0.85rem;white-space:nowrap;"><input type="checkbox" name="closed_<%= h.day_en %>" <%= h.closed ? 'checked' : '' %> style="width:auto;"> Closed</label>
+      </div>
+    <% }); %>
+    <p class="field-hint">Leave the second open/close pair blank for a day with no lunch break.</p>
+  </div>
+
+  <div class="panel">
+    <h2 style="margin-top:0;font-size:1rem;">Analytics</h2>
+    <div class="field">
+      <label for="ga_measurement_id">Google Analytics Measurement ID (e.g. G-XXXXXXX) — leave blank to disable</label>
+      <input type="text" id="ga_measurement_id" name="ga_measurement_id" value="<%= settings ? settings.ga_measurement_id || '' : '' %>">
+    </div>
+  </div>
+
+  <button type="submit" class="btn">Save Settings</button>
+</form>

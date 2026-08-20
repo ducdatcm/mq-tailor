@@ -1,0 +1,52 @@
+<h1>Media Library</h1>
+
+<div class="panel">
+  <h2 style="margin-top:0;font-size:1rem;">Upload an image</h2>
+  <form method="POST" action="/admin/media/upload" enctype="multipart/form-data">
+    <div class="field-row">
+      <div class="field">
+        <label for="image">Image file (JPEG, PNG or WebP)</label>
+        <input type="file" id="image" name="image" accept="image/jpeg,image/png,image/webp" required>
+      </div>
+      <div class="field">
+        <label for="group">Group</label>
+        <select id="group" name="group">
+          <% groups.forEach(function (g) { %><option value="<%= g %>"><%= g %></option><% }); %>
+        </select>
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label for="alt_en">Alt text (English)</label>
+        <input type="text" id="alt_en" name="alt_en" placeholder="Describe what's in the photo">
+      </div>
+      <div class="field">
+        <label for="alt_vi">Alt text (Vietnamese)</label>
+        <input type="text" id="alt_vi" name="alt_vi">
+      </div>
+    </div>
+    <button type="submit" class="btn">Upload &amp; Resize</button>
+  </form>
+</div>
+
+<div class="field-row" style="margin-bottom:1rem;">
+  <a href="/admin/media" class="pill <%= !activeGroup ? 'active' : '' %>">All</a>
+  <% groups.forEach(function (g) { %>
+    <a href="/admin/media?group=<%= g %>" class="pill <%= activeGroup === g ? 'active' : '' %>"><%= g %></a>
+  <% }); %>
+</div>
+
+<div class="media-grid">
+  <% media.forEach(function (m) { %>
+    <figure>
+      <img src="<%= m.variants && m.variants.webp ? Object.values(m.variants.webp)[0] : '' %>" alt="<%= m.alt_en %>">
+      <figcaption>
+        <div><%= m.filename %></div>
+        <div><%= m.group %> · <%= m.width %>×<%= m.height %></div>
+        <form method="POST" action="/admin/media/<%= m.id %>/delete" onsubmit="return confirm('Delete this image? This cannot be undone.');" style="margin-top:0.4rem;">
+          <button type="submit" class="btn--ghost btn" style="padding:0.15rem 0.4rem;font-size:0.7rem;">Delete</button>
+        </form>
+      </figcaption>
+    </figure>
+  <% }); %>
+</div>

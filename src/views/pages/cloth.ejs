@@ -1,0 +1,29 @@
+<section class="section container container--narrow reveal">
+  <span class="eyebrow"><%= t('cloth.heading') %></span>
+  <h1><%= t('cloth.heading') %></h1>
+  <p class="lede"><%= content.intro ? content.intro['body_' + lang] : '' %></p>
+</section>
+
+<section class="section section--alt reveal">
+  <div class="container">
+    <h2 style="font-size:var(--fs-xl);"><%= t('cloth.mills_heading') %></h2>
+    <% if (mills && mills.length) { %>
+      <div class="grid grid--3">
+        <% mills.forEach(function (mill) { %>
+          <div class="card">
+            <h3 class="card__title"><%= mill.name %></h3>
+            <p class="text-muted"><%= mill['description_' + lang] || '' %></p>
+          </div>
+        <% }); %>
+      </div>
+    <% } else { %>
+      <p class="text-muted"><%= t('cloth.mills_empty') %></p>
+    <% } %>
+  </div>
+</section>
+
+<section class="section text-center reveal">
+  <div class="container container--narrow">
+    <a class="btn" href="/<%= lang %>/visit"><%= t('cta.visit_the_house') %></a>
+  </div>
+</section>

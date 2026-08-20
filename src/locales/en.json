@@ -1,0 +1,86 @@
+{
+  "meta": {
+    "site_name": "Minh Quang Tailoring House",
+    "site_tagline": "A tailoring house in Hanoi"
+  },
+  "nav": {
+    "home": "Home",
+    "house": "The House",
+    "tailoring": "Tailoring",
+    "process": "The Process",
+    "people": "Our People",
+    "cloth": "Cloth",
+    "journal": "Journal",
+    "visit": "Visit"
+  },
+  "cta": {
+    "visit_the_house": "Visit the House",
+    "discover_the_house": "Discover the House",
+    "meet_the_people": "Meet the people behind the house",
+    "read_the_journal": "Read the Journal",
+    "view_tailoring": "View Tailoring",
+    "get_directions": "Get Directions",
+    "call": "Call",
+    "message_zalo": "Message on Zalo",
+    "message_whatsapp": "Message on WhatsApp",
+    "follow_instagram": "Follow on Instagram",
+    "send_email": "Send an Email",
+    "read_more": "Read more",
+    "back_to_journal": "Back to Journal",
+    "send_enquiry": "Send Enquiry"
+  },
+  "home": {
+    "journal_heading": "From the Journal"
+  },
+  "process": {
+    "heading": "The Process"
+  },
+  "people": {
+    "heading": "Our People"
+  },
+  "cloth": {
+    "heading": "Cloth",
+    "mills_heading": "A Selection of Mills We Work With",
+    "mills_empty": "Our current cloth selection is being catalogued here — ask in person and we'll show you what's on the table."
+  },
+  "journal": {
+    "heading": "Journal",
+    "empty": "New stories are on the way.",
+    "categories": {
+      "craft": "Craft",
+      "cloth": "Cloth",
+      "house-stories": "House Stories",
+      "hanoi": "Hanoi",
+      "wardrobe": "Wardrobe"
+    }
+  },
+  "visit": {
+    "heading": "Visit",
+    "address_label": "Address",
+    "hours_label": "Opening Hours",
+    "closed": "Closed",
+    "contact_label": "Contact",
+    "form_heading": "Make an Enquiry",
+    "form_intro": "Prefer to write first? Send a few details and we'll get back to you.",
+    "form_name": "Name",
+    "form_phone": "Phone",
+    "form_email": "Email",
+    "form_message": "Message",
+    "form_message_placeholder": "What are you looking to have made, and for when?",
+    "form_submit": "Send Enquiry",
+    "form_success": "Thank you — your message has reached us. We'll be in touch shortly.",
+    "form_error": "Something went wrong sending your message. Please try again, or reach us directly on Zalo or by phone."
+  },
+  "footer": {
+    "rights": "All rights reserved.",
+    "language": "Language"
+  },
+  "placeholder": {
+    "photo_pending": "Photography pending"
+  },
+  "not_found": {
+    "heading": "Page Not Found",
+    "body": "The page you're looking for doesn't exist, or has moved.",
+    "back_home": "Back to Home"
+  }
+}

@@ -1,0 +1,50 @@
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div>
+      <p class="brand__wordmark" style="color:#fff;margin-bottom:0.75rem;">MINH QUANG</p>
+      <p class="text-muted" style="max-width:40ch;">
+        <%= t('meta.site_tagline') %><% if (settings && settings['founding_note_' + lang]) { %> — <%= settings['founding_note_' + lang] %><% } %>.
+      </p>
+      <div class="row" style="margin-top:1rem;">
+        <% if (settings && settings.instagram_url) { %>
+          <a href="<%= settings.instagram_url %>" target="_blank" rel="noopener" data-track="click_instagram"><%= t('cta.follow_instagram') %></a>
+        <% } %>
+      </div>
+    </div>
+
+    <div>
+      <p class="footer-heading"><%= t('visit.address_label') %></p>
+      <% if (settings && settings.address_line) { %>
+        <p><%= settings.address_line %></p>
+        <% if (settings.map_embed_url) { %>
+          <a href="https://www.google.com/maps/search/?api=1&query=<%= encodeURIComponent(settings.address_line) %>" target="_blank" rel="noopener" data-track="click_map"><%= t('cta.get_directions') %></a>
+        <% } %>
+      <% } %>
+    </div>
+
+    <div>
+      <p class="footer-heading"><%= t('visit.hours_label') %></p>
+      <% if (settings && Array.isArray(settings.hours)) { %>
+        <table class="hours-table" style="color:inherit;">
+          <% settings.hours.forEach(function (h) { %>
+            <tr>
+              <td><%= lang === 'vi' ? h.day_vi : h.day_en %></td>
+              <td>
+                <% if (h.closed) { %><%= t('visit.closed') %><% } else { %>
+                  <%= h.open %>–<%= h.close %><% if (h.open2) { %>, <%= h.open2 %>–<%= h.close2 %><% } %>
+                <% } %>
+              </td>
+            </tr>
+          <% }); %>
+        </table>
+      <% } %>
+    </div>
+  </div>
+
+  <div class="container footer-bottom">
+    <span>&copy; <%= currentYear %> Minh Quang Tailoring House. <%= t('footer.rights') %></span>
+    <span><%= settings && settings.address_line ? settings.address_line : '' %></span>
+  </div>
+</footer>
+
+<script src="<%= process.env.NODE_ENV === 'production' ? '/js/main.min.js' : '/js/main.js' %>" defer></script>

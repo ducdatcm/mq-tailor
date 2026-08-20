@@ -1,0 +1,26 @@
+<section class="section container container--narrow reveal">
+  <span class="eyebrow"><%= t('nav.house') %></span>
+  <h1><%= t('nav.house') %></h1>
+  <p class="lede"><%= content.intro ? content.intro['body_' + lang] : '' %></p>
+</section>
+
+<% ['history', 'phung_hung', 'philosophy'].forEach(function (key, i) { %>
+  <% var block = content[key]; if (!block) return; %>
+  <section class="section <%= i % 2 === 0 ? 'section--alt' : '' %>">
+    <div class="container split <%= i % 2 === 1 ? 'split--reverse' : '' %> reveal">
+      <div class="media-frame">
+        <%- include('../partials/image', { media: block.media, alt: block['title_' + lang], ratio: '4/5' }) %>
+      </div>
+      <div>
+        <h2><%= block['title_' + lang] %></h2>
+        <p><%= block['body_' + lang] %></p>
+      </div>
+    </div>
+  </section>
+<% }); %>
+
+<section class="section text-center reveal">
+  <div class="container container--narrow">
+    <a class="btn" href="/<%= lang %>/our-people"><%= t('cta.meet_the_people') %></a>
+  </div>
+</section>

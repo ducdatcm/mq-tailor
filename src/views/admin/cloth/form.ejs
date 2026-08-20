@@ -1,0 +1,31 @@
+<h1><%= mill ? 'Edit Mill' : 'New Mill' %></h1>
+
+<form method="POST" action="<%= mill ? '/admin/cloth/' + mill.id + '/edit' : '/admin/cloth/new' %>">
+  <div class="panel">
+    <div class="field">
+      <label for="name">Mill name</label>
+      <input type="text" id="name" name="name" required value="<%= mill ? mill.name : '' %>">
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label for="description_en">Short note (English)</label>
+        <input type="text" id="description_en" name="description_en" value="<%= mill ? mill.description_en || '' : '' %>">
+      </div>
+      <div class="field">
+        <label for="description_vi">Short note (Vietnamese)</label>
+        <input type="text" id="description_vi" name="description_vi" value="<%= mill ? mill.description_vi || '' : '' %>">
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label for="sort_order">Sort order</label>
+        <input type="number" id="sort_order" name="sort_order" value="<%= mill ? mill.sort_order : 0 %>">
+      </div>
+      <div class="field">
+        <label><input type="checkbox" name="active" <%= !mill || mill.active ? 'checked' : '' %> style="width:auto;"> Visible on the site</label>
+      </div>
+    </div>
+  </div>
+  <button type="submit" class="btn">Save</button>
+  <a href="/admin/cloth" class="btn btn--ghost">Cancel</a>
+</form>

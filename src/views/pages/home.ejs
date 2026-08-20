@@ -1,0 +1,104 @@
+<section class="hero">
+  <div class="hero__media">
+    <%- include('../partials/image', { media: content.hero && content.hero.media, alt: content.hero ? content.hero['title_' + lang] : '', eager: true }) %>
+  </div>
+  <div class="hero__content container">
+    <span class="eyebrow"><%= t('meta.site_name') %></span>
+    <h1><%= content.hero ? content.hero['title_' + lang] : t('meta.site_tagline') %></h1>
+    <a class="btn" href="/<%= lang %>/visit"><%= t('cta.visit_the_house') %></a>
+  </div>
+</section>
+
+<section class="section container container--narrow text-center reveal">
+  <p class="lede" style="margin-inline:auto;"><%= content.intro ? content.intro['body_' + lang] : '' %></p>
+</section>
+
+<section class="section section--alt">
+  <div class="container split reveal">
+    <div class="media-frame">
+      <%- include('../partials/image', { media: content.house_teaser && content.house_teaser.media, alt: content.house_teaser ? content.house_teaser['title_' + lang] : '', ratio: '4/5' }) %>
+    </div>
+    <div>
+      <span class="eyebrow"><%= content.house_teaser ? content.house_teaser['title_' + lang] : '' %></span>
+      <h2><%= t('cta.discover_the_house') %></h2>
+      <p><%= content.house_teaser ? content.house_teaser['body_' + lang] : '' %></p>
+      <a class="btn btn--outline" href="/<%= lang %>/the-house"><%= t('cta.discover_the_house') %></a>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container split split--reverse reveal">
+    <div class="media-frame">
+      <%- include('../partials/image', { media: content.craft_teaser && content.craft_teaser.media, alt: content.craft_teaser ? content.craft_teaser['title_' + lang] : '', ratio: '4/5' }) %>
+    </div>
+    <div>
+      <span class="eyebrow"><%= content.craft_teaser ? content.craft_teaser['title_' + lang] : '' %></span>
+      <h2><%= t('process.heading') %></h2>
+      <p><%= content.craft_teaser ? content.craft_teaser['body_' + lang] : '' %></p>
+      <a class="btn btn--outline" href="/<%= lang %>/the-process">→ <%= t('process.heading') %></a>
+    </div>
+  </div>
+</section>
+
+<section class="section section--alt">
+  <div class="container split reveal">
+    <div class="media-frame">
+      <%- include('../partials/image', { media: content.people_teaser && content.people_teaser.media, alt: content.people_teaser ? content.people_teaser['title_' + lang] : '', ratio: '4/5' }) %>
+    </div>
+    <div>
+      <span class="eyebrow"><%= content.people_teaser ? content.people_teaser['title_' + lang] : '' %></span>
+      <h2><%= t('cta.meet_the_people') %></h2>
+      <p><%= content.people_teaser ? content.people_teaser['body_' + lang] : '' %></p>
+      <a class="btn btn--outline" href="/<%= lang %>/our-people"><%= t('cta.meet_the_people') %></a>
+    </div>
+  </div>
+</section>
+
+<section class="section reveal">
+  <div class="container">
+    <span class="eyebrow"><%= t('nav.tailoring') %></span>
+    <h2><%= content.tailoring_teaser ? content.tailoring_teaser['title_' + lang] : t('nav.tailoring') %></h2>
+    <p class="lede"><%= content.tailoring_teaser ? content.tailoring_teaser['body_' + lang] : '' %></p>
+    <a class="btn" href="/<%= lang %>/tailoring"><%= t('cta.view_tailoring') %></a>
+  </div>
+</section>
+
+<section class="section section--alt reveal">
+  <div class="container container--narrow text-center">
+    <span class="eyebrow"><%= content.hanoi_teaser ? content.hanoi_teaser['title_' + lang] : 'Hanoi' %></span>
+    <p class="lede" style="margin-inline:auto;"><%= content.hanoi_teaser ? content.hanoi_teaser['body_' + lang] : '' %></p>
+  </div>
+</section>
+
+<% if (posts && posts.length) { %>
+<section class="section reveal">
+  <div class="container">
+    <div class="row" style="justify-content:space-between;align-items:baseline;margin-bottom:2rem;">
+      <h2 class="mb-0"><%= t('home.journal_heading') %></h2>
+      <a class="btn--outline btn btn--sm" href="/<%= lang %>/journal"><%= t('cta.read_the_journal') %></a>
+    </div>
+    <div class="grid grid--3">
+      <% posts.forEach(function (post) { %>
+        <a class="card" href="/<%= lang %>/journal/<%= post.slug %>">
+          <div class="media-frame">
+            <%- include('../partials/image', { media: post.cover, alt: post['title_' + lang], ratio: '4/3' }) %>
+          </div>
+          <span class="eyebrow"><%= t('journal.categories.' + post.category) %></span>
+          <h3 class="card__title"><%= post['title_' + lang] %></h3>
+          <p class="text-muted"><%= post['excerpt_' + lang] %></p>
+        </a>
+      <% }); %>
+    </div>
+  </div>
+</section>
+<% } %>
+
+<section class="section section--alt reveal">
+  <div class="container container--narrow text-center">
+    <span class="eyebrow"><%= content.visit_teaser ? content.visit_teaser['title_' + lang] : t('nav.visit') %></span>
+    <h2><%= t('cta.visit_the_house') %></h2>
+    <p class="lede" style="margin-inline:auto;"><%= content.visit_teaser ? content.visit_teaser['body_' + lang] : '' %></p>
+    <a class="btn" href="/<%= lang %>/visit"><%= t('cta.visit_the_house') %></a>
+  </div>
+</section>

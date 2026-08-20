@@ -1,0 +1,46 @@
+{
+  "name": "mq-tailor",
+  "version": "1.0.0",
+  "description": "Minh Quang Tailoring House — official website (Hanoi)",
+  "private": true,
+  "license": "UNLICENSED",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "migrate": "knex migrate:latest",
+    "migrate:rollback": "knex migrate:rollback",
+    "seed": "knex seed:run",
+    "seed:admin": "node scripts/seed-admin.js",
+    "build": "node scripts/build-assets.js"
+  },
+  "engines": {
+    "node": ">=18.x"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "connect-flash": "^0.1.1",
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
+    "express-ejs-layouts": "^2.5.1",
+    "express-mysql-session": "^3.0.3",
+    "express-session": "^1.18.0",
+    "helmet": "^7.1.0",
+    "knex": "^3.1.0",
+    "mailgen": "^2.0.28",
+    "multer": "^2.2.0",
+    "mysql2": "^3.10.1",
+    "nodemailer": "^9.0.5",
+    "sharp": "^0.35.3",
+    "slugify": "^1.6.6"
+  },
+  "devDependencies": {
+    "clean-css": "^5.3.3",
+    "nodemon": "^3.1.4",
+    "terser": "^5.31.0"
+  },
+  "overrides": {
+    "tar": "^7.5.21"
+  }
+}

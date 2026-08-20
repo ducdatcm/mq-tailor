@@ -1,0 +1,94 @@
+<section class="section container container--narrow reveal">
+  <span class="eyebrow"><%= t('visit.heading') %></span>
+  <h1><%= t('visit.heading') %></h1>
+  <p class="lede"><%= content.intro ? content.intro['body_' + lang] : '' %></p>
+</section>
+
+<section class="section section--alt">
+  <div class="container split reveal">
+    <div>
+      <h2 style="font-size:var(--fs-xl);"><%= t('visit.contact_label') %></h2>
+      <ul class="contact-list">
+        <% if (settings && settings.address_line) { %>
+          <li><a href="https://www.google.com/maps/search/?api=1&query=<%= encodeURIComponent(settings.address_line) %>" target="_blank" rel="noopener" data-track="click_map"><%= settings.address_line %> — <%= t('cta.get_directions') %></a></li>
+        <% } %>
+        <% if (settings && settings.phone) { %>
+          <li><a href="tel:<%= settings.phone.replace(/\s+/g, '') %>" data-track="click_phone"><%= t('cta.call') %> — <%= settings.phone %></a></li>
+        <% } %>
+        <% if (settings && settings.zalo_url) { %>
+          <li><a href="<%= settings.zalo_url %>" target="_blank" rel="noopener" data-track="click_zalo"><%= t('cta.message_zalo') %></a></li>
+        <% } %>
+        <% if (settings && settings.whatsapp_url) { %>
+          <li><a href="<%= settings.whatsapp_url %>" target="_blank" rel="noopener" data-track="click_whatsapp"><%= t('cta.message_whatsapp') %></a></li>
+        <% } %>
+        <% if (settings && settings.instagram_url) { %>
+          <li><a href="<%= settings.instagram_url %>" target="_blank" rel="noopener" data-track="click_instagram"><%= t('cta.follow_instagram') %> — <%= settings.instagram_handle %></a></li>
+        <% } %>
+        <% if (settings && settings.email) { %>
+          <li><a href="mailto:<%= settings.email %>" data-track="click_email"><%= t('cta.send_email') %> — <%= settings.email %></a></li>
+        <% } %>
+      </ul>
+
+      <h2 style="font-size:var(--fs-xl);margin-top:2rem;"><%= t('visit.hours_label') %></h2>
+      <% if (settings && Array.isArray(settings.hours)) { %>
+        <table class="hours-table">
+          <% settings.hours.forEach(function (h) { %>
+            <tr>
+              <td><%= lang === 'vi' ? h.day_vi : h.day_en %></td>
+              <td>
+                <% if (h.closed) { %><%= t('visit.closed') %><% } else { %>
+                  <%= h.open %>–<%= h.close %><% if (h.open2) { %>, <%= h.open2 %>–<%= h.close2 %><% } %>
+                <% } %>
+              </td>
+            </tr>
+          <% }); %>
+        </table>
+      <% } %>
+    </div>
+
+    <div>
+      <% if (settings && settings.map_embed_url) { %>
+        <iframe class="map-frame" src="<%= settings.map_embed_url %>" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Map to Minh Quang Tailoring House"></iframe>
+      <% } %>
+    </div>
+  </div>
+</section>
+
+<section class="section" data-enquiry-form-section>
+  <div class="container container--narrow reveal">
+    <h2><%= t('visit.form_heading') %></h2>
+    <p class="text-muted"><%= t('visit.form_intro') %></p>
+
+    <% if (formSuccess) { %>
+      <div class="form-notice form-notice--success"><%= t('visit.form_success') %></div>
+    <% } %>
+    <% if (formError) { %>
+      <div class="form-notice form-notice--error"><%= t('visit.form_error') %></div>
+    <% } %>
+
+    <form method="POST" action="/<%= lang %>/visit/enquiry" data-enquiry-form>
+      <div class="form-field">
+        <label for="name"><%= t('visit.form_name') %></label>
+        <input type="text" id="name" name="name" required maxlength="150" autocomplete="name">
+      </div>
+      <div class="form-field">
+        <label for="phone"><%= t('visit.form_phone') %></label>
+        <input type="tel" id="phone" name="phone" maxlength="50" autocomplete="tel">
+      </div>
+      <div class="form-field">
+        <label for="email"><%= t('visit.form_email') %></label>
+        <input type="email" id="email" name="email" maxlength="255" autocomplete="email">
+      </div>
+      <p class="form-hint">Provide at least a phone number or email so we can reply.</p>
+      <div class="form-field">
+        <label for="message"><%= t('visit.form_message') %></label>
+        <textarea id="message" name="message" maxlength="2000" placeholder="<%= t('visit.form_message_placeholder') %>"></textarea>
+      </div>
+      <div class="hp-field" aria-hidden="true">
+        <label for="website">Website</label>
+        <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+      </div>
+      <button type="submit" class="btn"><%= t('visit.form_submit') %></button>
+    </form>
+  </div>
+</section>

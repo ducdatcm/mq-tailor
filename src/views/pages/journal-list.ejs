@@ -1,0 +1,36 @@
+<section class="section container reveal">
+  <span class="eyebrow"><%= t('journal.heading') %></span>
+  <h1><%= t('journal.heading') %></h1>
+
+  <div class="journal-filters">
+    <a href="/<%= lang %>/journal" aria-current="<%= !category ? 'true' : 'false' %>">All</a>
+    <% ['craft', 'cloth', 'house-stories', 'hanoi', 'wardrobe'].forEach(function (cat) { %>
+      <a href="/<%= lang %>/journal?category=<%= cat %>" aria-current="<%= category === cat ? 'true' : 'false' %>"><%= t('journal.categories.' + cat) %></a>
+    <% }); %>
+  </div>
+
+  <% if (posts && posts.length) { %>
+    <div class="grid grid--3">
+      <% posts.forEach(function (post) { %>
+        <a class="card" href="/<%= lang %>/journal/<%= post.slug %>">
+          <div class="media-frame">
+            <%- include('../partials/image', { media: post.cover, alt: post['title_' + lang], ratio: '4/3' }) %>
+          </div>
+          <span class="eyebrow"><%= t('journal.categories.' + post.category) %></span>
+          <h3 class="card__title"><%= post['title_' + lang] %></h3>
+          <p class="text-muted"><%= post['excerpt_' + lang] %></p>
+        </a>
+      <% }); %>
+    </div>
+  <% } else { %>
+    <p class="text-muted"><%= t('journal.empty') %></p>
+  <% } %>
+
+  <% if (totalPages > 1) { %>
+    <nav class="pagination" aria-label="Pagination">
+      <% for (var p = 1; p <= totalPages; p++) { %>
+        <a class="btn btn--sm <%= p === page ? '' : 'btn--outline' %>" href="/<%= lang %>/journal?page=<%= p %><%= category ? '&category=' + category : '' %>"><%= p %></a>
+      <% } %>
+    </nav>
+  <% } %>
+</section>

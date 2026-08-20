@@ -1,0 +1,51 @@
+
+<%
+  var navItems = [
+    { href: '/' + lang + '/', key: 'home' },
+    { href: '/' + lang + '/the-house', key: 'house' },
+    { href: '/' + lang + '/tailoring', key: 'tailoring' },
+    { href: '/' + lang + '/the-process', key: 'process' },
+    { href: '/' + lang + '/our-people', key: 'people' },
+    { href: '/' + lang + '/cloth', key: 'cloth' },
+    { href: '/' + lang + '/journal', key: 'journal' },
+    { href: '/' + lang + '/visit', key: 'visit' },
+  ];
+  function isCurrent(href) {
+    if (href === '/' + lang + '/') return currentPath === '/' + lang || currentPath === '/' + lang + '/';
+    return currentPath.indexOf(href) === 0;
+  }
+%>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="container site-header__inner">
+    <a class="brand" href="/<%= lang %>/">
+      <% if (logo) { %>
+        <img src="<%= logo.src %>" alt="<%= t('meta.site_name') %>">
+      <% } else { %>
+        <span class="brand__wordmark">MINH QUANG<small>Tailoring House · Hanoi</small></span>
+      <% } %>
+    </a>
+
+    <nav class="main-nav" aria-label="Primary">
+      <% navItems.forEach(function (item) { %>
+        <a href="<%= item.href %>" <% if (isCurrent(item.href)) { %>aria-current="page"<% } %>><%= t('nav.' + item.key) %></a>
+      <% }); %>
+    </nav>
+
+    <div class="header-actions">
+      <div class="lang-switch" role="group" aria-label="<%= t('footer.language') %>">
+        <a href="<%= lang === 'en' ? currentPath : altLangPath %>" aria-current="<%= lang === 'en' ? 'true' : 'false' %>">EN</a>
+        <a href="<%= lang === 'vi' ? currentPath : altLangPath %>" aria-current="<%= lang === 'vi' ? 'true' : 'false' %>">VI</a>
+      </div>
+      <button class="nav-toggle" aria-expanded="false" aria-controls="mobile-nav" aria-label="Menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <nav id="mobile-nav" class="mobile-nav" aria-label="Primary mobile">
+    <% navItems.forEach(function (item) { %>
+      <a href="<%= item.href %>" <% if (isCurrent(item.href)) { %>aria-current="page"<% } %>><%= t('nav.' + item.key) %></a>
+    <% }); %>
+  </nav>
+</header>

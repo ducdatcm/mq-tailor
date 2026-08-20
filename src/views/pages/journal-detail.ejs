@@ -1,0 +1,37 @@
+<%
+  var bodyText = post['body_' + lang] || '';
+  var paragraphs = bodyText.split(/\n\s*\n/);
+%>
+<article class="section container container--narrow reveal">
+  <a class="btn--outline btn btn--sm" href="/<%= lang %>/journal" style="margin-bottom:2rem;">← <%= t('cta.back_to_journal') %></a>
+  <span class="eyebrow"><%= t('journal.categories.' + post.category) %></span>
+  <h1><%= post['title_' + lang] %></h1>
+
+  <div class="media-frame" style="margin-block:2rem;">
+    <%- include('../partials/image', { media: post.cover, alt: post['title_' + lang], ratio: '3/2', eager: true }) %>
+  </div>
+
+  <div class="stack" style="gap:1.25rem;">
+    <% paragraphs.forEach(function (para) { %>
+      <p><%= para %></p>
+    <% }); %>
+  </div>
+</article>
+
+<% if (related && related.length) { %>
+<section class="section section--alt reveal">
+  <div class="container">
+    <h2 style="font-size:var(--fs-xl);"><%= t('journal.categories.' + post.category) %></h2>
+    <div class="grid grid--3">
+      <% related.forEach(function (r) { %>
+        <a class="card" href="/<%= lang %>/journal/<%= r.slug %>">
+          <div class="media-frame">
+            <%- include('../partials/image', { media: r.cover, alt: r['title_' + lang], ratio: '4/3' }) %>
+          </div>
+          <h3 class="card__title"><%= r['title_' + lang] %></h3>
+        </a>
+      <% }); %>
+    </div>
+  </div>
+</section>
+<% } %>

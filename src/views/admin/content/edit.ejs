@@ -1,0 +1,45 @@
+<h1>Page Copy</h1>
+
+<div class="field-row" style="margin-bottom:1.5rem;">
+  <% Object.keys(pages).forEach(function (key) { %>
+    <a href="/admin/content/<%= key %>" class="pill <%= key === pageKey ? 'active' : '' %>"><%= pages[key] %></a>
+  <% }); %>
+</div>
+
+<% sections.forEach(function (section) { %>
+  <div class="panel">
+    <h2 style="margin-top:0;font-size:1rem;"><%= section.section_key %></h2>
+    <form method="POST" action="/admin/content/<%= pageKey %>/<%= section.section_key %>">
+      <div class="field-row">
+        <div class="field">
+          <label>Title (English)</label>
+          <input type="text" name="title_en" value="<%= section.title_en || '' %>">
+        </div>
+        <div class="field">
+          <label>Title (Vietnamese)</label>
+          <input type="text" name="title_vi" value="<%= section.title_vi || '' %>">
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Body (English)</label>
+          <textarea name="body_en"><%= section.body_en || '' %></textarea>
+        </div>
+        <div class="field">
+          <label>Body (Vietnamese)</label>
+          <textarea name="body_vi"><%= section.body_vi || '' %></textarea>
+        </div>
+      </div>
+      <div class="field">
+        <label>Image</label>
+        <select name="media_id">
+          <option value="">— None (placeholder shown) —</option>
+          <% media.forEach(function (m) { %>
+            <option value="<%= m.id %>" <%= section.media_id === m.id ? 'selected' : '' %>><%= m.filename %> (<%= m.group %>)</option>
+          <% }); %>
+        </select>
+      </div>
+      <button type="submit" class="btn btn--sm">Save</button>
+    </form>
+  </div>
+<% }); %>

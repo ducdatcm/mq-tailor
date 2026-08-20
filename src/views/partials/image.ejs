@@ -1,0 +1,24 @@
+<%
+  // Locals expected: media (resolved {src,srcset,width,height,alt} or null),
+  // alt (optional override), sizesAttr (optional), ratio (optional CSS aspect-ratio e.g. "4/5")
+  var _alt = typeof alt !== 'undefined' && alt ? alt : (media && media.alt ? media.alt : '');
+  var _sizes = typeof sizesAttr !== 'undefined' ? sizesAttr : '(min-width: 900px) 50vw, 100vw';
+  var _ratio = typeof ratio !== 'undefined' ? ratio : null;
+%>
+<% if (media) { %>
+  <img
+    src="<%= media.src %>"
+    srcset="<%= media.srcset %>"
+    sizes="<%= _sizes %>"
+    width="<%= media.width %>"
+    height="<%= media.height %>"
+    alt="<%= _alt %>"
+    loading="<%= typeof eager !== 'undefined' && eager ? 'eager' : 'lazy' %>"
+    decoding="async"
+    <% if (_ratio) { %>style="aspect-ratio:<%= _ratio %>;object-fit:cover;"<% } %>
+  >
+<% } else { %>
+  <div class="placeholder" <% if (_ratio) { %>style="aspect-ratio:<%= _ratio %>;"<% } %> role="img" aria-label="<%= _alt || t('placeholder.photo_pending') %>">
+    <span><%= t('placeholder.photo_pending') %></span>
+  </div>
+<% } %>

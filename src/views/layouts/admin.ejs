@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title><%= title %> — Minh Quang Admin</title>
+<link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+<div class="admin-shell">
+  <aside class="admin-sidebar">
+    <a class="brand" href="/admin">Minh Quang<br>Admin</a>
+    <nav>
+      <a href="/admin">Dashboard</a>
+      <a href="/admin/journal">Journal</a>
+      <a href="/admin/people">People</a>
+      <a href="/admin/cloth">Cloth Mills</a>
+      <a href="/admin/media">Media Library</a>
+      <a href="/admin/content/home">Page Copy</a>
+      <a href="/admin/process-steps">The Process</a>
+      <a href="/admin/settings">Site Settings</a>
+      <a href="/admin/enquiries">Enquiries</a>
+    </nav>
+    <a href="/en/" target="_blank" style="display:block;margin-top:1rem;color:#cfc9bb;font-size:0.85rem;">View site ↗</a>
+    <form method="POST" action="/admin/logout">
+      <button type="submit">Log out<% if (typeof adminUsername !== 'undefined' && adminUsername) { %> (<%= adminUsername %>)<% } %></button>
+    </form>
+  </aside>
+  <main class="admin-main">
+    <% if (typeof flashSuccess !== 'undefined') { flashSuccess.forEach(function (m) { %>
+      <div class="flash flash--success"><%= m %></div>
+    <% }); } %>
+    <% if (typeof flashError !== 'undefined') { flashError.forEach(function (m) { %>
+      <div class="flash flash--error"><%= m %></div>
+    <% }); } %>
+    <%- body %>
+  </main>
+</div>
+</body>
+</html>

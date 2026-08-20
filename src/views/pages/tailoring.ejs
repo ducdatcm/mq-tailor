@@ -1,0 +1,20 @@
+<section class="section container container--narrow reveal">
+  <span class="eyebrow"><%= t('nav.tailoring') %></span>
+  <h1><%= t('nav.tailoring') %></h1>
+  <p class="lede"><%= content.intro ? content.intro['body_' + lang] : '' %></p>
+</section>
+
+<% categories.forEach(function (cat, i) { %>
+  <section class="section <%= i % 2 === 0 ? 'section--alt' : '' %>" id="<%= cat.section_key %>">
+    <div class="container split <%= i % 2 === 1 ? 'split--reverse' : '' %> reveal">
+      <div class="media-frame">
+        <%- include('../partials/image', { media: cat.media, alt: cat['title_' + lang], ratio: '4/5' }) %>
+      </div>
+      <div>
+        <h2><%= cat['title_' + lang] %></h2>
+        <p><%= cat['body_' + lang] %></p>
+        <a class="btn btn--outline" href="/<%= lang %>/visit"><%= t('cta.visit_the_house') %></a>
+      </div>
+    </div>
+  </section>
+<% }); %>

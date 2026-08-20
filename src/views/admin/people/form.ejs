@@ -1,0 +1,55 @@
+<h1><%= person ? 'Edit Person' : 'New Person' %></h1>
+
+<form method="POST" action="<%= person ? '/admin/people/' + person.id + '/edit' : '/admin/people/new' %>">
+  <div class="panel">
+    <div class="field">
+      <label for="name">Name (or role-group label, e.g. "The Cutters")</label>
+      <input type="text" id="name" name="name" required value="<%= person ? person.name : '' %>">
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label for="role_en">Role (English)</label>
+        <input type="text" id="role_en" name="role_en" value="<%= person ? person.role_en || '' : '' %>">
+      </div>
+      <div class="field">
+        <label for="role_vi">Role (Vietnamese)</label>
+        <input type="text" id="role_vi" name="role_vi" value="<%= person ? person.role_vi || '' : '' %>">
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label for="bio_en">Bio (English)</label>
+        <textarea id="bio_en" name="bio_en"><%= person ? person.bio_en || '' : '' %></textarea>
+      </div>
+      <div class="field">
+        <label for="bio_vi">Bio (Vietnamese)</label>
+        <textarea id="bio_vi" name="bio_vi"><%= person ? person.bio_vi || '' : '' %></textarea>
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label for="photo_media_id">Photo</label>
+        <select id="photo_media_id" name="photo_media_id">
+          <option value="">— None (placeholder shown) —</option>
+          <% media.forEach(function (m) { %>
+            <option value="<%= m.id %>" <%= person && person.photo_media_id === m.id ? 'selected' : '' %>><%= m.filename %> (<%= m.group %>)</option>
+          <% }); %>
+        </select>
+      </div>
+      <div class="field">
+        <label for="sort_order">Sort order (lower shows first)</label>
+        <input type="number" id="sort_order" name="sort_order" value="<%= person ? person.sort_order : 0 %>">
+      </div>
+    </div>
+
+    <div class="field">
+      <label><input type="checkbox" name="active" <%= !person || person.active ? 'checked' : '' %> style="width:auto;"> Visible on the site</label>
+    </div>
+  </div>
+
+  <button type="submit" class="btn">Save</button>
+  <a href="/admin/people" class="btn btn--ghost">Cancel</a>
+</form>

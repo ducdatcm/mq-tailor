@@ -1,0 +1,25 @@
+<div class="admin-topbar">
+  <h1 style="margin:0;">Cloth Mills</h1>
+  <a class="btn" href="/admin/cloth/new">+ New Mill</a>
+</div>
+<p style="color:var(--admin-muted);max-width:60ch;">Only add mills you actually source cloth from — the public Cloth page is written to look complete with zero, a few, or many entries here.</p>
+
+<table class="admin-table">
+  <thead><tr><th>Name</th><th>Order</th><th>Active</th><th></th></tr></thead>
+  <tbody>
+    <% mills.forEach(function (m) { %>
+      <tr>
+        <td><%= m.name %></td>
+        <td><%= m.sort_order %></td>
+        <td><span class="tag <%= m.active ? 'tag--live' : '' %>"><%= m.active ? 'Active' : 'Hidden' %></span></td>
+        <td>
+          <a href="/admin/cloth/<%= m.id %>/edit">Edit</a>
+          &nbsp;·&nbsp;
+          <form method="POST" action="/admin/cloth/<%= m.id %>/delete" style="display:inline;" onsubmit="return confirm('Remove this mill?');">
+            <button type="submit" class="btn--ghost btn" style="padding:0.2rem 0.5rem;font-size:0.8rem;">Delete</button>
+          </form>
+        </td>
+      </tr>
+    <% }); %>
+  </tbody>
+</table>

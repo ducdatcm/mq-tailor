@@ -1,0 +1,76 @@
+<h1><%= post ? 'Edit Journal Post' : 'New Journal Post' %></h1>
+
+<form method="POST" action="<%= post ? '/admin/journal/' + post.id + '/edit' : '/admin/journal/new' %>">
+  <div class="panel">
+    <div class="field-row">
+      <div class="field">
+        <label for="title_en">Title (English)</label>
+        <input type="text" id="title_en" name="title_en" required value="<%= post ? post.title_en : '' %>">
+      </div>
+      <div class="field">
+        <label for="title_vi">Title (Vietnamese)</label>
+        <input type="text" id="title_vi" name="title_vi" required value="<%= post ? post.title_vi : '' %>">
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label for="slug">URL slug (leave blank to auto-generate from English title)</label>
+        <input type="text" id="slug" name="slug" value="<%= post ? post.slug : '' %>">
+      </div>
+      <div class="field">
+        <label for="category">Category</label>
+        <select id="category" name="category">
+          <% ['craft', 'cloth', 'house-stories', 'hanoi', 'wardrobe'].forEach(function (c) { %>
+            <option value="<%= c %>" <%= post && post.category === c ? 'selected' : '' %>><%= c %></option>
+          <% }); %>
+        </select>
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label for="excerpt_en">Excerpt (English)</label>
+        <input type="text" id="excerpt_en" name="excerpt_en" value="<%= post ? post.excerpt_en || '' : '' %>">
+      </div>
+      <div class="field">
+        <label for="excerpt_vi">Excerpt (Vietnamese)</label>
+        <input type="text" id="excerpt_vi" name="excerpt_vi" value="<%= post ? post.excerpt_vi || '' : '' %>">
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label for="body_en">Body (English) — separate paragraphs with a blank line</label>
+        <textarea id="body_en" name="body_en" style="min-height:260px;"><%= post ? post.body_en || '' : '' %></textarea>
+      </div>
+      <div class="field">
+        <label for="body_vi">Body (Vietnamese)</label>
+        <textarea id="body_vi" name="body_vi" style="min-height:260px;"><%= post ? post.body_vi || '' : '' %></textarea>
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label for="cover_media_id">Cover image</label>
+        <select id="cover_media_id" name="cover_media_id">
+          <option value="">— None (placeholder shown) —</option>
+          <% media.forEach(function (m) { %>
+            <option value="<%= m.id %>" <%= post && post.cover_media_id === m.id ? 'selected' : '' %>><%= m.filename %> (<%= m.group %>)</option>
+          <% }); %>
+        </select>
+        <p class="field-hint">Upload new images from the <a href="/admin/media">Media Library</a> first.</p>
+      </div>
+      <div class="field">
+        <label for="status">Status</label>
+        <select id="status" name="status">
+          <option value="draft" <%= !post || post.status === 'draft' ? 'selected' : '' %>>Draft</option>
+          <option value="published" <%= post && post.status === 'published' ? 'selected' : '' %>>Published</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <button type="submit" class="btn">Save</button>
+  <a href="/admin/journal" class="btn btn--ghost">Cancel</a>
+</form>
