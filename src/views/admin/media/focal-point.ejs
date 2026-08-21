@@ -1,0 +1,57 @@
+<h1>Set Focus Point</h1>
+<p style="color:var(--admin-muted);max-width:60ch;">
+  Click on the part of the photo that matters most (a face, the cutting
+  table, whatever the eye should land on). The site keeps that point
+  visible whenever this image gets cropped to fit a card, hero, or any
+  other fixed-shape frame.
+</p>
+
+<div class="panel">
+  <%
+    var widths = item.variants && item.variants.webp ? Object.keys(item.variants.webp).map(Number).sort((a,b)=>a-b) : [];
+    var previewSrc = widths.length ? item.variants.webp[widths[Math.min(widths.length - 1, 2)]] : '';
+  %>
+  <div id="focal-picker" style="position:relative;display:inline-block;max-width:100%;cursor:crosshair;">
+    <img id="focal-image" src="<%= previewSrc %>" alt="<%= item.alt_en %>" style="max-width:100%;display:block;border-radius:4px;">
+    <div id="focal-marker" style="position:absolute;width:22px;height:22px;border:2px solid #fff;border-radius:50%;box-shadow:0 0 0 2px rgba(0,0,0,0.6),0 0 6px rgba(0,0,0,0.5);transform:translate(-50%,-50%);pointer-events:none;"></div>
+  </div>
+
+  <form method="POST" action="/admin/media/<%= item.id %>/focal-point" id="focal-form" style="margin-top:1rem;">
+    <input type="hidden" name="focal_x" id="focal_x" value="<%= item.focal_x %>">
+    <input type="hidden" name="focal_y" id="focal_y" value="<%= item.focal_y %>">
+    <p class="field-hint">Position: <span id="focal-readout"><%= Number(item.focal_x).toFixed(0) %>%, <%= Number(item.focal_y).toFixed(0) %>%</span></p>
+    <button type="submit" class="btn">Save Focus Point</button>
+    <a href="/admin/media" class="btn btn--ghost">Cancel</a>
+  </form>
+</div>
+
+<script>
+(function () {
+  var picker = document.getElementById('focal-picker');
+  var img = document.getElementById('focal-image');
+  var marker = document.getElementById('focal-marker');
+  var xInput = document.getElementById('focal_x');
+  var yInput = document.getElementById('focal_y');
+  var readout = document.getElementById('focal-readout');
+
+  function place(xPct, yPct) {
+    marker.style.left = xPct + '%';
+    marker.style.top = yPct + '%';
+    xInput.value = xPct.toFixed(1);
+    yInput.value = yPct.toFixed(1);
+    readout.textContent = Math.round(xPct) + '%, ' + Math.round(yPct) + '%';
+  }
+
+  function setFromEvent(e) {
+    var rect = img.getBoundingClientRect();
+    var xPct = Math.max(0, Math.min(100, ((e.clientX - rect.left) / rect.width) * 100));
+    var yPct = Math.max(0, Math.min(100, ((e.clientY - rect.top) / rect.height) * 100));
+    place(xPct, yPct);
+  }
+
+  picker.addEventListener('click', setFromEvent);
+
+  // Initial marker position from the saved value.
+  place(parseFloat(xInput.value) || 50, parseFloat(yInput.value) || 50);
+})();
+</script>

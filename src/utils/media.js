@@ -38,6 +38,10 @@ function resolveMedia(row, lang = 'en') {
     width: row.width,
     height: row.height,
     alt: (lang === 'vi' ? row.alt_vi : row.alt_en) || row.alt_en || '',
+    // Where to keep the crop centred when object-fit:cover trims the
+    // image into a fixed-ratio frame — set per-photo in the Media Library.
+    focalX: row.focal_x != null ? Number(row.focal_x) : 50,
+    focalY: row.focal_y != null ? Number(row.focal_y) : 50,
   };
 }
 

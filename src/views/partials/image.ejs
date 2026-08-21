@@ -15,7 +15,7 @@
     alt="<%= _alt %>"
     loading="<%= typeof eager !== 'undefined' && eager ? 'eager' : 'lazy' %>"
     decoding="async"
-    <% if (_ratio) { %>style="aspect-ratio:<%= _ratio %>;object-fit:cover;"<% } %>
+    style="object-position:<%= media.focalX %>% <%= media.focalY %>%;<% if (_ratio) { %>aspect-ratio:<%= _ratio %>;object-fit:cover;<% } %>"
   >
 <% } else { %>
   <div class="placeholder" <% if (_ratio) { %>style="aspect-ratio:<%= _ratio %>;"<% } %> role="img" aria-label="<%= _alt || t('placeholder.photo_pending') %>">

@@ -45,6 +45,29 @@ async function upload(req, res, next) {
   }
 }
 
+async function focalPointForm(req, res, next) {
+  try {
+    const item = await db('media').where({ id: req.params.id }).first();
+    if (!item) return res.redirect('/admin/media');
+    res.render('admin/media/focal-point', { title: 'Set Focus Point', item });
+  } catch (err) {
+    next(err);
+  }
+}
+
+async function updateFocalPoint(req, res, next) {
+  try {
+    const clamp = (n) => Math.max(0, Math.min(100, Number(n)));
+    const focalX = Number.isFinite(Number(req.body.focal_x)) ? clamp(req.body.focal_x) : 50;
+    const focalY = Number.isFinite(Number(req.body.focal_y)) ? clamp(req.body.focal_y) : 50;
+    await db('media').where({ id: req.params.id }).update({ focal_x: focalX, focal_y: focalY });
+    req.flash('success', 'Focus point saved.');
+    res.redirect('/admin/media');
+  } catch (err) {
+    next(err);
+  }
+}
+
 async function updateAlt(req, res, next) {
   try {
     await db('media')
@@ -88,4 +111,4 @@ async function remove(req, res, next) {
   }
 }
 
-module.exports = { list, upload, updateAlt, remove, GROUPS };
+module.exports = { list, upload, updateAlt, remove, focalPointForm, updateFocalPoint, GROUPS };

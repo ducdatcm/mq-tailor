@@ -46,7 +46,9 @@
         <div style="margin-top:0.3rem;">
           <% if (m.original_path) { %>
             <a href="<%= m.original_path %>" target="_blank" style="font-size:0.75rem;">Original ↓</a>
+            &nbsp;·&nbsp;
           <% } %>
+          <a href="/admin/media/<%= m.id %>/focal-point" style="font-size:0.75rem;">Focus point</a>
         </div>
         <form method="POST" action="/admin/media/<%= m.id %>/delete" onsubmit="return confirm('Delete this image? This cannot be undone — including the original file.');" style="margin-top:0.4rem;">
           <button type="submit" class="btn--ghost btn" style="padding:0.15rem 0.4rem;font-size:0.7rem;">Delete</button>
