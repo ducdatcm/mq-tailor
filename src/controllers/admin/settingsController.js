@@ -34,6 +34,7 @@ async function update(req, res, next) {
     }));
 
     let logoMediaId = b.logo_media_id ? Number(b.logo_media_id) : null;
+    if (b.remove_logo === '1') logoMediaId = null;
     if (req.file) {
       const result = await processAndSaveImage(req.file.buffer, req.file.originalname, req.file.mimetype, 'other');
       const [id] = await db('media').insert({
