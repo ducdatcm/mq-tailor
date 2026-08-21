@@ -19,6 +19,28 @@
   </section>
 <% }); %>
 
+<% if (stories && stories.length) { %>
+<section class="section section--alt reveal">
+  <div class="container">
+    <div class="row" style="justify-content:space-between;align-items:baseline;margin-bottom:2rem;">
+      <h2 class="mb-0"><%= t('journal.categories.house-stories') %></h2>
+      <a class="btn btn--outline btn--sm" href="/<%= lang %>/journal?category=house-stories"><%= t('cta.read_the_journal') %></a>
+    </div>
+    <div class="grid grid--3">
+      <% stories.forEach(function (post) { %>
+        <a class="card" href="/<%= lang %>/journal/<%= post.slug %>">
+          <div class="media-frame">
+            <%- include('../partials/image', { media: post.cover, alt: post['title_' + lang], ratio: '4/3' }) %>
+          </div>
+          <h3 class="card__title"><%= post['title_' + lang] %></h3>
+          <p class="text-muted"><%= post['excerpt_' + lang] %></p>
+        </a>
+      <% }); %>
+    </div>
+  </div>
+</section>
+<% } %>
+
 <section class="section text-center reveal">
   <div class="container container--narrow">
     <a class="btn" href="/<%= lang %>/our-people"><%= t('cta.meet_the_people') %></a>
