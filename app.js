@@ -26,12 +26,23 @@ app.use(expressLayouts);
 app.set('layout', 'layouts/main');
 app.set('layout extractScripts', true);
 
+// Photos are served from Cloudflare R2 (a different origin than the site
+// itself — see src/config/storage.js), so its public URL must be explicitly
+// allowed or the browser's CSP silently blocks every <img>.
+const r2Origin = (() => {
+  try {
+    return process.env.R2_PUBLIC_URL ? new URL(process.env.R2_PUBLIC_URL).origin : null;
+  } catch (e) {
+    return null;
+  }
+})();
+
 app.use(
   helmet({
     contentSecurityPolicy: {
       directives: {
         defaultSrc: ["'self'"],
-        imgSrc: ["'self'", 'data:'],
+        imgSrc: ["'self'", 'data:', r2Origin].filter(Boolean),
         fontSrc: ["'self'", 'https://fonts.gstatic.com'],
         styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
         scriptSrc: ["'self'", "'unsafe-inline'", 'https://www.googletagmanager.com'],
