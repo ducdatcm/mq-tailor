@@ -9,15 +9,21 @@ async function list(req, res, next) {
   }
 }
 
-async function newForm(req, res) {
-  res.render('admin/cloth/form', { title: 'New Mill', mill: null });
+async function newForm(req, res, next) {
+  try {
+    const media = await db('media').orderBy('created_at', 'desc');
+    res.render('admin/cloth/form', { title: 'New Mill', mill: null, media });
+  } catch (err) {
+    next(err);
+  }
 }
 
 async function editForm(req, res, next) {
   try {
     const mill = await db('cloth_mills').where({ id: req.params.id }).first();
     if (!mill) return res.redirect('/admin/cloth');
-    res.render('admin/cloth/form', { title: 'Edit Mill', mill });
+    const media = await db('media').orderBy('created_at', 'desc');
+    res.render('admin/cloth/form', { title: 'Edit Mill', mill, media });
   } catch (err) {
     next(err);
   }
@@ -30,6 +36,7 @@ function buildPayload(body) {
     description_vi: body.description_vi,
     sort_order: Number(body.sort_order) || 0,
     active: body.active === 'on',
+    media_id: body.media_id || null,
   };
 }
 

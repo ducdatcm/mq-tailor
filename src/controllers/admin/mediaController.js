@@ -2,7 +2,7 @@ const db = require('../../config/db');
 const { processAndSaveImage } = require('../../config/upload');
 const { deleteObjectByUrl } = require('../../config/storage');
 
-const GROUPS = ['house', 'workshop', 'people', 'garments', 'fitting', 'hanoi', 'journal', 'other'];
+const GROUPS = ['house', 'workshop', 'people', 'garments', 'fitting', 'cloth', 'hanoi', 'journal', 'other'];
 
 async function list(req, res, next) {
   try {

@@ -25,6 +25,16 @@
         <label><input type="checkbox" name="active" <%= !mill || mill.active ? 'checked' : '' %> style="width:auto;"> Visible on the site</label>
       </div>
     </div>
+    <div class="field">
+      <label for="media_id">Logo or reference photo</label>
+      <select id="media_id" name="media_id">
+        <option value="">— None —</option>
+        <% media.forEach(function (m) { %>
+          <option value="<%= m.id %>" <%= mill && mill.media_id === m.id ? 'selected' : '' %>><%= m.filename %> (<%= m.group %>)</option>
+        <% }); %>
+      </select>
+      <p class="field-hint">Upload the logo/photo from the <a href="/admin/media">Media Library</a> first (Group "cloth" works well) — it'll show up in this list.</p>
+    </div>
   </div>
   <button type="submit" class="btn">Save</button>
   <a href="/admin/cloth" class="btn btn--ghost">Cancel</a>
