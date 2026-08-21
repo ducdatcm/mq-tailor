@@ -24,7 +24,11 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'src', 'views'));
 app.use(expressLayouts);
 app.set('layout', 'layouts/main');
-app.set('layout extractScripts', true);
+// NOT extracting <script> blocks: express-ejs-layouts would pull them out
+// of the page body expecting the layout to reinsert them via <%- script %>,
+// but neither layout does — any inline <script> in a page view would
+// silently vanish before reaching the browser. Leaving scripts in place
+// where the page actually wrote them avoids that trap entirely.
 
 // Photos are served from Cloudflare R2 (a different origin than the site
 // itself — see src/config/storage.js), so its public URL must be explicitly
