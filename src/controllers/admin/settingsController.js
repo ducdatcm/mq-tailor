@@ -35,7 +35,7 @@ async function update(req, res, next) {
 
     let logoMediaId = b.logo_media_id ? Number(b.logo_media_id) : null;
     if (req.file) {
-      const result = await processAndSaveImage(req.file.buffer, req.file.originalname, 'other');
+      const result = await processAndSaveImage(req.file.buffer, req.file.originalname, req.file.mimetype, 'other');
       const [id] = await db('media').insert({
         filename: result.filename,
         original_name: req.file.originalname,
@@ -45,6 +45,7 @@ async function update(req, res, next) {
         width: result.width,
         height: result.height,
         variants: JSON.stringify(result.variants),
+        original_path: result.originalPath,
       });
       logoMediaId = id;
     }

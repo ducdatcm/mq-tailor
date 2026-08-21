@@ -24,7 +24,7 @@ async function upload(req, res, next) {
       return res.redirect('/admin/media');
     }
     const group = GROUPS.includes(req.body.group) ? req.body.group : 'other';
-    const result = await processAndSaveImage(req.file.buffer, req.file.originalname, group);
+    const result = await processAndSaveImage(req.file.buffer, req.file.originalname, req.file.mimetype, group);
 
     await db('media').insert({
       filename: result.filename,
@@ -35,9 +35,10 @@ async function upload(req, res, next) {
       width: result.width,
       height: result.height,
       variants: JSON.stringify(result.variants),
+      original_path: result.originalPath,
     });
 
-    req.flash('success', 'Image uploaded and resized.');
+    req.flash('success', 'Image uploaded — original kept in full quality, site copy optimized for speed.');
     res.redirect('/admin/media');
   } catch (err) {
     req.flash('error', err.message || 'Upload failed.');
@@ -78,6 +79,9 @@ async function remove(req, res, next) {
           const abs = path.join(__dirname, '..', '..', '..', 'public', relPath);
           fs.unlink(abs, () => {});
         });
+      }
+      if (row.original_path) {
+        fs.unlink(path.join(__dirname, '..', '..', '..', 'public', row.original_path), () => {});
       }
       await db('media').where({ id: row.id }).del();
     }
