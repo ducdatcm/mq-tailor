@@ -1,7 +1,6 @@
-const fs = require('fs');
-const path = require('path');
 const db = require('../../config/db');
 const { processAndSaveImage } = require('../../config/upload');
+const { deleteObjectByUrl } = require('../../config/storage');
 
 const GROUPS = ['house', 'workshop', 'people', 'garments', 'fitting', 'hanoi', 'journal', 'other'];
 
@@ -74,15 +73,12 @@ async function remove(req, res, next) {
         return res.redirect('/admin/media');
       }
 
-      if (row.variants && row.variants.webp) {
-        Object.values(row.variants.webp).forEach((relPath) => {
-          const abs = path.join(__dirname, '..', '..', '..', 'public', relPath);
-          fs.unlink(abs, () => {});
-        });
-      }
-      if (row.original_path) {
-        fs.unlink(path.join(__dirname, '..', '..', '..', 'public', row.original_path), () => {});
-      }
+      const urlsToDelete = [
+        ...(row.variants && row.variants.webp ? Object.values(row.variants.webp) : []),
+        row.original_path,
+      ].filter(Boolean);
+      await Promise.all(urlsToDelete.map((url) => deleteObjectByUrl(url).catch(() => {})));
+
       await db('media').where({ id: row.id }).del();
     }
     req.flash('success', 'Image deleted.');

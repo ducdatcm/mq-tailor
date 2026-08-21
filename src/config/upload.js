@@ -1,10 +1,9 @@
-const fs = require('fs');
 const path = require('path');
 const multer = require('multer');
 const sharp = require('sharp');
 const slugify = require('slugify');
+const { putObject } = require('./storage');
 
-const UPLOAD_ROOT = path.join(__dirname, '..', '..', 'public', 'uploads');
 const RESPONSIVE_WIDTHS = [480, 768, 1200, 1920, 2560];
 
 const EXT_BY_MIME = {
@@ -23,7 +22,8 @@ const upload = multer({
 });
 
 /**
- * Saves an uploaded image twice:
+ * Uploads an image to Cloudflare R2 (see src/config/storage.js for why —
+ * local disk doesn't survive a redeploy on this host) as two things:
  *  1. The exact original bytes, untouched — the permanent master copy, kept
  *     for reprints/marketing/anything beyond the website itself.
  *  2. A set of responsive WebP variants for the site to actually display,
@@ -33,20 +33,14 @@ const upload = multer({
  * Returns metadata ready to insert into `media`.
  */
 async function processAndSaveImage(buffer, originalName, mimetype, group = 'other') {
-  const groupDir = path.join(UPLOAD_ROOT, group);
-  const originalsDir = path.join(groupDir, 'originals');
-  fs.mkdirSync(groupDir, { recursive: true });
-  fs.mkdirSync(originalsDir, { recursive: true });
-
   const base = slugify(path.parse(originalName).name, { lower: true, strict: true }) || 'image';
   const stamp = Date.now();
   const filename = `${base}-${stamp}`;
 
-  // 1. Master copy — written as-is, no resizing or re-encoding.
+  // 1. Master copy — uploaded as-is, no resizing or re-encoding.
   const ext = EXT_BY_MIME[mimetype] || path.extname(originalName) || '.jpg';
-  const originalFilename = `${filename}-original${ext}`;
-  fs.writeFileSync(path.join(originalsDir, originalFilename), buffer);
-  const originalPath = `/uploads/${group}/originals/${originalFilename}`;
+  const originalKey = `${group}/originals/${filename}-original${ext}`;
+  const originalPath = await putObject(originalKey, buffer, mimetype);
 
   // 2. Responsive display variants.
   const image = sharp(buffer).rotate(); // rotate() auto-orients from EXIF
@@ -61,13 +55,13 @@ async function processAndSaveImage(buffer, originalName, mimetype, group = 'othe
 
   await Promise.all(
     widths.map(async (w) => {
-      const outPath = path.join(groupDir, `${filename}-${w}.webp`);
-      await sharp(buffer)
+      const resizedBuffer = await sharp(buffer)
         .rotate()
         .resize({ width: w, withoutEnlargement: true })
         .webp({ quality: 85 })
-        .toFile(outPath);
-      variants.webp[w] = `/uploads/${group}/${filename}-${w}.webp`;
+        .toBuffer();
+      const key = `${group}/${filename}-${w}.webp`;
+      variants.webp[w] = await putObject(key, resizedBuffer, 'image/webp');
     })
   );
 

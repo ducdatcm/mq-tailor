@@ -13,7 +13,8 @@ small custom admin panel so the house can update everything itself.
   third-party CMS
 - Hand-authored CSS design tokens (`public/css/style.css`) — no CSS framework
 - [`sharp`](https://sharp.pixelplumbing.com) generates responsive WebP
-  images on upload
+  images on upload; both those and the untouched original file are stored
+  in **Cloudflare R2** (not local disk — see below)
 
 See [`DEPLOY.md`](DEPLOY.md) for Hostinger deployment steps.
 
@@ -25,12 +26,16 @@ mysql:8`).
 
 ```bash
 npm install
-cp .env.example .env      # fill in DB_*, SESSION_SECRET, ADMIN_SEED_*
+cp .env.example .env      # fill in DB_*, R2_*, SESSION_SECRET, ADMIN_SEED_*
 npm run migrate
 npm run seed
 npm run seed:admin        # then remove ADMIN_SEED_* from .env
 npm run dev                # http://localhost:3000 -> redirects to /en/
 ```
+
+Image uploads need real `R2_*` credentials even locally (there's no local-disk
+fallback) — see [`DEPLOY.md`](DEPLOY.md) §2 for how to create a free
+Cloudflare R2 bucket + API token.
 
 Admin panel: `http://localhost:3000/admin/login`.
 
@@ -39,7 +44,7 @@ Admin panel: `http://localhost:3000/admin/login`.
 ```
 app.js                  Express entry point (Passenger startup file on Hostinger)
 db/migrations, db/seeds Knex schema + starter bilingual content
-src/config/              db, i18n, image-upload pipeline
+src/config/              db, i18n, image-upload pipeline, R2 storage client
 src/middleware/          locale (/:lang), site settings cache, admin auth guard
 src/controllers/public/  one per public page
 src/controllers/admin/   one per admin CRUD area
@@ -47,7 +52,6 @@ src/routes/               public + admin routers, sitemap/robots
 src/views/                EJS templates (layouts, partials, pages, admin/*)
 src/locales/en.json, vi.json   UI string dictionaries
 public/css, public/js    hand-authored styles/scripts (+ .min.* built for prod)
-public/uploads/           admin-uploaded media (not tracked in git)
 scripts/                  seed-admin.js, build-assets.js
 ```
 

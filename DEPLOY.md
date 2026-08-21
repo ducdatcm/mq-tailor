@@ -33,7 +33,22 @@ different thing) → **Create a New MySQL Database And Database User**.
 Note down the full database name, username, password, and host (usually
 `localhost`).
 
-### 2. Create the website
+### 2. Set up photo storage (Cloudflare R2)
+This host gives every deploy a brand-new, disposable folder, so anything
+saved to local disk (uploaded photos) is lost on the next deploy. Uploaded
+media is stored in [Cloudflare R2](https://developers.cloudflare.com/r2/)
+instead — free at this scale, and persists independently of the app.
+
+1. dash.cloudflare.com → **Storage & Databases → R2 Object Storage** →
+   **Create Bucket**.
+2. Open the bucket → **Settings** → **Public Development URL** → **Enable**.
+   Copy that URL (`https://pub-xxxxxxxxxxxx.r2.dev`).
+3. Back on the R2 overview page → **Manage API Tokens** → **Create Account
+   API Token** → permission **Object Read & Write** → Create. Copy the
+   **Access Key ID**, **Secret Access Key**, and **Account ID** shown —
+   this is the only time the secret is displayed.
+
+### 3. Create the website
 hPanel → **Websites → Add Website → Deploy Web App → Import Git
 Repository**. Connect/authorize GitHub, pick the `mq-tailor` repo, branch
 `main`. On the settings screen:
@@ -44,7 +59,7 @@ Repository**. Connect/authorize GitHub, pick the `mq-tailor` repo, branch
 - **Entry file: `app.js`**
 - Output directory: leave blank
 
-### 3. Environment variables
+### 4. Environment variables
 In the app's dashboard, find **Environment Variables** and add each of
 these as a Key/Value pair (there's no `.env` file to edit by hand here):
 
@@ -52,11 +67,16 @@ these as a Key/Value pair (there's no `.env` file to edit by hand here):
 |---|---|
 | `NODE_ENV` | `production` |
 | `BASE_URL` | your site's URL, e.g. `https://minhquanghanoi.com` |
-| `DB_HOST` | `localhost` (or whatever step 1 showed) |
+| `DB_HOST` | `127.0.0.1` (not `localhost` — see Troubleshooting) |
 | `DB_PORT` | `3306` |
 | `DB_USER` | from step 1 |
 | `DB_PASSWORD` | from step 1 |
 | `DB_NAME` | from step 1 |
+| `R2_ACCOUNT_ID` | from step 2 |
+| `R2_ACCESS_KEY_ID` | from step 2 |
+| `R2_SECRET_ACCESS_KEY` | from step 2 |
+| `R2_BUCKET_NAME` | the bucket name you chose in step 2 |
+| `R2_PUBLIC_URL` | the `https://pub-xxxxxxxxxxxx.r2.dev` URL from step 2 |
 | `SESSION_SECRET` | any long random string — generate with `node -e "console.log(require('crypto').randomBytes(48).toString('hex'))"` |
 | `ADMIN_SEED_USERNAME` | the username you want to log into `/admin` with |
 | `ADMIN_SEED_PASSWORD` | the password for that account — this becomes your real login |
@@ -64,7 +84,7 @@ these as a Key/Value pair (there's no `.env` file to edit by hand here):
 
 `SMTP_*` and `GA_MEASUREMENT_ID` are optional — see §6/§7 below.
 
-### 4. Redeploy
+### 6. Redeploy
 Save the environment variables, then trigger a fresh deploy (pushing to
 GitHub `main` auto-deploys; there's also a Redeploy button, though note it
 can re-run an **old** commit rather than pulling latest — check the
@@ -74,7 +94,7 @@ On this boot, the app will automatically: create all database tables,
 load the starter bilingual content, and create your admin login. Watch the
 runtime logs for lines starting with `[bootstrap]` to confirm.
 
-### 5. Verify
+### 7. Verify
 Visit your site — `/en/` should load with full content, and
 `/admin/login` should accept the `ADMIN_SEED_USERNAME` /
 `ADMIN_SEED_PASSWORD` you set. Once confirmed, you can remove those two
@@ -189,3 +209,12 @@ need a redeploy — they're all done live through **`/admin`**.
 - **Styles look unminified/unstyled**: confirm `NODE_ENV=production` is
   set and the build command (`npm run build`) actually ran in the deploy
   log.
+- **"Access denied for user '...'@'::1'" in the logs**: `DB_HOST=localhost`
+  resolved to the IPv6 loopback address, which the MySQL user's grants
+  don't cover. Set `DB_HOST=127.0.0.1` instead.
+- **Uploaded photos show as broken images after a later deploy**: this
+  host gives every deploy a fresh, disposable folder — anything saved to
+  local disk is gone on the next deploy. Uploaded media must go through
+  Cloudflare R2 (§2/§4 above); if `R2_*` environment variables are
+  missing, uploads will fail outright rather than silently falling back to
+  disk (check Runtime Logs for the exact message).
