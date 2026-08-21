@@ -23,6 +23,21 @@
   </div>
 </section>
 
+<% if (gallery && gallery.length) { %>
+<section class="section reveal">
+  <div class="container">
+    <h2 style="font-size:var(--fs-xl);margin-bottom:2rem;"><%= t('process.gallery_heading') %></h2>
+    <div class="grid grid--4">
+      <% gallery.forEach(function (photo) { %>
+        <div class="media-frame">
+          <%- include('../partials/image', { media: photo, ratio: '1/1' }) %>
+        </div>
+      <% }); %>
+    </div>
+  </div>
+</section>
+<% } %>
+
 <section class="section text-center reveal">
   <div class="container container--narrow">
     <a class="btn" href="/<%= lang %>/visit"><%= t('cta.visit_the_house') %></a>

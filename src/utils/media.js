@@ -45,4 +45,20 @@ function resolveMedia(row, lang = 'en') {
   };
 }
 
-module.exports = { getMediaById, getMediaByIds, resolveMedia };
+/**
+ * Photo-gallery sections (Process "In the Workshop", People "Behind the
+ * Scenes") pull straight from the Media Library by the "Group" chosen at
+ * upload time — no separate content type to manage, just tag and go.
+ * `excludeIds` keeps a portrait already used as someone's People profile
+ * photo from also duplicating into the loose behind-the-scenes grid.
+ */
+async function getMediaByGroup(group, { excludeIds = [], limit = 24, lang = 'en' } = {}) {
+  const rows = await db('media')
+    .where({ group })
+    .whereNotIn('id', excludeIds.length ? excludeIds : [-1])
+    .orderBy('created_at', 'desc')
+    .limit(limit);
+  return rows.map((row) => resolveMedia(row, lang)).filter(Boolean);
+}
+
+module.exports = { getMediaById, getMediaByIds, getMediaByGroup, resolveMedia };

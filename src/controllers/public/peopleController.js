@@ -1,6 +1,6 @@
 const db = require('../../config/db');
 const { getPageContent } = require('../../utils/content');
-const { getMediaByIds, resolveMedia } = require('../../utils/media');
+const { getMediaByIds, getMediaByGroup, resolveMedia } = require('../../utils/media');
 
 async function show(req, res, next) {
   try {
@@ -18,11 +18,18 @@ async function show(req, res, next) {
       p.photo = resolveMedia(mediaMap[p.photo_media_id], res.locals.lang);
     });
 
+    // Unlimited candid behind-the-scenes photos — tag an upload's Group as
+    // "people" in Admin > Media Library and it appears here, separate from
+    // the formal profile photos above.
+    const usedIds = people.map((p) => p.photo_media_id).filter(Boolean);
+    const gallery = await getMediaByGroup('people', { excludeIds: usedIds, lang: res.locals.lang });
+
     res.render('pages/people', {
       title: res.locals.t('people.heading'),
       metaDescription: content.intro ? content.intro[`body_${res.locals.lang}`] : '',
       content,
       people,
+      gallery,
     });
   } catch (err) {
     next(err);
