@@ -32,12 +32,19 @@
       </div>
       <div class="field">
         <label>Image</label>
-        <select name="media_id">
+        <select name="media_id" id="media-select-<%= section.section_key %>" onchange="document.getElementById('crop-link-<%= section.section_key %>').style.display = this.value ? 'inline' : 'none'; document.getElementById('crop-link-<%= section.section_key %>').href = '/admin/media/' + this.value + '/focal-point';">
           <option value="">— None (placeholder shown) —</option>
           <% media.forEach(function (m) { %>
             <option value="<%= m.id %>" <%= section.media_id === m.id ? 'selected' : '' %>><%= m.filename %> (<%= m.group %>)</option>
           <% }); %>
         </select>
+        <p class="field-hint">
+          <a
+            id="crop-link-<%= section.section_key %>"
+            href="/admin/media/<%= section.media_id || '' %>/focal-point"
+            style="display:<%= section.media_id ? 'inline' : 'none' %>;"
+          >Adjust crop / focus point for this image ↗</a>
+        </p>
       </div>
       <button type="submit" class="btn btn--sm">Save</button>
     </form>

@@ -32,12 +32,19 @@
     <div class="field-row">
       <div class="field">
         <label for="photo_media_id">Photo</label>
-        <select id="photo_media_id" name="photo_media_id">
+        <select id="photo_media_id" name="photo_media_id" onchange="document.getElementById('crop-link-photo').style.display = this.value ? 'inline' : 'none'; document.getElementById('crop-link-photo').href = '/admin/media/' + this.value + '/focal-point';">
           <option value="">— None (placeholder shown) —</option>
           <% media.forEach(function (m) { %>
             <option value="<%= m.id %>" <%= person && person.photo_media_id === m.id ? 'selected' : '' %>><%= m.filename %> (<%= m.group %>)</option>
           <% }); %>
         </select>
+        <p class="field-hint">
+          <a
+            id="crop-link-photo"
+            href="/admin/media/<%= (person && person.photo_media_id) || '' %>/focal-point"
+            style="display:<%= person && person.photo_media_id ? 'inline' : 'none' %>;"
+          >Adjust crop / focus point ↗</a>
+        </p>
       </div>
       <div class="field">
         <label for="sort_order">Sort order (lower shows first)</label>

@@ -11,8 +11,11 @@
     var widths = item.variants && item.variants.webp ? Object.keys(item.variants.webp).map(Number).sort((a,b)=>a-b) : [];
     var previewSrc = widths.length ? item.variants.webp[widths[Math.min(widths.length - 1, 2)]] : '';
   %>
+  <label style="display:block;margin-bottom:0.5rem;"><input type="checkbox" id="banner-guide-toggle" checked style="width:auto;"> Show wide-banner crop guide (dimmed area is trimmed away on the full-width photo banners, e.g. page intros)</label>
   <div id="focal-picker" style="position:relative;display:inline-block;max-width:100%;cursor:crosshair;">
     <img id="focal-image" src="<%= previewSrc %>" alt="<%= item.alt_en %>" style="max-width:100%;display:block;border-radius:4px;">
+    <div id="banner-dim-top" style="position:absolute;left:0;right:0;top:0;background:rgba(0,0,0,0.55);pointer-events:none;"></div>
+    <div id="banner-dim-bottom" style="position:absolute;left:0;right:0;bottom:0;background:rgba(0,0,0,0.55);pointer-events:none;"></div>
     <div id="focal-marker" style="position:absolute;width:22px;height:22px;border:2px solid #fff;border-radius:50%;box-shadow:0 0 0 2px rgba(0,0,0,0.6),0 0 6px rgba(0,0,0,0.5);transform:translate(-50%,-50%);pointer-events:none;"></div>
   </div>
 
@@ -33,6 +36,27 @@
   var xInput = document.getElementById('focal_x');
   var yInput = document.getElementById('focal_y');
   var readout = document.getElementById('focal-readout');
+  var dimTop = document.getElementById('banner-dim-top');
+  var dimBottom = document.getElementById('banner-dim-bottom');
+  var guideToggle = document.getElementById('banner-guide-toggle');
+
+  // Roughly matches the site's full-width page-intro banners (100vw wide,
+  // ~57.5vh tall works out to about this on a typical desktop window).
+  var BANNER_RATIO = 2.75;
+
+  function updateGuide(yPct) {
+    if (!guideToggle.checked || !img.clientWidth || !img.clientHeight) {
+      dimTop.style.height = '0px';
+      dimBottom.style.height = '0px';
+      return;
+    }
+    var bandHeightPx = Math.min(img.clientHeight, img.clientWidth / BANNER_RATIO);
+    var bandHeightPct = (bandHeightPx / img.clientHeight) * 100;
+    var topEdge = Math.max(0, yPct - bandHeightPct / 2);
+    var bottomEdge = Math.min(100, yPct + bandHeightPct / 2);
+    dimTop.style.height = topEdge + '%';
+    dimBottom.style.height = (100 - bottomEdge) + '%';
+  }
 
   function place(xPct, yPct) {
     marker.style.left = xPct + '%';
@@ -40,6 +64,7 @@
     xInput.value = xPct.toFixed(1);
     yInput.value = yPct.toFixed(1);
     readout.textContent = Math.round(xPct) + '%, ' + Math.round(yPct) + '%';
+    updateGuide(yPct);
   }
 
   function setFromEvent(e) {
@@ -50,8 +75,15 @@
   }
 
   picker.addEventListener('click', setFromEvent);
+  guideToggle.addEventListener('change', function () {
+    updateGuide(parseFloat(yInput.value) || 50);
+  });
 
-  // Initial marker position from the saved value.
-  place(parseFloat(xInput.value) || 50, parseFloat(yInput.value) || 50);
+  var initial = { x: parseFloat(xInput.value) || 50, y: parseFloat(yInput.value) || 50 };
+  if (img.complete) {
+    place(initial.x, initial.y);
+  } else {
+    img.addEventListener('load', function () { place(initial.x, initial.y); });
+  }
 })();
 </script>

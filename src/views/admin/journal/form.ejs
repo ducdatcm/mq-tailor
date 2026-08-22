@@ -53,13 +53,19 @@
     <div class="field-row">
       <div class="field">
         <label for="cover_media_id">Cover image</label>
-        <select id="cover_media_id" name="cover_media_id">
+        <select id="cover_media_id" name="cover_media_id" onchange="document.getElementById('crop-link-cover').style.display = this.value ? 'inline' : 'none'; document.getElementById('crop-link-cover').href = '/admin/media/' + this.value + '/focal-point';">
           <option value="">— None (placeholder shown) —</option>
           <% media.forEach(function (m) { %>
             <option value="<%= m.id %>" <%= post && post.cover_media_id === m.id ? 'selected' : '' %>><%= m.filename %> (<%= m.group %>)</option>
           <% }); %>
         </select>
-        <p class="field-hint">Upload new images from the <a href="/admin/media">Media Library</a> first.</p>
+        <p class="field-hint">Upload new images from the <a href="/admin/media">Media Library</a> first.
+          <a
+            id="crop-link-cover"
+            href="/admin/media/<%= (post && post.cover_media_id) || '' %>/focal-point"
+            style="display:<%= post && post.cover_media_id ? 'inline' : 'none' %>;"
+          > · Adjust crop / focus point ↗</a>
+        </p>
       </div>
       <div class="field">
         <label for="status">Status</label>

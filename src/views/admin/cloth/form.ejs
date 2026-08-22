@@ -27,13 +27,19 @@
     </div>
     <div class="field">
       <label for="media_id">Logo or reference photo</label>
-      <select id="media_id" name="media_id">
+      <select id="media_id" name="media_id" onchange="document.getElementById('crop-link-mill').style.display = this.value ? 'inline' : 'none'; document.getElementById('crop-link-mill').href = '/admin/media/' + this.value + '/focal-point';">
         <option value="">— None —</option>
         <% media.forEach(function (m) { %>
           <option value="<%= m.id %>" <%= mill && mill.media_id === m.id ? 'selected' : '' %>><%= m.filename %> (<%= m.group %>)</option>
         <% }); %>
       </select>
-      <p class="field-hint">Upload the logo/photo from the <a href="/admin/media">Media Library</a> first (Group "cloth" works well) — it'll show up in this list.</p>
+      <p class="field-hint">Upload the logo/photo from the <a href="/admin/media">Media Library</a> first (Group "cloth" works well) — it'll show up in this list.
+        <a
+          id="crop-link-mill"
+          href="/admin/media/<%= (mill && mill.media_id) || '' %>/focal-point"
+          style="display:<%= mill && mill.media_id ? 'inline' : 'none' %>;"
+        > · Adjust crop / focus point ↗</a>
+      </p>
     </div>
   </div>
   <button type="submit" class="btn">Save</button>
