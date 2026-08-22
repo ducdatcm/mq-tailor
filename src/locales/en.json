@@ -7,6 +7,7 @@
     "home": "Home",
     "house": "The House",
     "tailoring": "Tailoring",
+    "garments": "Our Garments",
     "process": "The Process",
     "people": "Our People",
     "cloth": "Cloth",
@@ -35,6 +36,10 @@
     "craft_eyebrow": "The Craft",
     "people_eyebrow": "The People",
     "visit_eyebrow": "Visit"
+  },
+  "garments": {
+    "heading": "Our Garments",
+    "empty": "Photographs of finished garments are being added here."
   },
   "process": {
     "heading": "The Process",

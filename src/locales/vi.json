@@ -7,6 +7,7 @@
     "home": "Trang Chủ",
     "house": "Nhà May",
     "tailoring": "May Đo",
+    "garments": "Sản Phẩm",
     "process": "Quy Trình",
     "people": "Con Người",
     "cloth": "Vải",
@@ -35,6 +36,10 @@
     "craft_eyebrow": "Tay Nghề",
     "people_eyebrow": "Con Người",
     "visit_eyebrow": "Ghé Thăm"
+  },
+  "garments": {
+    "heading": "Sản Phẩm",
+    "empty": "Hình ảnh các trang phục hoàn thiện đang được cập nhật tại đây."
   },
   "process": {
     "heading": "Quy Trình",

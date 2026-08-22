@@ -4,6 +4,8 @@ const PAGES = {
   home: 'Home',
   house: 'The House',
   tailoring: 'Tailoring',
+  garments: 'Our Garments',
+  process: 'The Process',
   people: 'Our People',
   cloth: 'Cloth',
   visit: 'Visit',

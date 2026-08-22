@@ -85,6 +85,14 @@ exports.seed = async function (knex) {
       body_en: 'We make suits, jackets, trousers, shirts and formalwear for weddings. None of it is kept in stock — each piece begins with a conversation about how and where it will be worn.',
       body_vi: 'Chúng tôi may suit, áo khoác, quần âu, sơ mi và trang phục cho lễ cưới. Không có món nào được may sẵn để bán — mỗi bộ trang phục bắt đầu từ một cuộc trò chuyện về việc nó sẽ được mặc ở đâu và như thế nào.',
     },
+
+    // --- OUR GARMENTS ---
+    {
+      page_key: 'garments', section_key: 'intro', sort_order: 1,
+      title_en: null, title_vi: null,
+      body_en: 'A closer look at finished work — suits, shirts and trousers as they come off the cutting table, photographed rather than described. No price list here, just the clothes themselves.',
+      body_vi: 'Một góc nhìn gần hơn về những sản phẩm đã hoàn thiện — suit, sơ mi và quần âu sau khi rời bàn cắt, được ghi lại bằng hình ảnh thay vì lời miêu tả. Ở đây không có bảng giá, chỉ có chính những bộ trang phục.',
+    },
     {
       page_key: 'tailoring', section_key: 'suits', sort_order: 2,
       title_en: 'Suits', title_vi: 'Suit',

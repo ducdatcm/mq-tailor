@@ -1,0 +1,23 @@
+<%- include('../partials/intro-header', { headingKey: 'nav.garments', intro: content.intro }) %>
+
+<section class="section section--alt reveal">
+  <div class="container">
+    <% if (gallery && gallery.length) { %>
+      <div class="grid grid--4">
+        <% gallery.forEach(function (photo) { %>
+          <div class="media-frame">
+            <%- include('../partials/image', { media: photo, ratio: '4/5' }) %>
+          </div>
+        <% }); %>
+      </div>
+    <% } else { %>
+      <p class="text-muted text-center"><%= t('garments.empty') %></p>
+    <% } %>
+  </div>
+</section>
+
+<section class="section text-center reveal">
+  <div class="container container--narrow">
+    <a class="btn" href="/<%= lang %>/visit"><%= t('cta.visit_the_house') %></a>
+  </div>
+</section>

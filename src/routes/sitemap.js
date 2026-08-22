@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const db = require('../config/db');
 
-const STATIC_PATHS = ['', 'the-house', 'tailoring', 'the-process', 'our-people', 'cloth', 'journal', 'visit'];
+const STATIC_PATHS = ['', 'the-house', 'tailoring', 'our-garments', 'the-process', 'our-people', 'cloth', 'journal', 'visit'];
 
 router.get('/sitemap.xml', async (req, res, next) => {
   try {
