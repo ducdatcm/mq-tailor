@@ -208,6 +208,10 @@ select:focus-visible {
   justify-content: space-between;
   padding-block: var(--space-2);
   gap: var(--space-3);
+  /* Wider than the standard .container cap (1200px) — a 9-item nav plus
+     logo and language switch needs more room than the reading-width
+     content container, which is why it was wrapping onto two lines. */
+  max-width: 1600px;
 }
 
 .brand {
@@ -238,13 +242,14 @@ select:focus-visible {
 .main-nav {
   display: none;
   align-items: center;
-  gap: var(--space-4);
+  gap: 1.5rem;
 }
 .main-nav a {
   font-size: var(--fs-sm);
   letter-spacing: 0.03em;
   padding: var(--space-1) 0;
   position: relative;
+  white-space: nowrap;
 }
 .main-nav a[aria-current="page"] {
   color: var(--color-accent);
@@ -396,6 +401,42 @@ select:focus-visible {
 }
 .hero__content .eyebrow { color: rgba(255,255,255,0.75); }
 .hero__content h1 { color: #fff; }
+
+/* Sub-page intro banner (The House/Tailoring/Cloth/etc.) — same overlay
+   treatment as the homepage hero, just shorter, so the heading blends
+   into the photo instead of sitting in a separate block underneath it. */
+.page-hero {
+  position: relative;
+  min-height: 46vh;
+  display: flex;
+  align-items: flex-end;
+  color: #fff;
+}
+.page-hero__media {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+}
+.page-hero__media img,
+.page-hero__media .placeholder {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.page-hero__media::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(28, 25, 19, 0.05) 0%, rgba(28, 25, 19, 0.8) 100%);
+}
+.page-hero__content {
+  position: relative;
+  padding: var(--space-5) var(--space-3) var(--space-5);
+  width: 100%;
+}
+.page-hero__content .eyebrow { color: rgba(255,255,255,0.75); }
+.page-hero__content h1 { color: #fff; }
+.page-hero__content .lede { color: rgba(255,255,255,0.9); }
 
 /* ---------- Image placeholder (honest "photography pending" panel) ---------- */
 .placeholder {

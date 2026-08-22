@@ -5,12 +5,20 @@
   var _hasImage = intro && intro.media;
 %>
 <% if (_hasImage) { %>
-  <div class="media-frame">
-    <%- include('./image', { media: intro.media, alt: _heading, ratio: '21/9', eager: true, sizesAttr: '100vw' }) %>
-  </div>
+  <section class="page-hero reveal">
+    <div class="page-hero__media">
+      <%- include('./image', { media: intro.media, alt: _heading, eager: true, sizesAttr: '100vw' }) %>
+    </div>
+    <div class="page-hero__content container container--narrow">
+      <span class="eyebrow"><%= _heading %></span>
+      <h1><%= _heading %></h1>
+      <p class="lede"><%= intro ? intro['body_' + lang] : '' %></p>
+    </div>
+  </section>
+<% } else { %>
+  <section class="section container container--narrow reveal">
+    <span class="eyebrow"><%= _heading %></span>
+    <h1><%= _heading %></h1>
+    <p class="lede"><%= intro ? intro['body_' + lang] : '' %></p>
+  </section>
 <% } %>
-<section class="<%= _hasImage ? 'section--tight' : 'section' %> container container--narrow reveal">
-  <span class="eyebrow"><%= _heading %></span>
-  <h1><%= _heading %></h1>
-  <p class="lede"><%= intro ? intro['body_' + lang] : '' %></p>
-</section>
