@@ -1,8 +1,4 @@
-<section class="section container container--narrow reveal">
-  <span class="eyebrow"><%= t('people.heading') %></span>
-  <h1><%= t('people.heading') %></h1>
-  <p class="lede"><%= content.intro ? content.intro['body_' + lang] : '' %></p>
-</section>
+<%- include('../partials/intro-header', { headingKey: 'people.heading', intro: content.intro }) %>
 
 <section class="section section--alt">
   <div class="container grid grid--4">

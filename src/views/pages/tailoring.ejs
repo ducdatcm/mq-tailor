@@ -1,8 +1,4 @@
-<section class="section container container--narrow reveal">
-  <span class="eyebrow"><%= t('nav.tailoring') %></span>
-  <h1><%= t('nav.tailoring') %></h1>
-  <p class="lede"><%= content.intro ? content.intro['body_' + lang] : '' %></p>
-</section>
+<%- include('../partials/intro-header', { headingKey: 'nav.tailoring', intro: content.intro }) %>
 
 <% categories.forEach(function (cat, i) { %>
   <section class="section <%= i % 2 === 0 ? 'section--alt' : '' %>" id="<%= cat.section_key %>">

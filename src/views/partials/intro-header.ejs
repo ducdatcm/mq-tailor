@@ -1,0 +1,15 @@
+<%
+  // Locals expected: headingKey (t() key used for both the eyebrow and h1),
+  // intro (the content.intro page_content row, or undefined).
+  var _heading = t(headingKey);
+%>
+<section class="section container container--narrow reveal">
+  <% if (intro && intro.media) { %>
+    <div class="media-frame" style="margin-bottom:2rem;">
+      <%- include('./image', { media: intro.media, alt: _heading, ratio: '16/9', eager: true }) %>
+    </div>
+  <% } %>
+  <span class="eyebrow"><%= _heading %></span>
+  <h1><%= _heading %></h1>
+  <p class="lede"><%= intro ? intro['body_' + lang] : '' %></p>
+</section>

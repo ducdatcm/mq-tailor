@@ -1,8 +1,4 @@
-<section class="section container container--narrow reveal">
-  <span class="eyebrow"><%= t('nav.house') %></span>
-  <h1><%= t('nav.house') %></h1>
-  <p class="lede"><%= content.intro ? content.intro['body_' + lang] : '' %></p>
-</section>
+<%- include('../partials/intro-header', { headingKey: 'nav.house', intro: content.intro }) %>
 
 <% ['history', 'phung_hung', 'philosophy'].forEach(function (key, i) { %>
   <% var block = content[key]; if (!block) return; %>

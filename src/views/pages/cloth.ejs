@@ -1,8 +1,4 @@
-<section class="section container container--narrow reveal">
-  <span class="eyebrow"><%= t('cloth.heading') %></span>
-  <h1><%= t('cloth.heading') %></h1>
-  <p class="lede"><%= content.intro ? content.intro['body_' + lang] : '' %></p>
-</section>
+<%- include('../partials/intro-header', { headingKey: 'cloth.heading', intro: content.intro }) %>
 
 <section class="section section--alt reveal">
   <div class="container">
