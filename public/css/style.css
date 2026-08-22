@@ -407,7 +407,7 @@ select:focus-visible {
    into the photo instead of sitting in a separate block underneath it. */
 .page-hero {
   position: relative;
-  min-height: 46vh;
+  min-height: 57.5vh; /* was 46vh, +25% per request */
   display: flex;
   align-items: flex-end;
   color: #fff;
