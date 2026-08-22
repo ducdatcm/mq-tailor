@@ -35,6 +35,10 @@ async function update(req, res, next) {
 
     let logoMediaId = b.logo_media_id ? Number(b.logo_media_id) : null;
     if (b.remove_logo === '1') logoMediaId = null;
+
+    let logoHeight = Number(b.logo_height);
+    if (!Number.isFinite(logoHeight) || logoHeight <= 0) logoHeight = 40;
+    logoHeight = Math.max(16, Math.min(200, Math.round(logoHeight)));
     if (req.file) {
       const result = await processAndSaveImage(req.file.buffer, req.file.originalname, req.file.mimetype, 'other');
       const [id] = await db('media').insert({
@@ -66,6 +70,7 @@ async function update(req, res, next) {
         founding_note_en: b.founding_note_en || null,
         founding_note_vi: b.founding_note_vi || null,
         logo_media_id: logoMediaId,
+        logo_height: logoHeight,
         ga_measurement_id: b.ga_measurement_id || null,
         updated_at: new Date(),
       });

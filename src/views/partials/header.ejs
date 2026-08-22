@@ -20,7 +20,8 @@
   <div class="container site-header__inner">
     <a class="brand" href="/<%= lang %>/">
       <% if (logo) { %>
-        <img src="<%= logo.src %>" alt="<%= t('meta.site_name') %>">
+        <% var _logoH = (settings && settings.logo_height) ? settings.logo_height : 40; %>
+        <img src="<%= logo.src %>" alt="<%= t('meta.site_name') %>" style="height:<%= _logoH %>px;max-height:<%= _logoH %>px;">
       <% } else { %>
         <span class="brand__wordmark">MINH QUANG<small>Tailoring House · Hanoi</small></span>
       <% } %>

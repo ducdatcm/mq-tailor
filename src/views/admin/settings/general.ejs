@@ -22,6 +22,11 @@
         <% } %>
       </div>
     </div>
+    <div class="field" style="max-width:260px;">
+      <label for="logo_height">Logo height in the header (pixels)</label>
+      <input type="number" id="logo_height" name="logo_height" min="16" max="200" value="<%= settings && settings.logo_height ? settings.logo_height : 40 %>">
+      <p class="field-hint">Default is 40. Width scales automatically to match.</p>
+    </div>
   </div>
 
   <div class="panel">
