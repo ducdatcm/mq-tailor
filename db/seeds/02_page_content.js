@@ -17,19 +17,19 @@ exports.seed = async function (knex) {
     },
     {
       page_key: 'home', section_key: 'house_teaser', sort_order: 3,
-      title_en: 'The House', title_vi: 'Nhà May',
+      title_en: 'Discover the House', title_vi: 'Khám Phá Nhà May',
       body_en: 'A shopfront on Phùng Hưng, a workshop upstairs, and a family that has kept both running since 1955.',
       body_vi: 'Một cửa hiệu trên phố Phùng Hưng, xưởng may trên tầng, và một gia đình đã giữ cả hai từ năm 1955.',
     },
     {
       page_key: 'home', section_key: 'craft_teaser', sort_order: 4,
-      title_en: 'The Craft', title_vi: 'Tay Nghề',
+      title_en: 'The Process', title_vi: 'Quy Trình',
       body_en: 'Cutting, fitting, making — most of it still happens by hand, at a table that has seen decades of cloth.',
       body_vi: 'Cắt, thử, may — phần lớn vẫn làm bằng tay, trên một chiếc bàn đã chứng kiến hàng chục năm vải vóc qua lại.',
     },
     {
       page_key: 'home', section_key: 'people_teaser', sort_order: 5,
-      title_en: 'The People', title_vi: 'Con Người',
+      title_en: 'Meet the people behind the house', title_vi: 'Gặp gỡ những con người của nhà may',
       body_en: 'The cutters, the coat makers, the trouser makers, the person who answers the phone. Every one of them has a hand in what you wear.',
       body_vi: 'Những người thợ cắt, thợ may áo, thợ may quần, và cả người nghe điện thoại mỗi ngày. Ai trong số họ cũng có phần trong bộ trang phục bạn khoác lên.',
     },
@@ -47,7 +47,7 @@ exports.seed = async function (knex) {
     },
     {
       page_key: 'home', section_key: 'visit_teaser', sort_order: 8,
-      title_en: 'Visit', title_vi: 'Ghé Thăm',
+      title_en: 'Visit the House', title_vi: 'Ghé Thăm Nhà May',
       body_en: '175 Phùng Hưng, Hoàn Kiếm, Hanoi. Open Monday to Saturday. Appointments are welcome; so are walk-ins.',
       body_vi: '175 Phùng Hưng, Hoàn Kiếm, Hà Nội. Mở cửa từ thứ Hai đến thứ Bảy. Có thể đặt lịch hẹn trước, hoặc ghé trực tiếp.',
     },

@@ -30,7 +30,11 @@
     "send_enquiry": "Gửi Liên Hệ"
   },
   "home": {
-    "journal_heading": "Từ Journal"
+    "journal_heading": "Từ Journal",
+    "house_eyebrow": "Nhà May",
+    "craft_eyebrow": "Tay Nghề",
+    "people_eyebrow": "Con Người",
+    "visit_eyebrow": "Ghé Thăm"
   },
   "process": {
     "heading": "Quy Trình",

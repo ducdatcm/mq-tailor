@@ -30,7 +30,11 @@
     "send_enquiry": "Send Enquiry"
   },
   "home": {
-    "journal_heading": "From the Journal"
+    "journal_heading": "From the Journal",
+    "house_eyebrow": "The House",
+    "craft_eyebrow": "The Craft",
+    "people_eyebrow": "The People",
+    "visit_eyebrow": "Visit"
   },
   "process": {
     "heading": "The Process",
