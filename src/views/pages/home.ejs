@@ -64,12 +64,24 @@
   </div>
 </section>
 
-<section class="section section--alt reveal">
-  <div class="container container--narrow text-center">
-    <span class="eyebrow"><%= content.hanoi_teaser ? content.hanoi_teaser['title_' + lang] : 'Hanoi' %></span>
-    <p class="lede" style="margin-inline:auto;"><%= content.hanoi_teaser ? content.hanoi_teaser['body_' + lang] : '' %></p>
-  </div>
-</section>
+<% if (content.hanoi_teaser && content.hanoi_teaser.media) { %>
+  <section class="photo-band reveal">
+    <div class="photo-band__media">
+      <%- include('../partials/image', { media: content.hanoi_teaser.media, alt: content.hanoi_teaser['title_' + lang], eager: false, sizesAttr: '100vw' }) %>
+    </div>
+    <div class="photo-band__content container container--narrow">
+      <span class="eyebrow"><%= content.hanoi_teaser['title_' + lang] %></span>
+      <p class="lede"><%= content.hanoi_teaser['body_' + lang] %></p>
+    </div>
+  </section>
+<% } else { %>
+  <section class="section section--alt reveal">
+    <div class="container container--narrow text-center">
+      <span class="eyebrow"><%= content.hanoi_teaser ? content.hanoi_teaser['title_' + lang] : 'Hanoi' %></span>
+      <p class="lede" style="margin-inline:auto;"><%= content.hanoi_teaser ? content.hanoi_teaser['body_' + lang] : '' %></p>
+    </div>
+  </section>
+<% } %>
 
 <% if (posts && posts.length) { %>
 <section class="section reveal">
@@ -94,11 +106,25 @@
 </section>
 <% } %>
 
-<section class="section section--alt reveal">
-  <div class="container container--narrow text-center">
-    <span class="eyebrow"><%= t('home.visit_eyebrow') %></span>
-    <h2><%= content.visit_teaser && content.visit_teaser['title_' + lang] ? content.visit_teaser['title_' + lang] : t('cta.visit_the_house') %></h2>
-    <p class="lede" style="margin-inline:auto;"><%= content.visit_teaser ? content.visit_teaser['body_' + lang] : '' %></p>
-    <a class="btn" href="/<%= lang %>/visit"><%= t('cta.visit_the_house') %></a>
-  </div>
-</section>
+<% if (content.visit_teaser && content.visit_teaser.media) { %>
+  <section class="photo-band reveal">
+    <div class="photo-band__media">
+      <%- include('../partials/image', { media: content.visit_teaser.media, alt: content.visit_teaser['title_' + lang], eager: false, sizesAttr: '100vw' }) %>
+    </div>
+    <div class="photo-band__content container container--narrow">
+      <span class="eyebrow"><%= t('home.visit_eyebrow') %></span>
+      <h2><%= content.visit_teaser['title_' + lang] || t('cta.visit_the_house') %></h2>
+      <p class="lede"><%= content.visit_teaser['body_' + lang] %></p>
+      <a class="btn" href="/<%= lang %>/visit"><%= t('cta.visit_the_house') %></a>
+    </div>
+  </section>
+<% } else { %>
+  <section class="section section--alt reveal">
+    <div class="container container--narrow text-center">
+      <span class="eyebrow"><%= t('home.visit_eyebrow') %></span>
+      <h2><%= content.visit_teaser && content.visit_teaser['title_' + lang] ? content.visit_teaser['title_' + lang] : t('cta.visit_the_house') %></h2>
+      <p class="lede" style="margin-inline:auto;"><%= content.visit_teaser ? content.visit_teaser['body_' + lang] : '' %></p>
+      <a class="btn" href="/<%= lang %>/visit"><%= t('cta.visit_the_house') %></a>
+    </div>
+  </section>
+<% } %>

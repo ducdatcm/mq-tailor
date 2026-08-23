@@ -438,6 +438,43 @@ select:focus-visible {
 .page-hero__content h1 { color: #fff; }
 .page-hero__content .lede { color: rgba(255,255,255,0.9); }
 
+/* Full-width photo band with centred overlaid text — for homepage teaser
+   sections that are a mood/place statement rather than a page heading
+   (Phùng Hưng, Visit) when an admin has set a photo for them. */
+.photo-band {
+  position: relative;
+  min-height: 50vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  text-align: center;
+}
+.photo-band__media {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+}
+.photo-band__media img,
+.photo-band__media .placeholder {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.photo-band__media::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(28, 25, 19, 0.5);
+}
+.photo-band__content {
+  position: relative;
+  padding: var(--space-5) var(--space-3);
+}
+.photo-band__content .eyebrow { color: rgba(255,255,255,0.75); }
+.photo-band__content h2 { color: #fff; }
+.photo-band__content .lede { color: rgba(255,255,255,0.95); margin-inline: auto; }
+
 /* ---------- Image placeholder (honest "photography pending" panel) ---------- */
 .placeholder {
   background: linear-gradient(135deg, var(--color-stone), var(--color-cloth));
