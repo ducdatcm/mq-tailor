@@ -55,14 +55,28 @@
   </div>
 </section>
 
-<section class="section reveal">
-  <div class="container">
-    <span class="eyebrow"><%= t('nav.tailoring') %></span>
-    <h2><%= content.tailoring_teaser ? content.tailoring_teaser['title_' + lang] : t('nav.tailoring') %></h2>
-    <p class="lede"><%= content.tailoring_teaser ? content.tailoring_teaser['body_' + lang] : '' %></p>
-    <a class="btn" href="/<%= lang %>/tailoring"><%= t('cta.view_tailoring') %></a>
-  </div>
-</section>
+<% if (content.tailoring_teaser && content.tailoring_teaser.media) { %>
+  <section class="photo-band reveal">
+    <div class="photo-band__media">
+      <%- include('../partials/image', { media: content.tailoring_teaser.media, alt: content.tailoring_teaser['title_' + lang], eager: false, sizesAttr: '100vw' }) %>
+    </div>
+    <div class="photo-band__content container container--narrow">
+      <span class="eyebrow"><%= t('nav.tailoring') %></span>
+      <h2><%= content.tailoring_teaser['title_' + lang] || t('nav.tailoring') %></h2>
+      <p class="lede"><%= content.tailoring_teaser['body_' + lang] %></p>
+      <a class="btn" href="/<%= lang %>/tailoring"><%= t('cta.view_tailoring') %></a>
+    </div>
+  </section>
+<% } else { %>
+  <section class="section reveal">
+    <div class="container">
+      <span class="eyebrow"><%= t('nav.tailoring') %></span>
+      <h2><%= content.tailoring_teaser ? content.tailoring_teaser['title_' + lang] : t('nav.tailoring') %></h2>
+      <p class="lede"><%= content.tailoring_teaser ? content.tailoring_teaser['body_' + lang] : '' %></p>
+      <a class="btn" href="/<%= lang %>/tailoring"><%= t('cta.view_tailoring') %></a>
+    </div>
+  </section>
+<% } %>
 
 <% if (content.hanoi_teaser && content.hanoi_teaser.media) { %>
   <section class="photo-band reveal">
