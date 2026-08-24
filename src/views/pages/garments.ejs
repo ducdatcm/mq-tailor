@@ -3,10 +3,15 @@
 <section class="section section--alt reveal">
   <div class="container">
     <% if (gallery && gallery.length) { %>
-      <div class="grid grid--4">
+      <div class="grid grid--3">
         <% gallery.forEach(function (photo) { %>
-          <div class="media-frame">
-            <%- include('../partials/image', { media: photo, ratio: '4/5' }) %>
+          <div class="card">
+            <div class="media-frame">
+              <%- include('../partials/image', { media: photo, ratio: '4/5' }) %>
+            </div>
+            <% if (photo.alt) { %>
+              <p class="card__meta"><%= photo.alt %></p>
+            <% } %>
           </div>
         <% }); %>
       </div>

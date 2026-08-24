@@ -18,6 +18,20 @@
   </div>
 </article>
 
+<% if (post.gallery && post.gallery.length) { %>
+<section class="section section--alt reveal">
+  <div class="container container--narrow">
+    <div class="grid grid--2">
+      <% post.gallery.forEach(function (photo) { %>
+        <div class="media-frame">
+          <%- include('../partials/image', { media: photo, ratio: '4/3' }) %>
+        </div>
+      <% }); %>
+    </div>
+  </div>
+</section>
+<% } %>
+
 <% if (related && related.length) { %>
 <section class="section section--alt reveal">
   <div class="container">

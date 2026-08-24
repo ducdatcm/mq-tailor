@@ -2,7 +2,12 @@ const db = require('../../config/db');
 const { processAndSaveImage } = require('../../config/upload');
 const { deleteObjectByUrl } = require('../../config/storage');
 
-const GROUPS = ['house', 'workshop', 'people', 'garments', 'fitting', 'cloth', 'hanoi', 'journal', 'other'];
+// "garments" stays as a general-purpose tag (detail shots reused elsewhere
+// on the site); "product_collection" is the one specific tag that actually
+// feeds the Our Garments showcase page — kept separate on purpose so
+// tagging something "garments" for general use doesn't silently publish it
+// to that page too.
+const GROUPS = ['house', 'workshop', 'people', 'garments', 'product_collection', 'fitting', 'cloth', 'hanoi', 'journal', 'other'];
 
 async function list(req, res, next) {
   try {

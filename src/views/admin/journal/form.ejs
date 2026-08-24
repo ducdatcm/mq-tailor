@@ -75,6 +75,16 @@
         </select>
       </div>
     </div>
+
+    <div class="field">
+      <label for="gallery_media_ids">Additional photos (shown in a gallery within the post)</label>
+      <select id="gallery_media_ids" name="gallery_media_ids" multiple size="8">
+        <% media.forEach(function (m) { %>
+          <option value="<%= m.id %>" <%= galleryIds.indexOf(m.id) !== -1 ? 'selected' : '' %>><%= m.filename %> (<%= m.group %>)</option>
+        <% }); %>
+      </select>
+      <p class="field-hint">Hold Ctrl (Windows) or Cmd (Mac) to pick more than one. Upload new images from the <a href="/admin/media">Media Library</a> first — this is separate from the single Cover image above.</p>
+    </div>
   </div>
 
   <button type="submit" class="btn">Save</button>

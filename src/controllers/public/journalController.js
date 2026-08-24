@@ -53,8 +53,13 @@ async function detail(req, res, next) {
       });
     }
 
-    const mediaMap = await getMediaByIds([post.cover_media_id]);
+    const galleryRows = await db('journal_post_media')
+      .where({ journal_post_id: post.id })
+      .orderBy('sort_order', 'asc');
+
+    const mediaMap = await getMediaByIds([post.cover_media_id, ...galleryRows.map((r) => r.media_id)]);
     post.cover = resolveMedia(mediaMap[post.cover_media_id], res.locals.lang);
+    post.gallery = galleryRows.map((r) => resolveMedia(mediaMap[r.media_id], res.locals.lang)).filter(Boolean);
 
     const related = await db('journal_posts')
       .where({ status: 'published', category: post.category })

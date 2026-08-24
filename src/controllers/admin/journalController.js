@@ -13,7 +13,7 @@ async function list(req, res, next) {
 async function newForm(req, res, next) {
   try {
     const media = await db('media').orderBy('created_at', 'desc');
-    res.render('admin/journal/form', { title: 'New Journal Post', post: null, media });
+    res.render('admin/journal/form', { title: 'New Journal Post', post: null, media, galleryIds: [] });
   } catch (err) {
     next(err);
   }
@@ -24,7 +24,11 @@ async function editForm(req, res, next) {
     const post = await db('journal_posts').where({ id: req.params.id }).first();
     if (!post) return res.redirect('/admin/journal');
     const media = await db('media').orderBy('created_at', 'desc');
-    res.render('admin/journal/form', { title: 'Edit Journal Post', post, media });
+    const galleryRows = await db('journal_post_media')
+      .where({ journal_post_id: post.id })
+      .orderBy('sort_order', 'asc');
+    const galleryIds = galleryRows.map((r) => r.media_id);
+    res.render('admin/journal/form', { title: 'Edit Journal Post', post, media, galleryIds });
   } catch (err) {
     next(err);
   }
@@ -46,9 +50,24 @@ function buildPayload(body) {
   };
 }
 
+/** <select multiple> submits repeated keys — normalize to a clean id array. */
+function parseGalleryIds(raw) {
+  const arr = Array.isArray(raw) ? raw : raw ? [raw] : [];
+  return arr.map((v) => Number(v)).filter((n) => Number.isFinite(n) && n > 0);
+}
+
+async function saveGallery(postId, mediaIds) {
+  await db('journal_post_media').where({ journal_post_id: postId }).del();
+  if (mediaIds.length === 0) return;
+  await db('journal_post_media').insert(
+    mediaIds.map((mediaId, i) => ({ journal_post_id: postId, media_id: mediaId, sort_order: i }))
+  );
+}
+
 async function create(req, res, next) {
   try {
-    await db('journal_posts').insert(buildPayload(req.body));
+    const [id] = await db('journal_posts').insert(buildPayload(req.body));
+    await saveGallery(id, parseGalleryIds(req.body.gallery_media_ids));
     req.flash('success', 'Journal post created.');
     res.redirect('/admin/journal');
   } catch (err) {
@@ -61,6 +80,7 @@ async function update(req, res, next) {
     const payload = buildPayload(req.body);
     if (!req.body.status || req.body.status !== 'published') delete payload.published_at; // don't clear an existing publish date on plain edits
     await db('journal_posts').where({ id: req.params.id }).update(payload);
+    await saveGallery(Number(req.params.id), parseGalleryIds(req.body.gallery_media_ids));
     req.flash('success', 'Journal post updated.');
     res.redirect('/admin/journal');
   } catch (err) {

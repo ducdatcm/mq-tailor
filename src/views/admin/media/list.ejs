@@ -17,14 +17,15 @@
     </div>
     <div class="field-row">
       <div class="field">
-        <label for="alt_en">Alt text (English)</label>
+        <label for="alt_en">Alt text / caption (English)</label>
         <input type="text" id="alt_en" name="alt_en" placeholder="Describe what's in the photo">
       </div>
       <div class="field">
-        <label for="alt_vi">Alt text (Vietnamese)</label>
+        <label for="alt_vi">Alt text / caption (Vietnamese)</label>
         <input type="text" id="alt_vi" name="alt_vi">
       </div>
     </div>
+    <p class="field-hint">For photos tagged <strong>product_collection</strong>, this text is also shown as a visible caption line under the photo on the Our Garments page — e.g. "Unlined jacket, tropical wool, half-canvassed finish." For other groups it's just accessibility/SEO alt text and isn't shown on the page.</p>
     <button type="submit" class="btn">Upload &amp; Resize</button>
   </form>
 </div>
@@ -50,6 +51,13 @@
           <% } %>
           <a href="/admin/media/<%= m.id %>/focal-point" style="font-size:0.75rem;">Focus point</a>
         </div>
+
+        <form method="POST" action="/admin/media/<%= m.id %>/alt" style="margin-top:0.4rem;">
+          <input type="text" name="alt_en" value="<%= m.alt_en || '' %>" placeholder="Caption (EN)" style="width:100%;font-size:0.75rem;padding:0.3rem;margin-bottom:0.25rem;">
+          <input type="text" name="alt_vi" value="<%= m.alt_vi || '' %>" placeholder="Caption (VI)" style="width:100%;font-size:0.75rem;padding:0.3rem;margin-bottom:0.25rem;">
+          <button type="submit" class="btn--ghost btn" style="padding:0.15rem 0.4rem;font-size:0.7rem;">Save caption</button>
+        </form>
+
         <form method="POST" action="/admin/media/<%= m.id %>/delete" onsubmit="return confirm('Delete this image? This cannot be undone — including the original file.');" style="margin-top:0.4rem;">
           <button type="submit" class="btn--ghost btn" style="padding:0.15rem 0.4rem;font-size:0.7rem;">Delete</button>
         </form>
