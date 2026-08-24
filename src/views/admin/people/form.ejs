@@ -2,9 +2,19 @@
 
 <form method="POST" action="<%= person ? '/admin/people/' + person.id + '/edit' : '/admin/people/new' %>">
   <div class="panel">
-    <div class="field">
-      <label for="name">Name (or role-group label, e.g. "The Cutters")</label>
-      <input type="text" id="name" name="name" required value="<%= person ? person.name : '' %>">
+    <div class="field-row">
+      <div class="field">
+        <label for="name">Name (or role-group label, e.g. "The Cutters")</label>
+        <input type="text" id="name" name="name" required value="<%= person ? person.name : '' %>">
+      </div>
+      <div class="field">
+        <label for="group_key">Section</label>
+        <select id="group_key" name="group_key">
+          <% Object.keys(GROUPS).forEach(function (g) { %>
+            <option value="<%= g %>" <%= person && person.group_key === g ? 'selected' : '' %>><%= GROUPS[g] %></option>
+          <% }); %>
+        </select>
+      </div>
     </div>
 
     <div class="field-row">

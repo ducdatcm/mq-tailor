@@ -131,6 +131,24 @@ exports.seed = async function (knex) {
       body_en: "Ask who makes a Minh Quang garment and the honest answer is: several people, not one name on a door. Cutters draft and adjust every pattern by hand. Coat makers and trouser makers build to that pattern, each specialising in their part of the garment. Someone presses and finishes. Someone answers the phone and remembers what you ordered last time. All of it adds up to what you're wearing.",
       body_vi: 'Nếu hỏi ai là người làm ra một sản phẩm của Minh Quang, câu trả lời trung thực là: nhiều người, không phải chỉ một cái tên trên biển hiệu. Thợ cắt dựng và chỉnh từng rập bằng tay. Thợ may áo và thợ may quần dựng theo rập đó, mỗi người chuyên một phần của trang phục. Có người là ủi và hoàn thiện. Có người nghe điện thoại và nhớ lần trước bạn đặt gì. Tất cả cộng lại tạo nên bộ trang phục bạn đang mặc.',
     },
+    {
+      page_key: 'people', section_key: 'masters_intro', sort_order: 2,
+      title_en: 'The Masters', title_vi: 'Bậc Thầy',
+      body_en: "Cutting is where a garment's shape is decided, and it's the part of the process that takes longest to learn. The house's cutters carry that judgment — pattern, proportion, and the small adjustments that come from years at the table.",
+      body_vi: 'Cắt là công đoạn quyết định hình dáng của một bộ trang phục, và cũng là phần mất nhiều thời gian nhất để học. Những người thợ cắt của nhà may mang theo khả năng phán đoán đó — về rập, tỷ lệ, và những điều chỉnh nhỏ chỉ có được sau nhiều năm đứng ở bàn cắt.',
+    },
+    {
+      page_key: 'people', section_key: 'front_of_house_intro', sort_order: 3,
+      title_en: 'Front of House', title_vi: 'Đón Tiếp',
+      body_en: 'The first conversation about a new commission usually happens here — measurements, cloth, timelines, and the questions that shape everything that follows.',
+      body_vi: 'Cuộc trò chuyện đầu tiên về một đơn may mới thường bắt đầu ở đây — số đo, vải, thời gian hoàn thành, và những câu hỏi định hình mọi thứ diễn ra sau đó.',
+    },
+    {
+      page_key: 'people', section_key: 'workshop_intro', sort_order: 4,
+      title_en: 'The Workshop Team', title_vi: 'Đội Ngũ Xưởng May',
+      body_en: 'Behind every finished garment is a team most clients never meet — coat makers, trouser makers, pressers and finishers, each responsible for one part of the process done well.',
+      body_vi: 'Đằng sau mỗi bộ trang phục hoàn thiện là một đội ngũ mà phần lớn khách hàng chưa từng gặp — thợ may áo, thợ may quần, thợ là ủi và hoàn thiện, mỗi người phụ trách một phần của quy trình và làm tốt phần việc đó.',
+    },
 
     // --- THE PROCESS ---
     {

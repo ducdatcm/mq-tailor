@@ -1,9 +1,15 @@
 const db = require('../../config/db');
 
+const GROUPS = {
+  masters: 'The Masters',
+  front_of_house: 'Front of House',
+  workshop: 'The Workshop Team',
+};
+
 async function list(req, res, next) {
   try {
-    const people = await db('people').orderBy('sort_order', 'asc');
-    res.render('admin/people/list', { title: 'People', people });
+    const people = await db('people').orderBy(['group_key', 'sort_order']);
+    res.render('admin/people/list', { title: 'People', people, GROUPS });
   } catch (err) {
     next(err);
   }
@@ -12,7 +18,7 @@ async function list(req, res, next) {
 async function newForm(req, res, next) {
   try {
     const media = await db('media').orderBy('created_at', 'desc');
-    res.render('admin/people/form', { title: 'New Person', person: null, media });
+    res.render('admin/people/form', { title: 'New Person', person: null, media, GROUPS });
   } catch (err) {
     next(err);
   }
@@ -23,7 +29,7 @@ async function editForm(req, res, next) {
     const person = await db('people').where({ id: req.params.id }).first();
     if (!person) return res.redirect('/admin/people');
     const media = await db('media').orderBy('created_at', 'desc');
-    res.render('admin/people/form', { title: 'Edit Person', person, media });
+    res.render('admin/people/form', { title: 'Edit Person', person, media, GROUPS });
   } catch (err) {
     next(err);
   }
@@ -32,6 +38,7 @@ async function editForm(req, res, next) {
 function buildPayload(body) {
   return {
     name: body.name,
+    group_key: Object.prototype.hasOwnProperty.call(GROUPS, body.group_key) ? body.group_key : 'workshop',
     role_en: body.role_en,
     role_vi: body.role_vi,
     bio_en: body.bio_en,

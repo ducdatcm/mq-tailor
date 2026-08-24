@@ -2,6 +2,8 @@ const db = require('../../config/db');
 const { getPageContent } = require('../../utils/content');
 const { getMediaByIds, getMediaByGroup, resolveMedia } = require('../../utils/media');
 
+const GROUP_ORDER = ['masters', 'front_of_house', 'workshop'];
+
 async function show(req, res, next) {
   try {
     const content = await getPageContent('people');
@@ -18,6 +20,16 @@ async function show(req, res, next) {
       p.photo = resolveMedia(mediaMap[p.photo_media_id], res.locals.lang);
     });
 
+    // Redesigned as 3 departments (reference: tailoring-house team pages
+    // organized by role rather than one flat grid) — each with its own
+    // short intro from Page Copy (masters_intro/front_of_house_intro/
+    // workshop_intro) and the people assigned to it in Admin > People.
+    const groups = GROUP_ORDER.map((key) => ({
+      key,
+      intro: content[`${key}_intro`] || null,
+      people: people.filter((p) => (p.group_key || 'workshop') === key),
+    })).filter((g) => g.people.length > 0 || g.intro);
+
     // Unlimited candid behind-the-scenes photos — tag an upload's Group as
     // "people" in Admin > Media Library and it appears here, separate from
     // the formal profile photos above.
@@ -28,7 +40,7 @@ async function show(req, res, next) {
       title: res.locals.t('people.heading'),
       metaDescription: content.intro ? content.intro[`body_${res.locals.lang}`] : '',
       content,
-      people,
+      groups,
       gallery,
     });
   } catch (err) {

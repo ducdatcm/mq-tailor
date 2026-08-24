@@ -1,19 +1,33 @@
 <%- include('../partials/intro-header', { headingKey: 'people.heading', intro: content.intro }) %>
 
-<section class="section section--alt">
-  <div class="container grid grid--4">
-    <% people.forEach(function (person) { %>
-      <div class="card reveal">
-        <div class="media-frame">
-          <%- include('../partials/image', { media: person.photo, alt: person.name, ratio: '3/4' }) %>
+<% groups.forEach(function (group, i) { %>
+  <section class="section <%= i % 2 === 1 ? 'section--alt' : '' %> reveal">
+    <div class="container">
+      <% if (group.intro) { %>
+        <div class="container--narrow" style="margin-bottom:2.5rem;padding-inline:0;">
+          <span class="eyebrow"><%= group.intro['title_' + lang] %></span>
+          <h2><%= group.intro['title_' + lang] %></h2>
+          <p class="lede"><%= group.intro['body_' + lang] %></p>
         </div>
-        <h3 class="card__title"><%= person.name %></h3>
-        <p class="card__meta"><%= person['role_' + lang] %></p>
-        <p class="text-muted" style="font-size:0.9rem;"><%= person['bio_' + lang] %></p>
-      </div>
-    <% }); %>
-  </div>
-</section>
+      <% } %>
+
+      <% if (group.people.length) { %>
+        <div class="grid grid--4">
+          <% group.people.forEach(function (person) { %>
+            <div class="card">
+              <div class="media-frame">
+                <%- include('../partials/image', { media: person.photo, alt: person.name, ratio: '3/4' }) %>
+              </div>
+              <h3 class="card__title"><%= person.name %></h3>
+              <p class="card__meta"><%= person['role_' + lang] %></p>
+              <p class="text-muted" style="font-size:0.9rem;"><%= person['bio_' + lang] %></p>
+            </div>
+          <% }); %>
+        </div>
+      <% } %>
+    </div>
+  </section>
+<% }); %>
 
 <% if (gallery && gallery.length) { %>
 <section class="section reveal">

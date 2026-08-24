@@ -4,11 +4,12 @@
 </div>
 
 <table class="admin-table">
-  <thead><tr><th>Name</th><th>Role (EN)</th><th>Order</th><th>Active</th><th></th></tr></thead>
+  <thead><tr><th>Name</th><th>Section</th><th>Role (EN)</th><th>Order</th><th>Active</th><th></th></tr></thead>
   <tbody>
     <% people.forEach(function (p) { %>
       <tr>
         <td><%= p.name %></td>
+        <td><%= GROUPS[p.group_key] || p.group_key %></td>
         <td><%= p.role_en %></td>
         <td><%= p.sort_order %></td>
         <td><span class="tag <%= p.active ? 'tag--live' : '' %>"><%= p.active ? 'Active' : 'Hidden' %></span></td>
