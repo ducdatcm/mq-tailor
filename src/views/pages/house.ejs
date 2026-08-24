@@ -1,6 +1,6 @@
 <%- include('../partials/intro-header', { headingKey: 'nav.house', intro: content.intro }) %>
 
-<% ['history', 'phung_hung', 'philosophy'].forEach(function (key, i) { %>
+<% ['phung_hung', 'history', 'philosophy'].forEach(function (key, i) { %>
   <% var block = content[key]; if (!block) return; %>
   <section class="section <%= i % 2 === 0 ? 'section--alt' : '' %>">
     <div class="container split <%= i % 2 === 1 ? 'split--reverse' : '' %> reveal">
