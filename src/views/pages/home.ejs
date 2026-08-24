@@ -10,7 +10,9 @@
 </section>
 
 <section class="section container container--narrow text-center reveal">
-  <p class="lede" style="margin-inline:auto;"><%= content.intro ? content.intro['body_' + lang] : '' %></p>
+  <% paragraphs(content.intro && content.intro['body_' + lang]).forEach(function (para) { %>
+    <p class="lede" style="margin-inline:auto;"><%= para %></p>
+  <% }); %>
 </section>
 
 <section class="section section--alt">
@@ -21,7 +23,9 @@
     <div>
       <span class="eyebrow"><%= t('home.house_eyebrow') %></span>
       <h2><%= content.house_teaser && content.house_teaser['title_' + lang] ? content.house_teaser['title_' + lang] : t('cta.discover_the_house') %></h2>
-      <p><%= content.house_teaser ? content.house_teaser['body_' + lang] : '' %></p>
+      <% paragraphs(content.house_teaser && content.house_teaser['body_' + lang]).forEach(function (para) { %>
+        <p><%= para %></p>
+      <% }); %>
       <a class="btn btn--outline" href="/<%= lang %>/the-house"><%= t('cta.discover_the_house') %></a>
     </div>
   </div>
@@ -35,7 +39,9 @@
     <div>
       <span class="eyebrow"><%= t('home.craft_eyebrow') %></span>
       <h2><%= content.craft_teaser && content.craft_teaser['title_' + lang] ? content.craft_teaser['title_' + lang] : t('process.heading') %></h2>
-      <p><%= content.craft_teaser ? content.craft_teaser['body_' + lang] : '' %></p>
+      <% paragraphs(content.craft_teaser && content.craft_teaser['body_' + lang]).forEach(function (para) { %>
+        <p><%= para %></p>
+      <% }); %>
       <a class="btn btn--outline" href="/<%= lang %>/the-process">→ <%= t('process.heading') %></a>
     </div>
   </div>
@@ -49,7 +55,9 @@
     <div>
       <span class="eyebrow"><%= t('home.people_eyebrow') %></span>
       <h2><%= content.people_teaser && content.people_teaser['title_' + lang] ? content.people_teaser['title_' + lang] : t('cta.meet_the_people') %></h2>
-      <p><%= content.people_teaser ? content.people_teaser['body_' + lang] : '' %></p>
+      <% paragraphs(content.people_teaser && content.people_teaser['body_' + lang]).forEach(function (para) { %>
+        <p><%= para %></p>
+      <% }); %>
       <a class="btn btn--outline" href="/<%= lang %>/our-people"><%= t('cta.meet_the_people') %></a>
     </div>
   </div>
@@ -63,7 +71,9 @@
     <div class="photo-band__content container container--narrow">
       <span class="eyebrow"><%= t('nav.tailoring') %></span>
       <h2><%= content.tailoring_teaser['title_' + lang] || t('nav.tailoring') %></h2>
-      <p class="lede"><%= content.tailoring_teaser['body_' + lang] %></p>
+      <% paragraphs(content.tailoring_teaser['body_' + lang]).forEach(function (para) { %>
+        <p class="lede"><%= para %></p>
+      <% }); %>
       <a class="btn" href="/<%= lang %>/tailoring"><%= t('cta.view_tailoring') %></a>
     </div>
   </section>
@@ -72,7 +82,9 @@
     <div class="container">
       <span class="eyebrow"><%= t('nav.tailoring') %></span>
       <h2><%= content.tailoring_teaser ? content.tailoring_teaser['title_' + lang] : t('nav.tailoring') %></h2>
-      <p class="lede"><%= content.tailoring_teaser ? content.tailoring_teaser['body_' + lang] : '' %></p>
+      <% paragraphs(content.tailoring_teaser && content.tailoring_teaser['body_' + lang]).forEach(function (para) { %>
+        <p class="lede"><%= para %></p>
+      <% }); %>
       <a class="btn" href="/<%= lang %>/tailoring"><%= t('cta.view_tailoring') %></a>
     </div>
   </section>
@@ -85,14 +97,18 @@
     </div>
     <div class="photo-band__content container container--narrow">
       <span class="eyebrow"><%= content.hanoi_teaser['title_' + lang] %></span>
-      <p class="lede"><%= content.hanoi_teaser['body_' + lang] %></p>
+      <% paragraphs(content.hanoi_teaser['body_' + lang]).forEach(function (para) { %>
+        <p class="lede"><%= para %></p>
+      <% }); %>
     </div>
   </section>
 <% } else { %>
   <section class="section section--alt reveal">
     <div class="container container--narrow text-center">
       <span class="eyebrow"><%= content.hanoi_teaser ? content.hanoi_teaser['title_' + lang] : 'Hanoi' %></span>
-      <p class="lede" style="margin-inline:auto;"><%= content.hanoi_teaser ? content.hanoi_teaser['body_' + lang] : '' %></p>
+      <% paragraphs(content.hanoi_teaser && content.hanoi_teaser['body_' + lang]).forEach(function (para) { %>
+        <p class="lede" style="margin-inline:auto;"><%= para %></p>
+      <% }); %>
     </div>
   </section>
 <% } %>
@@ -128,7 +144,9 @@
     <div class="photo-band__content container container--narrow">
       <span class="eyebrow"><%= t('home.visit_eyebrow') %></span>
       <h2><%= content.visit_teaser['title_' + lang] || t('cta.visit_the_house') %></h2>
-      <p class="lede"><%= content.visit_teaser['body_' + lang] %></p>
+      <% paragraphs(content.visit_teaser['body_' + lang]).forEach(function (para) { %>
+        <p class="lede"><%= para %></p>
+      <% }); %>
       <a class="btn" href="/<%= lang %>/visit"><%= t('cta.visit_the_house') %></a>
     </div>
   </section>
@@ -137,7 +155,9 @@
     <div class="container container--narrow text-center">
       <span class="eyebrow"><%= t('home.visit_eyebrow') %></span>
       <h2><%= content.visit_teaser && content.visit_teaser['title_' + lang] ? content.visit_teaser['title_' + lang] : t('cta.visit_the_house') %></h2>
-      <p class="lede" style="margin-inline:auto;"><%= content.visit_teaser ? content.visit_teaser['body_' + lang] : '' %></p>
+      <% paragraphs(content.visit_teaser && content.visit_teaser['body_' + lang]).forEach(function (para) { %>
+        <p class="lede" style="margin-inline:auto;"><%= para %></p>
+      <% }); %>
       <a class="btn" href="/<%= lang %>/visit"><%= t('cta.visit_the_house') %></a>
     </div>
   </section>

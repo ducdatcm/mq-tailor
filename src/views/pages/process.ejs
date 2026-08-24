@@ -8,7 +8,9 @@
           <span class="process-step__number"><%= String(i + 1).padStart(2, '0') %></span>
           <div>
             <h3><%= step['title_' + lang] %></h3>
-            <p class="text-muted"><%= step['body_' + lang] %></p>
+            <% paragraphs(step['body_' + lang]).forEach(function (para) { %>
+              <p class="text-muted"><%= para %></p>
+            <% }); %>
           </div>
           <div class="media-frame">
             <%- include('../partials/image', { media: step.media, alt: step['title_' + lang], ratio: '4/3' }) %>

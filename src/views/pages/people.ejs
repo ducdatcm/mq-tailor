@@ -7,7 +7,9 @@
         <div class="container--narrow" style="margin-bottom:2.5rem;padding-inline:0;">
           <span class="eyebrow"><%= group.intro['title_' + lang] %></span>
           <h2><%= group.intro['title_' + lang] %></h2>
-          <p class="lede"><%= group.intro['body_' + lang] %></p>
+          <% paragraphs(group.intro['body_' + lang]).forEach(function (para) { %>
+            <p class="lede"><%= para %></p>
+          <% }); %>
         </div>
       <% } %>
 
@@ -20,7 +22,9 @@
               </div>
               <h3 class="card__title"><%= person.name %></h3>
               <p class="card__meta"><%= person['role_' + lang] %></p>
-              <p class="text-muted" style="font-size:0.9rem;"><%= person['bio_' + lang] %></p>
+              <% paragraphs(person['bio_' + lang]).forEach(function (para) { %>
+                <p class="text-muted" style="font-size:0.9rem;"><%= para %></p>
+              <% }); %>
             </div>
           <% }); %>
         </div>

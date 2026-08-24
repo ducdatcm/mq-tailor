@@ -9,7 +9,9 @@
       </div>
       <div>
         <h2><%= block['title_' + lang] %></h2>
-        <p><%= block['body_' + lang] %></p>
+        <% paragraphs(block['body_' + lang]).forEach(function (para) { %>
+          <p><%= para %></p>
+        <% }); %>
       </div>
     </div>
   </section>

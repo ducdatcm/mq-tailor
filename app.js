@@ -94,6 +94,16 @@ app.use(siteSettingsMiddleware);
 app.use((req, res, next) => {
   res.locals.gaId = (res.locals.settings && res.locals.settings.ga_measurement_id) || null;
   res.locals.currentYear = new Date().getFullYear();
+  // Admin textareas store multi-paragraph body text as plain text with a
+  // blank line between paragraphs (same convention as the Journal body
+  // field) — HTML collapses that into one run-on paragraph unless it's
+  // split into separate <p> tags. Every template renders long-form body
+  // text through this instead of a bare <%= %> now.
+  res.locals.paragraphs = (text) =>
+    (text || '')
+      .split(/\n\s*\n/)
+      .map((p) => p.trim())
+      .filter(Boolean);
   next();
 });
 
