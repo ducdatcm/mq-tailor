@@ -32,18 +32,3 @@
     </div>
   </section>
 <% }); %>
-
-<% if (gallery && gallery.length) { %>
-<section class="section reveal">
-  <div class="container">
-    <h2 style="font-size:var(--fs-xl);margin-bottom:2rem;"><%= t('people.gallery_heading') %></h2>
-    <div class="grid grid--4">
-      <% gallery.forEach(function (photo) { %>
-        <div class="media-frame">
-          <%- include('../partials/image', { media: photo, ratio: '4/5' }) %>
-        </div>
-      <% }); %>
-    </div>
-  </div>
-</section>
-<% } %>
