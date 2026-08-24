@@ -43,7 +43,14 @@
       <img src="<%= m.variants && m.variants.webp ? Object.values(m.variants.webp)[0] : '' %>" alt="<%= m.alt_en %>">
       <figcaption>
         <div><%= m.filename %></div>
-        <div><%= m.group %> · <%= m.width %>×<%= m.height %></div>
+        <div><%= m.width %>×<%= m.height %></div>
+        <form method="POST" action="/admin/media/<%= m.id %>/group" style="margin-top:0.3rem;">
+          <select name="group" onchange="this.form.submit()" style="font-size:0.75rem;padding:0.2rem;width:100%;">
+            <% groups.forEach(function (g) { %>
+              <option value="<%= g %>" <%= m.group === g ? 'selected' : '' %>><%= g %></option>
+            <% }); %>
+          </select>
+        </form>
         <div style="margin-top:0.3rem;">
           <% if (m.original_path) { %>
             <a href="<%= m.original_path %>" target="_blank" style="font-size:0.75rem;">Original ↓</a>

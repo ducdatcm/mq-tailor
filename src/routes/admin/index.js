@@ -60,6 +60,7 @@ router.post('/cloth/:id/delete', clothController.remove);
 router.get('/media', mediaController.list);
 router.post('/media/upload', upload.single('image'), mediaController.upload);
 router.post('/media/:id/alt', mediaController.updateAlt);
+router.post('/media/:id/group', mediaController.updateGroup);
 router.get('/media/:id/focal-point', mediaController.focalPointForm);
 router.post('/media/:id/focal-point', mediaController.updateFocalPoint);
 router.post('/media/:id/delete', mediaController.remove);

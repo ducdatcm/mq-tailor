@@ -85,6 +85,17 @@ async function updateAlt(req, res, next) {
   }
 }
 
+async function updateGroup(req, res, next) {
+  try {
+    const group = GROUPS.includes(req.body.group) ? req.body.group : 'other';
+    await db('media').where({ id: req.params.id }).update({ group });
+    req.flash('success', 'Group updated.');
+    res.redirect('/admin/media');
+  } catch (err) {
+    next(err);
+  }
+}
+
 async function remove(req, res, next) {
   try {
     const row = await db('media').where({ id: req.params.id }).first();
@@ -116,4 +127,4 @@ async function remove(req, res, next) {
   }
 }
 
-module.exports = { list, upload, updateAlt, remove, focalPointForm, updateFocalPoint, GROUPS };
+module.exports = { list, upload, updateAlt, updateGroup, remove, focalPointForm, updateFocalPoint, GROUPS };
