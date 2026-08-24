@@ -44,12 +44,13 @@
       <figcaption>
         <div><%= m.filename %></div>
         <div><%= m.width %>×<%= m.height %></div>
-        <form method="POST" action="/admin/media/<%= m.id %>/group" style="margin-top:0.3rem;">
-          <select name="group" onchange="this.form.submit()" style="font-size:0.75rem;padding:0.2rem;width:100%;">
+        <form method="POST" action="/admin/media/<%= m.id %>/group" style="margin-top:0.3rem;display:flex;gap:0.25rem;">
+          <select name="group" style="font-size:0.75rem;padding:0.2rem;flex:1;min-width:0;">
             <% groups.forEach(function (g) { %>
               <option value="<%= g %>" <%= m.group === g ? 'selected' : '' %>><%= g %></option>
             <% }); %>
           </select>
+          <button type="submit" class="btn--ghost btn" style="padding:0.15rem 0.4rem;font-size:0.7rem;flex-shrink:0;">Save group</button>
         </form>
         <div style="margin-top:0.3rem;">
           <% if (m.original_path) { %>
