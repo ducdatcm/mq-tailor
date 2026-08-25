@@ -84,6 +84,15 @@ these as a Key/Value pair (there's no `.env` file to edit by hand here):
 
 `SMTP_*` and `GA_MEASUREMENT_ID` are optional — see §6/§7 below.
 
+**Working on the site privately before launch?** Set `BASIC_AUTH_USER` /
+`BASIC_AUTH_PASSWORD` to require a username/password (a plain browser login
+prompt) on every page, on any domain pointed at the app — nothing is served
+to anyone without it, so there's no content for search engines or safety
+scanners to see or flag. Remove both when you're ready to go fully public.
+This is different from `PRIVATE_DOMAINS`, which blocks a specific hostname
+outright (even for you) — use that instead if you want a domain fully dark
+rather than password-gated.
+
 ### 6. Redeploy
 Save the environment variables, then trigger a fresh deploy (pushing to
 GitHub `main` auto-deploys; there's also a Redeploy button, though note it

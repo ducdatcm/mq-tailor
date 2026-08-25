@@ -10,6 +10,7 @@ const helmet = require('helmet');
 
 const { runStartupTasks } = require('./src/config/bootstrap');
 const privateDomainGate = require('./src/middleware/privateDomain');
+const basicAuthGate = require('./src/middleware/basicAuthGate');
 const siteSettingsMiddleware = require('./src/middleware/siteSettings');
 const publicRouter = require('./src/routes/public');
 const adminRouter = require('./src/routes/admin');
@@ -20,6 +21,7 @@ const isProd = process.env.NODE_ENV === 'production';
 
 app.set('trust proxy', 1);
 app.use(privateDomainGate);
+app.use(basicAuthGate);
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'src', 'views'));
 app.use(expressLayouts);
