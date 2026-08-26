@@ -1,5 +1,5 @@
 <h1>The Process</h1>
-<p style="color:var(--admin-muted);">The 14 steps, their order and their stage groupings are fixed by design — edit the wording and photo for each here.</p>
+<p style="color:var(--admin-muted);max-width:70ch;">The 14 steps, their order and their stage groupings are fixed by design — edit the wording and photo for each here. If a photo shows exactly what's happening at one of these steps, attach it below. For a wider workshop shot that isn't tied to one specific step, upload it in <a href="/admin/media">Media Library</a> with Group set to <strong>workshop</strong> instead — it'll appear in the "In the Workshop" gallery at the bottom of the public page.</p>
 
 <% steps.forEach(function (step, i) { %>
   <% var isNewStage = i === 0 || steps[i - 1].stage_en !== step.stage_en; %>
