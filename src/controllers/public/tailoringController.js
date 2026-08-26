@@ -1,7 +1,7 @@
 const { getPageContent } = require('../../utils/content');
 const { getMediaByIds, resolveMedia } = require('../../utils/media');
 
-const CATEGORY_ORDER = ['suits', 'jackets', 'trousers', 'shirts', 'wedding'];
+const CATEGORY_ORDER = ['suits', 'jackets', 'trousers', 'shirts', 'wedding', 'corporate'];
 
 async function show(req, res, next) {
   try {
