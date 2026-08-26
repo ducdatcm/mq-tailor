@@ -1,9 +1,13 @@
 <h1>The Process</h1>
-<p style="color:var(--admin-muted);">The eight steps and their order are fixed by design — edit the wording and photo for each here.</p>
+<p style="color:var(--admin-muted);">The 14 steps, their order and their stage groupings are fixed by design — edit the wording and photo for each here.</p>
 
 <% steps.forEach(function (step, i) { %>
+  <% var isNewStage = i === 0 || steps[i - 1].stage_en !== step.stage_en; %>
+  <% if (isNewStage) { %>
+    <h2 style="margin-top:2rem;font-size:0.85rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--admin-muted);"><%= step.stage_en %> <% if (step.stage_vi) { %>/ <%= step.stage_vi %><% } %></h2>
+  <% } %>
   <div class="panel">
-    <h2 style="margin-top:0;font-size:1rem;"><%= i + 1 %>. <%= step.step_key %></h2>
+    <h3 style="margin-top:0;font-size:1rem;"><%= i + 1 %>. <%= step.step_key %></h3>
     <form method="POST" action="/admin/process-steps/<%= step.id %>">
       <div class="field-row">
         <div class="field">

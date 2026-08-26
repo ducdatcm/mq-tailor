@@ -577,6 +577,13 @@ select:focus-visible {
   font-size: var(--fs-2xl);
   color: var(--color-cloth);
 }
+.process-stage {
+  font-family: var(--font-sans);
+  font-size: var(--fs-sm);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
 @media (min-width: 768px) {
   .process-step {
     grid-template-columns: 80px 1fr 1fr;

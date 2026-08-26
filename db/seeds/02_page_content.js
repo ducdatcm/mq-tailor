@@ -154,8 +154,8 @@ exports.seed = async function (knex) {
     {
       page_key: 'process', section_key: 'intro', sort_order: 1,
       title_en: null, title_vi: null,
-      body_en: 'Eight steps, roughly, from a first conversation to a finished garment you can wear for years. Not every commission needs all of them in the same order, but this is the shape the process usually takes.',
-      body_vi: 'Khoảng tám bước, từ cuộc trò chuyện đầu tiên đến một bộ trang phục hoàn chỉnh bạn có thể mặc trong nhiều năm. Không phải đơn hàng nào cũng cần đủ tất cả các bước theo đúng thứ tự này, nhưng đó là hình dạng chung mà quy trình thường đi qua.',
+      body_en: 'From a first conversation to a finished garment you can wear for years — roughly a dozen steps, grouped here into stages. Not every commission needs all of them in the same order, but this is the shape the process usually takes.',
+      body_vi: 'Từ cuộc trò chuyện đầu tiên đến một bộ trang phục hoàn chỉnh bạn có thể mặc trong nhiều năm — khoảng hơn chục bước, được nhóm lại theo từng giai đoạn. Không phải đơn hàng nào cũng cần đủ tất cả các bước theo đúng thứ tự này, nhưng đó là hình dạng chung mà quy trình thường đi qua.',
     },
 
     // --- CLOTH ---

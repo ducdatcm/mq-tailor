@@ -1,4 +1,19 @@
-exports.seed = async function (knex) {
+/**
+ * Expands The Process from 8 flat steps into 14 steps grouped under 8
+ * named stages (Before We Cut / Cutting / Preparation / First Fitting /
+ * Assembly / Second Fitting / Finishing / Aftercare) — richer, closer to
+ * the house's real workflow, while staying in plain customer-facing
+ * language rather than a raw production checklist. Replaces the old
+ * step set entirely; photos previously attached to the old 8 steps don't
+ * carry over automatically (different step_keys), so photos need
+ * re-attaching in Admin > The Process afterward.
+ */
+exports.up = async function (knex) {
+  await knex.schema.alterTable('process_steps', (t) => {
+    t.string('stage_en', 100).nullable();
+    t.string('stage_vi', 100).nullable();
+  });
+
   await knex('process_steps').del();
 
   const steps = [
@@ -89,4 +104,19 @@ exports.seed = async function (knex) {
   ];
 
   await knex('process_steps').insert(steps);
+
+  // Update the intro line's step count reference (was "Eight steps, roughly...").
+  await knex('page_content')
+    .where({ page_key: 'process', section_key: 'intro', body_en: 'Eight steps, roughly, from a first conversation to a finished garment you can wear for years. Not every commission needs all of them in the same order, but this is the shape the process usually takes.' })
+    .update({
+      body_en: 'From a first conversation to a finished garment you can wear for years — roughly a dozen steps, grouped here into stages. Not every commission needs all of them in the same order, but this is the shape the process usually takes.',
+      body_vi: 'Từ cuộc trò chuyện đầu tiên đến một bộ trang phục hoàn chỉnh bạn có thể mặc trong nhiều năm — khoảng hơn chục bước, được nhóm lại theo từng giai đoạn. Không phải đơn hàng nào cũng cần đủ tất cả các bước theo đúng thứ tự này, nhưng đó là hình dạng chung mà quy trình thường đi qua.',
+    });
+};
+
+exports.down = async function (knex) {
+  await knex.schema.alterTable('process_steps', (t) => {
+    t.dropColumn('stage_en');
+    t.dropColumn('stage_vi');
+  });
 };

@@ -4,6 +4,10 @@
   <div class="container">
     <ol class="process-list" style="list-style:none;padding:0;">
       <% steps.forEach(function (step, i) { %>
+        <% var isNewStage = i === 0 || steps[i - 1]['stage_' + lang] !== step['stage_' + lang]; %>
+        <% if (isNewStage && step['stage_' + lang]) { %>
+          <li class="process-stage reveal"><%= step['stage_' + lang] %></li>
+        <% } %>
         <li class="process-step reveal">
           <span class="process-step__number"><%= String(i + 1).padStart(2, '0') %></span>
           <div>
