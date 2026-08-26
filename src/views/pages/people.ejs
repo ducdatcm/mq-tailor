@@ -2,17 +2,36 @@
 
 <% groups.forEach(function (group, i) { %>
   <section class="section <%= i % 2 === 1 ? 'section--alt' : '' %> reveal">
-    <div class="container">
-      <% if (group.intro) { %>
-        <div class="container--narrow text-center" style="margin-inline:auto;margin-bottom:2.5rem;">
-          <h2><%= group.intro['title_' + lang] %></h2>
-          <% paragraphs(group.intro['body_' + lang]).forEach(function (para) { %>
-            <p class="lede" style="margin-inline:auto;"><%= para %></p>
-          <% }); %>
-        </div>
-      <% } %>
+    <% if (group.intro) { %>
+      <div class="container container--narrow text-center" style="margin-bottom:2.5rem;">
+        <h2><%= group.intro['title_' + lang] %></h2>
+        <% paragraphs(group.intro['body_' + lang]).forEach(function (para) { %>
+          <p class="lede" style="margin-inline:auto;"><%= para %></p>
+        <% }); %>
+      </div>
+    <% } %>
 
-      <% if (group.people.length) { %>
+    <% if (group.key === 'masters' && group.people.length) { %>
+      <% // The Masters get a featured, one-at-a-time layout (matching the
+         // homepage's House/Craft/People treatment) instead of a small grid
+         // card — they're the credibility anchor of the page, and a grid
+         // with only 1-2 entries looks sparse. %>
+      <% group.people.forEach(function (person, pi) { %>
+        <div class="container split <%= pi % 2 === 1 ? 'split--reverse' : '' %> reveal" <% if (pi > 0) { %>style="margin-top:var(--space-6);"<% } %>>
+          <div class="media-frame">
+            <%- include('../partials/image', { media: person.photo, alt: person.name, ratio: '4/5' }) %>
+          </div>
+          <div>
+            <h3><%= person.name %></h3>
+            <p class="person-role"><%= person['role_' + lang] %></p>
+            <% paragraphs(person['bio_' + lang]).forEach(function (para) { %>
+              <p class="text-muted"><%= para %></p>
+            <% }); %>
+          </div>
+        </div>
+      <% }); %>
+    <% } else if (group.people.length) { %>
+      <div class="container">
         <div class="grid grid--4">
           <% group.people.forEach(function (person) { %>
             <div class="card">
@@ -20,14 +39,14 @@
                 <%- include('../partials/image', { media: person.photo, alt: person.name, ratio: '3/4' }) %>
               </div>
               <h3 class="card__title"><%= person.name %></h3>
-              <p class="card__meta"><%= person['role_' + lang] %></p>
+              <p class="person-role"><%= person['role_' + lang] %></p>
               <% paragraphs(person['bio_' + lang]).forEach(function (para) { %>
                 <p class="text-muted" style="font-size:0.9rem;"><%= para %></p>
               <% }); %>
             </div>
           <% }); %>
         </div>
-      <% } %>
-    </div>
+      </div>
+    <% } %>
   </section>
 <% }); %>
