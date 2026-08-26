@@ -4,11 +4,10 @@
   <section class="section <%= i % 2 === 1 ? 'section--alt' : '' %> reveal">
     <div class="container">
       <% if (group.intro) { %>
-        <div class="container--narrow" style="margin-bottom:2.5rem;padding-inline:0;">
-          <span class="eyebrow"><%= group.intro['title_' + lang] %></span>
+        <div class="container--narrow text-center" style="margin-inline:auto;margin-bottom:2.5rem;">
           <h2><%= group.intro['title_' + lang] %></h2>
           <% paragraphs(group.intro['body_' + lang]).forEach(function (para) { %>
-            <p class="lede"><%= para %></p>
+            <p class="lede" style="margin-inline:auto;"><%= para %></p>
           <% }); %>
         </div>
       <% } %>

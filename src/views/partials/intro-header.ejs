@@ -1,5 +1,5 @@
 <%
-  // Locals expected: headingKey (t() key used for both the eyebrow and h1),
+  // Locals expected: headingKey (t() key used for the h1),
   // intro (the content.intro page_content row, or undefined).
   var _heading = t(headingKey);
   var _hasImage = intro && intro.media;
@@ -9,24 +9,22 @@
     <div class="page-hero__media">
       <%- include('./image', { media: intro.media, alt: _heading, eager: true, sizesAttr: '100vw' }) %>
     </div>
-    <div class="page-hero__content container container--narrow">
-      <span class="eyebrow"><%= _heading %></span>
+    <div class="page-hero__content container container--narrow text-center">
       <h1><%= _heading %></h1>
     </div>
   </section>
   <% if (intro && intro['body_' + lang]) { %>
-    <section class="section--tight container container--narrow reveal">
+    <section class="section--tight container container--narrow text-center reveal">
       <% paragraphs(intro['body_' + lang]).forEach(function (para) { %>
-        <p class="lede"><%= para %></p>
+        <p class="lede" style="margin-inline:auto;"><%= para %></p>
       <% }); %>
     </section>
   <% } %>
 <% } else { %>
-  <section class="section container container--narrow reveal">
-    <span class="eyebrow"><%= _heading %></span>
+  <section class="section section--alt container container--narrow text-center reveal">
     <h1><%= _heading %></h1>
     <% paragraphs(intro && intro['body_' + lang]).forEach(function (para) { %>
-      <p class="lede"><%= para %></p>
+      <p class="lede" style="margin-inline:auto;"><%= para %></p>
     <% }); %>
   </section>
 <% } %>
