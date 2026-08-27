@@ -47,4 +47,4 @@
   </div>
 </footer>
 
-<script src="<%= process.env.NODE_ENV === 'production' ? '/js/main.min.js' : '/js/main.js' %>" defer></script>
+<script src="<%= process.env.NODE_ENV === 'production' ? '/js/main.min.js' : '/js/main.js' %>?v=<%= assetVersion %>" defer></script>

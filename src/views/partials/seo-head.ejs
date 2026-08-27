@@ -24,7 +24,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..600;1,400..500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="<%= process.env.NODE_ENV === 'production' ? '/css/style.min.css' : '/css/style.css' %>">
+<link rel="stylesheet" href="<%= process.env.NODE_ENV === 'production' ? '/css/style.min.css' : '/css/style.css' %>?v=<%= assetVersion %>">
 
 <% if (typeof jsonld !== 'undefined' && jsonld) { %>
 <script type="application/ld+json"><%- JSON.stringify(jsonld) %></script>

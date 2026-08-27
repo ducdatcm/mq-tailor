@@ -19,6 +19,15 @@ const sitemapRouter = require('./src/routes/sitemap');
 const app = express();
 const isProd = process.env.NODE_ENV === 'production';
 
+// Static assets are cached in the browser for 7 days (see express.static
+// below) and always served from the same URL (style.min.css, main.min.js),
+// so without something to invalidate that cache a CSS/JS change made today
+// can stay invisible to a returning visitor for up to a week. Appending
+// ?v=<boot time> to those two URLs (see seo-head.ejs / footer.ejs) forces a
+// fresh copy on every deploy, since this host gives each deploy a brand-new
+// process (and disposable folder) with a new boot time.
+app.locals.assetVersion = Date.now();
+
 app.set('trust proxy', 1);
 app.use(privateDomainGate);
 app.use(basicAuthGate);
