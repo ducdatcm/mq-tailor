@@ -20,13 +20,27 @@
 
 <% if (post.gallery && post.gallery.length) { %>
 <section class="section section--alt reveal">
-  <div class="container container--narrow">
-    <div class="grid grid--2">
-      <% post.gallery.forEach(function (photo) { %>
-        <div class="media-frame">
-          <%- include('../partials/image', { media: photo, ratio: '4/3' }) %>
+  <div class="container">
+    <h2 style="font-size:var(--fs-xl);margin-bottom:1.5rem;"><%= t('journal.gallery_heading') %></h2>
+    <div class="slider" data-slider>
+      <div class="slider__track">
+        <% post.gallery.forEach(function (photo) { %>
+          <figure class="slider__item">
+            <div class="media-frame">
+              <%- include('../partials/image', { media: photo, ratio: '4/3' }) %>
+            </div>
+            <% if (photo.alt) { %>
+              <figcaption class="slider__caption"><%= photo.alt %></figcaption>
+            <% } %>
+          </figure>
+        <% }); %>
+      </div>
+      <% if (post.gallery.length > 1) { %>
+        <div class="slider__controls">
+          <button type="button" class="slider__btn" data-slider-prev aria-label="<%= t('cta.previous') %>">‹</button>
+          <button type="button" class="slider__btn" data-slider-next aria-label="<%= t('cta.next') %>">›</button>
         </div>
-      <% }); %>
+      <% } %>
     </div>
   </div>
 </section>

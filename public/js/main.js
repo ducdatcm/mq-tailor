@@ -34,6 +34,34 @@
     });
   }
 
+  // --- Horizontal photo sliders (e.g. Journal post galleries) ---
+  document.querySelectorAll('[data-slider]').forEach(function (slider) {
+    var track = slider.querySelector('.slider__track');
+    var prevBtn = slider.querySelector('[data-slider-prev]');
+    var nextBtn = slider.querySelector('[data-slider-next]');
+    if (!track) return;
+
+    function scrollByItem(direction) {
+      var item = track.querySelector('.slider__item');
+      if (!item) return;
+      var gap = parseFloat(getComputedStyle(track).columnGap) || 0;
+      track.scrollBy({ left: direction * (item.getBoundingClientRect().width + gap), behavior: 'smooth' });
+    }
+
+    if (prevBtn) prevBtn.addEventListener('click', function () { scrollByItem(-1); });
+    if (nextBtn) nextBtn.addEventListener('click', function () { scrollByItem(1); });
+
+    function updateButtons() {
+      if (!prevBtn || !nextBtn) return;
+      var maxScroll = track.scrollWidth - track.clientWidth - 1;
+      prevBtn.disabled = track.scrollLeft <= 0;
+      nextBtn.disabled = maxScroll <= 0 || track.scrollLeft >= maxScroll;
+    }
+    updateButtons();
+    track.addEventListener('scroll', updateButtons, { passive: true });
+    window.addEventListener('resize', updateButtons);
+  });
+
   // --- Analytics event hooks (brief §27: phone/Zalo/map/enquiry clicks) ---
   function track(eventName, params) {
     if (typeof window.gtag === 'function') {

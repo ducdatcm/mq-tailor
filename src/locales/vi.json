@@ -28,6 +28,8 @@
     "send_email": "Gửi Email",
     "read_more": "Đọc thêm",
     "back_to_journal": "Quay Lại Journal",
+    "previous": "Ảnh trước",
+    "next": "Ảnh tiếp theo",
     "send_enquiry": "Gửi Liên Hệ"
   },
   "home": {
@@ -59,6 +61,7 @@
   "journal": {
     "heading": "Journal",
     "empty": "Những câu chuyện mới sẽ sớm được cập nhật.",
+    "gallery_heading": "Thêm Hình Ảnh",
     "categories": {
       "craft": "Tay Nghề",
       "cloth": "Vải",

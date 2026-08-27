@@ -28,6 +28,8 @@
     "send_email": "Send an Email",
     "read_more": "Read more",
     "back_to_journal": "Back to Journal",
+    "previous": "Previous photo",
+    "next": "Next photo",
     "send_enquiry": "Send Enquiry"
   },
   "home": {
@@ -59,6 +61,7 @@
   "journal": {
     "heading": "Journal",
     "empty": "New stories are on the way.",
+    "gallery_heading": "More Photos",
     "categories": {
       "craft": "Craft",
       "cloth": "Cloth",
