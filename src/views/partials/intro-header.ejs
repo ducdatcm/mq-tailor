@@ -21,10 +21,12 @@
     </section>
   <% } %>
 <% } else { %>
-  <section class="section section--alt container container--narrow text-center reveal">
-    <h1><%= _heading %></h1>
-    <% paragraphs(intro && intro['body_' + lang]).forEach(function (para) { %>
-      <p class="lede" style="margin-inline:auto;"><%= para %></p>
-    <% }); %>
+  <section class="section section--alt reveal">
+    <div class="container container--narrow text-center">
+      <h1><%= _heading %></h1>
+      <% paragraphs(intro && intro['body_' + lang]).forEach(function (para) { %>
+        <p class="lede" style="margin-inline:auto;"><%= para %></p>
+      <% }); %>
+    </div>
   </section>
 <% } %>
