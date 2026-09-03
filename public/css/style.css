@@ -524,6 +524,29 @@ select:focus-visible {
   .grid--4 { grid-template-columns: repeat(4, 1fr); }
 }
 
+/* A CSS Grid with a fixed column count always keeps that many equal-width
+   tracks, even when there are fewer items than columns — a group of 2-3
+   people in a 4-column grid ends up stuck flush left with empty space on
+   the right instead of sitting centered. .grid--centered swaps to a
+   wrapping flexbox instead, so a short row centers itself. Used for card
+   grids (e.g. People: Front of House / Workshop Team) where entry counts
+   vary; not for the fixed-count photo galleries elsewhere. */
+.grid--centered {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-4);
+}
+.grid--centered > * {
+  flex: 0 0 100%;
+}
+@media (min-width: 640px) {
+  .grid--centered > * { flex: 0 0 calc(50% - var(--space-4) / 2); }
+}
+@media (min-width: 900px) {
+  .grid--centered > * { flex: 0 0 calc(25% - var(--space-4) * 3 / 4); }
+}
+
 .split {
   display: grid;
   gap: var(--space-4);
