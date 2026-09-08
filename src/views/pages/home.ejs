@@ -26,7 +26,7 @@
       <% paragraphs(content.house_teaser && content.house_teaser['body_' + lang]).forEach(function (para) { %>
         <p><%= para %></p>
       <% }); %>
-      <a class="btn btn--outline" href="/<%= lang %>/the-house"><%= t('cta.discover_the_house') %></a>
+      <a class="btn btn--outline" href="/<%= lang %>/the-house"><%= t('home.house_cta') %></a>
     </div>
   </div>
 </section>
@@ -42,7 +42,7 @@
       <% paragraphs(content.craft_teaser && content.craft_teaser['body_' + lang]).forEach(function (para) { %>
         <p><%= para %></p>
       <% }); %>
-      <a class="btn btn--outline" href="/<%= lang %>/the-process">→ <%= t('process.heading') %></a>
+      <a class="btn btn--outline" href="/<%= lang %>/the-process"><%= t('home.craft_cta') %></a>
     </div>
   </div>
 </section>
@@ -58,7 +58,7 @@
       <% paragraphs(content.people_teaser && content.people_teaser['body_' + lang]).forEach(function (para) { %>
         <p><%= para %></p>
       <% }); %>
-      <a class="btn btn--outline" href="/<%= lang %>/our-people"><%= t('cta.meet_the_people') %></a>
+      <a class="btn btn--outline" href="/<%= lang %>/our-people"><%= t('home.people_cta') %></a>
     </div>
   </div>
 </section>
