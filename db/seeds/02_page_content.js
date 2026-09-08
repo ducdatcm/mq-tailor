@@ -5,8 +5,8 @@ exports.seed = async function (knex) {
     // --- HOME ---
     {
       page_key: 'home', section_key: 'hero', sort_order: 1,
-      title_en: 'A tailoring house in Hanoi.',
-      title_vi: 'Một nhà may ở Hà Nội.',
+      title_en: 'Three generations of tailoring in Hanoi, since 1955.',
+      title_vi: 'Ba thế hệ may đo tại Hà Nội, từ năm 1955.',
       body_en: '', body_vi: '',
     },
     {

@@ -3,9 +3,9 @@
     <%- include('../partials/image', { media: content.hero && content.hero.media, alt: content.hero ? content.hero['title_' + lang] : '', eager: true }) %>
   </div>
   <div class="hero__content container">
-    <span class="eyebrow"><%= t('meta.site_name') %></span>
+    <span class="eyebrow"><%= t('home.hero_eyebrow') %></span>
     <h1><%= content.hero ? content.hero['title_' + lang] : t('meta.site_tagline') %></h1>
-    <a class="btn" href="/<%= lang %>/visit"><%= t('cta.visit_the_house') %></a>
+    <a class="btn" href="/<%= lang %>/visit"><%= t('cta.book_an_appointment') %></a>
   </div>
 </section>
 
