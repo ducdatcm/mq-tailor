@@ -123,6 +123,19 @@ h2 { font-size: clamp(var(--fs-2xl), 3.5vw, var(--fs-4xl)); }
 h3 { font-size: var(--fs-xl); }
 h4 { font-size: var(--fs-lg); }
 
+/* Homepage teaser headlines (House/Craft/People/Tailoring/Visit) sit in a
+   column half the container's width next to a photo, or centred over one —
+   much less room than a full-width page heading gets, so the regular h2
+   scale (up to 3rem) wraps most of them onto 2-3 lines. Give them their
+   own smaller, capped size instead, sized down further once the layout
+   above goes two-column (900px) and the text column narrows. */
+.teaser-title {
+  font-size: 1.75rem;
+}
+@media (min-width: 900px) {
+  .teaser-title { font-size: 1.375rem; }
+}
+
 p {
   margin: 0 0 var(--space-2);
 }
