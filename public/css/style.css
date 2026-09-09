@@ -831,6 +831,30 @@ select:focus-visible {
   padding-block: var(--space-6);
 }
 .site-footer a:hover { color: var(--color-cloth); }
+
+.social-icons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 1rem;
+}
+.social-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--color-offwhite);
+  color: var(--color-ink);
+  transition: background var(--transition-base), color var(--transition-base), transform var(--transition-base);
+}
+.social-icon svg { width: 18px; height: 18px; }
+.social-icon:hover {
+  background: var(--color-accent);
+  color: #fff;
+  transform: translateY(-2px);
+}
 .footer-grid {
   display: grid;
   gap: var(--space-4);

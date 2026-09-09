@@ -5,11 +5,7 @@
       <p class="text-muted" style="max-width:40ch;">
         <%= t('meta.site_tagline') %><% if (settings && settings['founding_note_' + lang]) { %> — <%= settings['founding_note_' + lang] %><% } %>.
       </p>
-      <div class="row" style="margin-top:1rem;">
-        <% if (settings && settings.instagram_url) { %>
-          <a href="<%= settings.instagram_url %>" target="_blank" rel="noopener" data-track="click_instagram"><%= t('cta.follow_instagram') %></a>
-        <% } %>
-      </div>
+      <%- include('./social-icons') %>
     </div>
 
     <div>
