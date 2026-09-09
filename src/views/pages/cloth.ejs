@@ -1,24 +1,26 @@
 <%- include('../partials/intro-header', { headingKey: 'cloth.heading', intro: content.intro }) %>
 
+<% var millLogos = (mills || []).filter(function (m) { return m.photo; }); %>
 <section class="section section--alt reveal">
   <div class="container">
-    <h2 style="font-size:var(--fs-xl);"><%= t('cloth.mills_heading') %></h2>
-    <% if (mills && mills.length) { %>
-      <div class="grid grid--3">
-        <% mills.forEach(function (mill) { %>
-          <div class="card">
-            <% if (mill.photo) { %>
-              <div class="media-frame" style="margin-bottom:0.75rem;">
-                <%- include('../partials/image', { media: mill.photo, alt: mill.name, ratio: '4/3' }) %>
-              </div>
-            <% } %>
-            <h3 class="card__title"><%= mill.name %></h3>
-            <p class="text-muted"><%= mill['description_' + lang] || '' %></p>
+    <% if (millLogos.length) { %>
+      <div class="slider slider--logos" data-slider>
+        <div class="slider__track">
+          <% millLogos.forEach(function (mill) { %>
+            <div class="slider__item slider__item--logo" title="<%= mill['description_' + lang] || mill.name %>">
+              <%- include('../partials/image', { media: mill.photo, alt: mill.name }) %>
+            </div>
+          <% }); %>
+        </div>
+        <% if (millLogos.length > 5) { %>
+          <div class="slider__controls">
+            <button type="button" class="slider__btn" data-slider-prev aria-label="<%= t('cta.previous') %>">‹</button>
+            <button type="button" class="slider__btn" data-slider-next aria-label="<%= t('cta.next') %>">›</button>
           </div>
-        <% }); %>
+        <% } %>
       </div>
     <% } else { %>
-      <p class="text-muted"><%= t('cloth.mills_empty') %></p>
+      <p class="text-muted text-center"><%= t('cloth.mills_empty') %></p>
     <% } %>
   </div>
 </section>
