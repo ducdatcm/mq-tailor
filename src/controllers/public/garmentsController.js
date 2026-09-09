@@ -1,5 +1,5 @@
 const { getPageContent } = require('../../utils/content');
-const { getMediaByGroup } = require('../../utils/media');
+const { getMediaByGroup, getMediaByIds, resolveMedia } = require('../../utils/media');
 
 async function show(req, res, next) {
   try {
@@ -12,6 +12,11 @@ async function show(req, res, next) {
     // publish it to this page. This page is meant to hold a lot of photos,
     // so no small teaser cap like the other galleries.
     const gallery = await getMediaByGroup('product_collection', { limit: 500, lang: res.locals.lang });
+
+    const mediaMap = await getMediaByIds(Object.values(content).map((c) => c.media_id));
+    Object.values(content).forEach((c) => {
+      c.media = resolveMedia(mediaMap[c.media_id], res.locals.lang);
+    });
 
     res.render('pages/garments', {
       title: res.locals.t('nav.garments'),
