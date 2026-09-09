@@ -628,8 +628,8 @@ select:focus-visible {
 }
 .slider__item--logo {
   flex: 0 0 auto;
-  width: 150px;
-  height: 84px;
+  width: 195px; /* was 150px, +30% per request */
+  height: 109px; /* was 84px, +30% per request */
   display: flex;
   align-items: center;
   justify-content: center;
