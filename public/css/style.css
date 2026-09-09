@@ -595,6 +595,7 @@ select:focus-visible {
 }
 .slider__track {
   display: flex;
+  align-items: flex-start; /* uncropped photos vary in height; don't stretch them to match the tallest */
   gap: var(--space-3);
   overflow-x: auto;
   scroll-snap-type: x mandatory;

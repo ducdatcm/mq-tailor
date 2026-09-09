@@ -8,7 +8,7 @@
   <h1><%= post['title_' + lang] %></h1>
 
   <div class="media-frame" style="margin-block:2rem;">
-    <%- include('../partials/image', { media: post.cover, alt: post['title_' + lang], ratio: '3/2', eager: true }) %>
+    <%- include('../partials/image', { media: post.cover, alt: post['title_' + lang], eager: true }) %>
   </div>
 
   <div class="stack" style="gap:1.25rem;">
@@ -27,7 +27,7 @@
         <% post.gallery.forEach(function (photo) { %>
           <figure class="slider__item">
             <div class="media-frame">
-              <%- include('../partials/image', { media: photo, ratio: '4/3' }) %>
+              <%- include('../partials/image', { media: photo }) %>
             </div>
             <% if (photo.alt) { %>
               <figcaption class="slider__caption"><%= photo.alt %></figcaption>
