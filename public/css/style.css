@@ -620,6 +620,30 @@ select:focus-visible {
 @media (min-width: 1024px) {
   .slider__item { width: 31%; }
 }
+
+/* "In the Workshop" gallery (Process page): a fixed 2-row grid that
+   flows extra photos into new columns instead of one long single-file
+   strip — flowing left-to-right, top-to-bottom in pairs — so a full
+   screen's worth of photos (2 rows x however many columns fit) shows
+   at once, with the rest reached by scrolling/dragging horizontally
+   or the shared prev/next buttons. */
+.workshop-scroll {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(2, 1fr);
+  grid-auto-columns: calc((100% - var(--space-3)) / 2);
+  gap: var(--space-3);
+}
+.workshop-scroll > .slider__item {
+  width: auto;
+}
+@media (min-width: 640px) {
+  .workshop-scroll { grid-auto-columns: calc((100% - 2 * var(--space-3)) / 3); }
+}
+@media (min-width: 1024px) {
+  .workshop-scroll { grid-auto-columns: calc((100% - 3 * var(--space-3)) / 4); }
+}
+
 /* Cloth mill logo strip — fixed-size tiles (not the percentage-of-viewport
    sizing above) since logos are small and shown many at a time, and use
    object-fit:contain via max-width/height so a logo's own proportions
