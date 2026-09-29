@@ -9,9 +9,9 @@
   </div>
 </section>
 
-<section class="section container container--narrow text-center reveal">
+<section class="section container text-center reveal">
   <% paragraphs(content.intro && content.intro['body_' + lang]).forEach(function (para) { %>
-    <p class="lede" style="margin-inline:auto;"><%= para %></p>
+    <p class="lede" style="margin-inline:auto;max-width:85ch;"><%= para %></p>
   <% }); %>
 </section>
 
