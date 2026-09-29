@@ -23,8 +23,9 @@
   --color-surface: #ffffff;
 
   /* Typography */
-  --font-serif: 'Lora', Georgia, 'Times New Roman', serif;
-  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-serif: 'Lora', Georgia, 'Times New Roman', serif; /* headings */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; /* nav, buttons, labels, small UI text */
+  --font-body: 'Source Serif 4', Georgia, 'Times New Roman', serif; /* running/paragraph text — verified for correct Vietnamese double-diacritic rendering */
 
   --fs-base: 1rem;
   --fs-sm: 0.875rem;
@@ -138,6 +139,7 @@ h4 { font-size: var(--fs-lg); }
 
 p {
   margin: 0 0 var(--space-2);
+  font-family: var(--font-body);
 }
 
 .eyebrow {
