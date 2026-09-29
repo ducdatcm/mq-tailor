@@ -1,6 +1,6 @@
 <section class="hero">
   <div class="hero__media">
-    <%- include('../partials/image', { media: content.hero && content.hero.media, alt: content.hero ? content.hero['title_' + lang] : '', eager: true }) %>
+    <%- include('../partials/image', { media: content.hero && content.hero.media, alt: content.hero ? content.hero['title_' + lang] : '', eager: true, sizesAttr: '100vw' }) %>
   </div>
   <div class="hero__content container">
     <span class="eyebrow"><%= t('home.hero_eyebrow') %></span>
