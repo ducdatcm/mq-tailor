@@ -3,9 +3,16 @@
 <section class="section section--alt reveal">
   <div class="container">
     <% if (gallery && gallery.length) { %>
-      <div class="grid grid--3">
+      <div class="filter-bar" data-garment-filter>
+        <button type="button" class="filter-pill active" data-filter="all"><%= t('garments.filter_all') %></button>
+        <button type="button" class="filter-pill" data-filter="suits_jackets"><%= t('garments.filter_suits_jackets') %></button>
+        <button type="button" class="filter-pill" data-filter="trousers"><%= t('garments.filter_trousers') %></button>
+        <button type="button" class="filter-pill" data-filter="shirts"><%= t('garments.filter_shirts') %></button>
+        <button type="button" class="filter-pill" data-filter="other"><%= t('garments.filter_other') %></button>
+      </div>
+      <div class="grid grid--3" data-garment-grid>
         <% gallery.forEach(function (photo) { %>
-          <div class="card">
+          <div class="card" data-category="<%= photo.category %>">
             <div class="media-frame">
               <%- include('../partials/image', { media: photo, ratio: '4/5' }) %>
             </div>

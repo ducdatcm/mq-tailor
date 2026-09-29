@@ -42,6 +42,9 @@ function resolveMedia(row, lang = 'en') {
     // image into a fixed-ratio frame — set per-photo in the Media Library.
     focalX: row.focal_x != null ? Number(row.focal_x) : 50,
     focalY: row.focal_y != null ? Number(row.focal_y) : 50,
+    // Optional simple category (Our Garments filter buttons) — blank means
+    // "Others". Harmless passthrough for every other page that ignores it.
+    category: row.garment_category || 'other',
   };
 }
 

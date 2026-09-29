@@ -9,6 +9,10 @@ const { deleteObjectByUrl } = require('../../config/storage');
 // to that page too.
 const GROUPS = ['house', 'workshop', 'people', 'garments', 'product_collection', 'fitting', 'cloth', 'hanoi', 'journal', 'other'];
 
+// Simple filter buckets for the Our Garments page (Group="product_collection"
+// only) — blank/anything else is treated as "Others" on the public page.
+const GARMENT_CATEGORIES = ['suits_jackets', 'trousers', 'shirts'];
+
 async function list(req, res, next) {
   try {
     const group = GROUPS.includes(req.query.group) ? req.query.group : null;
@@ -75,9 +79,10 @@ async function updateFocalPoint(req, res, next) {
 
 async function updateAlt(req, res, next) {
   try {
+    const garmentCategory = GARMENT_CATEGORIES.includes(req.body.garment_category) ? req.body.garment_category : null;
     await db('media')
       .where({ id: req.params.id })
-      .update({ alt_en: req.body.alt_en || '', alt_vi: req.body.alt_vi || '' });
+      .update({ alt_en: req.body.alt_en || '', alt_vi: req.body.alt_vi || '', garment_category: garmentCategory });
     req.flash('success', 'Alt text updated.');
     res.redirect('/admin/media');
   } catch (err) {
@@ -127,4 +132,4 @@ async function remove(req, res, next) {
   }
 }
 
-module.exports = { list, upload, updateAlt, updateGroup, remove, focalPointForm, updateFocalPoint, GROUPS };
+module.exports = { list, upload, updateAlt, updateGroup, remove, focalPointForm, updateFocalPoint, GROUPS, GARMENT_CATEGORIES };

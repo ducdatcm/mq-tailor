@@ -50,7 +50,12 @@
   },
   "garments": {
     "heading": "Our Garments",
-    "empty": "Photographs of finished garments are being added here."
+    "empty": "Photographs of finished garments are being added here.",
+    "filter_all": "All",
+    "filter_suits_jackets": "Suit & Jackets",
+    "filter_trousers": "Trousers",
+    "filter_shirts": "Shirts",
+    "filter_other": "Others"
   },
   "process": {
     "heading": "The Process",

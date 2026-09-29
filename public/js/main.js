@@ -62,6 +62,26 @@
     window.addEventListener('resize', updateButtons);
   });
 
+  // --- Our Garments category filter (All / Suit & Jackets / Trousers / Shirts / Others) ---
+  var garmentFilter = document.querySelector('[data-garment-filter]');
+  var garmentGrid = document.querySelector('[data-garment-grid]');
+  if (garmentFilter && garmentGrid) {
+    var filterPills = garmentFilter.querySelectorAll('.filter-pill');
+    var garmentCards = garmentGrid.querySelectorAll('.card');
+
+    filterPills.forEach(function (pill) {
+      pill.addEventListener('click', function () {
+        filterPills.forEach(function (p) { p.classList.remove('active'); });
+        pill.classList.add('active');
+        var wanted = pill.getAttribute('data-filter');
+        garmentCards.forEach(function (card) {
+          var show = wanted === 'all' || card.getAttribute('data-category') === wanted;
+          card.hidden = !show;
+        });
+      });
+    });
+  }
+
   // --- Analytics event hooks (brief §27: phone/Zalo/map/enquiry clicks) ---
   function track(eventName, params) {
     if (typeof window.gtag === 'function') {

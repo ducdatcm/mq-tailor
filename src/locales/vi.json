@@ -50,7 +50,12 @@
   },
   "garments": {
     "heading": "Sản Phẩm",
-    "empty": "Hình ảnh các trang phục hoàn thiện đang được cập nhật tại đây."
+    "empty": "Hình ảnh các trang phục hoàn thiện đang được cập nhật tại đây.",
+    "filter_all": "Tất Cả",
+    "filter_suits_jackets": "Suit & Áo Khoác",
+    "filter_trousers": "Quần Âu",
+    "filter_shirts": "Sơ Mi",
+    "filter_other": "Khác"
   },
   "process": {
     "heading": "Quy Trình",

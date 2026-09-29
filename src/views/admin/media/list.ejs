@@ -25,7 +25,7 @@
         <input type="text" id="alt_vi" name="alt_vi">
       </div>
     </div>
-    <p class="field-hint">For photos tagged <strong>product_collection</strong>, this text is also shown as a visible caption line under the photo on the Our Garments page — e.g. "Unlined jacket, tropical wool, half-canvassed finish." For other groups it's just accessibility/SEO alt text and isn't shown on the page.</p>
+    <p class="field-hint">For photos tagged <strong>product_collection</strong>, this text is also shown as a visible caption line under the photo on the Our Garments page — e.g. "Unlined jacket, tropical wool, half-canvassed finish." For other groups it's just accessibility/SEO alt text and isn't shown on the page. Once uploaded, tagged <strong>product_collection</strong> photos also get a "Filter" dropdown below their caption fields — this decides which of the All / Suit & Jackets / Trousers / Shirts / Others buttons the photo shows up under on that page.</p>
     <button type="submit" class="btn">Upload &amp; Resize</button>
   </form>
 </div>
@@ -63,6 +63,14 @@
         <form method="POST" action="/admin/media/<%= m.id %>/alt" style="margin-top:0.4rem;">
           <input type="text" name="alt_en" value="<%= m.alt_en || '' %>" placeholder="Caption (EN)" style="width:100%;font-size:0.75rem;padding:0.3rem;margin-bottom:0.25rem;">
           <input type="text" name="alt_vi" value="<%= m.alt_vi || '' %>" placeholder="Caption (VI)" style="width:100%;font-size:0.75rem;padding:0.3rem;margin-bottom:0.25rem;">
+          <% if (m.group === 'product_collection') { %>
+            <select name="garment_category" style="width:100%;font-size:0.75rem;padding:0.3rem;margin-bottom:0.25rem;">
+              <option value="" <%= !m.garment_category ? 'selected' : '' %>>Filter: Others</option>
+              <option value="suits_jackets" <%= m.garment_category === 'suits_jackets' ? 'selected' : '' %>>Filter: Suit & Jackets</option>
+              <option value="trousers" <%= m.garment_category === 'trousers' ? 'selected' : '' %>>Filter: Trousers</option>
+              <option value="shirts" <%= m.garment_category === 'shirts' ? 'selected' : '' %>>Filter: Shirts</option>
+            </select>
+          <% } %>
           <button type="submit" class="btn--ghost btn" style="padding:0.15rem 0.4rem;font-size:0.7rem;">Save caption</button>
         </form>
 
