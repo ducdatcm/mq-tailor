@@ -1,0 +1,33 @@
+:root {
+  /* Warm ivory + charcoal, one restrained accent (matches the Minh Quang site). */
+  --bg: #f5f1ea;
+  --surface: #fffdf9;
+  --surface-2: #efe9dd;
+  --line: #d9d0bf;
+  --line-strong: #b9ae99;
+  --ink: #2b2620;
+  --ink-2: #4f483e;
+  --muted: #655d51;
+  --accent: #7a3b32;
+  --accent-ink: #fffdf9;
+  --accent-soft: #f1e1dc;
+  --ok: #2f5d3f;
+  --warn: #8a4b12;
+  --warn-soft: #f8ead6;
+  --focus: #1d5fa8;
+
+  --sk-ink: #2b2620;
+  --sk-ctx: #a39a8a;
+  --sk-cloth: #ece4d2;
+  --sk-cloth-2: #ddd2ba;
+  --sk-paper: #fffdf9;
+  --sk-pad: #cdbf9f;
+  --sk-lining: #e5c6bf;
+  --sk-lining-line: #7a3b32;
+
+  --font-serif: 'Lora', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  --radius: 14px;
+  --shadow: 0 1px 2px rgba(43, 38, 32, 0.08), 0 6px 18px rgba(43, 38, 32, 0.06);
+}

@@ -1,0 +1,272 @@
+[
+  {
+    "area": "layout tablet-1024x768 suit start",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout tablet-1024x768 suit configure",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout tablet-1024x768 suit configure trousers",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout tablet-1024x768 suit configure learn-more",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout tablet-1024x768 suit review",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout tablet-1024x768 suit confirmed",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout tablet-1024x768 suit confirmed (EN)",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout tablet-1024x768 blazer configure",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout tablet-1024x768 blazer review",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout tablet-1024x768 blazer confirmed",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout tablet-1024x768 trousers configure",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout tablet-1024x768 trousers review",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout tablet-1024x768 trousers confirmed",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "keyboard tablet-1024x768 start -> configure",
+    "ok": true,
+    "detail": "Kiểu cài áoFront closure"
+  },
+  {
+    "area": "keyboard tablet-1024x768 modal traps focus, Escape closes, focus returns",
+    "ok": true,
+    "detail": "{\"trapped\":true,\"returned\":true}"
+  },
+  {
+    "area": "keyboard tablet-1024x768 full journey to confirmation",
+    "ok": true,
+    "detail": "Đã xác nhận thiết kế mẫu"
+  },
+  {
+    "area": "keyboard tablet-1024x768 focus ring visible while tabbing",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "no console errors tablet-1024x768",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout tablet-1280x800 suit start",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout tablet-1280x800 suit configure",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout tablet-1280x800 suit configure trousers",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout tablet-1280x800 suit configure learn-more",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout tablet-1280x800 suit review",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout tablet-1280x800 suit confirmed",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout tablet-1280x800 suit confirmed (EN)",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout tablet-1280x800 blazer configure",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout tablet-1280x800 blazer review",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout tablet-1280x800 blazer confirmed",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout tablet-1280x800 trousers configure",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout tablet-1280x800 trousers review",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout tablet-1280x800 trousers confirmed",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "keyboard tablet-1280x800 start -> configure",
+    "ok": true,
+    "detail": "Kiểu cài áoFront closure"
+  },
+  {
+    "area": "keyboard tablet-1280x800 modal traps focus, Escape closes, focus returns",
+    "ok": true,
+    "detail": "{\"trapped\":true,\"returned\":true}"
+  },
+  {
+    "area": "keyboard tablet-1280x800 full journey to confirmation",
+    "ok": true,
+    "detail": "Đã xác nhận thiết kế mẫu"
+  },
+  {
+    "area": "keyboard tablet-1280x800 focus ring visible while tabbing",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "no console errors tablet-1280x800",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout portrait-768x1024 suit start",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout portrait-768x1024 suit configure",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout portrait-768x1024 suit configure trousers",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout portrait-768x1024 suit configure learn-more",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout portrait-768x1024 suit review",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout portrait-768x1024 suit confirmed",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout portrait-768x1024 suit confirmed (EN)",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout portrait-768x1024 blazer configure",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout portrait-768x1024 blazer review",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout portrait-768x1024 blazer confirmed",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout portrait-768x1024 trousers configure",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout portrait-768x1024 trousers review",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout portrait-768x1024 trousers confirmed",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "keyboard portrait-768x1024 start -> configure",
+    "ok": true,
+    "detail": "Kiểu cài áoFront closure"
+  },
+  {
+    "area": "keyboard portrait-768x1024 modal traps focus, Escape closes, focus returns",
+    "ok": true,
+    "detail": "{\"trapped\":true,\"returned\":true}"
+  },
+  {
+    "area": "keyboard portrait-768x1024 full journey to confirmation",
+    "ok": true,
+    "detail": "Đã xác nhận thiết kế mẫu"
+  },
+  {
+    "area": "keyboard portrait-768x1024 focus ring visible while tabbing",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "no console errors portrait-768x1024",
+    "ok": true,
+    "detail": ""
+  }
+]

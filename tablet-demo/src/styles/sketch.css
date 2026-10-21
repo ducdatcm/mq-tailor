@@ -1,0 +1,69 @@
+/* Sketch drawing rules. All drawings share these line weights and fills. */
+.sk {
+  display: block;
+  width: 100%;
+  height: auto;
+  fill: none;
+  stroke: none;
+}
+.sk .ink {
+  stroke: var(--sk-ink);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.sk .ctx {
+  stroke: var(--sk-ctx);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.sk .ink-thin {
+  stroke: var(--sk-ctx);
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+.sk .stitch {
+  stroke-dasharray: 5 5;
+  stroke-width: 1.8;
+}
+.sk .crease {
+  stroke-dasharray: 9 7;
+  stroke-width: 2;
+}
+.sk .bound {
+  stroke-dasharray: 3 5;
+  stroke-width: 2.4;
+  stroke: var(--sk-lining-line);
+}
+.sk .slot {
+  stroke-width: 4;
+}
+.sk .hole {
+  stroke-width: 2.6;
+}
+.sk .cloth {
+  fill: var(--sk-cloth);
+}
+.sk .cloth2 {
+  fill: var(--sk-cloth-2);
+}
+.sk .paper {
+  fill: var(--sk-paper);
+  stroke: none;
+}
+.sk .pad {
+  fill: var(--sk-pad);
+}
+.sk .lining {
+  fill: var(--sk-lining);
+}
+.sk .btn {
+  fill: var(--sk-paper);
+  stroke: var(--sk-ink);
+  stroke-width: 2.4;
+}
+.sk .dot {
+  fill: var(--sk-ink);
+  stroke: none;
+}

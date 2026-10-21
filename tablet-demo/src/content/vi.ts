@@ -1,0 +1,297 @@
+import type { Copy } from './copy';
+
+/**
+ * Nội dung tiếng Việt (mặc định). Đây là bản nháp trung tính — chờ nhà may /
+ * thợ chính duyệt thuật ngữ và cách diễn đạt trước khi dùng thật.
+ */
+export const vi: Copy = {
+  brand: 'Minh Quang',
+  brandSub: 'Nhà may · Hà Nội',
+  demoBadge: 'Demo trải nghiệm',
+  language: { label: 'Ngôn ngữ', vi: 'VI', en: 'EN' },
+  newSession: 'Phiên mới',
+  close: 'Đóng',
+
+  products: {
+    suit: { name: 'Suit hai mảnh', desc: 'Một áo và một quần, cấu hình riêng từng món.' },
+    blazer: { name: 'Blazer', desc: 'Áo khoác dáng suit, mặc riêng với quần khác.' },
+    trousers: { name: 'Quần tây', desc: 'Quần may riêng, chọn từng chi tiết.' },
+  },
+
+  garments: {
+    suit: { jacket: 'Áo suit', trousers: 'Quần suit' },
+    blazer: { jacket: 'Áo blazer', trousers: 'Quần' },
+    trousers: { jacket: 'Áo', trousers: 'Quần tây' },
+  },
+
+  groups: {
+    closure: {
+      name: 'Kiểu cài áo',
+      term: 'Front closure',
+      difference:
+        'Cách hai thân trước của áo gài vào nhau: một hàng khuy thì gọn, hai hàng khuy thì thân trước rộng và chồng lên nhau.',
+      ask: 'Anh/chị thường mặc áo cài khuy hay để mở? Anh/chị muốn dáng áo gọn hay trang trọng hơn?',
+      more: 'Với một hàng khuy, hai thân trước gặp nhau ở giữa; số khuy (1 hoặc 2) quyết định vị trí gập của ve. Với hai hàng 6×2, sáu khuy xếp thành hai hàng, thường chỉ cài hai khuy; hai thân trước chồng lên nhau nên phần ngực được che rộng hơn. Đây là mô tả định hướng thiết kế, thợ may sẽ tư vấn thêm khi đo.',
+      suggestion: 'Mẫu của nhà may chọn một hàng 2 khuy: kiểu cân đối, dùng được cho nhiều dịp.',
+    },
+    lapel: {
+      name: 'Kiểu ve',
+      term: 'Lapel',
+      difference:
+        'Hình dạng phần ve áo: ve notch có khấc chữ V giữa ve và cổ áo, ve nhọn có mũi ve hướng lên phía vai.',
+      ask: 'Anh/chị thích đường ve kín đáo hay muốn phần ve nổi bật hơn?',
+      more: 'Ve notch là kiểu ve quen thuộc trên áo một hàng khuy. Ve nhọn có mũi ve vươn lên, thường đi cùng áo hai hàng khuy. Trong bộ mẫu này, kiểu cài hai hàng 6×2 chỉ có ve nhọn.',
+      suggestion: 'Mẫu của nhà may chọn ve notch, đi cùng áo một hàng khuy.',
+    },
+    shoulder: {
+      name: 'Dáng vai',
+      term: 'Shoulder',
+      difference:
+        'Mức đệm và độ cứng của đầu vai: vai tự nhiên mềm theo vai người mặc, vai cấu trúc có đường vai rõ nét hơn.',
+      ask: 'Anh/chị thích áo mềm, thoải mái hay đường vai rõ và chắc hơn?',
+      more: 'Vai tự nhiên đệm nhẹ cho cảm giác mềm. Vai cấu trúc dùng đệm dày hơn để giữ đường vai thẳng. Đây là định hướng thiết kế; thợ may sẽ đánh giá thực tế khi đo.',
+      suggestion: 'Mẫu của nhà may chọn vai tự nhiên, đệm nhẹ.',
+      note: 'Hình minh họa định hướng thiết kế, không phải phom áo đo riêng cho khách.',
+    },
+    hipPockets: {
+      name: 'Túi ngoài',
+      term: 'Hip pockets',
+      difference:
+        'Kiểu túi hai bên hông áo: có nắp che miệng túi, viền gọn không nắp, hoặc túi may đắp bên ngoài thân áo.',
+      ask: 'Anh/chị có hay bỏ đồ vào túi áo không? Anh/chị muốn áo trang trọng hay thoải mái hơn?',
+      more: 'Túi có nắp: nắp vải phủ miệng túi, dễ nhận ra. Túi viền không nắp: chỉ thấy đường viền nhỏ, gọn. Túi đắp: miếng vải may nổi bên ngoài thân áo, cho vẻ thoải mái hơn.',
+      suggestion: 'Mẫu của nhà may chọn túi có nắp.',
+    },
+    vents: {
+      name: 'Xẻ sau',
+      term: 'Back vents',
+      difference: 'Đường xẻ ở lai sau của áo: hai xẻ hai bên hoặc một xẻ giữa lưng.',
+      ask: 'Anh/chị có hay ngồi nhiều, hoặc đút tay vào túi quần khi mặc áo không?',
+      more: 'Hai xẻ mở ở hai bên lưng, một xẻ mở ở giữa lưng. Xẻ giúp tà áo thoải mái hơn khi ngồi và cử động.',
+      suggestion: 'Mẫu của nhà may chọn hai xẻ.',
+      note: 'Hình minh họa nhìn từ phía sau.',
+    },
+    lining: {
+      name: 'Lót áo',
+      term: 'Lining',
+      difference: 'Phạm vi lớp vải lót bên trong áo: lót toàn bộ, lót một phần hoặc không lót.',
+      ask: 'Anh/chị mặc áo chủ yếu vào mùa nào? Anh/chị muốn áo mềm mại, dễ mặc hay nhẹ và thoáng hơn?',
+      more: 'Lót toàn bộ phủ kín mặt trong thân và tay áo. Lót một phần chỉ phủ một phần mặt trong. Không lót thì áo nhẹ hơn. Mục này chỉ chọn phạm vi lót, chưa nói đến lớp dựng (canvas) bên trong áo.',
+      suggestion: 'Mẫu của nhà may chọn lót toàn bộ.',
+      note: 'Sơ đồ chỉ minh họa phạm vi lớp lót, không thể hiện lớp dựng bên trong.',
+    },
+    pleats: {
+      name: 'Xếp ly trước',
+      term: 'Front pleats',
+      difference: 'Các nếp gấp ở cạp quần phía trước: không ly (phẳng), một ly hoặc hai ly mỗi bên.',
+      ask: 'Anh/chị thích mặt trước quần phẳng gọn hay có thêm ly để thoải mái ở phần hông?',
+      more: 'Ly xếp là nếp vải gấp ngay dưới cạp quần. Đừng nhầm với đường là (đường ép) chạy dọc giữa ống quần; trong hình, đường là được vẽ bằng nét đứt để dễ phân biệt.',
+      suggestion: 'Mẫu của nhà may chọn không ly.',
+    },
+    waistband: {
+      name: 'Chi tiết cạp quần',
+      term: 'Waistband',
+      difference:
+        'Cách hoàn thiện cạp quần: có đỉa để luồn thắt lưng, hoặc có tăng đơ hai bên để chỉnh độ rộng cạp.',
+      ask: 'Anh/chị quen mặc quần có thắt lưng hay muốn chỉnh cạp bằng tăng đơ?',
+      more: 'Đỉa thắt lưng là các quai nhỏ trên cạp để luồn thắt lưng. Tăng đơ là hai miếng điều chỉnh ở hai bên cạp. Độ vừa của cạp sẽ được thợ may xác định khi đo.',
+      suggestion: 'Mẫu của nhà may chọn đỉa thắt lưng.',
+    },
+    frontPockets: {
+      name: 'Túi trước',
+      term: 'Front pockets',
+      difference:
+        'Hướng miệng túi ở hông: túi chéo chạy xiên từ cạp xuống đường sườn, túi dọc nằm dọc theo đường sườn.',
+      ask: 'Anh/chị có hay bỏ đồ vào túi trước không? Anh/chị thích miệng túi dễ thò tay hay kín đáo?',
+      more: 'Túi chéo có miệng túi xiên từ cạp xuống phía đường sườn. Túi dọc có miệng túi nằm ngay trên đường sườn nên kín đáo hơn.',
+      suggestion: 'Mẫu của nhà may chọn túi chéo.',
+    },
+    backPockets: {
+      name: 'Túi sau',
+      term: 'Back pockets',
+      difference: 'Số túi ở mặt sau quần: một túi bên phải hoặc hai túi, mỗi bên một túi.',
+      ask: 'Anh/chị có hay để ví ở túi sau không?',
+      more: 'Một túi bên phải là bên phải của người mặc. Hai túi có đủ túi ở cả hai bên mặt sau.',
+      suggestion: 'Mẫu của nhà may chọn hai túi.',
+      note: 'Hình minh họa nhìn từ phía sau.',
+    },
+    hem: {
+      name: 'Gấu quần',
+      term: 'Hem',
+      difference: 'Phần cuối ống quần: gấu thường kết thúc phẳng, gấu lơ vê gấp lên thành một lớp ngoài ống.',
+      ask: 'Anh/chị thích ống quần gọn phẳng hay có gấp lơ vê?',
+      more: 'Lơ vê (turn-up) là phần vải gấp lên ở cuối ống quần. Chiều dài ống sẽ được thợ may xác định khi đo.',
+      suggestion: 'Mẫu của nhà may chọn gấu thường.',
+    },
+  },
+
+  options: {
+    'closure.sb1': {
+      label: 'Một hàng 1 khuy',
+      term: 'Single-breasted, 1 button',
+      desc: 'Một khuy ở eo, đường ve kéo xuống thấp, dáng áo mở.',
+    },
+    'closure.sb2': {
+      label: 'Một hàng 2 khuy',
+      term: 'Single-breasted, 2 buttons',
+      desc: 'Hai khuy ở eo, kiểu cài quen thuộc cho cả suit và blazer.',
+    },
+    'closure.db6x2': {
+      label: 'Hai hàng 6×2',
+      term: 'Double-breasted, 6×2',
+      desc: 'Sáu khuy xếp hai hàng, thân trước rộng và chồng lên nhau. Bộ mẫu chỉ có ve nhọn.',
+    },
+    'lapel.notch': { label: 'Ve notch', term: 'Notch lapel', desc: 'Có khấc chữ V giữa ve và cổ áo.' },
+    'lapel.peak': { label: 'Ve nhọn', term: 'Peak lapel', desc: 'Mũi ve hướng lên phía vai, đường nét rõ hơn.' },
+    'shoulder.natural': {
+      label: 'Vai tự nhiên, đệm nhẹ',
+      term: 'Natural, lightly padded',
+      desc: 'Đường vai mềm, theo dáng vai người mặc.',
+    },
+    'shoulder.structured': {
+      label: 'Vai cấu trúc rõ',
+      term: 'Structured',
+      desc: 'Đệm dày hơn, đường vai thẳng và rõ nét.',
+    },
+    'hipPockets.flap': { label: 'Túi có nắp', term: 'Flap', desc: 'Nắp vải phủ trên miệng túi.' },
+    'hipPockets.jetted': { label: 'Túi viền không nắp', term: 'Jetted', desc: 'Miệng túi chỉ có đường viền nhỏ, gọn.' },
+    'hipPockets.patch': { label: 'Túi đắp', term: 'Patch', desc: 'Miếng vải may nổi bên ngoài thân áo.' },
+    'vents.double': { label: 'Hai xẻ', term: 'Double vents', desc: 'Hai đường xẻ ở hai bên lưng.' },
+    'vents.single': { label: 'Một xẻ', term: 'Single vent', desc: 'Một đường xẻ ở giữa lưng.' },
+    'lining.full': { label: 'Lót toàn bộ', term: 'Fully lined', desc: 'Lớp lót phủ toàn bộ mặt trong thân và tay.' },
+    'lining.partial': {
+      label: 'Lót một phần',
+      term: 'Partially lined',
+      desc: 'Lót phần trên lưng và tay; phần còn lại để đường may viền gọn.',
+    },
+    'lining.unlined': {
+      label: 'Không lót',
+      term: 'Unlined',
+      desc: 'Không có lớp lót; đường may bên trong được viền gọn.',
+    },
+    'pleats.flat': { label: 'Không ly', term: 'Flat front', desc: 'Mặt trước phẳng, không có nếp ly.' },
+    'pleats.one': { label: 'Một ly mỗi bên', term: 'One pleat per side', desc: 'Một nếp ly dưới cạp ở mỗi bên.' },
+    'pleats.two': { label: 'Hai ly mỗi bên', term: 'Two pleats per side', desc: 'Hai nếp ly dưới cạp ở mỗi bên.' },
+    'waistband.beltLoops': {
+      label: 'Đỉa thắt lưng',
+      term: 'Belt loops',
+      desc: 'Các quai nhỏ trên cạp để luồn thắt lưng.',
+    },
+    'waistband.sideAdjusters': {
+      label: 'Tăng đơ hai bên',
+      term: 'Side adjusters',
+      desc: 'Hai miếng chỉnh ở hai bên cạp để điều chỉnh độ rộng.',
+    },
+    'frontPockets.slanted': { label: 'Túi chéo', term: 'Slanted', desc: 'Miệng túi xiên từ cạp xuống đường sườn.' },
+    'frontPockets.sideSeam': { label: 'Túi dọc', term: 'Side-seam', desc: 'Miệng túi nằm dọc theo đường sườn quần.' },
+    'backPockets.oneRight': {
+      label: 'Một túi bên phải',
+      term: 'One right pocket',
+      desc: 'Một túi sau, ở bên phải người mặc.',
+    },
+    'backPockets.two': { label: 'Hai túi', term: 'Two pockets', desc: 'Mỗi bên mặt sau có một túi.' },
+    'hem.plain': { label: 'Gấu thường', term: 'Plain hem', desc: 'Ống quần kết thúc phẳng.' },
+    'hem.turnUp': { label: 'Gấu lơ vê', term: 'Turn-up', desc: 'Cuối ống gấp lên thành một lớp vải ngoài.' },
+  },
+
+  start: {
+    title: 'Cùng chọn kiểu dáng với nhà may',
+    intro: 'Xem từng chi tiết qua hình vẽ, so sánh và thống nhất thiết kế trước khi sang bước đo.',
+    productsLabel: 'Chọn sản phẩm',
+    modeLabel: 'Cách bắt đầu',
+    modeManual: { title: 'Tự chọn chi tiết', desc: 'Đi lần lượt từng nhóm, chưa chọn sẵn gì.' },
+    modePreset: {
+      title: 'Bắt đầu từ gợi ý nhà may',
+      desc: 'Điền sẵn một cấu hình mẫu, sau đó chỉnh từng chi tiết tùy ý.',
+    },
+    cta: 'Bắt đầu tư vấn',
+    needProduct: 'Chọn một sản phẩm để bắt đầu.',
+  },
+
+  configure: {
+    stepsLabel: 'Các nhóm chi tiết',
+    garmentsLabel: 'Chọn món',
+    groupOf: 'Nhóm {n}/{total}',
+    back: 'Quay lại',
+    next: 'Tiếp tục',
+    toReview: 'Xem lại thiết kế',
+    doneBackToReview: 'Xong, về xem lại',
+    askHouse: 'Nhờ nhà may gợi ý',
+    learnMore: 'Tìm hiểu thêm',
+    hideMore: 'Thu gọn',
+    askLabel: 'Câu hỏi gợi ý cho nhân viên',
+    moreLabel: 'Giải thích thêm',
+    selected: 'Đã chọn',
+    notSelected: 'Chưa chọn',
+    enlarge: 'Phóng to hình: {label}',
+    optionsOf: 'Các lựa chọn: {group}',
+    unavailable: 'Không có trong bộ mẫu',
+    changeClosure: 'Đổi kiểu cài áo',
+    stepDone: 'đã chọn',
+    stepTodo: 'chưa chọn',
+    summaryTitle: 'Tóm tắt lựa chọn',
+    summaryToggle: 'Tóm tắt ({done}/{total})',
+    progress: 'Đã chọn {done}/{total} nhóm',
+    allDone: 'Đã chọn đủ các nhóm',
+    openReview: 'Xem lại thiết kế',
+    jumpTo: 'Đi tới: {group}',
+  },
+
+  suggestion: {
+    title: 'Gợi ý của nhà may',
+    houseLabel: 'Gợi ý mẫu',
+    disclaimer: 'Đây là gợi ý mẫu, chưa dựa trên vóc dáng hay nhu cầu riêng của khách. Gợi ý chỉ được tính là lựa chọn khi bấm “Áp dụng”.',
+    apply: 'Áp dụng lựa chọn này',
+    applied: 'Đang được chọn',
+    decline: 'Để tôi tự chọn',
+    unavailable: 'Gợi ý này không dùng được với lựa chọn hiện tại.',
+  },
+
+  lapelRule: {
+    title: 'Hai hàng 6×2 đi cùng ve nhọn',
+    body: 'Trong bộ mẫu này, kiểu hai hàng 6×2 chỉ có ve nhọn. Nếu đồng ý, kiểu cài áo sẽ đổi sang hai hàng 6×2 và kiểu ve sẽ đổi từ ve notch sang ve nhọn.',
+    accept: 'Đồng ý, đổi cả hai',
+    cancel: 'Hủy, giữ nguyên',
+    disabledReason: 'Bộ mẫu chỉ có ve nhọn cho kiểu hai hàng 6×2.',
+  },
+
+  review: {
+    title: 'Xem lại thiết kế',
+    intro: 'Cùng kiểm tra từng chi tiết. Chạm “Chỉnh sửa” để đổi một nhóm mà không mất các lựa chọn khác.',
+    missingTitle: 'Còn thiếu {n} nhóm chưa chọn',
+    missingIntro: 'Chạm vào tên nhóm để chọn ngay:',
+    chooseNow: 'Chọn ngay',
+    edit: 'Chỉnh sửa',
+    editLabel: 'Chỉnh sửa: {group}',
+    notChosen: 'Chưa chọn',
+    confirm: 'Xác nhận thiết kế',
+    confirmBlocked: 'Cần chọn đủ các nhóm còn thiếu trước khi xác nhận.',
+    confirmUnchanged: 'Chưa có thay đổi so với bản đã xác nhận.',
+    backToEdit: 'Quay lại chọn',
+    editingBanner: 'Đang chỉnh sửa. Bản đã xác nhận (lần {n}) vẫn giữ nguyên cho đến khi xác nhận lại.',
+    viewConfirmed: 'Xem bản đã xác nhận',
+  },
+
+  confirmed: {
+    title: 'Đã xác nhận thiết kế mẫu',
+    subtitle: 'Đây là phiếu thiết kế demo, chưa phải đơn hàng.',
+    codeLabel: 'Mã demo',
+    revision: 'Lần xác nhận {n}',
+    confirmedAt: 'Xác nhận lúc {time} (trong phiên demo)',
+    nextTitle: 'Bước tiếp theo',
+    nextBody: 'Khách sang khu vực đo. Thợ may đo, và nhân viên cùng khách hoàn thiện đơn.',
+    edit: 'Chỉnh sửa thiết kế',
+    newSession: 'Bắt đầu phiên mới',
+    changed: 'Đã đổi',
+    wasValue: 'Trước đó: {value}',
+    changesTitle: 'Thay đổi so với lần {n}',
+    firstRevisionNote: 'Nếu chỉnh sửa và xác nhận lại, các chi tiết thay đổi sẽ được đánh dấu tại đây.',
+  },
+
+  reset: {
+    title: 'Bắt đầu phiên mới?',
+    body: 'Các lựa chọn hiện tại và bản đã xác nhận trong phiên này sẽ bị xóa.',
+    confirm: 'Xóa và bắt đầu lại',
+    cancel: 'Giữ phiên hiện tại',
+  },
+};
