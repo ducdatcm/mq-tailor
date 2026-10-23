@@ -14,6 +14,8 @@ const settingsController = require('../../controllers/admin/settingsController')
 const contentController = require('../../controllers/admin/contentController');
 const processStepsController = require('../../controllers/admin/processStepsController');
 const enquiriesController = require('../../controllers/admin/enquiriesController');
+const backupController = require('../../controllers/admin/backupController');
+const { verifyCsrf } = require('../../middleware/csrf');
 
 // Make flash messages + the admin layout available to every admin view.
 // (express-ejs-layouts picks the layout from options.layout, falling back to
@@ -64,6 +66,10 @@ router.post('/media/:id/group', mediaController.updateGroup);
 router.get('/media/:id/focal-point', mediaController.focalPointForm);
 router.post('/media/:id/focal-point', mediaController.updateFocalPoint);
 router.post('/media/:id/delete', mediaController.remove);
+
+router.get('/backups', backupController.show);
+router.post('/backups/cloud', verifyCsrf, backupController.createCloud);
+router.post('/backups/download', verifyCsrf, backupController.download);
 
 router.get('/settings', settingsController.show);
 router.post('/settings', upload.single('logo'), settingsController.update);

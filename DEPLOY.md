@@ -84,6 +84,10 @@ these as a Key/Value pair (there's no `.env` file to edit by hand here):
 
 `SMTP_*` and `GA_MEASUREMENT_ID` are optional — see §6/§7 below.
 
+**Add `BACKUP_PASSPHRASE` too** (a long phrase, at least 12 characters, kept in a
+password manager): it switches on automatic, encrypted database backups —
+see "Database backups" below.
+
 **Working on the site privately before launch?** Set `BASIC_AUTH_USER` /
 `BASIC_AUTH_PASSWORD` to require a username/password (a plain browser login
 prompt) on every page, on any domain pointed at the app — nothing is served
@@ -193,6 +197,45 @@ also get an email:
 Set `GA_MEASUREMENT_ID` to your Google Analytics 4 Measurement ID
 (`G-XXXXXXX`) and redeploy/restart. Leave blank to disable analytics
 entirely.
+
+## Database backups
+
+The database holds everything that is typed into `/admin` (page copy, journal,
+people, settings, the media list and its captions/focus points, enquiries, the
+admin login). Photos are **not** in it — they live in Cloudflare R2.
+
+**Set up (once):** add the environment variable `BACKUP_PASSPHRASE` (see §4),
+redeploy, then open **`/admin/backups`** and press **Save a backup to the
+cloud**. After that the site makes one by itself about once a day (it checks
+shortly after every start and every 6 hours) and keeps the newest 30. The
+dashboard warns when the last one is older than 3 days. The hosting plan may
+stop an idle app, so glance at the dashboard now and then.
+
+- Backups are **gzip + AES-256 encrypted with `BACKUP_PASSPHRASE`** before they are
+  stored in R2 under `backups/` (the bucket is publicly readable, and a backup
+  contains enquiry contact details and the admin password hash). **If you lose
+  the passphrase the cloud copies cannot be opened** — keep it somewhere safe,
+  separate from the hosting account. Changing it later does not re-encrypt old copies.
+- **Download a copy to this computer** on the same page makes an unencrypted
+  `.sql.gz` — keep that file private.
+- Developers can run `npm run backup` (local file) or `npm run backup -- --cloud`
+  with the same settings in a `.env`.
+
+**Restoring (emergency only — it replaces the current content):**
+
+```bash
+# see what a backup contains, without changing anything
+node scripts/restore-db.js backups/mq-backup-20261101-090000.sql.gz --dry-run
+# restore a downloaded file, or the newest cloud copy (needs R2_* and BACKUP_PASSPHRASE)
+node scripts/restore-db.js backups/mq-backup-20261101-090000.sql.gz --yes
+node scripts/restore-db.js --latest-cloud --yes
+```
+
+It needs the `DB_*` settings, so run it where those are available (a terminal
+on the host, or your own computer with a `.env` and database access), then
+restart the app. If you restore into a brand-new empty database, the site
+rebuilds the tables on boot, so restore *after* the first successful start.
+Test a restore on a spare database before you ever need it for real.
 
 ## Ongoing updates
 

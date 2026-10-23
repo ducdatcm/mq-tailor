@@ -1,4 +1,10 @@
-const { S3Client, PutObjectCommand, DeleteObjectCommand } = require('@aws-sdk/client-s3');
+const {
+  S3Client,
+  PutObjectCommand,
+  DeleteObjectCommand,
+  GetObjectCommand,
+  ListObjectsV2Command,
+} = require('@aws-sdk/client-s3');
 
 /**
  * Cloudflare R2 client (S3-compatible). Used instead of local disk because
@@ -36,8 +42,12 @@ function getClient() {
   });
 }
 
-/** Uploads a buffer to R2 under `key` and returns its public URL. */
-async function putObject(key, buffer, contentType) {
+/**
+ * Uploads a buffer to R2 under `key` and returns its public URL.
+ * Photos are cached for a year (their URLs never change); pass `cacheControl`
+ * for anything that should not be cached that long.
+ */
+async function putObject(key, buffer, contentType, cacheControl = 'public, max-age=31536000, immutable') {
   const bucket = (process.env.R2_BUCKET_NAME || '').trim();
   const publicUrl = (process.env.R2_PUBLIC_URL || '').trim();
   if (!bucket || !publicUrl) {
@@ -51,7 +61,7 @@ async function putObject(key, buffer, contentType) {
       Key: key,
       Body: buffer,
       ContentType: contentType,
-      CacheControl: 'public, max-age=31536000, immutable',
+      CacheControl: cacheControl,
     })
   );
 
@@ -69,4 +79,45 @@ async function deleteObjectByUrl(url) {
   await client.send(new DeleteObjectCommand({ Bucket: bucket, Key: key }));
 }
 
-module.exports = { putObject, deleteObjectByUrl };
+function bucketName() {
+  const bucket = (process.env.R2_BUCKET_NAME || '').trim();
+  if (!bucket) throw new Error('R2_BUCKET_NAME must be set.');
+  return bucket;
+}
+
+/** True when every R2 setting needed to read and write objects is present. */
+function isConfigured() {
+  return ['R2_ACCOUNT_ID', 'R2_ACCESS_KEY_ID', 'R2_SECRET_ACCESS_KEY', 'R2_BUCKET_NAME', 'R2_PUBLIC_URL'].every((k) =>
+    (process.env[k] || '').trim()
+  );
+}
+
+/** Lists objects under a key prefix: [{ key, size, lastModified }], oldest first. */
+async function listObjects(prefix) {
+  const client = getClient();
+  const found = [];
+  let token;
+  do {
+    const out = await client.send(
+      new ListObjectsV2Command({ Bucket: bucketName(), Prefix: prefix, ContinuationToken: token })
+    );
+    (out.Contents || []).forEach((o) => found.push({ key: o.Key, size: o.Size, lastModified: o.LastModified }));
+    token = out.IsTruncated ? out.NextContinuationToken : undefined;
+  } while (token);
+  return found.sort((a, b) => a.lastModified - b.lastModified);
+}
+
+/** Downloads an object as a Buffer. */
+async function getObjectBuffer(key) {
+  const client = getClient();
+  const out = await client.send(new GetObjectCommand({ Bucket: bucketName(), Key: key }));
+  return Buffer.from(await out.Body.transformToByteArray());
+}
+
+/** Deletes an object by its key. */
+async function deleteObjectByKey(key) {
+  const client = getClient();
+  await client.send(new DeleteObjectCommand({ Bucket: bucketName(), Key: key }));
+}
+
+module.exports = { putObject, deleteObjectByUrl, isConfigured, listObjects, getObjectBuffer, deleteObjectByKey };

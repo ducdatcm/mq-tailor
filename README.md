@@ -70,6 +70,7 @@ nothing requires touching code:
 | The 8 process steps | The Process |
 | Address, hours, phone, Zalo, Instagram, email, logo, GA id | Site Settings |
 | Enquiry form submissions | Enquiries |
+| Database backups (encrypted, daily) | Backups |
 
 Bilingual fields are edited together on one form (English + Vietnamese side
 by side) — the site serves `/en/...` and `/vi/...` from the same records.
@@ -95,4 +96,6 @@ placeholder.
 | `npm run migrate` / `migrate:rollback` | Apply / undo DB schema migrations |
 | `npm run seed` | (Re)load starter content — **overwrites** existing rows in seeded tables, only meant for first setup |
 | `npm run seed:admin` | Create/reset the admin login from `.env` |
+| `npm test` | Unit tests for the backup code |
+| `npm run backup` / `npm run restore` | Make / restore a database backup (see `DEPLOY.md`, "Database backups") |
 | `npm run build` | Minify `public/css/style.css` and `public/js/main.js` for production |

@@ -1,5 +1,16 @@
 <h1>Dashboard</h1>
 
+<% if (backupStatus) {
+     var lastAt = backupStatus.last ? new Date(backupStatus.last.lastModified).getTime() : 0;
+     var stale = !lastAt || (Date.now() - lastAt) > 3 * 24 * 3600 * 1000; %>
+  <% if (stale) { %>
+    <div class="flash flash--error">
+      <%= lastAt ? 'The last database backup is more than 3 days old.' : 'No database backup has been made yet.' %>
+      <a href="/admin/backups">Open Backups →</a>
+    </div>
+  <% } %>
+<% } %>
+
 <div class="stat-grid">
   <div class="stat-card"><div class="num"><%= stats.journal %></div><div class="label">Journal posts</div></div>
   <div class="stat-card"><div class="num"><%= stats.people %></div><div class="label">People</div></div>

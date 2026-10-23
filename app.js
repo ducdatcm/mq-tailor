@@ -15,6 +15,7 @@ const siteSettingsMiddleware = require('./src/middleware/siteSettings');
 const publicRouter = require('./src/routes/public');
 const adminRouter = require('./src/routes/admin');
 const sitemapRouter = require('./src/routes/sitemap');
+const { startScheduler: startBackupScheduler } = require('./src/utils/dbBackup');
 
 const app = express();
 const isProd = process.env.NODE_ENV === 'production';
@@ -154,5 +155,6 @@ runStartupTasks()
   .finally(() => {
     app.listen(port, () => {
       console.log(`Minh Quang website listening on port ${port}`);
+      startBackupScheduler();
     });
   });

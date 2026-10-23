@@ -12,7 +12,10 @@
     "migrate:rollback": "knex migrate:rollback",
     "seed": "knex seed:run",
     "seed:admin": "node scripts/seed-admin.js",
-    "build": "node scripts/build-assets.js"
+    "build": "node scripts/build-assets.js",
+    "test": "node --test test/dbBackup.test.js",
+    "backup": "node scripts/backup-db.js",
+    "restore": "node scripts/restore-db.js"
   },
   "engines": {
     "node": ">=18.x"

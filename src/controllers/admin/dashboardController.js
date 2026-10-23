@@ -1,4 +1,5 @@
 const db = require('../../config/db');
+const backup = require('../../utils/dbBackup');
 
 async function show(req, res, next) {
   try {
@@ -19,6 +20,7 @@ async function show(req, res, next) {
         newEnquiries: Number(newEnquiries.c),
       },
       recentEnquiries,
+      backupStatus: await backup.getStatus().catch(() => null),
     });
   } catch (err) {
     next(err);
