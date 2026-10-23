@@ -1,8 +1,13 @@
 <%
   // Locals expected: headingKey (t() key used for the h1),
-  // intro (the content.intro page_content row, or undefined).
+  // intro (the content.intro page_content row, or undefined),
+  // wide (optional) — lets a short intro line run the full container width
+  // instead of wrapping inside the narrow reading column.
   var _heading = t(headingKey);
   var _hasImage = intro && intro.media;
+  var _wide = typeof wide !== 'undefined' && wide;
+  var _bodyContainer = _wide ? 'container' : 'container container--narrow';
+  var _ledeStyle = _wide ? 'margin-inline:auto;max-width:none;' : 'margin-inline:auto;';
 %>
 <% if (_hasImage) { %>
   <section class="page-hero reveal">
@@ -14,18 +19,18 @@
     </div>
   </section>
   <% if (intro && intro['body_' + lang]) { %>
-    <section class="section--tight container container--narrow text-center reveal">
+    <section class="section--tight <%= _bodyContainer %> text-center reveal">
       <% paragraphs(intro['body_' + lang]).forEach(function (para) { %>
-        <p class="lede" style="margin-inline:auto;"><%= para %></p>
+        <p class="lede" style="<%= _ledeStyle %>"><%= para %></p>
       <% }); %>
     </section>
   <% } %>
 <% } else { %>
   <section class="section section--alt reveal">
-    <div class="container container--narrow text-center">
+    <div class="<%= _bodyContainer %> text-center">
       <h1><%= _heading %></h1>
       <% paragraphs(intro && intro['body_' + lang]).forEach(function (para) { %>
-        <p class="lede" style="margin-inline:auto;"><%= para %></p>
+        <p class="lede" style="<%= _ledeStyle %>"><%= para %></p>
       <% }); %>
     </div>
   </section>
