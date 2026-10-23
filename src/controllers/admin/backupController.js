@@ -15,7 +15,9 @@ async function show(req, res, next) {
       csrfToken: csrfToken(req),
     });
   } catch (err) {
-    next(err);
+    // Only reachable by a logged-in admin, so show the real reason instead of the generic error page.
+    console.error('[backup] page failed:', err);
+    res.status(500).send(`Backups page failed: ${err.message}`);
   }
 }
 
