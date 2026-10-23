@@ -1,4 +1,4 @@
-<%- include('../partials/intro-header', { headingKey: 'people.heading', intro: content.intro }) %>
+<%- include('../partials/intro-header', { headingKey: 'people.heading', intro: content.intro, ledeMax: '85ch' }) %>
 
 <% groups.forEach(function (group, i) { %>
   <section class="section <%= i % 2 === 1 ? 'section--alt' : '' %> reveal">

@@ -2,12 +2,14 @@
   // Locals expected: headingKey (t() key used for the h1),
   // intro (the content.intro page_content row, or undefined),
   // wide (optional) — lets a short intro line run the full container width
-  // instead of wrapping inside the narrow reading column.
+  // instead of wrapping inside the narrow reading column,
+  // ledeMax (optional, e.g. '85ch') — a middle ground for longer intros:
+  // wider than the narrow column, but still capped so it stays readable.
   var _heading = t(headingKey);
   var _hasImage = intro && intro.media;
-  var _wide = typeof wide !== 'undefined' && wide;
-  var _bodyContainer = _wide ? 'container' : 'container container--narrow';
-  var _ledeStyle = _wide ? 'margin-inline:auto;max-width:none;' : 'margin-inline:auto;';
+  var _ledeMax = typeof ledeMax !== 'undefined' && ledeMax ? ledeMax : (typeof wide !== 'undefined' && wide ? 'none' : null);
+  var _bodyContainer = _ledeMax ? 'container' : 'container container--narrow';
+  var _ledeStyle = _ledeMax ? 'margin-inline:auto;max-width:' + _ledeMax + ';' : 'margin-inline:auto;';
 %>
 <% if (_hasImage) { %>
   <section class="page-hero reveal">
