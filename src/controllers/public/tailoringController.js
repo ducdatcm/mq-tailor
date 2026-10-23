@@ -1,10 +1,7 @@
 const { getPageContent } = require('../../utils/content');
 const { getMediaByIds, resolveMedia } = require('../../utils/media');
 
-// 'corporate' temporarily left out of the public page on request — its
-// page_content row (copy + photo) is untouched in the database, so
-// re-adding it later is just putting the key back in this list.
-const CATEGORY_ORDER = ['suits', 'jackets', 'trousers', 'shirts', 'wedding'];
+const CATEGORY_ORDER = ['suits', 'jackets', 'trousers', 'shirts', 'wedding', 'corporate'];
 
 async function show(req, res, next) {
   try {
