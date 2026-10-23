@@ -75,13 +75,21 @@ export function hasAnySelection(s: Selections): boolean {
 }
 
 // ── Demo rules ─────────────────────────────────────────────────────────────
-// Sample range only: double-breasted 6×2 is offered with peak lapels. This is
-// a demo scope choice, not a claim that other combinations cannot be tailored.
+// Sample range only: the double-breasted closures are offered with peak lapels.
+// This is a demo scope choice, not a claim that other combinations cannot be tailored.
+
+export const DOUBLE_BREASTED: readonly OptionId[] = ['closure.db6x2', 'closure.db6x1', 'closure.db4x2', 'closure.db4x1'];
+export const isDoubleBreasted = (option: OptionId | undefined): boolean => option !== undefined && DOUBLE_BREASTED.includes(option);
 
 export type DisabledReason = 'dbNeedsPeak';
 
 export function disabledReason(s: Selections, garment: GarmentId, group: GroupId, option: OptionId): DisabledReason | null {
-  if (garment === 'jacket' && group === 'lapel' && option === 'lapel.notch' && s.jacket.closure === 'closure.db6x2') {
+  if (
+    garment === 'jacket' &&
+    group === 'lapel' &&
+    (option === 'lapel.notch' || option === 'lapel.shawl') &&
+    isDoubleBreasted(s.jacket.closure)
+  ) {
     return 'dbNeedsPeak';
   }
   return null;
@@ -107,7 +115,12 @@ export function resolveSelection(s: Selections, garment: GarmentId, group: Group
   const next = cloneSelections(s);
   next[garment][group] = option;
 
-  if (garment === 'jacket' && group === 'closure' && option === 'closure.db6x2' && s.jacket.lapel === 'lapel.notch') {
+  if (
+    garment === 'jacket' &&
+    group === 'closure' &&
+    isDoubleBreasted(option) &&
+    (s.jacket.lapel === 'lapel.notch' || s.jacket.lapel === 'lapel.shawl')
+  ) {
     next.jacket.lapel = 'lapel.peak';
     return { kind: 'confirm', reason: 'lapelToPeak', selections: next };
   }

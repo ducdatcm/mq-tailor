@@ -15,26 +15,51 @@ export const GROUPS = [
   {
     id: 'closure',
     garment: 'jacket',
-    options: ['closure.sb1', 'closure.sb2', 'closure.db6x2'],
+    options: [
+      'closure.sb1',
+      'closure.sb2',
+      'closure.sb3',
+      'closure.db6x2',
+      'closure.db6x1',
+      'closure.db4x2',
+      'closure.db4x1',
+    ],
+    /** Options are shown in two families so the cards stay comparable. */
+    families: [
+      { id: 'single', options: ['closure.sb1', 'closure.sb2', 'closure.sb3'] },
+      { id: 'double', options: ['closure.db6x2', 'closure.db6x1', 'closure.db4x2', 'closure.db4x1'] },
+    ],
     preset: 'closure.sb2',
   },
   {
     id: 'lapel',
     garment: 'jacket',
-    options: ['lapel.notch', 'lapel.peak'],
+    options: ['lapel.notch', 'lapel.peak', 'lapel.shawl'],
     preset: 'lapel.notch',
   },
   {
     id: 'shoulder',
     garment: 'jacket',
-    options: ['shoulder.natural', 'shoulder.structured'],
+    options: ['shoulder.roped', 'shoulder.natural', 'shoulder.camicia'],
     preset: 'shoulder.natural',
   },
   {
     id: 'hipPockets',
     garment: 'jacket',
-    options: ['hipPockets.flap', 'hipPockets.jetted', 'hipPockets.patch'],
-    preset: 'hipPockets.flap',
+    options: [
+      'hipPockets.slantedFlap',
+      'hipPockets.slantedJet',
+      'hipPockets.patch',
+      'hipPockets.straightFlap',
+      'hipPockets.straightJet',
+    ],
+    preset: 'hipPockets.straightFlap',
+  },
+  {
+    id: 'breastPocket',
+    garment: 'jacket',
+    options: ['breastPocket.jet', 'breastPocket.patch', 'breastPocket.welt'],
+    preset: 'breastPocket.welt',
   },
   {
     id: 'vents',
@@ -45,7 +70,7 @@ export const GROUPS = [
   {
     id: 'lining',
     garment: 'jacket',
-    options: ['lining.full', 'lining.partial', 'lining.unlined'],
+    options: ['lining.full', 'lining.half', 'lining.quarter', 'lining.unlined'],
     preset: 'lining.full',
   },
   // ── Trousers (shared by standalone trousers and suit trousers) ──────────
@@ -84,11 +109,15 @@ export const GROUPS = [
 export type GroupId = (typeof GROUPS)[number]['id'];
 export type OptionId = (typeof GROUPS)[number]['options'][number];
 
+export type FamilyId = 'single' | 'double';
+
 export interface GroupDef {
   id: GroupId;
   garment: GarmentId;
   options: readonly OptionId[];
   preset: OptionId;
+  /** Optional split of the options into labelled families (front closure only). */
+  families?: readonly { id: FamilyId; options: readonly OptionId[] }[];
 }
 
 export const GROUP_LIST: readonly GroupDef[] = GROUPS;

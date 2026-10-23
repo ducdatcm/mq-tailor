@@ -32,7 +32,7 @@ describe('catalog', () => {
     expect(PRODUCTS.suit.garments).toEqual(['jacket', 'trousers']);
     expect(stepsFor('blazer')).toHaveLength(groupsFor('jacket').length);
     expect(stepsFor('trousers')).toHaveLength(groupsFor('trousers').length);
-    expect(stepsFor('suit')).toHaveLength(11);
+    expect(stepsFor('suit')).toHaveLength(12);
   });
 });
 
@@ -71,6 +71,26 @@ describe('selection rules', () => {
     if (res.kind === 'apply') expect(res.selections.jacket.lapel).toBe('lapel.peak');
   });
 
+  it('every double-breasted closure behaves like 6×2: peak lapel only, asks before changing', () => {
+    for (const closure of ['closure.db6x2', 'closure.db6x1', 'closure.db4x2', 'closure.db4x1'] as const) {
+      for (const lapel of ['lapel.notch', 'lapel.shawl'] as const) {
+        const s = emptySelections();
+        s.jacket.lapel = lapel;
+        const res = resolveSelection(s, 'jacket', 'closure', closure);
+        expect(res.kind).toBe('confirm');
+        if (res.kind === 'confirm') expect(res.selections.jacket.lapel).toBe('lapel.peak');
+      }
+      const dbSel = emptySelections();
+      dbSel.jacket.closure = closure;
+      expect(disabledReason(dbSel, 'jacket', 'lapel', 'lapel.shawl')).toBe('dbNeedsPeak');
+      expect(disabledReason(dbSel, 'jacket', 'lapel', 'lapel.peak')).toBeNull();
+    }
+    const single = emptySelections();
+    single.jacket.closure = 'closure.sb3';
+    expect(disabledReason(single, 'jacket', 'lapel', 'lapel.shawl')).toBeNull();
+    expect(resolveSelection({ ...single, jacket: { ...single.jacket, lapel: 'lapel.shawl' } }, 'jacket', 'closure', 'closure.sb1').kind).toBe('apply');
+  });
+
   it('rejects an option that does not belong to the group', () => {
     expect(resolveSelection(emptySelections(), 'jacket', 'lapel', 'closure.sb1').kind).toBe('blocked');
   });
@@ -93,7 +113,7 @@ describe('session reducer', () => {
     );
 
   it('manual start preselects nothing; preset start fills everything', () => {
-    expect(missingSteps('suit', started('suit').selections)).toHaveLength(11);
+    expect(missingSteps('suit', started('suit').selections)).toHaveLength(12);
     expect(missingSteps('suit', started('suit', 'preset').selections)).toHaveLength(0);
   });
 
@@ -179,7 +199,7 @@ describe('session reducer', () => {
     expect(s.confirmed).toBeNull();
     expect(s.product).toBeNull();
     expect(s.screen).toBe('start');
-    expect(missingSteps('suit', s.selections)).toHaveLength(11);
+    expect(missingSteps('suit', s.selections)).toHaveLength(12);
   });
 
   it('changing language changes nothing else', () => {

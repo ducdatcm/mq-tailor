@@ -1,5 +1,5 @@
 import { useEffect, useId, useRef, useState } from 'react';
-import { GROUP_BY_ID, PRODUCTS, stepsFor, type GroupId, type OptionId } from '../catalog/catalog';
+import { GROUP_BY_ID, PRODUCTS, stepsFor, type FamilyId, type GroupId, type OptionId } from '../catalog/catalog';
 import { countGarment, countSelected, disabledReason } from '../catalog/rules';
 import { ChevronIcon } from '../components/icons';
 import { Modal } from '../components/Modal';
@@ -28,6 +28,7 @@ export function ConfigureScreen() {
   const [expanded, setExpanded] = useState<ReadonlySet<GroupId>>(new Set());
   const [suggestFor, setSuggestFor] = useState<GroupId | null>(null);
   const [zoom, setZoom] = useState<OptionId | null>(null);
+  const [familyPick, setFamilyPick] = useState<Partial<Record<GroupId, FamilyId>>>({});
   const moreId = useId();
   const contentRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
@@ -53,6 +54,11 @@ export function ConfigureScreen() {
     });
 
   const selected = state.selections[garment][group];
+  // Groups with many options are split into families; show the one holding the choice by default.
+  const families = def.families;
+  const heldBy = families?.find((f) => selected && f.options.includes(selected))?.id;
+  const activeFamily = families ? (familyPick[group] ?? heldBy ?? families[0].id) : null;
+  const shownOptions = families ? families.find((f) => f.id === activeFamily)!.options : def.options;
   const anyBlocked = def.options.some((o) => disabledReason(state.selections, garment, group, o));
   const garments = PRODUCTS[product].garments;
   const progress = countSelected(product, state.selections);
@@ -125,13 +131,29 @@ export function ConfigureScreen() {
               </div>
             </div>
 
+            {families ? (
+              <div className="family-tabs" role="group" aria-label={t.configure.familiesLabel}>
+                {families.map((f) => (
+                  <button
+                    key={f.id}
+                    type="button"
+                    className={`family-tab${f.id === activeFamily ? ' is-active' : ''}`}
+                    aria-pressed={f.id === activeFamily}
+                    onClick={() => setFamilyPick((prev) => ({ ...prev, [group]: f.id }))}
+                  >
+                    {f.id === 'single' ? t.configure.familySingle : t.configure.familyDouble}
+                  </button>
+                ))}
+              </div>
+            ) : null}
+
             <div
-              className="options"
+              className={`options${shownOptions.length === 4 ? ' is-compact' : ''}`}
               role="group"
               aria-label={fmt(t.configure.optionsOf, { group: copy.name })}
-              style={{ ['--cols' as string]: def.options.length }}
+              style={{ ['--cols' as string]: shownOptions.length === 4 ? 2 : Math.min(shownOptions.length, 3) }}
             >
-              {def.options.map((option) => {
+              {shownOptions.map((option) => {
                 const reason = disabledReason(state.selections, garment, group, option);
                 return (
                   <OptionCard

@@ -160,7 +160,7 @@ async function keyboardPass(page, vp) {
   // Change a value, move through every group, review, confirm.
   await page.locator('[data-option="closure.sb1"]').focus();
   await page.keyboard.press('Space');
-  for (let i = 0; i < 5; i += 1) {
+  for (let i = 0; i < 6; i += 1) {
     await page.getByRole('button', { name: 'Tiếp tục' }).focus();
     await page.keyboard.press('Enter');
   }

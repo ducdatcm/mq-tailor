@@ -64,6 +64,9 @@ export interface Copy {
     notSelected: string;
     enlarge: string; // {label}
     optionsOf: string; // {group}
+    familiesLabel: string;
+    familySingle: string;
+    familyDouble: string;
     unavailable: string;
     changeClosure: string;
     stepDone: string;

@@ -17,12 +17,13 @@
   --focus: #1d5fa8;
 
   --sk-ink: #2b2620;
-  --sk-ctx: #a39a8a;
-  --sk-cloth: #ece4d2;
-  --sk-cloth-2: #ddd2ba;
+  --sk-bg: #edeae2;
+  --sk-accent: #7a3b32;
+  --sk-mark: #b3aa99;
   --sk-paper: #fffdf9;
-  --sk-pad: #cdbf9f;
-  --sk-lining: #e5c6bf;
+  --sk-tie: #d6d0c1;
+  --sk-shade: #e4ded0;
+  --sk-lining: #ecd3cd;
   --sk-lining-line: #7a3b32;
 
   --font-serif: 'Lora', Georgia, 'Times New Roman', serif;

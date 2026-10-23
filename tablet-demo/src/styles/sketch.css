@@ -1,69 +1,120 @@
-/* Sketch drawing rules. All drawings share these line weights and fills. */
+/*
+ * Technical line-art sketch style: one even charcoal line on white garments,
+ * set on a warm beige ground. --lw (set by <Scale>) keeps line weights constant
+ * when a drawing is shown larger or smaller than it was drawn.
+ */
 .sk {
   display: block;
   width: 100%;
   height: auto;
   fill: none;
   stroke: none;
+  --lw: 1;
 }
+/* Lines */
 .sk .ink {
   stroke: var(--sk-ink);
-  stroke-width: 3;
+  stroke-width: calc(1.9px * var(--lw));
   stroke-linecap: round;
   stroke-linejoin: round;
 }
-.sk .ctx {
-  stroke: var(--sk-ctx);
-  stroke-width: 2;
+.sk .line {
+  stroke: var(--sk-ink);
+  stroke-width: calc(1.6px * var(--lw));
   stroke-linecap: round;
   stroke-linejoin: round;
 }
-.sk .ink-thin {
-  stroke: var(--sk-ctx);
-  stroke-width: 2;
+.sk .fine {
+  stroke: var(--sk-ink);
+  stroke-width: calc(1.3px * var(--lw));
+  stroke-linecap: round;
   stroke-linejoin: round;
 }
-.sk .stitch {
-  stroke-dasharray: 5 5;
-  stroke-width: 1.8;
+/* pick-stitching: a line of dots */
+.sk .dots {
+  stroke: var(--sk-ink);
+  stroke-width: calc(1.9px * var(--lw));
+  stroke-linecap: round;
+  stroke-dasharray: 0.01px calc(3.6px * var(--lw));
 }
+/* pressed trouser crease: one fine line, as in the supplied drawings */
 .sk .crease {
-  stroke-dasharray: 9 7;
-  stroke-width: 2;
+  stroke: var(--sk-ink);
+  stroke-width: calc(1.4px * var(--lw));
+  stroke-linecap: round;
 }
+/* edges that are not sewn closed (unlined interior) */
 .sk .bound {
-  stroke-dasharray: 3 5;
-  stroke-width: 2.4;
   stroke: var(--sk-lining-line);
+  stroke-width: calc(2.2px * var(--lw));
+  stroke-dasharray: calc(3px * var(--lw)) calc(4.5px * var(--lw));
 }
-.sk .slot {
-  stroke-width: 4;
+.sk .ring {
+  stroke: var(--sk-ink);
+  stroke-width: calc(2.2px * var(--lw));
 }
-.sk .hole {
-  stroke-width: 2.6;
-}
-.sk .cloth {
-  fill: var(--sk-cloth);
-}
-.sk .cloth2 {
-  fill: var(--sk-cloth-2);
-}
+/* Fills */
 .sk .paper {
   fill: var(--sk-paper);
-  stroke: none;
 }
-.sk .pad {
-  fill: var(--sk-pad);
+.sk .tie {
+  fill: var(--sk-tie);
+}
+.sk .shade {
+  fill: var(--sk-shade);
 }
 .sk .lining {
   fill: var(--sk-lining);
 }
+.sk .ground {
+  fill: var(--sk-bg);
+}
+.sk .solid {
+  fill: var(--sk-ink);
+}
+/* Buttons */
 .sk .btn {
   fill: var(--sk-paper);
   stroke: var(--sk-ink);
-  stroke-width: 2.4;
+  stroke-width: calc(1.5px * var(--lw));
 }
-.sk .dot {
+.sk .btn-hole {
   fill: var(--sk-ink);
   stroke: none;
+}
+/* Edits to the supplied reference drawings (see photos.tsx) */
+.sk .erase {
+  fill: var(--sk-paper);
+  stroke: none;
+}
+.sk .ring-btn {
+  fill: var(--sk-paper);
+  stroke: var(--sk-ink);
+  stroke-width: 1.9px;
+}
+.sk .pen {
+  stroke: var(--sk-ink);
+  stroke-width: 2.8px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+}
+.sk .line-pen {
+  stroke: var(--sk-ink);
+  stroke-width: 1.7px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+}
+.sk .heavy-pen {
+  stroke-width: 3.2px;
+}
+/* the supplied drawings, traced to vectors (see photos.tsx) */
+.sk .photo-paper {
+  fill: var(--sk-paper);
+  fill-rule: evenodd;
+}
+.sk .photo-ink {
+  fill: var(--sk-ink);
+  fill-rule: evenodd;
 }

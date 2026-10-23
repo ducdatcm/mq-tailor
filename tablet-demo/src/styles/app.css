@@ -333,7 +333,7 @@ button {
 }
 .product-sketch {
   display: block;
-  background: #f8f5ee;
+  background: var(--sk-bg);
   border-bottom: 1px solid var(--line);
   padding: 8px 8px 0;
 }
@@ -551,6 +551,42 @@ button {
   gap: 16px;
   margin-top: 4px;
 }
+.family-tabs {
+  display: flex;
+  gap: 8px;
+}
+.family-tab {
+  min-height: 44px;
+  padding: 0 20px;
+  border-radius: 999px;
+  border: 2px solid var(--line-strong);
+  background: var(--surface);
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+.family-tab.is-active {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--bg);
+}
+.options.is-compact .option {
+  flex-direction: row;
+  align-items: stretch;
+}
+.options.is-compact .option-sketch {
+  flex: 0 0 46%;
+  border-bottom: 0;
+  border-right: 1px solid var(--line);
+  padding: 4px;
+  display: flex;
+  align-items: center;
+}
+.options.is-compact .option-body {
+  flex: 1;
+  justify-content: center;
+  padding: 10px 12px;
+}
 .option-wrap {
   position: relative;
   display: flex;
@@ -573,7 +609,7 @@ button {
 }
 .option-sketch {
   display: block;
-  background: #f8f5ee;
+  background: var(--sk-bg);
   border-bottom: 1px solid var(--line);
   padding: 6px 6px 0;
 }
@@ -832,7 +868,7 @@ button {
   flex: none;
   width: 104px;
   aspect-ratio: 4 / 3;
-  background: #f8f5ee;
+  background: var(--sk-bg);
   border-radius: 8px;
   overflow: hidden;
   display: flex;
@@ -980,7 +1016,7 @@ button {
   margin-top: 4px;
 }
 .zoom-sketch {
-  background: #f8f5ee;
+  background: var(--sk-bg);
   border: 1px solid var(--line);
   border-radius: 12px;
   padding: 8px;
@@ -997,7 +1033,7 @@ button {
 .suggestion-sketch {
   flex: none;
   width: 190px;
-  background: #f8f5ee;
+  background: var(--sk-bg);
   border-radius: 8px;
 }
 .suggestion-text {
@@ -1138,6 +1174,10 @@ button {
   border: 1px solid var(--line);
   border-radius: 12px;
   padding: 10px;
+}
+.gallery-item .sk {
+  background: var(--sk-bg);
+  border-radius: 8px;
 }
 .gallery-item figcaption {
   font-size: 0.8rem;

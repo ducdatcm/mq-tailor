@@ -27,6 +27,12 @@ async function pick(user: User, id: OptionId) {
   await user.click(option(id));
 }
 
+/** Double-breasted closures live under their own family tab. */
+async function pickDouble(user: User, id: OptionId) {
+  await user.click(button(vi.configure.familyDouble));
+  await pick(user, id);
+}
+
 const next = (user: User) => user.click(button(vi.configure.next));
 
 describe('A1–A2 products show only their own groups', () => {
@@ -50,7 +56,7 @@ describe('A1–A2 products show only their own groups', () => {
     const user = userEvent.setup();
     await begin(user, 'blazer');
     expect(screen.queryByRole('button', { name: /Quần/ })).toBeNull();
-    expect(screen.getByRole('navigation', { name: vi.configure.stepsLabel }).querySelectorAll('li')).toHaveLength(6);
+    expect(screen.getByRole('navigation', { name: vi.configure.stepsLabel }).querySelectorAll('li')).toHaveLength(7);
   });
 
   it('A2: standalone trousers have five groups and no jacket', async () => {
@@ -93,8 +99,8 @@ describe('A5 missing groups', () => {
     await pick(user, 'closure.sb2');
     await user.click(button(vi.configure.openReview));
 
-    expect(screen.getByRole('alert')).toHaveTextContent('Còn thiếu 5 nhóm');
-    for (const name of ['Kiểu ve', 'Dáng vai', 'Túi ngoài', 'Xẻ sau', 'Lót áo']) {
+    expect(screen.getByRole('alert')).toHaveTextContent('Còn thiếu 6 nhóm');
+    for (const name of ['Kiểu ve', 'Dáng vai', 'Túi ngoài', 'Túi ngực', 'Xẻ sau', 'Lót áo']) {
       expect(within(screen.getByRole('alert')).getByRole('button', { name })).toBeInTheDocument();
     }
     expect(button(vi.review.confirm)).toBeDisabled();
@@ -150,10 +156,11 @@ describe('A7 double-breasted 6×2 and the lapel', () => {
   it('asks first; accepting changes both', async () => {
     const user = userEvent.setup();
     await setup(user);
-    await pick(user, 'closure.db6x2');
+    await pickDouble(user, 'closure.db6x2');
     const dialog = screen.getByRole('alertdialog');
     expect(dialog).toHaveTextContent('ve nhọn');
-    expect(option('closure.sb2')).toHaveAttribute('aria-pressed', 'true'); // nothing changed yet
+    const summary = screen.getByRole('complementary');
+    expect(within(summary).getByText(vi.options['closure.sb2'].label)).toBeInTheDocument(); // nothing changed yet
 
     await user.click(within(dialog).getByRole('button', { name: vi.lapelRule.accept }));
     expect(option('closure.db6x2')).toHaveAttribute('aria-pressed', 'true');
@@ -164,8 +171,9 @@ describe('A7 double-breasted 6×2 and the lapel', () => {
   it('cancelling keeps both exactly as they were', async () => {
     const user = userEvent.setup();
     await setup(user);
-    await pick(user, 'closure.db6x2');
+    await pickDouble(user, 'closure.db6x2');
     await user.click(within(screen.getByRole('alertdialog')).getByRole('button', { name: vi.lapelRule.cancel }));
+    await user.click(button(vi.configure.familySingle));
     expect(option('closure.sb2')).toHaveAttribute('aria-pressed', 'true');
     await next(user);
     expect(option('lapel.notch')).toHaveAttribute('aria-pressed', 'true');
@@ -174,14 +182,16 @@ describe('A7 double-breasted 6×2 and the lapel', () => {
   it('notch is visibly unavailable while 6×2 is selected, and can be re-enabled by changing the closure', async () => {
     const user = userEvent.setup();
     await begin(user, 'blazer');
-    await pick(user, 'closure.db6x2');
+    await pickDouble(user, 'closure.db6x2');
     await next(user);
     expect(option('lapel.notch')).toHaveAttribute('aria-disabled', 'true');
-    expect(screen.getByText(vi.lapelRule.disabledReason)).toBeInTheDocument();
+    expect(option('lapel.shawl')).toHaveAttribute('aria-disabled', 'true');
+    expect(screen.getAllByText(vi.lapelRule.disabledReason)).toHaveLength(2);
     await user.click(option('lapel.notch'));
     expect(option('lapel.notch')).toHaveAttribute('aria-pressed', 'false');
 
     await user.click(button(vi.configure.changeClosure));
+    await user.click(button(vi.configure.familySingle));
     await pick(user, 'closure.sb1');
     await next(user);
     await pick(user, 'lapel.notch');
@@ -189,11 +199,55 @@ describe('A7 double-breasted 6×2 and the lapel', () => {
   });
 });
 
+describe('closure families and new options', () => {
+  it('shows single-breasted first, switches to double-breasted, and follows the current choice', async () => {
+    const user = userEvent.setup();
+    await begin(user, 'blazer');
+    expect(option('closure.sb3')).toBeInTheDocument();
+    expect(option('closure.db6x2')).toBeNull();
+
+    await user.click(button(vi.configure.familyDouble));
+    for (const id of ['closure.db6x2', 'closure.db6x1', 'closure.db4x2', 'closure.db4x1'] as const) {
+      expect(option(id)).toBeInTheDocument();
+    }
+    expect(option('closure.sb1')).toBeNull();
+
+    await pick(user, 'closure.db4x1');
+    await next(user);
+    await user.click(button(vi.configure.back));
+    // coming back, the family that holds the choice is open
+    expect(option('closure.db4x1')).toHaveAttribute('aria-pressed', 'true');
+  });
+
+  it('offers shawl lapels and roped shoulders, and the shawl lapel is unavailable with double-breasted', async () => {
+    const user = userEvent.setup();
+    await begin(user, 'blazer');
+    await pick(user, 'closure.sb2');
+    await next(user);
+    await pick(user, 'lapel.shawl');
+    expect(option('lapel.shawl')).toHaveAttribute('aria-pressed', 'true');
+    await next(user);
+    await pick(user, 'shoulder.roped');
+    expect(option('shoulder.roped')).toHaveAttribute('aria-pressed', 'true');
+
+    await user.click(within(screen.getByRole('complementary')).getByRole('button', { name: /Kiểu cài áo/ }));
+    await pickDouble(user, 'closure.db4x2');
+    // a shawl lapel was chosen, so the double-breasted choice asks before changing it
+    const dialog = screen.getByRole('alertdialog');
+    expect(dialog).toHaveTextContent('Ve sam');
+    await user.click(within(dialog).getByRole('button', { name: vi.lapelRule.accept }));
+    await next(user);
+    expect(option('lapel.peak')).toHaveAttribute('aria-pressed', 'true');
+    expect(option('lapel.shawl')).toHaveAttribute('aria-disabled', 'true');
+    expect(option('lapel.notch')).toHaveAttribute('aria-disabled', 'true');
+  });
+});
+
 describe('A8 language', () => {
   it('switches the whole screen and keeps every selection', async () => {
     const user = userEvent.setup();
     await begin(user, 'blazer');
-    await pick(user, 'closure.db6x2');
+    await pickDouble(user, 'closure.db6x2');
     await user.click(button(/English/));
 
     expect(document.documentElement.lang).toBe('en');

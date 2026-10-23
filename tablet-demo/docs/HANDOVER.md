@@ -10,7 +10,7 @@ Tài liệu này tách rõ hai nhóm việc: **(A) kết quả kiểm tra phần
 
 Hai lớp kiểm tra, đều chạy lại được:
 
-- `npm test` — 38 test hành vi (quy tắc chọn, reducer, hành trình người dùng bằng Testing Library). **38/38 đạt.**
+- `npm test` — 41 test hành vi (quy tắc chọn, reducer, hành trình người dùng bằng Testing Library). **41/41 đạt.**
 - `npm run verify` — Chrome thật điều khiển bằng Playwright, 3 kích thước × cả 3 sản phẩm (hành trình đầy đủ từ chọn sản phẩm đến xác nhận), kiểm tra layout trên mọi màn hình, một lượt chỉ dùng bàn phím, ghi lỗi console. **54/54 đạt**, cả trên bản dev và bản `npm run build`. Chi tiết: `docs/verification-results.json`.
 
 | ID | Kết quả | Bằng chứng |
@@ -21,7 +21,7 @@ Hai lớp kiểm tra, đều chạy lại được:
 | A4 Tiến / lùi / đổi áo–quần | Đạt | test "A4" và test reducer về `lastGroup` |
 | A5 Bỏ thiếu một nhóm | Đạt | test "A5": báo "Còn thiếu N nhóm", liệt kê tên, nút xác nhận bị khóa, bấm tên nhóm mở đúng nhóm |
 | A6 Preset rồi sửa một chi tiết | Đạt | test "A6": chỉ chi tiết sửa đổi; gợi ý "Nhờ nhà may gợi ý" không tự chọn gì cho đến khi bấm Áp dụng |
-| A7 Một hàng/notch → 6×2 | Đạt | test "A7": hộp thoại giải thích đổi ve; Đồng ý cập nhật cả hai, Hủy giữ nguyên cả hai (kiểm cả ở tầng reducer); notch bị vô hiệu kèm lý do khi đang 6×2; về một hàng khuy vẫn giữ ve nhọn |
+| A7 Một hàng/notch → hai hàng khuy | Đạt | test "A7" và test quy tắc: với **cả bốn** kiểu hai hàng (6×2, 6×1, 4×2, 4×1), hộp thoại giải thích đổi ve (từ notch hoặc ve sam sang ve nhọn); Đồng ý cập nhật cả hai, Hủy giữ nguyên cả hai; notch và ve sam bị vô hiệu kèm lý do khi đang hai hàng khuy; về một hàng khuy vẫn giữ ve nhọn |
 | A8 VI/EN giữa luồng | Đạt | test "A8": dịch đủ chữ trên màn hình, `<html lang>` đổi theo, giữ lựa chọn; kiểm tra kiểu của `vi.ts`/`en.ts` buộc hai ngôn ngữ đủ mục |
 | A9 Sửa từ màn hình xem lại | Đạt | test "A9": mở đúng nhóm, nút "Xong, về xem lại", bản tóm tắt đúng |
 | A10 Bấm xác nhận nhiều lần | Đạt | test "A10": ba lần bấm trong cùng một lượt chỉ ra một bản xác nhận (cũng kiểm ở reducer); không có chữ "Google Sheet", "đã gửi", "đơn hàng thật" |
@@ -32,7 +32,7 @@ Hai lớp kiểm tra, đều chạy lại được:
 
 Chạy trọn một lượt cho cả ba sản phẩm: có trong `verify` (suit từ gợi ý nhà may, blazer và quần riêng chọn tay). Kịch bản demo mục 12 của brief (suit từ gợi ý, đổi ve, sửa gấu quần ở màn hình xem lại, xác nhận, sửa lại một chi tiết và xác nhận lần hai, phiên mới với blazer tự chọn) được các test A6, A7, A9, A11, A12 phủ.
 
-**Kiểm tra bằng mắt tất cả sketch:** đã xem toàn bộ 26 hình lựa chọn và 3 hình sản phẩm trên trang `#/sketches` ở cuối quá trình (sau các lần chỉnh), cùng ảnh chụp màn hình bên dưới.
+**Kiểm tra bằng mắt tất cả sketch:** đã xem toàn bộ 32 hình lựa chọn và 3 hình sản phẩm trên trang `#/sketches` sau khi chuyển sang dùng hình gốc của nhà may, cùng ảnh chụp màn hình bên dưới.
 
 ### Ảnh chụp màn hình
 
@@ -56,7 +56,7 @@ Chạy trọn một lượt cho cả ba sản phẩm: có trong `verify` (suit t
 - Trạng thái chỉ lưu trong `sessionStorage` của tab: tải lại trang vẫn giữ, đóng tab thì mất. Đây là tiện ích, không phải yêu cầu.
 - Thời điểm xác nhận lấy theo đồng hồ của thiết bị; "DEMO-001" là nhãn cố định của mô phỏng, không tăng theo phiên.
 - Vùng chạm hình phóng to chỉ dùng nút "Phóng to" (không có pinch-zoom, theo brief).
-- Các hình là sketch minh họa viết tay bằng SVG, không đo theo tỷ lệ thật. Hình ve của áo hai hàng 6×2 vẽ phần ve phía trên bằng phép nghiêng của hình ve nhọn nên đường ve hơi khác so với áo may thật.
+- Hình áo là bản vẽ gốc của nhà may đã chuyển sang vector (tự động), nên có thể lệch nét rất nhỏ so với ảnh gốc. Các hình chưa có bản gốc được sửa từ hình gần nhất nên có thể lệch nhẹ so với áo thật; các hình còn do mã vẽ (xẻ sau, túi trước, gấu quần) hơi khác kiểu với phần còn lại.
 - Chưa có dark mode, chưa có chế độ kiosk tự quay về màn hình đầu sau một thời gian không dùng (không nằm trong brief).
 - `npm run verify` cần Chrome hoặc Edge cài trên máy; không tải trình duyệt riêng.
 
@@ -71,8 +71,8 @@ Tất cả mục dưới đây là nội dung mẫu và quy tắc mẫu, **chưa
 Cần xác nhận cách gọi của tiệm (VI và EN), nhất là các từ sau:
 
 - Sản phẩm: **Suit hai mảnh**, **Blazer**, **Quần tây**.
-- Áo: **Kiểu cài áo** (Một hàng 1 khuy / Một hàng 2 khuy / Hai hàng 6×2), **Ve notch** / **Ve nhọn**, **Dáng vai** (Vai tự nhiên đệm nhẹ / Vai cấu trúc rõ), **Túi ngoài** (Túi có nắp / Túi viền không nắp / Túi đắp), **Xẻ sau** (Hai xẻ / Một xẻ), **Lót áo** (Lót toàn bộ / Lót một phần / Không lót).
-- Quần: **Xếp ly trước** (Không ly / Một ly mỗi bên / Hai ly mỗi bên), **Chi tiết cạp quần** (Đỉa thắt lưng / Tăng đơ hai bên), **Túi trước** (Túi chéo / Túi dọc), **Túi sau** (Một túi bên phải / Hai túi), **Gấu quần** (Gấu thường / Gấu lơ vê).
+- Áo: **Kiểu cài áo** (Một hàng 1 / 2 / 3 khuy; Hai hàng 6×2 / 6×1 / 4×2 / 4×1), **Ve notch** / **Ve nhọn** / **Ve sam**, **Dáng vai** (Vai cuộn / Vai tự nhiên đệm nhẹ / Vai sơ-mi), **Túi ngoài** (Túi nắp xéo / Túi viền xéo / Túi ốp / Túi nắp thẳng / Túi viền thẳng), **Túi ngực** (Túi viền mỏng / Túi ốp / Túi viền nổi), **Xẻ sau** (Hai xẻ / Một xẻ), **Lót áo** (Lót toàn bộ / Lót nửa áo / Lót một phần tư / Không lót).
+- Quần: **Xếp ly trước** (Không ly / Một ly / Hai ly), **Chi tiết cạp quần** (Đỉa thắt lưng / Khóa sườn), **Túi trước** (Túi chéo / Túi dọc), **Túi sau** (Một túi bên phải / Hai túi), **Gấu quần** (Gấu thường / Gấu lơ vê).
 - Nhãn tiếng Anh phụ trong bản tiếng Việt (ví dụ "Single-breasted, 2 buttons", "Side adjusters", "Turn-up") và cách dịch sang English.
 - Cách xưng hô trong câu hỏi gợi ý cho sale ("Anh/chị …").
 
@@ -80,23 +80,29 @@ Cần xác nhận cách gọi của tiệm (VI và EN), nhất là các từ sau
 
 Mỗi nhóm có: một câu giải thích khác biệt, một câu hỏi gợi ý cho sale, phần "Giải thích thêm", và một câu lý do cho gợi ý mẫu. Cần nhà may đọc và chỉnh. Đặc biệt:
 
-- **Dáng vai:** mô tả vai tự nhiên / cấu trúc có đúng nghề không; câu "định hướng thiết kế, thợ may đánh giá khi đo".
-- **Lót áo:** chỉ chọn phạm vi lót; đã ghi rõ không nói về lớp dựng (canvas). Cần xác nhận mô tả "lót một phần" khớp với cách tiệm làm (hình vẽ lót phần trên lưng và tay).
-- **Xếp ly / đường là**, **tăng đơ**, **túi chéo / túi dọc** và các câu "thường đi cùng …".
+- **Dáng vai:** mô tả vai cuộn / vai tự nhiên đệm nhẹ / vai sơ-mi có đúng nghề không (vai cuộn dùng hình đường cuộn tròn, vai sơ-mi dùng hình đầu tay nhún nhẹ); câu "định hướng thiết kế, thợ may đánh giá khi đo".
+- **Lót áo:** chỉ chọn phạm vi lót; đã ghi rõ không nói về lớp dựng (canvas). Cần xác nhận cách gọi và phạm vi của "lót nửa áo" (lót phần trên lưng và hai thân trước) và "lót một phần tư" (chỉ lót phần trên lưng) khớp với cách tiệm làm.
+- **Xếp ly / đường là**, **khóa sườn**, **túi ngực viền mỏng / viền nổi**, **túi chéo / túi dọc** và các câu "thường đi cùng …".
 - Các câu "Mẫu của nhà may chọn …" trong cửa sổ gợi ý: nên là nhận định của tiệm, hiện đang rất trung tính.
 
 ### B3. Hình minh họa
 
-- Toàn bộ 26 hình lựa chọn và 3 hình sản phẩm: xem ở `http://localhost:5173/#/sketches`. Cần thợ chính nhìn từng hình, xem tỷ lệ và chi tiết có đúng với cách tiệm may không.
-- Cần chú ý hơn: ve notch và ve nhọn (độ nhọn, vị trí khấc), hình hai hàng 6×2 (vị trí khuy và ve phía trên), vai (độ dốc và độ dày đệm), túi đắp (kích thước và dạng góc), sơ đồ lót (vùng "một phần"), hai kiểu ly (vị trí ly so với đường là), tăng đơ (hình dáng miếng chỉnh), gấu lơ vê (độ cao lơ vê).
+- Toàn bộ hình xem ở `http://localhost:5173/#/sketches`.
+- **Hình gốc nhà may cung cấp, dùng nguyên trạng:** một hàng 2 khuy, hai hàng 6×2 và 6×1, ve notch, ve nhọn, vai sơ-mi (spalla camicia), vai cuộn (roped), quần không ly / hai ly, đỉa thắt lưng, khóa sườn, hai túi sau.
+- **Hình sửa từ hình gốc (thợ chính cần xem lại):** một hàng 1 khuy và 3 khuy (vị trí khuy và đoạn gập ve vẫn theo hình 2 khuy), hai hàng 4×1 và 4×2 (bỏ hàng khuy trên cùng của hình 6 khuy; vị trí các khuy và khuy cài lấy theo hình gốc), túi ngực và xẻ sau (nhà may gửi hình nền xám; tô lại thành nét đen trên nền trắng cho giống các hình khác, xóa chữ đỏ, khuy vẽ lại thành vòng tròn, nét khâu đứt của túi ốp giữ nguyên), ve sam (xóa khấc, tai ve và mép ve của hình 2 khuy, vẽ một đường cong liền từ cổ xuống khuy theo hình "Lapel Styles"), vai tự nhiên đệm nhẹ (từ hình vai sơ-mi, xóa đường vai và vẽ lại đầu vai), một ly (từ hình một ly, thêm đường ly nối từ trước lên cạp theo hình nhà may đánh dấu), 4 kiểu lót áo (toàn bộ, nửa áo, một phần tư, không lót: vẽ lại từ hình mẫu "Men's Jacket Lining Types" bạn gửi: xóa màu xanh và logo, vùng lót để trắng, vùng không lót để màu nền, các đường viền mép đường may thành nét đen; hình mẫu gốc là của bên thứ ba nên cần xác nhận được phép dùng trước khi phát hành), một túi sau bên phải (xóa túi trái của hình hai túi).
+- **Hình vẽ bằng mã theo cùng hệ nét (chưa phải hình gốc):** 5 kiểu túi ngoài (theo hình "Pockets" của nhà may, vẽ ở `sketches/pockets.tsx`), túi trước chéo và dọc, gấu thường và gấu lơ vê, hình quần ở màn hình đầu. Mọi hình dùng chung độ dày nét (`sketch.css`), vải trắng trên nền be, không màu nhấn, không nét đứt. Nếu nhà may có hình gốc cho các mục này, thay vào là xong (cách làm trong README).
 - Hình vai và lót đã có chú thích "minh họa" dưới thẻ.
 
 ### B4. Quy tắc mẫu
 
-- Cấu hình **gợi ý cơ bản** hiện tại: áo một hàng 2 khuy, ve notch, vai tự nhiên đệm nhẹ, túi có nắp, hai xẻ, lót toàn bộ; quần không ly, đỉa thắt lưng, túi chéo, hai túi sau, gấu thường (đúng theo brief). Xác nhận đây có phải thứ tiệm muốn đưa ra làm điểm khởi đầu.
-- **Hai hàng 6×2 chỉ đi với ve nhọn** (quy tắc phạm vi mẫu, không phải khẳng định kết hợp khác không may được). Đổi từ notch sang 6×2 hiện hỏi khách đồng ý đổi ve; ở nhóm ve, notch hiện mờ kèm lý do khi đang chọn 6×2.
+- Cấu hình **gợi ý cơ bản** hiện tại: áo một hàng 2 khuy, ve notch, vai tự nhiên đệm nhẹ, túi nắp thẳng, túi ngực viền nổi, hai xẻ, lót toàn bộ; quần không ly, đỉa thắt lưng, túi chéo, hai túi sau, gấu thường (đúng theo brief). Xác nhận đây có phải thứ tiệm muốn đưa ra làm điểm khởi đầu.
+- **Mọi kiểu hai hàng khuy (6×2, 6×1, 4×2, 4×1) chỉ đi với ve nhọn** (quy tắc phạm vi mẫu, không phải khẳng định kết hợp khác không may được). Đổi từ notch hoặc ve sam sang một kiểu hai hàng hiện hỏi khách đồng ý đổi ve; ở nhóm ve, notch và ve sam hiện mờ kèm lý do khi đang chọn hai hàng khuy.
 - Không có quy tắc "hợp / không hợp" theo tuổi, cân nặng hay dáng người (đúng yêu cầu).
 
 ### B5. Quan sát khi thử với sale và khách (theo brief mục 12)
 
 Chưa chạy buổi thử có người thật. Khi thử, nên quan sát: khách có hiểu khác biệt từ hình và câu giải thích không; sale còn phải tự giải thích thêm gì; có tìm được chỗ sửa không; bản xem lại có đúng điều hai bên vừa thống nhất không.
+
+## Hướng phát triển tiếp theo
+
+- Kết nối ảnh sản phẩm thật của website vào ứng dụng (bản nháp để quyết định): [`docs/PHOTO-INTEGRATION-SPEC.md`](PHOTO-INTEGRATION-SPEC.md).
