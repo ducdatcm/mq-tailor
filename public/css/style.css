@@ -284,7 +284,10 @@ select:focus-visible {
   transform: scaleX(1);
 }
 
-@media (min-width: 1024px) {
+/* Full nav needs ~1100px (nine links + logo + language switch). Below that it
+   overflows, which a portrait large-format tablet (≈1080px wide) hit — so it
+   collapses to the menu button up to 1200px instead of the old 1024px. */
+@media (min-width: 1200px) {
   .main-nav { display: flex; }
   .nav-toggle { display: none; }
 }
@@ -347,7 +350,7 @@ select:focus-visible {
   display: flex;
   align-items: center;
 }
-@media (min-width: 1024px) {
+@media (min-width: 1200px) {
   .mobile-nav { display: none !important; }
 }
 
@@ -976,4 +979,38 @@ select:focus-visible {
   overflow: hidden;
   clip: rect(0 0 0 0);
   white-space: nowrap;
+}
+
+/* ---------- Tablets & large touch screens ----------
+   Kept in one block at the end so it overrides the earlier rules, and
+   limited to touch screens / portrait tablets so a desktop browser looks
+   exactly as before. */
+
+/* Banner photos are sized as a share of the screen *height*. On a portrait
+   tablet that makes them taller than a whole screen of the page and
+   object-fit:cover then crops a landscape photo to a thin slice. Shorter
+   banners keep far more of the photo in view. */
+@media (orientation: portrait) and (min-width: 700px) {
+  .hero { min-height: 50vh; }
+  .page-hero { min-height: 36vh; }
+  .photo-band { min-height: 36vh; }
+}
+
+/* Photo-next-to-text sections stack into one column below 900px; on a
+   tablet that stretched the photo to the full screen width. Cap it. */
+@media (max-width: 899px) {
+  .split > .media-frame {
+    max-width: 560px;
+    margin-inline: auto;
+  }
+}
+
+/* Large touch screens (e.g. a 27" in-store tablet): people read from an arm's
+   length, so the whole site scales up one step. Everything is sized in rem,
+   so raising the root size scales text, spacing and the content width
+   together. */
+@media (pointer: coarse) and (min-width: 1000px) {
+  html { font-size: 112.5%; }
+  :root { --container-max: 75rem; --container-narrow: 47.5rem; }
+  .site-header__inner { max-width: 100rem; }
 }
