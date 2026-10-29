@@ -97,6 +97,13 @@ This is different from `PRIVATE_DOMAINS`, which blocks a specific hostname
 outright (even for you) — use that instead if you want a domain fully dark
 rather than password-gated.
 
+**In-store tablet app (`/tablet/`):** set `TABLET_ACCESS_CODE` to a code of at
+least 6 characters (longer is better; keep it in a password manager). The app
+has its own lock, separate from `BASIC_AUTH_*`: staff type the code once on each
+tablet and it is remembered for a year. Until the variable is set the app stays
+closed to everyone. Changing the code signs every tablet out. See
+`tablet-demo/docs/ANDROID-SETUP.md`.
+
 ### 6. Redeploy
 Save the environment variables, then trigger a fresh deploy (pushing to
 GitHub `main` auto-deploys; there's also a Redeploy button, though note it

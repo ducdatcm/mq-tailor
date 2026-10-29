@@ -4,14 +4,14 @@
 
 - Bản thử hiện nay: `https://grey-jackal-135755.hostingersite.com/tablet/`
 - Khi tên miền `minhquanghanoi.com` mở công khai thì dùng `https://minhquanghanoi.com/tablet/` (lúc đang bị chặn trước ngày ra mắt thì chỉ dùng được địa chỉ thử ở trên).
-- Nếu website đang đặt mật khẩu (Basic Auth), Chrome sẽ hỏi tên và mật khẩu một lần.
+- Ứng dụng có **mã truy cập riêng** (không phải mật khẩu của website). Lần đầu mở, trang "Nhập mã truy cập" hiện ra; nhập mã một lần, tablet được nhớ trong 1 năm. Người quản lý đặt mã bằng biến `TABLET_ACCESS_CODE` trên Hostinger (xem `DEPLOY.md`); chưa đặt thì ứng dụng chưa mở. Đổi mã thì mọi tablet phải nhập lại.
 
 Tablet tải ứng dụng **một lần khi có mạng**, từ đó chạy được cả khi mất mạng (chọn thiết kế, xuất PDF; các đơn chưa gửi được sẽ giữ trên máy và tự gửi khi có mạng).
 
 ## 1. Mở và cài lên màn hình chính
 
 1. Nối tablet vào Wi-Fi.
-2. Mở **Chrome**, vào địa chỉ ở trên. Đợi trang tải xong (lần đầu khoảng 4 MB).
+2. Mở **Chrome**, vào địa chỉ ở trên, nhập mã truy cập. Đợi trang tải xong (lần đầu khoảng 4 MB).
 3. Bấm menu **⋮** của Chrome → **Cài đặt ứng dụng** (hoặc **Thêm vào màn hình chính**) → **Cài đặt**.
 4. Từ nay mở ứng dụng bằng biểu tượng **MQ Tư vấn** ở màn hình chính. Ứng dụng chạy **toàn màn hình**, không có thanh địa chỉ.
 
@@ -52,6 +52,7 @@ Tablet cần có **Google Play / Chrome**. Nếu máy không có Chrome, dùng E
 | Thấy gì | Cách xử lý |
 |---|---|
 | Không thấy mục "Cài đặt ứng dụng" | Chrome chưa nhận ra ứng dụng: tải lại trang, đợi vài giây, mở lại menu. Hoặc dùng "Thêm vào màn hình chính" (vẫn mở được toàn màn hình). |
+| Trang "Nhập mã truy cập" hiện lại | Mã đã bị đổi hoặc dữ liệu Chrome bị xóa: nhập lại mã. Thấy "Ứng dụng tạm thời chưa mở" thì biến `TABLET_ACCESS_CODE` chưa đặt trên Hostinger. |
 | Dòng "Bảng tính" báo "Chưa kết nối" | Chưa nhập địa chỉ ở trang Cài đặt máy này. |
 | Báo "Chưa ghi được vào bảng tính" | Mất mạng, sai địa chỉ, sai mã bí mật, hoặc Apps Script chưa chọn "Bất kỳ ai". Đơn vẫn giữ trên tablet; sửa xong vào trang Cài đặt máy này bấm **Gửi ngay**. |
 | Chữ quá nhỏ hoặc quá to | Mở trang Cài đặt máy này, xem **Kích thước màn hình** và chụp gửi mình; hoặc chỉnh **Kích thước hiển thị** của Android. |

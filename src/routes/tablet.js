@@ -4,8 +4,9 @@
  *
  * It needs its own security headers: the app posts finished orders to a Google Apps Script web app, so
  * the site-wide policy (connect-src 'self') would block them. Everything else stays locked to this
- * origin. The app is for staff, so it is also kept out of search engines. The gates for the private
- * domain and the password run before this, like for every other page.
+ * origin. The app is for staff, so it is also kept out of search engines. The private-domain gate runs
+ * before this, like for every other page; the site password does not (the app has its own access code,
+ * see middleware/tabletAccess.js).
  */
 const path = require('path');
 const express = require('express');
@@ -38,6 +39,9 @@ router.use(
     },
   })
 );
+
+// Everything below needs the tablet's own access code (the website's password does not apply here).
+router.use(require('../middleware/tabletAccess'));
 
 // The page, the offline worker, the manifest and config.json are always re-checked, so a new version or a
 // new spreadsheet address reaches the tablet as soon as it is online; the numbered files never change.

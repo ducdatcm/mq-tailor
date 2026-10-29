@@ -9,9 +9,9 @@
  * variables. Leave either one unset (the default) and this middleware does
  * nothing — remove both when you're ready to go fully public.
  */
-// The in-store tablet app is installed from this site: the browser, and Google's app-packaging service,
-// fetch its manifest and icons without the password. They hold nothing private (the app itself stays behind it).
-const OPEN_PATHS = [/^\/tablet\/manifest\.webmanifest$/, /^\/tablet\/icons\/[\w-]+\.png$/];
+// The in-store tablet app has its own access code (see tabletAccess.js), so the site password does not
+// apply to it: an installed app cannot keep a browser login box, and the two should not share one lock.
+const OPEN_PATHS = [/^\/tablet(\/|$)/];
 
 function basicAuthGate(req, res, next) {
   const user = process.env.BASIC_AUTH_USER;
