@@ -18,16 +18,20 @@ export function SuggestionModal({ group, onClose }: Props) {
   const def = GROUP_BY_ID[group];
   const option = def.preset;
   const copy = t.options[option];
-  const isCurrent = state.selections[def.garment][group] === option;
-  const blocked = disabledReason(state.selections, def.garment, group, option) !== null;
+  // The suggestion is always for the group being viewed, on the garment being configured (the second trousers share the trousers groups).
+  const garment = state.cursor.garment;
+  const isCurrent = state.selections[garment][group] === option;
+  const blocked = disabledReason(state.selections, garment, group, option) !== null;
 
   return (
     <Modal title={`${t.suggestion.title}: ${t.groups[group].name}`} onClose={onClose} closeLabel={t.close}>
       <p className="suggestion-why">{t.groups[group].suggestion}</p>
       <div className="suggestion-card">
-        <span className="suggestion-sketch">
-          <Sketch option={option} />
-        </span>
+        {def.noSketch ? null : (
+          <span className="suggestion-sketch">
+            <Sketch option={option} />
+          </span>
+        )}
         <span className="suggestion-text">
           <strong>{copy.label}</strong>
           {copy.term ? <span className="option-term">{copy.term}</span> : null}
@@ -46,7 +50,7 @@ export function SuggestionModal({ group, onClose }: Props) {
           disabled={blocked || isCurrent}
           data-autofocus={!blocked && !isCurrent ? '' : undefined}
           onClick={() => {
-            dispatch({ type: 'select', garment: def.garment, group, option });
+            dispatch({ type: 'select', garment, group, option });
             onClose();
           }}
         >

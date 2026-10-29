@@ -1,5 +1,6 @@
+import type { ReactNode } from 'react';
 import { Button, Mirror, Scale } from './common';
-import { JacketOnly, ProductBlazerDrawing } from './photos';
+import { JacketOnly, ProductBlazerDrawing, ProductWaistcoatDrawing } from './photos';
 
 /* Product-level illustrations for the start screen (not tied to any option). */
 
@@ -38,6 +39,50 @@ export function ProductSuit() {
 }
 
 export const ProductBlazer = ProductBlazerDrawing;
+
+export const ProductWaistcoat = ProductWaistcoatDrawing;
+
+/** A drawing made for the 400×300 frame, shrunk by f and moved so its centre (cx, oy) lands on (x, y). */
+function Piece({ x, y = 150, f, cx = 200, oy = 150, children }: { x: number; y?: number; f: number; cx?: number; oy?: number; children: ReactNode }) {
+  return (
+    <Scale k={1 / f} transform={`translate(${x - cx * f} ${y - oy * f}) scale(${f})`}>
+      {children}
+    </Scale>
+  );
+}
+
+/** Three-piece suit: the jacket and two pairs of trousers, side by side. */
+export function ProductSuit3Trousers() {
+  return (
+    <g>
+      <Piece x={86} f={0.7}>
+        <JacketOnly />
+      </Piece>
+      {[216, 322].map((x) => (
+        <Piece key={x} x={x} oy={174} f={0.7}>
+          <Trousers />
+        </Piece>
+      ))}
+    </g>
+  );
+}
+
+/** Three-piece suit: the jacket, the waistcoat and the trousers, side by side. */
+export function ProductSuit3Waistcoat() {
+  return (
+    <g>
+      <Piece x={80} f={0.7}>
+        <JacketOnly />
+      </Piece>
+      <Piece x={196} f={0.7}>
+        <ProductWaistcoatDrawing />
+      </Piece>
+      <Piece x={318} oy={174} f={0.7}>
+        <Trousers />
+      </Piece>
+    </g>
+  );
+}
 
 export function ProductTrousers() {
   return (

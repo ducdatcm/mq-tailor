@@ -47,14 +47,17 @@ export function SummaryPanel() {
             <ul>
               {groupsFor(garment).map((g) => {
                 const chosen = state.selections[garment][g.id];
-                const isActive = state.screen === 'configure' && state.cursor.group === g.id;
+                const isActive = state.screen === 'configure' && state.cursor.garment === garment && (state.cursor.group === g.id || state.cursor.group === g.companionOf);
+                // Two pairs of trousers share their group names, so the jump label says which pair.
+                const twoTrousers = PRODUCTS[product].garments.includes('trousers2') && garment !== 'jacket';
+                const jumpName = twoTrousers ? `${t.garments[product][garment]} · ${t.groups[g.id].name}` : t.groups[g.id].name;
                 return (
                   <li key={g.id}>
                     <button
                       type="button"
                       className={`summary-row${isActive ? ' is-active' : ''}${chosen ? '' : ' is-missing'}`}
                       aria-current={isActive ? 'step' : undefined}
-                      aria-label={fmt(t.configure.jumpTo, { group: t.groups[g.id].name })}
+                      aria-label={fmt(t.configure.jumpTo, { group: jumpName })}
                       onClick={() => dispatch({ type: 'goTo', garment, group: g.id })}
                     >
                       <span className="summary-mark" aria-hidden="true">

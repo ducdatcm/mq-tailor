@@ -7,8 +7,16 @@
  * files, and register a sketch (see README).
  */
 
-export type ProductId = 'suit' | 'blazer' | 'trousers';
-export type GarmentId = 'jacket' | 'trousers';
+export type ProductId = 'suit' | 'suit3Trousers' | 'suit3Waistcoat' | 'blazer' | 'trousers' | 'waistcoat';
+/** A garment with its own set of option groups ('trims' is not a garment: the buttons and buttonholes, chosen once for the whole order). */
+export type BaseGarmentId = 'jacket' | 'trousers' | 'waistcoat' | 'trims';
+/** A garment as it appears in a product: 'trousers2' is the second pair of a three-piece, same groups as 'trousers'. */
+export type GarmentId = BaseGarmentId | 'trousers2';
+
+export const GARMENT_IDS: readonly GarmentId[] = ['jacket', 'waistcoat', 'trousers', 'trousers2', 'trims'];
+
+/** The garment whose option groups apply (the second trousers use the trousers groups). */
+export const baseGarment = (garment: GarmentId): BaseGarmentId => (garment === 'trousers2' ? 'trousers' : garment);
 
 export const GROUPS = [
   // ── Jacket (shared by blazer and the jacket of a suit) ──────────────────
@@ -58,20 +66,57 @@ export const GROUPS = [
   {
     id: 'breastPocket',
     garment: 'jacket',
-    options: ['breastPocket.jet', 'breastPocket.patch', 'breastPocket.welt'],
-    preset: 'breastPocket.welt',
+    options: ['breastPocket.straight', 'breastPocket.barchetta', 'breastPocket.patch'],
+    preset: 'breastPocket.barchetta',
   },
   {
     id: 'vents',
     garment: 'jacket',
-    options: ['vents.double', 'vents.single'],
+    options: ['vents.none', 'vents.single', 'vents.double'],
     preset: 'vents.double',
+  },
+  {
+    id: 'cuffs',
+    garment: 'jacket',
+    options: ['cuffs.1', 'cuffs.2', 'cuffs.3', 'cuffs.4'],
+    preset: 'cuffs.4',
+  },
+  {
+    // Chosen on the cuffs screen, for all four cuffs options at once.
+    id: 'cuffMode',
+    garment: 'jacket',
+    companionOf: 'cuffs',
+    noSketch: true,
+    options: ['cuffMode.functional', 'cuffMode.closed'],
+    preset: 'cuffMode.closed',
   },
   {
     id: 'lining',
     garment: 'jacket',
     options: ['lining.full', 'lining.half', 'lining.quarter', 'lining.unlined'],
     preset: 'lining.full',
+  },
+  // ── Waistcoat (standalone, or the third piece of a suit) ────────────────
+  {
+    id: 'waistcoatStyle',
+    garment: 'waistcoat',
+    options: ['waistcoat.sb2', 'waistcoat.sb4', 'waistcoat.db2', 'waistcoat.db4'],
+    preset: 'waistcoat.sb2',
+  },
+  // ── Trims: buttons and buttonholes, one choice for the whole order (no drawings) ──
+  {
+    id: 'buttonType',
+    garment: 'trims',
+    noSketch: true,
+    options: ['buttonType.plastic', 'buttonType.horn', 'buttonType.motherOfPearl'],
+    preset: 'buttonType.plastic',
+  },
+  {
+    id: 'milanese',
+    garment: 'trims',
+    noSketch: true,
+    options: ['milanese.yes', 'milanese.no'],
+    preset: 'milanese.no',
   },
   // ── Trousers (shared by standalone trousers and suit trousers) ──────────
   {
@@ -113,9 +158,13 @@ export type FamilyId = 'single' | 'double';
 
 export interface GroupDef {
   id: GroupId;
-  garment: GarmentId;
+  garment: BaseGarmentId;
   options: readonly OptionId[];
   preset: OptionId;
+  /** A group chosen on the screen of another group (it adds no step of its own). */
+  companionOf?: GroupId;
+  /** The options have no drawings: shown as text cards. */
+  noSketch?: boolean;
   /** Optional split of the options into labelled families (front closure only). */
   families?: readonly { id: FamilyId; options: readonly OptionId[] }[];
 }
@@ -125,15 +174,19 @@ export const GROUP_LIST: readonly GroupDef[] = GROUPS;
 export const GROUP_BY_ID = Object.fromEntries(GROUP_LIST.map((g) => [g.id, g])) as Record<GroupId, GroupDef>;
 
 export const PRODUCTS: Record<ProductId, { garments: readonly GarmentId[] }> = {
-  suit: { garments: ['jacket', 'trousers'] },
-  blazer: { garments: ['jacket'] },
-  trousers: { garments: ['trousers'] },
+  suit: { garments: ['jacket', 'trousers', 'trims'] },
+  suit3Trousers: { garments: ['jacket', 'trousers', 'trousers2', 'trims'] },
+  suit3Waistcoat: { garments: ['jacket', 'waistcoat', 'trousers', 'trims'] },
+  blazer: { garments: ['jacket', 'trims'] },
+  trousers: { garments: ['trousers', 'trims'] },
+  waistcoat: { garments: ['waistcoat', 'trims'] },
 };
 
-export const PRODUCT_IDS: readonly ProductId[] = ['suit', 'blazer', 'trousers'];
+export const PRODUCT_IDS: readonly ProductId[] = ['suit', 'suit3Trousers', 'suit3Waistcoat', 'blazer', 'trousers', 'waistcoat'];
 
 export function groupsFor(garment: GarmentId): readonly GroupDef[] {
-  return GROUP_LIST.filter((g) => g.garment === garment);
+  const base = baseGarment(garment);
+  return GROUP_LIST.filter((g) => g.garment === base);
 }
 
 export interface Step {
@@ -144,7 +197,9 @@ export interface Step {
 /** Ordered list of every group that applies to the product. */
 export function stepsFor(product: ProductId): Step[] {
   return PRODUCTS[product].garments.flatMap((garment) =>
-    groupsFor(garment).map((g) => ({ garment, group: g.id })),
+    groupsFor(garment)
+      .filter((g) => !g.companionOf)
+      .map((g) => ({ garment, group: g.id })),
   );
 }
 

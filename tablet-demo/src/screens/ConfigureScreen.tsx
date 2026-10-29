@@ -1,5 +1,5 @@
 import { useEffect, useId, useRef, useState } from 'react';
-import { GROUP_BY_ID, PRODUCTS, stepsFor, type FamilyId, type GroupId, type OptionId } from '../catalog/catalog';
+import { GROUP_BY_ID, PRODUCTS, groupsFor, stepsFor, type FamilyId, type GroupId, type OptionId } from '../catalog/catalog';
 import { countGarment, countSelected, disabledReason } from '../catalog/rules';
 import { ChevronIcon } from '../components/icons';
 import { Modal } from '../components/Modal';
@@ -17,6 +17,8 @@ export function ConfigureScreen() {
   const { garment, group } = state.cursor;
   const def = GROUP_BY_ID[group];
   const copy = t.groups[group];
+  // groups chosen on this group's screen (the cuffs screen also asks functional or closed buttons)
+  const companions = groupsFor(garment).filter((g) => g.companionOf === group);
 
   const steps = stepsFor(product);
   const index = steps.findIndex((s) => s.group === group && s.garment === garment);
@@ -96,6 +98,27 @@ export function ConfigureScreen() {
             <Stepper garment={garment} active={group} />
           </div>
 
+          {garment === 'trousers2' ? (
+            <div className="same-as" role="group" aria-label={t.configure.sameTrousersTitle}>
+              <span className="same-as-label">{t.configure.sameTrousersLabel}</span>
+              <div className="family-tabs">
+                {([true, false] as const).map((value) => (
+                  <button
+                    key={String(value)}
+                    type="button"
+                    className={`family-tab${state.sameTrousers === value ? ' is-active' : ''}`}
+                    aria-pressed={state.sameTrousers === value}
+                    data-same-trousers={value ? 'on' : 'off'}
+                    onClick={() => dispatch({ type: 'setSameTrousers', value })}
+                  >
+                    {value ? t.configure.sameTrousersOn : t.configure.sameTrousersOff}
+                  </button>
+                ))}
+              </div>
+              <p className="same-as-hint">{state.sameTrousers ? t.configure.sameTrousersHintOn : t.configure.sameTrousersHintOff}</p>
+            </div>
+          ) : null}
+
           <section className="group" aria-labelledby="group-title">
             <div className="group-head">
               <h1 id="group-title" ref={headingRef} tabIndex={-1} data-screen-heading className="group-title">
@@ -148,10 +171,10 @@ export function ConfigureScreen() {
             ) : null}
 
             <div
-              className={`options${shownOptions.length === 4 ? ' is-compact' : ''}`}
+              className={`options${def.noSketch ? ' is-plain' : shownOptions.length === 4 ? ' is-compact' : ''}`}
               role="group"
               aria-label={fmt(t.configure.optionsOf, { group: copy.name })}
-              style={{ ['--cols' as string]: shownOptions.length === 4 ? 2 : Math.min(shownOptions.length, 3) }}
+              style={{ ['--cols' as string]: def.noSketch ? shownOptions.length : shownOptions.length === 4 ? 2 : Math.min(shownOptions.length, 3) }}
             >
               {shownOptions.map((option) => {
                 const reason = disabledReason(state.selections, garment, group, option);
@@ -161,6 +184,7 @@ export function ConfigureScreen() {
                     option={option}
                     selected={selected === option}
                     unavailableReason={reason ? t.lapelRule.disabledReason : null}
+                    plain={def.noSketch}
                     onSelect={() => dispatch({ type: 'select', garment, group, option })}
                     onZoom={() => setZoom(option)}
                   />
@@ -169,6 +193,30 @@ export function ConfigureScreen() {
             </div>
 
             {copy.note ? <p className="group-note">{copy.note}</p> : null}
+
+            {companions.map((c) => (
+              <div key={c.id} className="companion" role="group" aria-labelledby={`companion-${c.id}`} data-companion={c.id}>
+                <h2 id={`companion-${c.id}`} className="companion-title">
+                  {t.groups[c.id].name}
+                  {t.groups[c.id].term ? <span className="option-term">{t.groups[c.id].term}</span> : null}
+                </h2>
+                <p className="group-difference">{t.groups[c.id].difference}</p>
+                <div className="options is-plain" role="group" aria-label={fmt(t.configure.optionsOf, { group: t.groups[c.id].name })} style={{ ['--cols' as string]: c.options.length }}>
+                  {c.options.map((option) => (
+                    <OptionCard
+                      key={option}
+                      option={option}
+                      plain
+                      selected={state.selections[garment][c.id] === option}
+                      unavailableReason={null}
+                      onSelect={() => dispatch({ type: 'select', garment, group: c.id, option })}
+                      onZoom={() => undefined}
+                    />
+                  ))}
+                </div>
+              </div>
+            ))}
+
             {anyBlocked ? (
               <button
                 type="button"

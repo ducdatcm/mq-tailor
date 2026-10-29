@@ -10,7 +10,8 @@ interface Props {
 /** One numbered stop per group of the current garment; every stop can be reopened. */
 export function Stepper({ garment, active }: Props) {
   const { state, dispatch, t } = useStore();
-  const groups = groupsFor(garment);
+  // a group chosen on another group's screen has no stop of its own
+  const groups = groupsFor(garment).filter((g) => !g.companionOf);
 
   return (
     <nav aria-label={t.configure.stepsLabel}>

@@ -3,9 +3,9 @@ import type { OptionId, ProductId } from '../catalog/catalog';
 import {
   BackPocketOneRight,
   BackPocketsTwo,
-  BreastPocketJet,
+  BreastPocketBarchetta,
   BreastPocketPatch,
-  BreastPocketWelt,
+  BreastPocketStraight,
   ClosureDB41,
   ClosureDB42,
   ClosureDB61,
@@ -13,6 +13,10 @@ import {
   ClosureSB1,
   ClosureSB2,
   ClosureSB3,
+  Cuffs1,
+  Cuffs2,
+  Cuffs3,
+  Cuffs4,
   LapelNotch,
   LapelPeak,
   LapelShawl,
@@ -26,10 +30,15 @@ import {
   ShoulderCamicia,
   ShoulderNatural,
   ShoulderRoped,
+  VentNone,
   VentSingle,
   VentsDouble,
   WaistbandAdjusters,
   WaistbandBeltLoops,
+  WaistcoatDB2,
+  WaistcoatDB4,
+  WaistcoatSB2,
+  WaistcoatSB4,
 } from './photos';
 import {
   FrontPocketSideSeam,
@@ -40,11 +49,12 @@ import {
   PocketStraightFlap,
   PocketStraightJet,
 } from './pockets';
-import { ProductBlazer, ProductSuit, ProductTrousers } from './products';
+import { ProductBlazer, ProductSuit, ProductSuit3Trousers, ProductSuit3Waistcoat, ProductTrousers, ProductWaistcoat } from './products';
 import { HemPlain, HemTurnUp } from './trousers';
 
 /** One drawing per option, keyed by the stable option ID. */
-export const OPTION_SKETCHES: Record<OptionId, ComponentType> = {
+/** One drawing per option, keyed by the stable option ID. Options of a group marked noSketch have none. */
+export const OPTION_SKETCHES: Partial<Record<OptionId, ComponentType>> = {
   'closure.sb1': ClosureSB1,
   'closure.sb2': ClosureSB2,
   'closure.sb3': ClosureSB3,
@@ -63,15 +73,24 @@ export const OPTION_SKETCHES: Record<OptionId, ComponentType> = {
   'hipPockets.patch': PocketPatch,
   'hipPockets.straightFlap': PocketStraightFlap,
   'hipPockets.straightJet': PocketStraightJet,
-  'breastPocket.jet': BreastPocketJet,
+  'breastPocket.barchetta': BreastPocketBarchetta,
   'breastPocket.patch': BreastPocketPatch,
-  'breastPocket.welt': BreastPocketWelt,
+  'breastPocket.straight': BreastPocketStraight,
+  'vents.none': VentNone,
   'vents.double': VentsDouble,
   'vents.single': VentSingle,
+  'cuffs.1': Cuffs1,
+  'cuffs.2': Cuffs2,
+  'cuffs.3': Cuffs3,
+  'cuffs.4': Cuffs4,
   'lining.full': LiningFull,
   'lining.half': LiningHalf,
   'lining.quarter': LiningQuarter,
   'lining.unlined': LiningNone,
+  'waistcoat.sb2': WaistcoatSB2,
+  'waistcoat.sb4': WaistcoatSB4,
+  'waistcoat.db2': WaistcoatDB2,
+  'waistcoat.db4': WaistcoatDB4,
   'pleats.flat': PleatsFlat,
   'pleats.one': PleatsOne,
   'pleats.two': PleatsTwo,
@@ -87,6 +106,9 @@ export const OPTION_SKETCHES: Record<OptionId, ComponentType> = {
 
 export const PRODUCT_SKETCHES: Record<ProductId, ComponentType> = {
   suit: ProductSuit,
+  suit3Trousers: ProductSuit3Trousers,
+  suit3Waistcoat: ProductSuit3Waistcoat,
   blazer: ProductBlazer,
   trousers: ProductTrousers,
+  waistcoat: ProductWaistcoat,
 };

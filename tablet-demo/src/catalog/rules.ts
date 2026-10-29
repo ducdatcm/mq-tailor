@@ -1,6 +1,8 @@
 import {
+  GARMENT_IDS,
   GROUP_BY_ID,
   PRODUCTS,
+  baseGarment,
   groupsFor,
   type GarmentId,
   type GroupId,
@@ -12,10 +14,12 @@ import {
 export type GarmentSelections = Partial<Record<GroupId, OptionId>>;
 export type Selections = Record<GarmentId, GarmentSelections>;
 
-export const emptySelections = (): Selections => ({ jacket: {}, trousers: {} });
+export const emptySelections = (): Selections => ({ jacket: {}, waistcoat: {}, trousers: {}, trousers2: {}, trims: {} });
 
 export function cloneSelections(s: Selections): Selections {
-  return { jacket: { ...s.jacket }, trousers: { ...s.trousers } };
+  const out = emptySelections();
+  for (const garment of GARMENT_IDS) out[garment] = { ...s[garment] };
+  return out;
 }
 
 /** The one-click "house starting suggestion" for a product. */
@@ -71,7 +75,7 @@ export function countGarment(garment: GarmentId, s: Selections): { done: number;
 }
 
 export function hasAnySelection(s: Selections): boolean {
-  return Object.keys(s.jacket).length > 0 || Object.keys(s.trousers).length > 0;
+  return GARMENT_IDS.some((garment) => Object.keys(s[garment]).length > 0);
 }
 
 // ── Demo rules ─────────────────────────────────────────────────────────────
@@ -106,7 +110,7 @@ export type Resolution =
  * only applied once the user accepts it.
  */
 export function resolveSelection(s: Selections, garment: GarmentId, group: GroupId, option: OptionId): Resolution {
-  if (GROUP_BY_ID[group].garment !== garment || !GROUP_BY_ID[group].options.includes(option)) {
+  if (GROUP_BY_ID[group].garment !== baseGarment(garment) || !GROUP_BY_ID[group].options.includes(option)) {
     return { kind: 'blocked', reason: 'invalid' };
   }
   const blocked = disabledReason(s, garment, group, option);

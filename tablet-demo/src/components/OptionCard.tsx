@@ -11,9 +11,11 @@ interface Props {
   unavailableReason: string | null;
   onSelect: () => void;
   onZoom: () => void;
+  /** A text-only card: the option has no drawing, so no drawing area and no enlarge button. */
+  plain?: boolean;
 }
 
-export function OptionCard({ option, selected, unavailableReason, onSelect, onZoom }: Props) {
+export function OptionCard({ option, selected, unavailableReason, onSelect, onZoom, plain = false }: Props) {
   const { t } = useStore();
   const copy = t.options[option];
   const disabled = unavailableReason !== null;
@@ -22,7 +24,7 @@ export function OptionCard({ option, selected, unavailableReason, onSelect, onZo
     <div className={`option-wrap${selected ? ' is-selected' : ''}${disabled ? ' is-disabled' : ''}`}>
       <button
         type="button"
-        className="option"
+        className={`option${plain ? ' is-plain' : ''}`}
         aria-pressed={selected}
         aria-disabled={disabled || undefined}
         data-option={option}
@@ -30,9 +32,11 @@ export function OptionCard({ option, selected, unavailableReason, onSelect, onZo
           if (!disabled) onSelect();
         }}
       >
-        <span className="option-sketch">
-          <Sketch option={option} />
-        </span>
+        {plain ? null : (
+          <span className="option-sketch">
+            <Sketch option={option} />
+          </span>
+        )}
         <span className="option-body">
           <span className="option-label">{copy.label}</span>
           {copy.term ? <span className="option-term">{copy.term}</span> : null}
@@ -46,14 +50,16 @@ export function OptionCard({ option, selected, unavailableReason, onSelect, onZo
           </span>
         ) : null}
       </button>
-      <button
-        type="button"
-        className="zoom-btn"
-        onClick={onZoom}
-        aria-label={fmt(t.configure.enlarge, { label: copy.label })}
-      >
-        <ExpandIcon size={20} />
-      </button>
+      {plain ? null : (
+        <button
+          type="button"
+          className="zoom-btn"
+          onClick={onZoom}
+          aria-label={fmt(t.configure.enlarge, { label: copy.label })}
+        >
+          <ExpandIcon size={20} />
+        </button>
+      )}
     </div>
   );
 }

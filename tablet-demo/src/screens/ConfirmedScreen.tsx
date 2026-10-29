@@ -1,13 +1,17 @@
+import { useState } from 'react';
 import { PRODUCTS, groupsFor } from '../catalog/catalog';
 import { DesignSheet } from '../components/DesignSheet';
 import { CheckIcon } from '../components/icons';
 import { fmt } from '../content/copy';
+import { createDesignPdf, downloadBlob, pdfFileName } from '../pdf/exportPdf';
 import { useStore } from '../state/store';
 
 export function ConfirmedScreen({ onNewSession }: { onNewSession: () => void }) {
   const { state, dispatch, t } = useStore();
   const snap = state.confirmed;
-  if (!snap) return null;
+  const order = state.orderRecord;
+  const [pdf, setPdf] = useState<'idle' | 'busy' | 'failed'>('idle');
+  if (!snap || !order) return null;
 
   const changes = snap.previousSelections
     ? PRODUCTS[snap.product].garments.flatMap((garment) =>
@@ -20,7 +24,30 @@ export function ConfirmedScreen({ onNewSession }: { onNewSession: () => void }) 
   const time = new Intl.DateTimeFormat(state.lang === 'vi' ? 'vi-VN' : 'en-GB', {
     dateStyle: 'medium',
     timeStyle: 'short',
-  }).format(new Date(snap.confirmedAt));
+  }).format(new Date(order.confirmedAt));
+
+  const exportPdf = async () => {
+    if (pdf === 'busy') return;
+    setPdf('busy');
+    try {
+      downloadBlob(await createDesignPdf(t, snap, order, state.lang), pdfFileName(order));
+      setPdf('idle');
+    } catch (err) {
+      console.error('PDF export failed', err);
+      setPdf('failed');
+    }
+  };
+
+  const sheetMessage =
+    state.sheet === 'sending'
+      ? t.confirmed.sheetSending
+      : state.sheet === 'sent'
+        ? t.confirmed.sheetSent
+        : state.sheet === 'queued'
+          ? t.confirmed.sheetQueued
+          : state.sheet === 'unconfigured'
+            ? t.confirmed.sheetUnconfigured
+            : null;
 
   return (
     <>
@@ -34,10 +61,21 @@ export function ConfirmedScreen({ onNewSession }: { onNewSession: () => void }) 
               {t.confirmed.title}
             </h1>
             <p className="lead">{t.confirmed.subtitle}</p>
+            <dl className="order-facts">
+              <div>
+                <dt>{t.confirmed.orderLabel}</dt>
+                <dd>{order.orderId}</dd>
+              </div>
+              <div>
+                <dt>{t.confirmed.customerLabel}</dt>
+                <dd>{order.customerName}</dd>
+              </div>
+              <div>
+                <dt>{t.confirmed.phoneLabel}</dt>
+                <dd>{order.phone}</dd>
+              </div>
+            </dl>
             <p className="confirmed-meta">
-              <span>
-                {t.confirmed.codeLabel}: <strong>{snap.code}</strong>
-              </span>
               <span className="tag tag-solid">{fmt(t.confirmed.revision, { n: snap.revision })}</span>
               <span>{fmt(t.confirmed.confirmedAt, { time })}</span>
             </p>
@@ -57,12 +95,29 @@ export function ConfirmedScreen({ onNewSession }: { onNewSession: () => void }) 
           </div>
         </header>
 
-        <DesignSheet
-          product={snap.product}
-          selections={snap.selections}
-          mode="confirmed"
-          previous={snap.previousSelections}
-        />
+        <section className="export-panel" aria-label={t.confirmed.exportPdf}>
+          <div className="export-row">
+            <button type="button" className="btn btn-primary btn-large" onClick={exportPdf} disabled={pdf === 'busy'} data-export-pdf>
+              {pdf === 'busy' ? t.confirmed.exporting : t.confirmed.exportPdf}
+            </button>
+            {pdf === 'failed' ? (
+              <p className="field-error" role="alert">
+                {t.confirmed.exportFailed}
+              </p>
+            ) : null}
+          </div>
+          <div className="export-row sheet-status" data-sheet-status={state.sheet}>
+            <strong>{t.confirmed.sheetTitle}:</strong>
+            <span role="status">{sheetMessage}</span>
+            {state.sheet === 'queued' || state.sheet === 'unconfigured' ? (
+              <button type="button" className="btn btn-secondary btn-small" onClick={() => dispatch({ type: 'sheetRetry' })}>
+                {t.confirmed.sheetRetry}
+              </button>
+            ) : null}
+          </div>
+        </section>
+
+        <DesignSheet product={snap.product} selections={snap.selections} mode="confirmed" previous={snap.previousSelections} />
 
         <section className="next-step">
           <h2>{t.confirmed.nextTitle}</h2>

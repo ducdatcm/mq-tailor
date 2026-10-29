@@ -239,7 +239,7 @@ Chưa tính công gắn tag của bạn (mục 3.3), phụ thuộc số lượng
 ## 5. Câu hỏi cần chốt trước khi bắt đầu
 
 1. Đặt tablet ở đâu (mục 3.8)?
-2. Tên hiển thị tiếng Việt cho "Jet" và "Welt" ở túi ngực đã được nhà may duyệt chưa (hiện là "Túi viền mỏng" và "Túi viền nổi"; xem `docs/HANDOVER.md`)?
+2. Tên hiển thị tiếng Việt cho các kiểu túi ngực (Straight away, Barchetta) đã được nhà may duyệt chưa (xem `docs/HANDOVER.md`)?
 3. Ảnh nào trong Media Library được dùng cho tablet là do bạn bật từng ảnh; ảnh vẫn dùng được đồng thời cho website (không cần tách riêng).
 
 ## 6. Hướng cho Giai đoạn 2 (không thuộc đặc tả này)

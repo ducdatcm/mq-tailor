@@ -1,4 +1,5 @@
 import { useStore } from '../state/store';
+import { Logo } from './Logo';
 import type { Lang } from '../state/types';
 
 interface Props {
@@ -14,8 +15,7 @@ export function Header({ onNewSession }: Props) {
   return (
     <header className="header">
       <div className="brand">
-        <span className="wordmark">{t.brand}</span>
-        <span className="brand-sub">{t.brandSub}</span>
+        <Logo className="brand-logo" title={t.brand} />
       </div>
       <span className="demo-badge">{t.demoBadge}</span>
       <div className="header-spacer" />

@@ -25,7 +25,6 @@ export interface OptionCopy {
 
 export interface Copy {
   brand: string;
-  brandSub: string;
   demoBadge: string;
   language: { label: string; vi: string; en: string };
   newSession: string;
@@ -69,6 +68,12 @@ export interface Copy {
     familyDouble: string;
     unavailable: string;
     changeClosure: string;
+    sameTrousersLabel: string;
+    sameTrousersTitle: string;
+    sameTrousersOn: string;
+    sameTrousersOff: string;
+    sameTrousersHintOn: string;
+    sameTrousersHintOff: string;
     stepDone: string;
     stepTodo: string;
     summaryTitle: string;
@@ -117,7 +122,18 @@ export interface Copy {
   confirmed: {
     title: string;
     subtitle: string;
-    codeLabel: string;
+    orderLabel: string;
+    customerLabel: string;
+    phoneLabel: string;
+    exportPdf: string;
+    exporting: string;
+    exportFailed: string;
+    sheetTitle: string;
+    sheetSending: string;
+    sheetSent: string;
+    sheetQueued: string;
+    sheetUnconfigured: string;
+    sheetRetry: string;
     revision: string; // {n}
     confirmedAt: string; // {time}
     nextTitle: string;
@@ -128,6 +144,37 @@ export interface Copy {
     wasValue: string; // {value}
     changesTitle: string; // {n}
     firstRevisionNote: string;
+  };
+
+  order: {
+    title: string;
+    intro: string;
+    dateLabel: string;
+    dateNote: string;
+    orderId: string;
+    orderIdHint: string;
+    customer: string;
+    phone: string;
+    phoneHint: string;
+    summary: string; // {product} {n}
+    errorRequired: string;
+    errorTooLong: string;
+    errorPhone: string;
+    back: string;
+    confirm: string;
+    confirmBlocked: string;
+    dataNote: string;
+  };
+
+  pdf: {
+    title: string;
+    date: string;
+    orderId: string;
+    customer: string;
+    phone: string;
+    product: string;
+    revision: string;
+    footer: string;
   };
 
   reset: {

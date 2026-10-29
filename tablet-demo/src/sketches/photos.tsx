@@ -82,6 +82,8 @@ export const ClosureSB3 = () => (
     <EraseBox x={153} y={246} w={9} h={9} />
     <Erase cx={139.5} cy={300} r={8} />
     <EraseBox x={155} y={294} w={20} h={9} />
+    {/* the front edge between the top and middle button, redrawn along the original curve */}
+    <path d="M144.8 230 C143 247 143.3 263 145.4 275.5 C147 285 149 291 150 295" className="pen" />
     <Ring cx={150} cy={246} hole="attached" />
     <Ring cx={146.5} cy={274} hole="attached" />
     <Ring cx={141} cy={302} hole="apart" />
@@ -145,6 +147,8 @@ export const ShoulderNatural = () => (
   <Photo name="shoulder-soft">
     <polygon points="173,72 212,72 212,98 197,98 173,92" className="erase" />
     <path d="M172 82.5 L195 88 L203.2 101.6" className="pen heavy-pen" />
+    {/* the sleeve seam runs up and joins the shoulder line, as one continuous stroke */}
+    <path d="M179.4 99 L178.6 85.2" className="pen" style={{ strokeWidth: 4.2 }} />
   </Photo>
 );
 
@@ -180,47 +184,40 @@ export const BackPocketOneRight = () => (
   </Photo>
 );
 
+/* ── Waistcoat ───────────────────────────────────────────────────────────── */
+
+/** The four supplied waistcoat drawings, re-inked: single or double-breasted, two or four pockets. */
+export const WaistcoatSB2 = () => <Photo name="vest-sb2" />;
+export const WaistcoatSB4 = () => <Photo name="vest-sb4" />;
+export const WaistcoatDB2 = () => <Photo name="vest-db2" />;
+export const WaistcoatDB4 = () => <Photo name="vest-db4" />;
+
+/* ── Cuffs ───────────────────────────────────────────────────────────────── */
+
+/** The four supplied cuff drawings, re-inked: one to four buttons. */
+export const Cuffs1 = () => <Photo name="cuffs-1" />;
+export const Cuffs2 = () => <Photo name="cuffs-2" />;
+export const Cuffs3 = () => <Photo name="cuffs-3" />;
+export const Cuffs4 = () => <Photo name="cuffs-4" />;
+
+/** The waistcoat on the start screen, and as a piece of the three-piece suit. */
+export const ProductWaistcoatDrawing = WaistcoatSB2;
+
 /** The blazer on the start screen: the supplied jacket with patch pockets. */
 export const ProductBlazerDrawing = () => <Photo name="patch" />;
 
 /* ── Breast pocket ───────────────────────────────────────────────────────── */
 
-/** The dark button of the supplied drawing is painted out and drawn as a ring, as on the other jackets. */
-const FrontButton = ({ cx, cy }: { cx: number; cy: number }) => (
-  <>
-    <Erase cx={cx} cy={cy} r={11} />
-    <Ring cx={cx} cy={cy} r={7.5} />
-  </>
-);
-
-/** Jet: the opening is only a slit; its two fine edges are redrawn as thin lines. */
-export const BreastPocketJet = () => (
-  <Photo name="bp-jet">
-    <polygon points="118,240 219,219 219,239 118,259" className="erase" />
-    <path d="M112 247 L217.5 226 L217.5 232 L112 253" className="line-pen" />
-    <FrontButton cx={30.6} cy={433.9} />
-  </Photo>
-);
-
-export const BreastPocketPatch = () => (
-  <Photo name="bp-patch">
-    <FrontButton cx={32.8} cy={395.5} />
-  </Photo>
-);
-
-export const BreastPocketWelt = () => (
-  <Photo name="bp-welt">
-    <FrontButton cx={31.7} cy={393.4} />
-  </Photo>
-);
+/** The supplied chest-pocket jackets, re-inked: only the pocket differs between them. */
+export const BreastPocketBarchetta = () => <Photo name="chest-barchetta" />;
+export const BreastPocketPatch = () => <Photo name="chest-patch" />;
+export const BreastPocketStraight = () => <Photo name="chest-straight" />;
 
 /* ── Back vents ──────────────────────────────────────────────────────────── */
 
+/** No vent: the back is one smooth piece. */
+export const VentNone = () => <Photo name="vent-none" />;
 /** One vent, in the centre of the back. */
 export const VentSingle = () => <Photo name="vent-centre" />;
 /** Two vents, one at each side. */
-export const VentsDouble = () => (
-  <Photo name="vent-side">
-    <path d="M240 38.5 Q253 30 266 38.5" className="pen heavy-pen" />
-  </Photo>
-);
+export const VentsDouble = () => <Photo name="vent-side" />;

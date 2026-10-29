@@ -28,11 +28,12 @@ describe('catalog', () => {
     }
   });
 
-  it('suit = jacket + trousers, blazer = jacket only, trousers = trousers only', () => {
-    expect(PRODUCTS.suit.garments).toEqual(['jacket', 'trousers']);
-    expect(stepsFor('blazer')).toHaveLength(groupsFor('jacket').length);
-    expect(stepsFor('trousers')).toHaveLength(groupsFor('trousers').length);
-    expect(stepsFor('suit')).toHaveLength(12);
+  it('suit = jacket + trousers, blazer = jacket only, trousers = trousers only (each with the trims)', () => {
+    expect(PRODUCTS.suit.garments).toEqual(['jacket', 'trousers', 'trims']);
+    // the cuff-buttons choice is made on the cuffs screen, so it adds no step
+    expect(stepsFor('blazer')).toHaveLength(groupsFor('jacket').length - 1 + groupsFor('trims').length);
+    expect(stepsFor('trousers')).toHaveLength(groupsFor('trousers').length + groupsFor('trims').length);
+    expect(stepsFor('suit')).toHaveLength(8 + 5 + 2);
   });
 });
 
@@ -113,7 +114,7 @@ describe('session reducer', () => {
     );
 
   it('manual start preselects nothing; preset start fills everything', () => {
-    expect(missingSteps('suit', started('suit').selections)).toHaveLength(12);
+    expect(missingSteps('suit', started('suit').selections)).toHaveLength(16);
     expect(missingSteps('suit', started('suit', 'preset').selections)).toHaveLength(0);
   });
 
@@ -127,7 +128,7 @@ describe('session reducer', () => {
     s = run(s, { type: 'confirm', at: 1 }, { type: 'confirm', at: 2 }, { type: 'confirm', at: 3 });
     expect(s.confirmed?.revision).toBe(1);
     expect(s.confirmed?.confirmedAt).toBe(1);
-    expect(s.screen).toBe('confirmed');
+    expect(s.screen).toBe('order'); // the design is confirmed; the order details come next
   });
 
   it('refuses to confirm while a group is missing', () => {
@@ -161,6 +162,74 @@ describe('session reducer', () => {
     s = run(s, { type: 'openReview' }, { type: 'confirm', at: 1 }, { type: 'editConfirmed' }, { type: 'confirm', at: 2 });
     expect(s.confirmed?.revision).toBe(1);
     expect(s.screen).toBe('review');
+  });
+
+  describe('order details', () => {
+    const designConfirmed = () => run(started('blazer', 'preset'), { type: 'openReview' }, { type: 'confirm', at: 1 });
+    const fill = (s: ReturnType<typeof initialState>) =>
+      run(
+        s,
+        { type: 'setOrderField', field: 'orderId', value: '  MQ-0001 ' },
+        { type: 'setOrderField', field: 'customerName', value: ' Nguyễn   Văn A ' },
+        { type: 'setOrderField', field: 'phone', value: '0912 345 678' },
+      );
+
+    it('confirming the order needs all three fields and is a no-op until they are valid', () => {
+      let s = designConfirmed();
+      expect(run(s, { type: 'confirmOrder', at: 2, submissionId: 'a' }).screen).toBe('order');
+      s = run(s, { type: 'setOrderField', field: 'orderId', value: 'MQ-1' }, { type: 'setOrderField', field: 'phone', value: '12' });
+      expect(run(s, { type: 'confirmOrder', at: 2, submissionId: 'a' }).orderRecord).toBeNull();
+    });
+
+    it('a valid order is recorded once, tidied, and queued for the spreadsheet', () => {
+      let s = fill(designConfirmed());
+      s = run(s, { type: 'confirmOrder', at: 2, submissionId: 'a' }, { type: 'confirmOrder', at: 3, submissionId: 'b' });
+      expect(s.screen).toBe('confirmed');
+      expect(s.orderRecord).toEqual({
+        orderId: 'MQ-0001',
+        customerName: 'Nguyễn Văn A',
+        phone: '0912 345 678',
+        revision: 1,
+        confirmedAt: 2,
+        submissionId: 'a',
+      });
+      expect(s.sheet).toBe('sending');
+    });
+
+    it('the spreadsheet result and a retry only move the status', () => {
+      let s = fill(designConfirmed());
+      s = run(s, { type: 'confirmOrder', at: 2, submissionId: 'a' }, { type: 'sheetResult', status: 'queued' });
+      expect(s.sheet).toBe('queued');
+      expect(run(s, { type: 'sheetRetry' }).sheet).toBe('sending');
+      expect(run(s, { type: 'sheetResult', status: 'sent' }).sheet).toBe('sent');
+    });
+
+    it('a changed design needs the order confirmed again, with the details still filled in', () => {
+      let s = fill(designConfirmed());
+      s = run(s, { type: 'confirmOrder', at: 2, submissionId: 'a' }, { type: 'editConfirmed' }, { type: 'editFromReview', garment: 'jacket', group: 'vents' });
+      s = run(s, { type: 'select', garment: 'jacket', group: 'vents', option: 'vents.single' }, { type: 'backToReview' }, { type: 'confirm', at: 5 });
+      expect(s.screen).toBe('order');
+      expect(s.orderRecord).toBeNull();
+      expect(s.order.orderId).toBe('MQ-0001');
+      s = run(s, { type: 'confirmOrder', at: 6, submissionId: 'c' });
+      expect(s.orderRecord?.revision).toBe(2);
+      expect(s.orderRecord?.submissionId).toBe('c');
+    });
+
+    it('going back to look at the confirmed design lands on the right screen', () => {
+      let s = designConfirmed();
+      s = run(s, { type: 'editConfirmed' }, { type: 'viewConfirmed' });
+      expect(s.screen).toBe('order'); // no order for this version yet
+      s = run(fill(s), { type: 'confirmOrder', at: 2, submissionId: 'a' }, { type: 'editConfirmed' }, { type: 'viewConfirmed' });
+      expect(s.screen).toBe('confirmed');
+    });
+
+    it('reset wipes the customer details', () => {
+      let s = fill(designConfirmed());
+      s = run(s, { type: 'confirmOrder', at: 2, submissionId: 'a' }, { type: 'reset' });
+      expect(s.order).toEqual({ orderId: '', customerName: '', phone: '' });
+      expect(s.orderRecord).toBeNull();
+    });
   });
 
   it('keeps all selections when switching garment and stepping back and forth', () => {
@@ -199,7 +268,7 @@ describe('session reducer', () => {
     expect(s.confirmed).toBeNull();
     expect(s.product).toBeNull();
     expect(s.screen).toBe('start');
-    expect(missingSteps('suit', s.selections)).toHaveLength(12);
+    expect(missingSteps('suit', s.selections)).toHaveLength(16);
   });
 
   it('changing language changes nothing else', () => {

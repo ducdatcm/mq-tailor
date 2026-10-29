@@ -79,17 +79,10 @@ button {
   align-items: baseline;
   gap: 12px;
 }
-.wordmark {
-  font-family: var(--font-serif);
-  font-size: 1.45rem;
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-.brand-sub {
-  font-size: 0.74rem;
-  color: var(--muted);
-  letter-spacing: 0.06em;
+.brand-logo {
+  display: block;
+  height: 40px;
+  width: auto;
 }
 .demo-badge {
   font-size: 0.7rem;
@@ -555,6 +548,26 @@ button {
   display: flex;
   gap: 8px;
 }
+.same-as {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  margin: 0 0 18px;
+  padding: 12px 16px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+.same-as-label {
+  font-weight: 600;
+}
+.same-as-hint {
+  flex: 1 1 100%;
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
 .family-tab {
   min-height: 44px;
   padding: 0 20px;
@@ -586,6 +599,38 @@ button {
   flex: 1;
   justify-content: center;
   padding: 10px 12px;
+}
+.options.is-compact .option-label {
+  padding-right: 34px; /* clear of the enlarge button */
+}
+.options.is-plain .option {
+  min-height: 92px;
+}
+.option.is-plain .option-body {
+  flex: 1;
+  padding: 14px 18px;
+}
+.option.is-plain .option-label {
+  padding-right: 96px; /* clear of the Selected badge */
+}
+.option.is-plain .option-badge {
+  top: 12px;
+  left: auto;
+  right: 12px;
+}
+.companion {
+  margin-top: 26px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+.companion-title {
+  margin: 0 0 4px;
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  font-weight: 500;
+}
+.companion .group-difference {
+  margin: 0 0 12px;
 }
 .option-wrap {
   position: relative;
@@ -860,6 +905,9 @@ button {
   border-color: #e0b878;
   background: var(--warn-soft);
 }
+.sheet-row.is-plain {
+  padding-left: 14px;
+}
 .sheet-row.is-changed {
   border-color: var(--accent);
   box-shadow: inset 4px 0 0 var(--accent);
@@ -1075,9 +1123,11 @@ button {
     padding: 8px 18px;
     gap: 10px;
   }
-  .brand-sub,
   .header-product {
     display: none;
+  }
+  .brand-logo {
+    height: 34px;
   }
   .content {
     padding: 18px 18px 26px;
@@ -1186,4 +1236,113 @@ button {
 .gallery-note {
   color: var(--muted);
   margin-top: 6px;
+}
+
+/* ── Order details screen ── */
+.order-form {
+  max-width: 640px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.order-form h1 {
+  font-size: 1.85rem;
+}
+.order-summary {
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+.order-date {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 12px;
+  padding: 12px 16px;
+  background: var(--surface-2);
+  border-radius: 12px;
+}
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.field-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ink-2);
+}
+.field-input {
+  min-height: 56px;
+  padding: 0 16px;
+  font: inherit;
+  font-size: 1.1rem;
+  color: var(--ink);
+  background: var(--surface);
+  border: 2px solid var(--line-strong);
+  border-radius: 12px;
+}
+.field-input:focus {
+  outline: 3px solid var(--focus);
+  outline-offset: 1px;
+  border-color: var(--focus);
+}
+.field.has-error .field-input {
+  border-color: var(--accent);
+}
+.field-hint {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+.field-error {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+/* ── Confirmed order: facts and exports ── */
+.order-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 28px;
+  margin: 12px 0 6px;
+}
+.order-facts div {
+  display: flex;
+  flex-direction: column;
+}
+.order-facts dt {
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.order-facts dd {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+.export-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 8px 0 20px;
+  padding: 16px 18px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+.export-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 14px;
+}
+.sheet-status {
+  font-size: 0.88rem;
+  color: var(--ink-2);
+}
+.sheet-status[data-sheet-status='queued'] {
+  color: var(--warn);
 }

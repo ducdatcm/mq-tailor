@@ -5,6 +5,11 @@
     "detail": ""
   },
   {
+    "area": "header shows the logo and no tagline tablet-1024x768",
+    "ok": true,
+    "detail": "{\"logo\":true,\"oldText\":false}"
+  },
+  {
     "area": "layout tablet-1024x768 suit configure",
     "ok": true,
     "detail": ""
@@ -25,7 +30,27 @@
     "detail": ""
   },
   {
+    "area": "layout tablet-1024x768 suit order",
+    "ok": true,
+    "detail": ""
+  },
+  {
     "area": "layout tablet-1024x768 suit confirmed",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "order row sent tablet-1024x768 suit",
+    "ok": true,
+    "detail": "status=sent"
+  },
+  {
+    "area": "pdf export tablet-1024x768 suit",
+    "ok": true,
+    "detail": "phieu-thiet-ke_MQ-0001_20261028.pdf 263250 bytes"
+  },
+  {
+    "area": "layout tablet-1024x768 suit order",
     "ok": true,
     "detail": ""
   },
@@ -35,7 +60,92 @@
     "detail": ""
   },
   {
+    "area": "layout tablet-1024x768 suit3Trousers configure",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout tablet-1024x768 suit3Trousers configure trousers 2",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "second trousers copy the first tablet-1024x768",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout tablet-1024x768 suit3Trousers review",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout tablet-1024x768 suit3Trousers order",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout tablet-1024x768 suit3Trousers confirmed",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "order row sent tablet-1024x768 suit3Trousers",
+    "ok": true,
+    "detail": "status=sent"
+  },
+  {
+    "area": "pdf export tablet-1024x768 suit3Trousers",
+    "ok": true,
+    "detail": "phieu-thiet-ke_MQ-0001_20261028.pdf 253805 bytes"
+  },
+  {
+    "area": "layout tablet-1024x768 suit3Waistcoat configure",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout tablet-1024x768 suit3Waistcoat configure waistcoat",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "waistcoat shows four options tablet-1024x768 suit3Waistcoat",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout tablet-1024x768 suit3Waistcoat review",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout tablet-1024x768 suit3Waistcoat order",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout tablet-1024x768 suit3Waistcoat confirmed",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "order row sent tablet-1024x768 suit3Waistcoat",
+    "ok": true,
+    "detail": "status=sent"
+  },
+  {
     "area": "layout tablet-1024x768 blazer configure",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout tablet-1024x768 blazer configure trims",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "cuffs: four button counts and a shared functional / closed choice tablet-1024x768",
     "ok": true,
     "detail": ""
   },
@@ -45,12 +155,27 @@
     "detail": ""
   },
   {
+    "area": "layout tablet-1024x768 blazer order",
+    "ok": true,
+    "detail": ""
+  },
+  {
     "area": "layout tablet-1024x768 blazer confirmed",
     "ok": true,
     "detail": ""
   },
   {
+    "area": "order row sent tablet-1024x768 blazer",
+    "ok": true,
+    "detail": "status=sent"
+  },
+  {
     "area": "layout tablet-1024x768 trousers configure",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout tablet-1024x768 trousers configure trims",
     "ok": true,
     "detail": ""
   },
@@ -60,9 +185,59 @@
     "detail": ""
   },
   {
+    "area": "layout tablet-1024x768 trousers order",
+    "ok": true,
+    "detail": ""
+  },
+  {
     "area": "layout tablet-1024x768 trousers confirmed",
     "ok": true,
     "detail": ""
+  },
+  {
+    "area": "order row sent tablet-1024x768 trousers",
+    "ok": true,
+    "detail": "status=sent"
+  },
+  {
+    "area": "layout tablet-1024x768 waistcoat configure",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout tablet-1024x768 waistcoat configure waistcoat",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "waistcoat shows four options tablet-1024x768 waistcoat",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout tablet-1024x768 waistcoat configure trims",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout tablet-1024x768 waistcoat review",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout tablet-1024x768 waistcoat order",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout tablet-1024x768 waistcoat confirmed",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "order row sent tablet-1024x768 waistcoat",
+    "ok": true,
+    "detail": "status=sent"
   },
   {
     "area": "keyboard tablet-1024x768 start -> configure",
@@ -77,7 +252,7 @@
   {
     "area": "keyboard tablet-1024x768 full journey to confirmation",
     "ok": true,
-    "detail": "Đã xác nhận thiết kế mẫu"
+    "detail": "Đã xác nhận đơn"
   },
   {
     "area": "keyboard tablet-1024x768 focus ring visible while tabbing",
@@ -93,6 +268,11 @@
     "area": "layout tablet-1280x800 suit start",
     "ok": true,
     "detail": ""
+  },
+  {
+    "area": "header shows the logo and no tagline tablet-1280x800",
+    "ok": true,
+    "detail": "{\"logo\":true,\"oldText\":false}"
   },
   {
     "area": "layout tablet-1280x800 suit configure",
@@ -115,7 +295,27 @@
     "detail": ""
   },
   {
+    "area": "layout tablet-1280x800 suit order",
+    "ok": true,
+    "detail": ""
+  },
+  {
     "area": "layout tablet-1280x800 suit confirmed",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "order row sent tablet-1280x800 suit",
+    "ok": true,
+    "detail": "status=sent"
+  },
+  {
+    "area": "pdf export tablet-1280x800 suit",
+    "ok": true,
+    "detail": "phieu-thiet-ke_MQ-0001_20261028.pdf 263250 bytes"
+  },
+  {
+    "area": "layout tablet-1280x800 suit order",
     "ok": true,
     "detail": ""
   },
@@ -125,7 +325,92 @@
     "detail": ""
   },
   {
+    "area": "layout tablet-1280x800 suit3Trousers configure",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout tablet-1280x800 suit3Trousers configure trousers 2",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "second trousers copy the first tablet-1280x800",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout tablet-1280x800 suit3Trousers review",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout tablet-1280x800 suit3Trousers order",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout tablet-1280x800 suit3Trousers confirmed",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "order row sent tablet-1280x800 suit3Trousers",
+    "ok": true,
+    "detail": "status=sent"
+  },
+  {
+    "area": "pdf export tablet-1280x800 suit3Trousers",
+    "ok": true,
+    "detail": "phieu-thiet-ke_MQ-0001_20261028.pdf 253805 bytes"
+  },
+  {
+    "area": "layout tablet-1280x800 suit3Waistcoat configure",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout tablet-1280x800 suit3Waistcoat configure waistcoat",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "waistcoat shows four options tablet-1280x800 suit3Waistcoat",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout tablet-1280x800 suit3Waistcoat review",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout tablet-1280x800 suit3Waistcoat order",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout tablet-1280x800 suit3Waistcoat confirmed",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "order row sent tablet-1280x800 suit3Waistcoat",
+    "ok": true,
+    "detail": "status=sent"
+  },
+  {
     "area": "layout tablet-1280x800 blazer configure",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout tablet-1280x800 blazer configure trims",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "cuffs: four button counts and a shared functional / closed choice tablet-1280x800",
     "ok": true,
     "detail": ""
   },
@@ -135,12 +420,27 @@
     "detail": ""
   },
   {
+    "area": "layout tablet-1280x800 blazer order",
+    "ok": true,
+    "detail": ""
+  },
+  {
     "area": "layout tablet-1280x800 blazer confirmed",
     "ok": true,
     "detail": ""
   },
   {
+    "area": "order row sent tablet-1280x800 blazer",
+    "ok": true,
+    "detail": "status=sent"
+  },
+  {
     "area": "layout tablet-1280x800 trousers configure",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout tablet-1280x800 trousers configure trims",
     "ok": true,
     "detail": ""
   },
@@ -150,9 +450,59 @@
     "detail": ""
   },
   {
+    "area": "layout tablet-1280x800 trousers order",
+    "ok": true,
+    "detail": ""
+  },
+  {
     "area": "layout tablet-1280x800 trousers confirmed",
     "ok": true,
     "detail": ""
+  },
+  {
+    "area": "order row sent tablet-1280x800 trousers",
+    "ok": true,
+    "detail": "status=sent"
+  },
+  {
+    "area": "layout tablet-1280x800 waistcoat configure",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout tablet-1280x800 waistcoat configure waistcoat",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "waistcoat shows four options tablet-1280x800 waistcoat",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout tablet-1280x800 waistcoat configure trims",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout tablet-1280x800 waistcoat review",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout tablet-1280x800 waistcoat order",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout tablet-1280x800 waistcoat confirmed",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "order row sent tablet-1280x800 waistcoat",
+    "ok": true,
+    "detail": "status=sent"
   },
   {
     "area": "keyboard tablet-1280x800 start -> configure",
@@ -167,7 +517,7 @@
   {
     "area": "keyboard tablet-1280x800 full journey to confirmation",
     "ok": true,
-    "detail": "Đã xác nhận thiết kế mẫu"
+    "detail": "Đã xác nhận đơn"
   },
   {
     "area": "keyboard tablet-1280x800 focus ring visible while tabbing",
@@ -183,6 +533,11 @@
     "area": "layout portrait-768x1024 suit start",
     "ok": true,
     "detail": ""
+  },
+  {
+    "area": "header shows the logo and no tagline portrait-768x1024",
+    "ok": true,
+    "detail": "{\"logo\":true,\"oldText\":false}"
   },
   {
     "area": "layout portrait-768x1024 suit configure",
@@ -205,7 +560,27 @@
     "detail": ""
   },
   {
+    "area": "layout portrait-768x1024 suit order",
+    "ok": true,
+    "detail": ""
+  },
+  {
     "area": "layout portrait-768x1024 suit confirmed",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "order row sent portrait-768x1024 suit",
+    "ok": true,
+    "detail": "status=sent"
+  },
+  {
+    "area": "pdf export portrait-768x1024 suit",
+    "ok": true,
+    "detail": "phieu-thiet-ke_MQ-0001_20261028.pdf 263250 bytes"
+  },
+  {
+    "area": "layout portrait-768x1024 suit order",
     "ok": true,
     "detail": ""
   },
@@ -215,7 +590,92 @@
     "detail": ""
   },
   {
+    "area": "layout portrait-768x1024 suit3Trousers configure",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout portrait-768x1024 suit3Trousers configure trousers 2",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "second trousers copy the first portrait-768x1024",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout portrait-768x1024 suit3Trousers review",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout portrait-768x1024 suit3Trousers order",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout portrait-768x1024 suit3Trousers confirmed",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "order row sent portrait-768x1024 suit3Trousers",
+    "ok": true,
+    "detail": "status=sent"
+  },
+  {
+    "area": "pdf export portrait-768x1024 suit3Trousers",
+    "ok": true,
+    "detail": "phieu-thiet-ke_MQ-0001_20261028.pdf 253805 bytes"
+  },
+  {
+    "area": "layout portrait-768x1024 suit3Waistcoat configure",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout portrait-768x1024 suit3Waistcoat configure waistcoat",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "waistcoat shows four options portrait-768x1024 suit3Waistcoat",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout portrait-768x1024 suit3Waistcoat review",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout portrait-768x1024 suit3Waistcoat order",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout portrait-768x1024 suit3Waistcoat confirmed",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "order row sent portrait-768x1024 suit3Waistcoat",
+    "ok": true,
+    "detail": "status=sent"
+  },
+  {
     "area": "layout portrait-768x1024 blazer configure",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout portrait-768x1024 blazer configure trims",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "cuffs: four button counts and a shared functional / closed choice portrait-768x1024",
     "ok": true,
     "detail": ""
   },
@@ -225,12 +685,27 @@
     "detail": ""
   },
   {
+    "area": "layout portrait-768x1024 blazer order",
+    "ok": true,
+    "detail": ""
+  },
+  {
     "area": "layout portrait-768x1024 blazer confirmed",
     "ok": true,
     "detail": ""
   },
   {
+    "area": "order row sent portrait-768x1024 blazer",
+    "ok": true,
+    "detail": "status=sent"
+  },
+  {
     "area": "layout portrait-768x1024 trousers configure",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout portrait-768x1024 trousers configure trims",
     "ok": true,
     "detail": ""
   },
@@ -240,9 +715,59 @@
     "detail": ""
   },
   {
+    "area": "layout portrait-768x1024 trousers order",
+    "ok": true,
+    "detail": ""
+  },
+  {
     "area": "layout portrait-768x1024 trousers confirmed",
     "ok": true,
     "detail": ""
+  },
+  {
+    "area": "order row sent portrait-768x1024 trousers",
+    "ok": true,
+    "detail": "status=sent"
+  },
+  {
+    "area": "layout portrait-768x1024 waistcoat configure",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout portrait-768x1024 waistcoat configure waistcoat",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "waistcoat shows four options portrait-768x1024 waistcoat",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout portrait-768x1024 waistcoat configure trims",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout portrait-768x1024 waistcoat review",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout portrait-768x1024 waistcoat order",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout portrait-768x1024 waistcoat confirmed",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "order row sent portrait-768x1024 waistcoat",
+    "ok": true,
+    "detail": "status=sent"
   },
   {
     "area": "keyboard portrait-768x1024 start -> configure",
@@ -257,7 +782,7 @@
   {
     "area": "keyboard portrait-768x1024 full journey to confirmation",
     "ok": true,
-    "detail": "Đã xác nhận thiết kế mẫu"
+    "detail": "Đã xác nhận đơn"
   },
   {
     "area": "keyboard portrait-768x1024 focus ring visible while tabbing",

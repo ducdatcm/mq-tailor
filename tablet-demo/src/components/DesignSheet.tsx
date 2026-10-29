@@ -31,10 +31,12 @@ export function DesignSheet({ product, selections, mode, previous, onEdit }: Pro
               const changed = Boolean(previous) && before !== chosen;
               const name = t.groups[g.id].name;
               return (
-                <li key={g.id} className={`sheet-row${chosen ? '' : ' is-missing'}${changed ? ' is-changed' : ''}`} data-group={g.id}>
-                  <span className="sheet-thumb">
-                    {chosen ? <Sketch option={chosen} /> : <span className="sheet-thumb-empty">{t.review.notChosen}</span>}
-                  </span>
+                <li key={g.id} className={`sheet-row${chosen ? '' : ' is-missing'}${changed ? ' is-changed' : ''}${g.noSketch ? ' is-plain' : ''}`} data-group={g.id}>
+                  {g.noSketch ? null : (
+                    <span className="sheet-thumb">
+                      {chosen ? <Sketch option={chosen} /> : <span className="sheet-thumb-empty">{t.review.notChosen}</span>}
+                    </span>
+                  )}
                   <span className="sheet-text">
                     <span className="sheet-group">
                       {name}

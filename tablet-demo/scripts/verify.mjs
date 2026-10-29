@@ -6,6 +6,7 @@
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { BASE_URL, VIEWPORTS, launch, newPage } from './browser.mjs';
+import { startMockSheet } from './mock-sheet-server.mjs';
 
 const OUT = fileURLToPath(new URL('../docs/screenshots/', import.meta.url));
 mkdirSync(OUT, { recursive: true });
@@ -50,6 +51,21 @@ async function checkLayout(page, label) {
 }
 
 const shot = (page, vp, name) => page.screenshot({ path: `${OUT}${vp}__${name}.png` });
+// The original three products keep a full set of screenshots; the newer ones only the screens that differ.
+const ORIGINAL = ['suit', 'blazer', 'trousers'];
+
+/** The order screen: fill in the three details (unless already there) and confirm the order. */
+async function confirmOrder(page, tag, vp, shotName) {
+  await page.waitForSelector('#order-orderId');
+  await checkLayout(page, `${tag} order`);
+  if (shotName) await shot(page, vp, shotName);
+  if (!(await page.inputValue('#order-orderId'))) {
+    await page.fill('#order-orderId', 'MQ-0001');
+    await page.fill('#order-customerName', 'Nguyễn Văn An');
+    await page.fill('#order-phone', '0912 345 678');
+  }
+  await page.getByRole('button', { name: 'Xác nhận đơn' }).click();
+}
 
 async function freshStart(page) {
   await page.goto(BASE_URL);
@@ -58,15 +74,36 @@ async function freshStart(page) {
   await page.waitForSelector('[data-product]');
 }
 
+/** The cuffs screen: four drawn button counts, plus the functional / closed choice shared by all four. */
+async function cuffsScreenOk(page) {
+  await page.locator('.garment-tab').first().click();
+  await page.locator('nav ol button').nth(6).click();
+  const counts = await page.locator('[data-option^="cuffs."]').count();
+  const drawn = await page.locator('[data-option^="cuffs."] svg.sk').count();
+  const shared = page.locator('[data-companion="cuffMode"] [data-option]');
+  const sharedCount = await shared.count();
+  await page.click('[data-option="cuffMode.functional"]');
+  const pressed = await page.getAttribute('[data-option="cuffMode.functional"]', 'aria-pressed');
+  const note = await page.locator('[data-option="cuffMode.functional"]').textContent();
+  return counts === 4 && drawn === 4 && sharedCount === 2 && pressed === 'true' && /sport jacket/i.test(note ?? '');
+}
+
 async function journey(page, vp, product) {
   await freshStart(page);
   const tag = `${vp} ${product}`;
+  // Multi-garment products start from the house suggestion; single-garment ones are chosen by hand.
+  const preset = product === 'suit' || product === 'suit3Trousers' || product === 'suit3Waistcoat';
   if (product === 'suit') {
     await checkLayout(page, `${tag} start`);
     await shot(page, vp, '01-start');
+    const brand = await page.evaluate(() => ({
+      logo: !!document.querySelector('.header svg[aria-label="Minh Quang Bespoke"]'),
+      oldText: document.querySelector('.header')?.textContent?.includes('Nhà may') ?? false,
+    }));
+    record(`header shows the logo and no tagline ${vp}`, brand.logo && !brand.oldText, JSON.stringify(brand));
   }
   await page.click(`[data-product="${product}"]`);
-  if (product === 'suit') await page.click('[data-mode="preset"]');
+  if (preset) await page.click('[data-mode="preset"]');
   await page.getByRole('button', { name: 'Bắt đầu tư vấn' }).click();
   await checkLayout(page, `${tag} configure`);
   if (product === 'suit') await shot(page, vp, '02-configure-closure');
@@ -74,9 +111,12 @@ async function journey(page, vp, product) {
   // Walk every group of the first garment (manual products choose the second option).
   const total = await page.locator('nav ol li').count();
   for (let i = 0; i < total; i += 1) {
-    if (product !== 'suit') {
+    if (!preset) {
       const cards = page.locator('.option');
       await cards.nth(Math.min(1, (await cards.count()) - 1)).click();
+      // a choice made on this screen for the group above (e.g. functional / closed cuff buttons)
+      const shared = page.locator('[data-companion] .option');
+      if (await shared.count()) await shared.nth(1).click();
     }
     if (i < total - 1) await page.getByRole('button', { name: 'Tiếp tục' }).click();
   }
@@ -89,15 +129,58 @@ async function journey(page, vp, product) {
     await checkLayout(page, `${tag} configure learn-more`);
     await page.getByRole('button', { name: 'Thu gọn' }).click();
   }
+  if (product === 'suit3Trousers') {
+    // the second trousers can copy the first
+    await page.locator('.garment-tab').nth(2).click();
+    await page.click('[data-same-trousers="on"]');
+    await checkLayout(page, `${tag} configure trousers 2`);
+    if (vp === 'tablet-1280x800') await shot(page, vp, '03b-configure-trousers2-same');
+    const same = await page.evaluate(() => JSON.parse(sessionStorage.getItem('mq-tablet-demo/v1')).state);
+    record(`second trousers copy the first ${vp}`, same.sameTrousers === true && JSON.stringify(same.selections.trousers) === JSON.stringify(same.selections.trousers2), '');
+  }
+  if (product === 'waistcoat' || product === 'suit3Waistcoat') {
+    if (product === 'suit3Waistcoat') await page.locator('.garment-tab').nth(1).click();
+    await checkLayout(page, `${tag} configure waistcoat`);
+    if (vp === 'tablet-1280x800') await shot(page, vp, '03c-configure-waistcoat');
+    record(`waistcoat shows four options ${vp} ${product}`, (await page.locator('.option').count()) === 4, '');
+  }
+  if (!preset) {
+    // the trims (buttons and buttonholes) are chosen by hand too
+    await page.locator('.garment-tab').last().click();
+    await checkLayout(page, `${tag} configure trims`);
+    const trimSteps = await page.locator('nav ol li').count();
+    for (let i = 0; i < trimSteps; i += 1) {
+      await page.locator('.option').nth(1).click();
+      if (i < trimSteps - 1) await page.getByRole('button', { name: 'Tiếp tục' }).click();
+    }
+  }
+  if (product === 'blazer') {
+    record(`cuffs: four button counts and a shared functional / closed choice ${vp}`, await cuffsScreenOk(page), '');
+  }
   const toggle = page.locator('.summary-toggle');
   if (await toggle.isVisible()) await toggle.click();
   if (product === 'suit') await shot(page, vp, '05-summary');
   await page.locator('.summary-panel').getByRole('button', { name: 'Xem lại thiết kế' }).click();
   await checkLayout(page, `${tag} review`);
-  await shot(page, vp, `06-review-${product}`);
+  if (ORIGINAL.includes(product)) await shot(page, vp, `06-review-${product}`);
   await page.getByRole('button', { name: 'Xác nhận thiết kế' }).click();
+  await confirmOrder(page, tag, vp, ORIGINAL.includes(product) ? `06b-order-${product}` : undefined);
   await checkLayout(page, `${tag} confirmed`);
-  await shot(page, vp, `07-confirmed-${product}`);
+  if (ORIGINAL.includes(product)) await shot(page, vp, `07-confirmed-${product}`);
+
+  // the order row reaches the (mock) spreadsheet, and the design sheet exports as a PDF
+  await page.waitForSelector('[data-sheet-status="sent"]', { timeout: 5000 }).catch(() => {});
+  const status = await page.getAttribute('[data-sheet-status]', 'data-sheet-status');
+  const row = mock.rows.find((r) => r.orderId === 'MQ-0001' && r.product.length > 0);
+  record(`order row sent ${tag}`, status === 'sent' && Boolean(row) && row.customerName === 'Nguyễn Văn An', `status=${status}`);
+  if (product === 'suit' || product === 'suit3Trousers') {
+    const [dl] = await Promise.all([page.waitForEvent('download', { timeout: 20000 }), page.click('[data-export-pdf]')]);
+    const stream = await dl.createReadStream();
+    const chunks = [];
+    for await (const c of stream) chunks.push(c);
+    const pdf = Buffer.concat(chunks);
+    record(`pdf export ${tag}`, pdf.subarray(0, 5).toString() === '%PDF-' && pdf.length > 50000 && /phieu-thiet-ke_MQ-0001_\d{8}\.pdf/.test(dl.suggestedFilename()) && /MediaBox \[0 0 595\.28 841\.94\]/.test(pdf.toString('latin1', 0, 2000)), `${dl.suggestedFilename()} ${pdf.length} bytes`);
+  }
 
   if (product === 'suit') {
     await page.getByRole('button', { name: 'Chỉnh sửa thiết kế' }).click();
@@ -105,6 +188,7 @@ async function journey(page, vp, product) {
     await page.click('[data-option="hem.turnUp"]');
     await page.getByRole('button', { name: 'Xong, về xem lại' }).click();
     await page.getByRole('button', { name: 'Xác nhận thiết kế' }).click();
+    await confirmOrder(page, tag, vp);
     await shot(page, vp, '08-confirmed-revision-2');
     await page.getByRole('button', { name: 'EN' }).click();
     await shot(page, vp, '09-confirmed-english');
@@ -137,6 +221,7 @@ async function keyboardPass(page, vp) {
   }
   await page.keyboard.press('Enter');
   await press('Tab'); // trousers card
+  await press('Tab'); // waistcoat card
   await press('Tab'); // manual mode
   await press('Tab'); // preset mode
   await page.keyboard.press('Space');
@@ -160,7 +245,7 @@ async function keyboardPass(page, vp) {
   // Change a value, move through every group, review, confirm.
   await page.locator('[data-option="closure.sb1"]').focus();
   await page.keyboard.press('Space');
-  for (let i = 0; i < 6; i += 1) {
+  for (let i = 0; i < 9; i += 1) {
     await page.getByRole('button', { name: 'Tiếp tục' }).focus();
     await page.keyboard.press('Enter');
   }
@@ -168,23 +253,36 @@ async function keyboardPass(page, vp) {
   await page.keyboard.press('Enter');
   await page.getByRole('button', { name: 'Xác nhận thiết kế' }).focus();
   await press('Enter');
+  await page.waitForSelector('#order-orderId');
+  // the order screen: the first field has focus; type, tab to the next, and confirm with Enter
+  await page.locator('#order-orderId').focus();
+  await page.keyboard.type('MQ-0002');
+  await press('Tab');
+  await page.keyboard.type('Trần Thị Bích');
+  await press('Tab');
+  await page.keyboard.type('0987654321');
+  await press('Enter'); // Enter in the last field submits the form
+  await page.waitForSelector('[data-export-pdf]');
   const done = await page.getByRole('heading', { level: 1 }).textContent();
   record(`keyboard ${vp} full journey to confirmation`, done?.includes('Đã xác nhận'), done ?? '');
   record(`keyboard ${vp} focus ring visible while tabbing`, ringProblems.length === 0, ringProblems.join('; '));
 }
 
+const mock = await startMockSheet(8787);
 const browser = await launch();
 for (const [vp, size] of Object.entries(VIEWPORTS)) {
   const { page, context } = await newPage(browser, size);
   const errors = [];
+  await page.route('**/config.json', (r) => r.fulfill({ json: { orderSheetUrl: 'http://localhost:8787/', orderSheetToken: '' } }));
   page.on('pageerror', (e) => errors.push(e.message));
   page.on('console', (m) => m.type() === 'error' && errors.push(m.text()));
-  for (const product of ['suit', 'blazer', 'trousers']) await journey(page, vp, product);
+  for (const product of ['suit', 'suit3Trousers', 'suit3Waistcoat', 'blazer', 'trousers', 'waistcoat']) await journey(page, vp, product);
   await keyboardPass(page, vp);
   record(`no console errors ${vp}`, errors.length === 0, errors.join(' | '));
   await context.close();
 }
 await browser.close();
+mock.server.close();
 
 writeFileSync(
   fileURLToPath(new URL('../docs/verification-results.json', import.meta.url)),

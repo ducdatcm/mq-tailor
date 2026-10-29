@@ -1,4 +1,4 @@
-import { GROUP_BY_ID, PRODUCTS, stepsFor, type GarmentId, type ProductId, type Step } from '../catalog/catalog';
+import { GROUP_BY_ID, PRODUCTS, baseGarment, stepsFor, type GarmentId, type ProductId, type Step } from '../catalog/catalog';
 import {
   cloneSelections,
   emptySelections,
@@ -9,9 +9,8 @@ import {
   resolveSelection,
   selectionsEqual,
 } from '../catalog/rules';
+import { cleanOrder, isOrderValid } from '../order/validate';
 import type { Action, Cursor, State } from './types';
-
-export const DEMO_CODE = 'DEMO-001';
 
 export function initialState(lang: State['lang'] = 'vi'): State {
   return {
@@ -22,10 +21,14 @@ export function initialState(lang: State['lang'] = 'vi'): State {
     product: null,
     selections: emptySelections(),
     cursor: { garment: 'jacket', group: 'closure' },
-    lastGroup: { jacket: 'closure', trousers: 'pleats' },
+    lastGroup: { jacket: 'closure', waistcoat: 'waistcoatStyle', trousers: 'pleats', trousers2: 'pleats', trims: 'buttonType' },
     returnToReview: false,
+    sameTrousers: false,
     pending: null,
     confirmed: null,
+    order: { orderId: '', customerName: '', phone: '' },
+    orderRecord: null,
+    sheet: 'idle',
   };
 }
 
@@ -39,12 +42,16 @@ function toCursor(step: Step): Cursor {
 
 /** Move to a group and remember it as the place to return to for that garment. */
 function moveTo(state: State, cursor: Cursor): State {
+  // A group chosen on another group's screen has no screen of its own: go to that screen.
+  const parent = GROUP_BY_ID[cursor.group].companionOf;
+  if (parent) cursor = { garment: cursor.garment, group: parent };
   return { ...state, cursor, lastGroup: { ...state.lastGroup, [cursor.garment]: cursor.group } };
 }
 
 /** True when the session holds anything a reset would throw away. */
 export function sessionHasData(state: State): boolean {
-  return state.confirmed !== null || hasAnySelection(state.selections);
+  const o = state.order;
+  return state.confirmed !== null || hasAnySelection(state.selections) || Boolean(o.orderId || o.customerName || o.phone);
 }
 
 export function reducer(state: State, action: Action): State {
@@ -69,8 +76,12 @@ export function reducer(state: State, action: Action): State {
         cursor: toCursor(stepsFor(product)[0]),
         lastGroup: initialState().lastGroup,
         returnToReview: false,
+        sameTrousers: false,
         pending: null,
         confirmed: null,
+        order: initialState().order,
+        orderRecord: null,
+        sheet: 'idle',
       };
     }
 
@@ -92,7 +103,21 @@ export function reducer(state: State, action: Action): State {
           },
         };
       }
+      // Second trousers set to "same": the first pair is mirrored; changing the second pair on its own ends the mirroring.
+      if (state.sameTrousers && PRODUCTS[state.product].garments.includes('trousers2')) {
+        if (action.garment === 'trousers') {
+          return { ...state, selections: { ...res.selections, trousers2: { ...res.selections.trousers } } };
+        }
+        if (action.garment === 'trousers2') return { ...state, selections: res.selections, sameTrousers: false };
+      }
       return { ...state, selections: res.selections };
+    }
+
+    case 'setSameTrousers': {
+      if (!state.product || !PRODUCTS[state.product].garments.includes('trousers2')) return state;
+      if (state.sameTrousers === action.value) return state;
+      if (!action.value) return { ...state, sameTrousers: false };
+      return { ...state, sameTrousers: true, selections: { ...state.selections, trousers2: { ...state.selections.trousers } } };
     }
 
     case 'acceptPending':
@@ -104,7 +129,7 @@ export function reducer(state: State, action: Action): State {
 
     case 'goTo':
       if (!state.product || !PRODUCTS[state.product].garments.includes(action.garment)) return state;
-      if (GROUP_BY_ID[action.group].garment !== action.garment) return state;
+      if (GROUP_BY_ID[action.group].garment !== baseGarment(action.garment)) return state;
       return moveTo({ ...state, screen: 'configure' }, { garment: action.garment, group: action.group });
 
     case 'switchGarment': {
@@ -152,9 +177,10 @@ export function reducer(state: State, action: Action): State {
       const product = state.product;
       return {
         ...state,
-        screen: 'confirmed',
+        screen: 'order',
+        orderRecord: null,
+        sheet: 'idle',
         confirmed: {
-          code: DEMO_CODE,
           revision: (state.confirmed?.revision ?? 0) + 1,
           confirmedAt: action.at,
           product,
@@ -170,7 +196,31 @@ export function reducer(state: State, action: Action): State {
 
     case 'viewConfirmed':
       if (!state.confirmed) return state;
-      return { ...state, screen: 'confirmed' };
+      return { ...state, screen: state.orderRecord?.revision === state.confirmed.revision ? 'confirmed' : 'order' };
+
+    case 'setOrderField':
+      if (state.screen !== 'order') return state;
+      return { ...state, order: { ...state.order, [action.field]: action.value } };
+
+    case 'confirmOrder': {
+      // Same rule as the design confirmation: one click, one order, repeats are no-ops.
+      if (state.screen !== 'order' || !state.confirmed) return state;
+      if (!isOrderValid(state.order)) return state;
+      const cleaned = cleanOrder(state.order);
+      return {
+        ...state,
+        screen: 'confirmed',
+        order: cleaned,
+        orderRecord: { ...cleaned, revision: state.confirmed.revision, confirmedAt: action.at, submissionId: action.submissionId },
+        sheet: 'sending',
+      };
+    }
+
+    case 'sheetResult':
+      return state.orderRecord ? { ...state, sheet: action.status } : state;
+
+    case 'sheetRetry':
+      return state.orderRecord && state.sheet !== 'sending' ? { ...state, sheet: 'sending' } : state;
 
     case 'reset':
       return initialState(state.lang);

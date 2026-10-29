@@ -31,11 +31,36 @@ npm run preview      # xem bản build tại http://localhost:4173
 ## Kiểm thử
 
 ```bash
-npm test             # 41 test hành vi (quy tắc, reducer, hành trình người dùng A1–A12, A14)
-npm run verify       # chạy trình duyệt thật: 3 sản phẩm × 3 kích thước, layout A13, bàn phím A14, chụp ảnh
+npm test             # 92 test (quy tắc, reducer, hành trình người dùng A1–A12 và A14, đơn hàng, dòng gửi bảng tính, tệp PDF, suit ba mảnh, gile, tay áo và nguyên phụ liệu)
+npm run verify       # chạy trình duyệt thật: 6 sản phẩm × 3 kích thước, layout A13, bàn phím A14, chụp ảnh
 ```
 
 `npm run verify` cần dev server đang chạy (hoặc đặt `DEMO_URL` trỏ tới bản preview) và một trình duyệt Chrome/Edge cài sẵn trên máy (đặt `BROWSER_PATH` nếu ở vị trí khác). Ảnh chụp lưu ở `docs/screenshots/`, kết quả ở `docs/verification-results.json`. Chi tiết đối chiếu A1–A14 và việc cần nhà may duyệt: [`docs/HANDOVER.md`](docs/HANDOVER.md).
+
+## Sản phẩm
+
+Sáu sản phẩm ở màn hình đầu: **Suit hai mảnh** (áo + quần), **Suit ba mảnh (1 áo + 2 quần)**, **Suit ba mảnh (1 áo + 1 quần + 1 gile)**, **Blazer**, **Quần tây** và **Gile**.
+
+- Suit ba mảnh có hai quần: ở tab **Quần 2** có nút **Giống quần đã chọn**. Bật thì mọi lựa chọn của quần 2 được chép từ quần 1 và tự đổi theo khi quần 1 đổi; chọn riêng một mục cho quần 2 thì quần 2 tách khỏi quần 1 (các mục còn lại giữ nguyên).
+- **Gile** (và gile của suit ba mảnh) là một nhóm bốn lựa chọn: một hàng khuy hai túi / bốn túi, hai hàng khuy hai túi / bốn túi. Hình lấy từ bản vẽ nhà may cung cấp, vẽ lại cùng kiểu nét với các hình áo (xem `docs/sketch-style.md`).
+- Logo Minh Quang Bespoke ở thanh trên cùng và đầu phiếu PDF được vẽ lại từ ảnh logo nhà may cung cấp thành một đường nét (`src/brand/logo.ts`), nên luôn sắc nét ở mọi cỡ màn hình.
+
+## Tay áo và nguyên phụ liệu
+
+- **Tay áo (Cuffs)** nằm trong các nhóm của áo (suit, blazer): 1, 2, 3 hoặc 4 khuy, hình vẽ từ bản nhà may gửi. Ngay trên màn hình đó có thêm lựa chọn chung cho cả bốn kiểu: **Khuy mở** (functional; chỉ khuyến nghị cho sport jacket / blazer) hoặc **Khuy đóng** (closed). Lựa chọn chung này được lưu thành nhóm riêng `cuffMode` nhưng không có bước riêng (khai báo `companionOf: 'cuffs'` trong `catalog.ts`).
+- **Nguyên phụ liệu** là một tab cuối ở mọi sản phẩm, chọn một lần cho cả đơn, không có hình vẽ (thẻ chữ): **Loại khuy** (nhựa tiêu chuẩn / sừng / xà cừ; sừng và xà cừ có thể có phụ phí tùy dòng vải) và **Khuyết Milan** (Có / Không).
+- Nhóm không có hình khai báo `noSketch: true`; hiển thị bằng thẻ chữ, trong phiếu PDF không có ô hình.
+
+## Đơn hàng, PDF và bảng tính
+
+Sau khi **Xác nhận thiết kế**, ứng dụng sang màn hình **Thông tin đơn hàng**: Order ID, tên khách, số điện thoại (ngày lấy tự động theo giờ của máy). Bấm **Xác nhận đơn** thì:
+
+- Màn hình đã xác nhận hiện thông tin đơn và nút **Xuất PDF phiếu thiết kế** (một trang A4 — suit ba mảnh tự thu nhỏ vừa một trang; có logo, ngày, Order ID, khách, số điện thoại và từng lựa chọn kèm hình; tải về qua trình duyệt).
+- Một dòng được ghi tự động vào **Google Sheets** của tiệm (ngày, Order ID, tên, số điện thoại, sản phẩm, lần xác nhận và mỗi lựa chọn thiết kế một cột). Cách nối: [`docs/google-sheets/GUIDE.md`](docs/google-sheets/GUIDE.md). Địa chỉ đặt trong `config.json` cạnh `index.html` (`public/config.json`), không cần build lại. Để trống thì ứng dụng vẫn chạy, chỉ không ghi bảng tính.
+- Mất mạng thì đơn được giữ trên tablet và tự gửi lại; mỗi lần xác nhận có mã gửi riêng nên bảng tính không bị ghi trùng.
+- Khách đổi thiết kế rồi xác nhận lại: phải xác nhận đơn lần nữa, thêm một dòng mới với "Lần xác nhận" tăng lên.
+
+Thử không cần Google: `node scripts/mock-sheet-server.mjs` (máy chủ giả trên http://localhost:8787, cùng giao thức), rồi đặt `orderSheetUrl` thành `http://localhost:8787/`. Tên, số điện thoại chỉ nằm trong phiên của tab và trong hàng đợi gửi (khi chưa gửi được); **Phiên mới** xóa phiên.
 
 ## Cấu trúc
 
@@ -78,4 +103,4 @@ Xem toàn bộ sketch trên một trang (để duyệt hình): mở `http://loca
 
 ## Giới hạn chủ ý của giai đoạn này
 
-Không có backend, Google Sheets, lưu lâu dài, số đo, giá, đặt cọc, thanh toán, lịch hẹn, CRM, đăng nhập hay xuất receipt. "DEMO-001" chỉ là nhãn mô phỏng, không phải cơ chế mã đơn thật.
+Không có backend riêng, lưu lâu dài (ngoài một dòng mỗi đơn gửi vào Google Sheets), số đo, giá, đặt cọc, thanh toán, lịch hẹn, CRM hay đăng nhập. Order ID do nhân viên nhập, không có cơ chế tạo mã tự động. Phiếu PDF là phiếu thiết kế tham khảo, không phải hóa đơn hay biên nhận.

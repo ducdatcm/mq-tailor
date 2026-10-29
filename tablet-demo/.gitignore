@@ -1,3 +1,5 @@
 node_modules/
 dist/
+# Local spreadsheet address and secret: never committed (copy config.example.json to config.json)
+public/config.json
 *.log

@@ -35,6 +35,14 @@ async function pickDouble(user: User, id: OptionId) {
 
 const next = (user: User) => user.click(button(vi.configure.next));
 
+/** The order screen: type the three details and confirm. */
+async function fillAndConfirmOrder(user: User, orderId = 'MQ-0001') {
+  await user.type(screen.getByLabelText(vi.order.orderId), orderId);
+  await user.type(screen.getByLabelText(vi.order.customer), 'Nguyễn Văn A');
+  await user.type(screen.getByLabelText(vi.order.phone), '0912345678');
+  await user.click(button(vi.order.confirm));
+}
+
 describe('A1–A2 products show only their own groups', () => {
   it('A1: a suit has jacket and trousers, configured independently', async () => {
     const user = userEvent.setup();
@@ -56,7 +64,7 @@ describe('A1–A2 products show only their own groups', () => {
     const user = userEvent.setup();
     await begin(user, 'blazer');
     expect(screen.queryByRole('button', { name: /Quần/ })).toBeNull();
-    expect(screen.getByRole('navigation', { name: vi.configure.stepsLabel }).querySelectorAll('li')).toHaveLength(7);
+    expect(screen.getByRole('navigation', { name: vi.configure.stepsLabel }).querySelectorAll('li')).toHaveLength(8);
   });
 
   it('A2: standalone trousers have five groups and no jacket', async () => {
@@ -99,8 +107,8 @@ describe('A5 missing groups', () => {
     await pick(user, 'closure.sb2');
     await user.click(button(vi.configure.openReview));
 
-    expect(screen.getByRole('alert')).toHaveTextContent('Còn thiếu 6 nhóm');
-    for (const name of ['Kiểu ve', 'Dáng vai', 'Túi ngoài', 'Túi ngực', 'Xẻ sau', 'Lót áo']) {
+    expect(screen.getByRole('alert')).toHaveTextContent('Còn thiếu 10 nhóm');
+    for (const name of ['Kiểu ve', 'Dáng vai', 'Túi ngoài', 'Túi ngực', 'Xẻ sau', 'Tay áo', 'Kiểu khuy tay', 'Lót áo', 'Loại khuy', 'Khuyết Milan']) {
       expect(within(screen.getByRole('alert')).getByRole('button', { name })).toBeInTheDocument();
     }
     expect(button(vi.review.confirm)).toBeDisabled();
@@ -282,7 +290,7 @@ describe('A9 edit from review', () => {
 });
 
 describe('A10–A11 confirmation and revisions', () => {
-  it('A10: rapid repeated clicks give one demo confirmation and no real-order claim', async () => {
+  it('A10: rapid repeated clicks give one design confirmation, then the order is confirmed on its own screen', async () => {
     const user = userEvent.setup();
     await begin(user, 'trousers', 'preset');
     await user.click(button(vi.configure.openReview));
@@ -293,10 +301,30 @@ describe('A10–A11 confirmation and revisions', () => {
       confirm.click();
     });
 
+    // the design is confirmed; the order details come next
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(vi.order.title);
+    expect(button(vi.order.confirm)).toBeDisabled();
+    expect(screen.getByText(vi.order.confirmBlocked)).toBeInTheDocument();
+
+    await fillAndConfirmOrder(user);
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(vi.confirmed.title);
-    expect(screen.getByText('DEMO-001')).toBeInTheDocument();
+    expect(screen.getByText('MQ-0001')).toBeInTheDocument();
+    expect(screen.getByText('Nguyễn Văn A')).toBeInTheDocument();
     expect(screen.getByText('Lần xác nhận 1')).toBeInTheDocument();
-    expect(document.body.textContent).not.toMatch(/Google Sheet|đã gửi|đơn hàng thật/i);
+    expect(button(vi.confirmed.exportPdf)).toBeInTheDocument();
+  });
+
+  it('the order screen explains what is wrong with a phone number and keeps the confirm button off', async () => {
+    const user = userEvent.setup();
+    await begin(user, 'trousers', 'preset');
+    await user.click(button(vi.configure.openReview));
+    await user.click(button(vi.review.confirm));
+    await user.type(screen.getByLabelText(vi.order.orderId), 'MQ-9');
+    await user.type(screen.getByLabelText(vi.order.customer), 'Lan');
+    await user.type(screen.getByLabelText(vi.order.phone), '12ab');
+    await user.tab();
+    expect(screen.getByText(vi.order.errorPhone)).toBeInTheDocument();
+    expect(button(vi.order.confirm)).toBeDisabled();
   });
 
   it('A11: editing keeps the old version until reconfirmed, then shows the new one with only that change marked', async () => {
@@ -304,6 +332,7 @@ describe('A10–A11 confirmation and revisions', () => {
     await begin(user, 'blazer', 'preset');
     await user.click(button(vi.configure.openReview));
     await user.click(button(vi.review.confirm));
+    await fillAndConfirmOrder(user);
     expect(screen.getByText('Lần xác nhận 1')).toBeInTheDocument();
 
     await user.click(button(vi.confirmed.edit));
@@ -320,6 +349,9 @@ describe('A10–A11 confirmation and revisions', () => {
     await user.click(button(vi.confirmed.edit));
 
     await user.click(button(vi.review.confirm));
+    // the details typed for version 1 are still there; the order is confirmed again for version 2
+    expect(screen.getByLabelText(vi.order.orderId)).toHaveValue('MQ-0001');
+    await user.click(button(vi.order.confirm));
     expect(screen.getByText('Lần xác nhận 2')).toBeInTheDocument();
     expect(document.querySelector('[data-group="vents"]')).toHaveTextContent(vi.options['vents.single'].label);
     const changed = document.querySelectorAll('.sheet-row.is-changed');

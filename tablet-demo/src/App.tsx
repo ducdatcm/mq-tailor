@@ -3,9 +3,12 @@ import { Header } from './components/Header';
 import { Modal } from './components/Modal';
 import { ConfigureScreen } from './screens/ConfigureScreen';
 import { ConfirmedScreen } from './screens/ConfirmedScreen';
+import { OrderScreen } from './screens/OrderScreen';
 import { ReviewScreen } from './screens/ReviewScreen';
 import { StartScreen } from './screens/StartScreen';
 import { Gallery } from './sketches/Gallery';
+import { flushQueue, sendOrder } from './sheet/client';
+import { buildPayload } from './sheet/payload';
 import { sessionHasData } from './state/reducer';
 import { StoreProvider, useStore } from './state/store';
 
@@ -22,6 +25,31 @@ function useHash(): string {
 function Shell() {
   const { state, dispatch, t } = useStore();
   const [askReset, setAskReset] = useState(false);
+
+  // An order confirmed on this tablet is written to the spreadsheet; one that could not be
+  // sent stays queued on the device and goes out when the connection is back.
+  const { sheet, orderRecord, confirmed } = state;
+  useEffect(() => {
+    if (sheet !== 'sending' || !orderRecord || !confirmed) return;
+    let cancelled = false;
+    void sendOrder(buildPayload(orderRecord, confirmed)).then((outcome) => {
+      if (!cancelled) dispatch({ type: 'sheetResult', status: outcome });
+    });
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sheet, orderRecord?.submissionId]);
+
+  useEffect(() => {
+    void flushQueue();
+    const retry = () => void flushQueue();
+    window.addEventListener('online', retry);
+    return () => window.removeEventListener('online', retry);
+  }, []);
+
+  // A saved session from before orders existed has no order yet: send it to the order screen.
+  const screen = state.screen === 'confirmed' && !state.orderRecord ? 'order' : state.screen;
 
   // The control that caused a screen change is gone afterwards, so hand focus to the
   // new screen's heading (keeps keyboard and screen-reader users oriented).
@@ -43,10 +71,11 @@ function Shell() {
   return (
     <div className="app">
       <Header onNewSession={requestNewSession} />
-      {state.screen === 'start' ? <StartScreen /> : null}
-      {state.screen === 'configure' && state.product ? <ConfigureScreen /> : null}
-      {state.screen === 'review' && state.product ? <ReviewScreen /> : null}
-      {state.screen === 'confirmed' ? <ConfirmedScreen onNewSession={requestNewSession} /> : null}
+      {screen === 'start' ? <StartScreen /> : null}
+      {screen === 'configure' && state.product ? <ConfigureScreen /> : null}
+      {screen === 'review' && state.product ? <ReviewScreen /> : null}
+      {screen === 'order' ? <OrderScreen /> : null}
+      {screen === 'confirmed' ? <ConfirmedScreen onNewSession={requestNewSession} /> : null}
 
       {askReset ? (
         <Modal role="alertdialog" title={t.reset.title} closeLabel={t.close} onClose={() => setAskReset(false)}>

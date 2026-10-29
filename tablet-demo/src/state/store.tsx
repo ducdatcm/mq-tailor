@@ -5,6 +5,7 @@ import { initialState, reducer } from './reducer';
 import type { Action, State } from './types';
 
 const STORAGE_KEY = 'mq-tablet-demo/v1';
+const STORAGE_VERSION = 3; // 3: trims added; 2: four garments per session (an older saved session lacks those garments)
 
 /**
  * Reload-survival is a convenience, not a requirement. Everything is wrapped
@@ -15,7 +16,7 @@ function loadState(): State {
     const raw = window.sessionStorage.getItem(STORAGE_KEY);
     if (!raw) return initialState();
     const parsed = JSON.parse(raw) as { v?: number; state?: State };
-    if (parsed.v !== 1 || !parsed.state || !parsed.state.selections || !parsed.state.cursor) return initialState();
+    if (parsed.v !== STORAGE_VERSION || !parsed.state || !parsed.state.selections || !parsed.state.cursor) return initialState();
     return { ...initialState(), ...parsed.state, pending: null };
   } catch {
     return initialState();
@@ -24,7 +25,7 @@ function loadState(): State {
 
 function saveState(state: State): void {
   try {
-    window.sessionStorage.setItem(STORAGE_KEY, JSON.stringify({ v: 1, state: { ...state, pending: null } }));
+    window.sessionStorage.setItem(STORAGE_KEY, JSON.stringify({ v: STORAGE_VERSION, state: { ...state, pending: null } }));
   } catch {
     /* ignore */
   }
