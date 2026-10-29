@@ -9,10 +9,15 @@
  * variables. Leave either one unset (the default) and this middleware does
  * nothing — remove both when you're ready to go fully public.
  */
+// The in-store tablet app is installed from this site: the browser, and Google's app-packaging service,
+// fetch its manifest and icons without the password. They hold nothing private (the app itself stays behind it).
+const OPEN_PATHS = [/^\/tablet\/manifest\.webmanifest$/, /^\/tablet\/icons\/[\w-]+\.png$/];
+
 function basicAuthGate(req, res, next) {
   const user = process.env.BASIC_AUTH_USER;
   const pass = process.env.BASIC_AUTH_PASSWORD;
   if (!user || !pass) return next();
+  if (OPEN_PATHS.some((re) => re.test(req.path))) return next();
 
   res.set('X-Robots-Tag', 'noindex, nofollow');
 

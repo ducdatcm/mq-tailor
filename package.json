@@ -13,7 +13,7 @@
     "seed": "knex seed:run",
     "seed:admin": "node scripts/seed-admin.js",
     "build": "node scripts/build-assets.js",
-    "test": "node --test test/dbBackup.test.js test/tabletRoute.test.js",
+    "test": "node --test test/dbBackup.test.js test/tabletRoute.test.js test/basicAuthGate.test.js",
     "backup": "node scripts/backup-db.js",
     "restore": "node scripts/restore-db.js"
   },
