@@ -1,5 +1,5 @@
 /**
- * Serves the in-store tablet app (built into public/tablet/ by `npm run build:site` in tablet-demo/)
+ * Serves the in-store tablet app (built into tablet-app/ by `npm run build:site` in tablet-demo/)
  * at /tablet/.
  *
  * It needs its own security headers: the app posts finished orders to a Google Apps Script web app, so
@@ -13,7 +13,9 @@ const express = require('express');
 const helmet = require('helmet');
 
 const router = express.Router();
-const appDir = path.join(__dirname, '..', '..', 'public', 'tablet');
+// Deliberately not under public/: Hostinger hands out files in public/ straight from its own web server,
+// before this app (and so before the access code) ever sees the request.
+const appDir = path.join(__dirname, '..', '..', 'tablet-app');
 
 router.use((req, res, next) => {
   res.set('X-Robots-Tag', 'noindex, nofollow');

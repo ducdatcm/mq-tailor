@@ -4,6 +4,6 @@
 import { writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
-const out = fileURLToPath(new URL('../../public/tablet/', import.meta.url));
+const out = fileURLToPath(new URL('../../tablet-app/', import.meta.url));
 writeFileSync(out + 'config.json', JSON.stringify({ orderSheetUrl: '', orderSheetToken: '' }, null, 2) + '\n');
-console.log('public/tablet/config.json reset to empty');
+console.log('tablet-app/config.json reset to empty');

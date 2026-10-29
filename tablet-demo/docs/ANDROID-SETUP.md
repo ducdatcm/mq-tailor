@@ -65,4 +65,4 @@ cd tablet-demo
 npm run build:site
 ```
 
-Lệnh này build ứng dụng vào `public/tablet/` của website (bản trên website luôn có `config.json` rỗng, không chứa địa chỉ hay mã bí mật). Sau đó commit thư mục `public/tablet/` và push; Hostinger tự triển khai. Thư mục này là sản phẩm build nên đừng sửa tay.
+Lệnh này build ứng dụng vào thư mục `tablet-app/` của website (bản trên website luôn có `config.json` rỗng, không chứa địa chỉ hay mã bí mật). Sau đó commit thư mục `tablet-app/` và push; Hostinger tự triển khai. Thư mục này là sản phẩm build nên đừng sửa tay. Không đặt nó trong `public/`: Hostinger phát các tệp trong `public/` thẳng cho mọi người, bỏ qua mã truy cập.

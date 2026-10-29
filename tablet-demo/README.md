@@ -49,7 +49,7 @@ Sáu sản phẩm ở màn hình đầu: **Suit hai mảnh** (áo + quần), **S
 
 Ứng dụng đặt trên website của tiệm ở `/tablet/` và cài lên màn hình chính của tablet như một ứng dụng (toàn màn hình, chạy được khi mất mạng). Hướng dẫn từng bước cho tablet Tomko 27" Android 15: [`docs/ANDROID-SETUP.md`](docs/ANDROID-SETUP.md).
 
-- Đưa bản mới lên website: `npm run build:site` (build vào `../public/tablet/`), commit rồi push.
+- Đưa bản mới lên website: `npm run build:site` (build vào `../tablet-app/`), commit rồi push.
 - Trang nhân viên `#/setup` (chạm 5 lần vào logo): nhập địa chỉ bảng tính cho riêng máy đó, kiểm tra kết nối, xem kích thước màn hình và đơn đang chờ gửi.
 - Chữ và nút tự phóng theo cỡ màn hình (tối đa khoảng 1,6 lần) và màn hình dọc luôn dùng bố cục dọc; chặn zoom bằng hai ngón, kéo, chọn chữ và menu khi giữ lâu; màn hình được giữ sáng.
 

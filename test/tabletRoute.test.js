@@ -77,7 +77,7 @@ test('without the access code nothing of the app is served, and the install file
       assert.strictEqual(res.status, 401, `${file} must not be handed out`);
       assert.strictEqual(res.headers.get('content-type')?.includes('html'), false, `${file} must not get the code page in its place`);
     }
-    const assets = fs.readdirSync(path.join(__dirname, '..', 'public', 'tablet', 'assets')).filter((f) => f.endsWith('.js'));
+    const assets = fs.readdirSync(path.join(__dirname, '..', 'tablet-app', 'assets')).filter((f) => f.endsWith('.js'));
     assert.strictEqual((await fetch(`${base}/tablet/assets/${assets[0]}`)).status, 401);
     assert.strictEqual((await fetch(`${base}/tablet/icons/../config.json`)).status, 401);
 
@@ -138,12 +138,12 @@ test('with no usable access code the app stays shut', async () => {
 });
 
 test('the copy of the app on the site carries no spreadsheet address or secret', () => {
-  const config = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'public', 'tablet', 'config.json'), 'utf8'));
+  const config = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'tablet-app', 'config.json'), 'utf8'));
   assert.deepStrictEqual(config, { orderSheetUrl: '', orderSheetToken: '' });
   const everything = fs
-    .readdirSync(path.join(__dirname, '..', 'public', 'tablet', 'assets'))
+    .readdirSync(path.join(__dirname, '..', 'tablet-app', 'assets'))
     .filter((f) => f.endsWith('.js'))
-    .map((f) => fs.readFileSync(path.join(__dirname, '..', 'public', 'tablet', 'assets', f), 'utf8'))
+    .map((f) => fs.readFileSync(path.join(__dirname, '..', 'tablet-app', 'assets', f), 'utf8'))
     .join('');
   assert.ok(!/script\.google\.com\/macros\/s\/[A-Za-z0-9_-]{20,}/.test(everything), 'no real Apps Script address in the build');
 });
