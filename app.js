@@ -15,6 +15,7 @@ const siteSettingsMiddleware = require('./src/middleware/siteSettings');
 const publicRouter = require('./src/routes/public');
 const adminRouter = require('./src/routes/admin');
 const sitemapRouter = require('./src/routes/sitemap');
+const tabletRouter = require('./src/routes/tablet');
 const { startScheduler: startBackupScheduler } = require('./src/utils/dbBackup');
 
 const app = express();
@@ -52,6 +53,9 @@ const r2Origin = (() => {
     return null;
   }
 })();
+
+// The in-store tablet app has its own headers (it talks to Google Sheets), so it is served before the site-wide ones.
+app.use('/tablet', tabletRouter);
 
 app.use(
   helmet({

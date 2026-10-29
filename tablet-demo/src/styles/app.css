@@ -1118,7 +1118,8 @@ button {
 }
 
 /* ── Narrow / portrait: summary collapses behind a toggle ── */
-@media (max-width: 899px) {
+/* portrait counts as narrow even on a big screen: the interface scales up, so a 1080-wide portrait screen lays out like a 768-wide one */
+@media (max-width: 899px), (orientation: portrait) {
   .header {
     padding: 8px 18px;
     gap: 10px;
@@ -1345,4 +1346,93 @@ button {
 }
 .sheet-status[data-sheet-status='queued'] {
   color: var(--warn);
+}
+
+/* ── Tablet: touch behaviour ── */
+html {
+  touch-action: pan-x pan-y; /* scrolling yes; pinch zoom and double-tap zoom no */
+  overscroll-behavior: none; /* no pull-to-refresh, no edge bounce */
+  -webkit-touch-callout: none;
+}
+body {
+  -webkit-user-select: none;
+  user-select: none;
+}
+input,
+textarea {
+  -webkit-user-select: text;
+  user-select: text;
+}
+img,
+svg {
+  -webkit-user-drag: none;
+}
+
+/* ── Big screens (a 27-inch tablet): the whole interface grows with the screen, never below the base size ── */
+@media (orientation: landscape) {
+  html {
+    font-size: clamp(19px, 2.375vh, 30px);
+  }
+}
+@media (orientation: portrait) {
+  html {
+    font-size: clamp(19px, 2.474vw, 30px);
+  }
+}
+
+/* ── Staff setup page (#/setup) ── */
+.setup {
+  height: 100dvh;
+  overflow-y: auto;
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 28px 24px 48px;
+  -webkit-user-select: text;
+  user-select: text;
+}
+.setup h1 {
+  font-size: 1.9rem;
+}
+.setup-section {
+  margin-top: 26px;
+  padding: 18px 20px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+.setup-section h2 {
+  margin-bottom: 12px;
+  font-size: 1.2rem;
+}
+.setup-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+}
+.setup-notice {
+  margin: 14px 0 0;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: var(--surface-2);
+}
+.setup-notice.is-ok {
+  color: var(--ok);
+}
+.setup-notice.is-bad {
+  color: var(--warn);
+  background: var(--warn-soft);
+}
+.setup-info {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 6px 18px;
+  margin: 0;
+}
+.setup-info dt {
+  color: var(--muted);
+}
+.setup-info dd {
+  margin: 0;
+  font-weight: 500;
 }

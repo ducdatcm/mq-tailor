@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import { useStore } from '../state/store';
 import { Logo } from './Logo';
 import type { Lang } from '../state/types';
@@ -12,9 +13,20 @@ export function Header({ onNewSession }: Props) {
 
   const setLang = (lang: Lang) => dispatch({ type: 'setLang', lang });
 
+  // Staff shortcut to the setup page: five quick taps on the logo (no visible button for customers).
+  const taps = useRef<number[]>([]);
+  const tapLogo = () => {
+    const now = Date.now();
+    taps.current = [...taps.current.filter((t0) => now - t0 < 3000), now];
+    if (taps.current.length >= 5) {
+      taps.current = [];
+      window.location.hash = '#/setup';
+    }
+  };
+
   return (
     <header className="header">
-      <div className="brand">
+      <div className="brand" onClick={tapLogo}>
         <Logo className="brand-logo" title={t.brand} />
       </div>
       <span className="demo-badge">{t.demoBadge}</span>

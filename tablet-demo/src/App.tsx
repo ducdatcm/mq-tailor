@@ -5,6 +5,7 @@ import { ConfigureScreen } from './screens/ConfigureScreen';
 import { ConfirmedScreen } from './screens/ConfirmedScreen';
 import { OrderScreen } from './screens/OrderScreen';
 import { ReviewScreen } from './screens/ReviewScreen';
+import { SetupScreen } from './screens/SetupScreen';
 import { StartScreen } from './screens/StartScreen';
 import { Gallery } from './sketches/Gallery';
 import { flushQueue, sendOrder } from './sheet/client';
@@ -106,6 +107,8 @@ export function App() {
   // The sketch sheet is a reference page for the house to review the drawings;
   // it is not linked from anywhere in the customer flow.
   if (hash === '#/sketches') return <Gallery />;
+  // Staff page for this tablet (spreadsheet address, screen facts); opened by typing it or tapping the logo five times.
+  if (hash === '#/setup') return <SetupScreen />;
   return (
     <StoreProvider>
       <Shell />
