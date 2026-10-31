@@ -338,19 +338,33 @@ button {
 .product-pick:focus-visible {
   outline-offset: -4px;
 }
+/* one slim row under the description: a small label on the left, a compact stepper on the right */
 .product-card .qty {
+  flex-wrap: nowrap;
   justify-content: space-between;
-  padding: 10px 14px 12px;
+  gap: 8px;
+  padding: 6px 12px;
   border-top: 1px solid var(--line);
   background: var(--surface-2);
 }
+.product-card .qty-label {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--muted);
+}
+.product-card .qty-controls {
+  gap: 6px;
+}
 .product-card .qty-btn {
-  min-width: 52px;
-  min-height: 52px;
+  min-width: 44px;
+  min-height: 44px;
+  font-size: 1.25rem;
 }
 .product-card .qty-input {
-  width: 76px;
-  min-height: 52px;
+  width: 56px;
+  min-height: 44px;
+  padding: 0 4px;
+  font-size: 1.05rem;
 }
 .product-sketch {
   display: block;
