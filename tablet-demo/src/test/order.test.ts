@@ -5,8 +5,8 @@ import { buildImagePdf } from '../pdf/pdfWriter';
 import { flushQueue, queuedCount, sendOrder } from '../sheet/client';
 import { resetSheetConfig } from '../sheet/config';
 import { buildPayload } from '../sheet/payload';
-import { presetSelections, relevantSelections } from '../catalog/rules';
 import type { OrderRecord, Snapshot } from '../state/types';
+import { snapshotOf } from './helpers';
 
 describe('order validation', () => {
   const ok = { orderId: 'MQ-1', customerName: 'Lan', phone: '0912 345 678' };
@@ -59,13 +59,7 @@ describe('dates and file names', () => {
   });
 });
 
-const snapshot = (product: 'suit' | 'trousers' = 'suit'): Snapshot => ({
-  revision: 2,
-  confirmedAt: 1,
-  product,
-  selections: relevantSelections(product, presetSelections(product)),
-  previousSelections: null,
-});
+const snapshot = (product: 'suit' | 'trousers' = 'suit'): Snapshot => snapshotOf(product, 2);
 const order: OrderRecord = {
   orderId: 'MQ-1',
   customerName: 'Nguyễn Văn A',
@@ -76,7 +70,7 @@ const order: OrderRecord = {
 };
 
 describe('spreadsheet row', () => {
-  it('has the four order fields, the product, the version and one column per design group, in Vietnamese', () => {
+  it('has the order fields, the version and one line per piece with a column per design group, in Vietnamese', () => {
     const p = buildPayload(order, snapshot('suit'));
     expect(p).toMatchObject({
       submissionId: 'sub-1',
@@ -84,16 +78,23 @@ describe('spreadsheet row', () => {
       orderId: 'MQ-1',
       customerName: 'Nguyễn Văn A',
       phone: '0912345678',
-      product: 'Suit hai mảnh',
+      products: 'Suit hai mảnh × 1',
       revision: 2,
     });
-    expect(Object.keys(p.design)).toHaveLength(16);
-    expect(p.design['Kiểu cài áo']).toBe('Một hàng 2 khuy');
-    expect(p.design['Gấu quần']).toBe('Gấu thường');
+    expect(p.rows.map((r) => [r.item, r.quantity])).toEqual([
+      ['Áo', 1],
+      ['Quần', 1],
+    ]);
+    expect(Object.keys(p.rows[0].design)).toHaveLength(11); // the 9 jacket groups and the 2 trims
+    expect(p.rows[0].design['Kiểu cài áo']).toBe('Một hàng 2 khuy');
+    expect(Object.keys(p.rows[1].design)).toHaveLength(7); // the 5 trouser groups and the 2 trims
+    expect(p.rows[1].design['Gấu quần']).toBe('Gấu thường');
   });
 
-  it('only has the groups of the product', () => {
-    expect(Object.keys(buildPayload(order, snapshot('trousers')).design)).toHaveLength(7);
+  it('only has the groups of the piece', () => {
+    const rows = buildPayload(order, snapshot('trousers')).rows;
+    expect(rows).toHaveLength(1);
+    expect(Object.keys(rows[0].design)).toHaveLength(7);
   });
 });
 

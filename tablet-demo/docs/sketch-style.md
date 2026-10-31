@@ -15,4 +15,6 @@ Gile (4 kiểu) được tô lại bằng cùng cách: nền xám thành áo tr�
 
 Tay áo (4 kiểu khuy) tô lại cùng cách: nền xám thành vải trắng, chấm khuy thành vòng tròn, giữ nét nhỏ của khuyết; mép phải của tay áo để hở như bản gốc. Nguyên phụ liệu (loại khuy, khuyết Milan) và lựa chọn khuy mở / đóng không có hình, dùng thẻ chữ.
 
+Sơ mi: **chỉ túi ngực có hình**, vẽ vector bằng mã (`src/sketches/shirt.tsx`) cùng nét với các hình áo và quần: nét mực than đều, vải màu giấy, đường may nổi là nét đứt mảnh (`.stitch`). Chiều dài tay, kiểu cổ áo, nẹp áo, cổ tay áo, gấu áo và "không túi ngực" là thẻ chữ, không có hình (các bản vẽ cổ áo, nẹp áo, cổ tay đã thử không được duyệt nên đã bỏ). Sơ mi hiện đang tắt (xem HANDOVER).
+
 Khi một lựa chọn chưa có hình gốc, sửa từ hình gần nhất bằng đúng nét ấy (xóa phần thừa bằng màu trắng của áo, vẽ phần mới bằng lớp `pen`), hoặc vẽ bằng mã theo cùng hệ nét (túi ngoài, xẻ sau, túi trước, gấu). Nếu nhà may cung cấp thêm hình gốc, thay vào là thống nhất toàn bộ.

@@ -10,8 +10,8 @@ Tài liệu này tách rõ hai nhóm việc: **(A) kết quả kiểm tra phần
 
 Hai lớp kiểm tra, đều chạy lại được:
 
-- `npm test` — 92 test (quy tắc chọn, reducer, hành trình người dùng bằng Testing Library, kiểm tra đơn hàng, dòng gửi bảng tính, tệp PDF, suit ba mảnh, gile, tay áo và nguyên phụ liệu). **92/92 đạt.**
-- `npm run verify` — Chrome thật điều khiển bằng Playwright, 3 kích thước × cả 6 sản phẩm (hành trình đầy đủ từ chọn sản phẩm, xác nhận thiết kế, điền và xác nhận đơn, đến xuất PDF), kiểm tra layout trên mọi màn hình kể cả màn hình đơn hàng, một lượt chỉ dùng bàn phím (kể cả gõ thông tin đơn), kiểm tra dòng đơn đến được máy chủ bảng tính giả, ghi lỗi console. **159/159 đạt.** Chi tiết: `docs/verification-results.json`.
+- `npm test` — 137 test (quy tắc chọn, reducer, hành trình người dùng bằng Testing Library, kiểm tra đơn hàng, dòng gửi bảng tính, tệp PDF, suit ba mảnh, gile, tay áo và nguyên phụ liệu). **137/137 đạt.**
+- `npm run verify` — Chrome thật điều khiển bằng Playwright, 3 kích thước × cả 6 sản phẩm và một đơn nhiều sản phẩm có "giống quần đã chọn" (hành trình đầy đủ từ chọn sản phẩm, xác nhận thiết kế, điền và xác nhận đơn, đến xuất PDF), kiểm tra layout trên mọi màn hình kể cả màn hình đơn hàng, một lượt chỉ dùng bàn phím (kể cả gõ thông tin đơn), kiểm tra dòng đơn đến được máy chủ bảng tính giả, ghi lỗi console. **201/201 đạt.** Chi tiết: `docs/verification-results.json`.
 
 | ID | Kết quả | Bằng chứng |
 | --- | --- | --- |
@@ -120,7 +120,7 @@ Chưa chạy buổi thử có người thật. Khi thử, nên quan sát: khách
 ## Suit ba mảnh, gile và logo (đã làm, cần nhà may duyệt)
 
 - Hai suit ba mảnh và sản phẩm Gile; gile là một nhóm bốn lựa chọn lấy từ bản vẽ nhà may gửi (vẽ lại cùng kiểu nét trắng–đen–be với các hình áo; nút cài thành vòng tròn, cổ gile để trống). Ảnh gile gốc khá nhỏ nên nét hơi mịn hơn các hình áo; nếu có bản vẽ lớn hơn, thay vào `src/sketches/assets/source/vest-*.png` rồi chạy `node scripts/vectorize.mjs`.
-- Suit ba mảnh hai quần: **Giống quần đã chọn** chép (và đồng bộ) kiểu quần 1 sang quần 2. Trong bảng tính, quần 2 có cột riêng, tên dạng "Quần 2 · Xếp ly trước".
+- Suit ba mảnh hai quần: quần 2 có nút **Giống Quần 1** (xem mục đơn nhiều sản phẩm bên dưới).
 - Thanh trên cùng dùng logo Minh Quang Bespoke (bỏ chữ "Nhà may · Hà Nội"); phiếu PDF cũng dùng logo này. Nếu logo chính thức khác, thay ảnh rồi vẽ lại `src/brand/logo.ts`.
 - Phiếu PDF của suit ba mảnh tự thu nhỏ để vừa một trang A4 (chữ nhỏ hơn bản hai mảnh khoảng 12%).
 - Phiên đang mở trước bản này sẽ bị bỏ khi tải lại (định dạng lưu phiên đã đổi sang v2).
@@ -133,6 +133,15 @@ Chưa chạy buổi thử có người thật. Khi thử, nên quan sát: khách
 - Chữ cần duyệt: tên và mô tả các nhóm "Tay áo", "Kiểu khuy tay", "Loại khuy", "Khuyết Milan"; đặc biệt cách giải thích khuyết Milan (mình viết ngắn gọn, thợ chính cần xác nhận) và dòng phụ phí.
 - Bản "gợi ý của nhà may" cho các nhóm mới: tay áo 4 khuy, khuy đóng, khuy nhựa, không khuyết Milan (cần xác nhận).
 - Bảng tính có thêm các cột "Tay áo", "Kiểu khuy tay", "Loại khuy", "Khuyết Milan". Phiên đang mở trước bản này bị bỏ khi tải lại (định dạng lưu phiên đã đổi sang v3).
+
+## Đơn nhiều sản phẩm, số lượng, tách dòng bảng tính (đã làm, cần nhà may duyệt)
+
+- **Đơn nhiều sản phẩm:** ở màn hình đầu tiên, mỗi sản phẩm có ô **Số lượng** riêng (bấm vào sản phẩm hoặc nút +; 0 là không có trong đơn). Ví dụ 1 suit hai mảnh + 2 quần tây, hoặc 2 suit + 2 blazer + 2 quần tây. Thanh dưới cùng ghi "Đơn gồm: ...". Số lượng không đổi được sau khi bắt đầu tư vấn (muốn đổi thì bấm Phiên mới).
+- **Mỗi món được chọn riêng:** đơn được tách thành từng món (Áo 1, Quần 1, Quần 2, Quần 3...), đánh số theo cả đơn (quần trong suit là Quần 1, hai quần tây là Quần 2 và Quần 3). Từ món thứ hai của cùng loại trở đi có nút **Giống Quần 1 / Giống Quần 2 / Chọn riêng**: chọn "Giống ..." thì chép toàn bộ lựa chọn và tự cập nhật khi món gốc đổi; chọn một mục trên món đó thì thôi chép. Áp dụng cho áo, quần, gile và sơ mi (áo suit và áo blazer đều là "áo"). Nguyên phụ liệu (khuy, khuyết Milan) chọn một lần cho cả đơn.
+- **Bảng tính:** cột Ngày › Order ID › Tên khách › Số điện thoại › Sản phẩm › Số lượng, rồi các cột thiết kế, cuối cùng Lần xác nhận và Mã gửi. "Sản phẩm" là loại món (Áo, Quần, Gile, Sơ mi). Các món cùng loại chọn giống nhau gộp thành một dòng với số lượng cộng lại; khác nhau thì mỗi kiểu một dòng; nguyên phụ liệu có ở mọi dòng. **Cần dán lại `Code.gs` mới và triển khai phiên bản mới** (xem mục "Cập nhật mã" trong `google-sheets/GUIDE.md`); trang Cài đặt máy này báo nếu Apps Script còn bản cũ (phải thấy "OK v3").
+- **Phiếu PDF:** ghi cả đơn ("Suit hai mảnh × 1 · Quần tây × 2") và mỗi kiểu thiết kế một mục kèm số lượng ("Quần × 3"), cùng cách gộp như bảng tính; phiếu vẫn vừa một trang A4.
+- **Sơ mi: đang tắt, làm lại sau.** Dữ liệu sơ mi vẫn còn trong mã (nhóm tay, cổ áo 8 kiểu có cổ bẹt, túi ngực, nẹp áo, cổ tay áo, gấu áo; chữ tiếng Việt và tiếng Anh; cột bảng tính "Sơ mi"; 4 hình túi ngực trong `src/sketches/shirt.tsx`), nhưng sản phẩm không hiện ở màn hình đầu. Các hình cổ áo, nẹp áo và cổ tay đã thử chưa đạt nên đã bỏ; các mục đó chỉ là thẻ chữ. Để bật lại: thêm `'shirt'` vào `PRODUCT_IDS` trong `src/catalog/catalog.ts`, thêm lại `shirt` vào danh sách trong `scripts/verify.mjs`, và cần hình chuẩn của nhà may cho các mục sơ mi.
+- **Thuật ngữ cần thợ chính duyệt:** "Cổ pintuck" (tên giữ nguyên theo ảnh), "Cổ cánh", "Cổ trụ", "Cổ bẹt" (Cuban), cách dịch các kiểu cổ tay French / Double French, và "Xẻ tà / Đuôi tôm (gusset)": mô tả hiện nay là xẻ tà không đáp, còn đuôi tôm là có miếng đáp tam giác (gusset) ở chỗ xẻ; thợ chính xác nhận cách hiểu này.
 
 ## Chạy trên tablet Android (đã làm, chưa thử trên máy thật)
 

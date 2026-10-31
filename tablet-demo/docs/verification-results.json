@@ -47,7 +47,7 @@
   {
     "area": "pdf export tablet-1024x768 suit",
     "ok": true,
-    "detail": "phieu-thiet-ke_MQ-0001_20261029.pdf 263289 bytes"
+    "detail": "phieu-thiet-ke_MQ-0001_20261031.pdf 255324 bytes"
   },
   {
     "area": "layout tablet-1024x768 suit order",
@@ -58,6 +58,11 @@
     "area": "layout tablet-1024x768 suit confirmed (EN)",
     "ok": true,
     "detail": ""
+  },
+  {
+    "area": "the start screen says what the order holds tablet-1024x768",
+    "ok": true,
+    "detail": "Đơn gồm: Suit ba mảnh (1 áo + 2 quần) × 2"
   },
   {
     "area": "layout tablet-1024x768 suit3Trousers configure",
@@ -95,9 +100,14 @@
     "detail": "status=sent"
   },
   {
+    "area": "spreadsheet lines carry the quantity tablet-1024x768 suit3Trousers",
+    "ok": true,
+    "detail": "Áo × 2, Quần × 4"
+  },
+  {
     "area": "pdf export tablet-1024x768 suit3Trousers",
     "ok": true,
-    "detail": "phieu-thiet-ke_MQ-0001_20261029.pdf 253823 bytes"
+    "detail": "phieu-thiet-ke_MQ-0001_20261031.pdf 258512 bytes"
   },
   {
     "area": "layout tablet-1024x768 suit3Waistcoat configure",
@@ -240,6 +250,66 @@
     "detail": "status=sent"
   },
   {
+    "area": "start screen: several products with their own quantities tablet-1024x768",
+    "ok": true,
+    "detail": "Đơn gồm: Suit hai mảnh × 1 · Quần tây × 2"
+  },
+  {
+    "area": "layout tablet-1024x768 mixed order start",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "every piece is designed: jacket, trousers 1 to 3, trims tablet-1024x768",
+    "ok": true,
+    "detail": "jacket1,trousers1,trousers2,trousers3,trims"
+  },
+  {
+    "area": "layout tablet-1024x768 mixed order configure",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "trousers 2 can copy trousers 1 tablet-1024x768",
+    "ok": true,
+    "detail": "trousers1,none"
+  },
+  {
+    "area": "\"same as trousers 1\" copies the choices tablet-1024x768",
+    "ok": true,
+    "detail": "true"
+  },
+  {
+    "area": "layout tablet-1024x768 mixed order configure trousers 2",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "trousers 3 can copy trousers 1 or 2 tablet-1024x768",
+    "ok": true,
+    "detail": "trousers1,trousers2,none"
+  },
+  {
+    "area": "layout tablet-1024x768 mixed order review",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout tablet-1024x768 mixed order order",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "spreadsheet: jacket once, the three identical trousers as one line of 3 tablet-1024x768",
+    "ok": true,
+    "detail": "Áo × 1, Quần × 3"
+  },
+  {
+    "area": "pdf export of the order tablet-1024x768",
+    "ok": true,
+    "detail": "258471 bytes"
+  },
+  {
     "area": "keyboard tablet-1024x768 start -> configure",
     "ok": true,
     "detail": "Kiểu cài áoFront closure"
@@ -312,7 +382,7 @@
   {
     "area": "pdf export tablet-1280x800 suit",
     "ok": true,
-    "detail": "phieu-thiet-ke_MQ-0001_20261029.pdf 263462 bytes"
+    "detail": "phieu-thiet-ke_MQ-0001_20261031.pdf 255324 bytes"
   },
   {
     "area": "layout tablet-1280x800 suit order",
@@ -323,6 +393,11 @@
     "area": "layout tablet-1280x800 suit confirmed (EN)",
     "ok": true,
     "detail": ""
+  },
+  {
+    "area": "the start screen says what the order holds tablet-1280x800",
+    "ok": true,
+    "detail": "Đơn gồm: Suit ba mảnh (1 áo + 2 quần) × 2"
   },
   {
     "area": "layout tablet-1280x800 suit3Trousers configure",
@@ -360,9 +435,14 @@
     "detail": "status=sent"
   },
   {
+    "area": "spreadsheet lines carry the quantity tablet-1280x800 suit3Trousers",
+    "ok": true,
+    "detail": "Áo × 2, Quần × 4"
+  },
+  {
     "area": "pdf export tablet-1280x800 suit3Trousers",
     "ok": true,
-    "detail": "phieu-thiet-ke_MQ-0001_20261029.pdf 253886 bytes"
+    "detail": "phieu-thiet-ke_MQ-0001_20261031.pdf 258512 bytes"
   },
   {
     "area": "layout tablet-1280x800 suit3Waistcoat configure",
@@ -505,6 +585,66 @@
     "detail": "status=sent"
   },
   {
+    "area": "start screen: several products with their own quantities tablet-1280x800",
+    "ok": true,
+    "detail": "Đơn gồm: Suit hai mảnh × 1 · Quần tây × 2"
+  },
+  {
+    "area": "layout tablet-1280x800 mixed order start",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "every piece is designed: jacket, trousers 1 to 3, trims tablet-1280x800",
+    "ok": true,
+    "detail": "jacket1,trousers1,trousers2,trousers3,trims"
+  },
+  {
+    "area": "layout tablet-1280x800 mixed order configure",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "trousers 2 can copy trousers 1 tablet-1280x800",
+    "ok": true,
+    "detail": "trousers1,none"
+  },
+  {
+    "area": "\"same as trousers 1\" copies the choices tablet-1280x800",
+    "ok": true,
+    "detail": "true"
+  },
+  {
+    "area": "layout tablet-1280x800 mixed order configure trousers 2",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "trousers 3 can copy trousers 1 or 2 tablet-1280x800",
+    "ok": true,
+    "detail": "trousers1,trousers2,none"
+  },
+  {
+    "area": "layout tablet-1280x800 mixed order review",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout tablet-1280x800 mixed order order",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "spreadsheet: jacket once, the three identical trousers as one line of 3 tablet-1280x800",
+    "ok": true,
+    "detail": "Áo × 1, Quần × 3"
+  },
+  {
+    "area": "pdf export of the order tablet-1280x800",
+    "ok": true,
+    "detail": "258471 bytes"
+  },
+  {
     "area": "keyboard tablet-1280x800 start -> configure",
     "ok": true,
     "detail": "Kiểu cài áoFront closure"
@@ -577,7 +717,7 @@
   {
     "area": "pdf export portrait-768x1024 suit",
     "ok": true,
-    "detail": "phieu-thiet-ke_MQ-0001_20261029.pdf 263505 bytes"
+    "detail": "phieu-thiet-ke_MQ-0001_20261031.pdf 255324 bytes"
   },
   {
     "area": "layout portrait-768x1024 suit order",
@@ -588,6 +728,11 @@
     "area": "layout portrait-768x1024 suit confirmed (EN)",
     "ok": true,
     "detail": ""
+  },
+  {
+    "area": "the start screen says what the order holds portrait-768x1024",
+    "ok": true,
+    "detail": "Đơn gồm: Suit ba mảnh (1 áo + 2 quần) × 2"
   },
   {
     "area": "layout portrait-768x1024 suit3Trousers configure",
@@ -625,9 +770,14 @@
     "detail": "status=sent"
   },
   {
+    "area": "spreadsheet lines carry the quantity portrait-768x1024 suit3Trousers",
+    "ok": true,
+    "detail": "Áo × 2, Quần × 4"
+  },
+  {
     "area": "pdf export portrait-768x1024 suit3Trousers",
     "ok": true,
-    "detail": "phieu-thiet-ke_MQ-0001_20261029.pdf 253886 bytes"
+    "detail": "phieu-thiet-ke_MQ-0001_20261031.pdf 258512 bytes"
   },
   {
     "area": "layout portrait-768x1024 suit3Waistcoat configure",
@@ -768,6 +918,66 @@
     "area": "order row sent portrait-768x1024 waistcoat",
     "ok": true,
     "detail": "status=sent"
+  },
+  {
+    "area": "start screen: several products with their own quantities portrait-768x1024",
+    "ok": true,
+    "detail": "Đơn gồm: Suit hai mảnh × 1 · Quần tây × 2"
+  },
+  {
+    "area": "layout portrait-768x1024 mixed order start",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "every piece is designed: jacket, trousers 1 to 3, trims portrait-768x1024",
+    "ok": true,
+    "detail": "jacket1,trousers1,trousers2,trousers3,trims"
+  },
+  {
+    "area": "layout portrait-768x1024 mixed order configure",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "trousers 2 can copy trousers 1 portrait-768x1024",
+    "ok": true,
+    "detail": "trousers1,none"
+  },
+  {
+    "area": "\"same as trousers 1\" copies the choices portrait-768x1024",
+    "ok": true,
+    "detail": "true"
+  },
+  {
+    "area": "layout portrait-768x1024 mixed order configure trousers 2",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "trousers 3 can copy trousers 1 or 2 portrait-768x1024",
+    "ok": true,
+    "detail": "trousers1,trousers2,none"
+  },
+  {
+    "area": "layout portrait-768x1024 mixed order review",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout portrait-768x1024 mixed order order",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "spreadsheet: jacket once, the three identical trousers as one line of 3 portrait-768x1024",
+    "ok": true,
+    "detail": "Áo × 1, Quần × 3"
+  },
+  {
+    "area": "pdf export of the order portrait-768x1024",
+    "ok": true,
+    "detail": "258522 bytes"
   },
   {
     "area": "keyboard portrait-768x1024 start -> configure",

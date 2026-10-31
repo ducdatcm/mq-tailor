@@ -50,6 +50,13 @@ import {
   PocketStraightJet,
 } from './pockets';
 import { ProductBlazer, ProductSuit, ProductSuit3Trousers, ProductSuit3Waistcoat, ProductTrousers, ProductWaistcoat } from './products';
+import {
+  PocketAngled,
+  PocketFlap,
+  PocketRounded,
+  PocketSquare,
+  ProductShirt,
+} from './shirt';
 import { HemPlain, HemTurnUp } from './trousers';
 
 /** One drawing per option, keyed by the stable option ID. */
@@ -102,6 +109,10 @@ export const OPTION_SKETCHES: Partial<Record<OptionId, ComponentType>> = {
   'backPockets.two': BackPocketsTwo,
   'hem.plain': HemPlain,
   'hem.turnUp': HemTurnUp,
+  'chestPocket.angled': PocketAngled,
+  'chestPocket.rounded': PocketRounded,
+  'chestPocket.square': PocketSquare,
+  'chestPocket.flap': PocketFlap,
 };
 
 export const PRODUCT_SKETCHES: Record<ProductId, ComponentType> = {
@@ -111,4 +122,5 @@ export const PRODUCT_SKETCHES: Record<ProductId, ComponentType> = {
   blazer: ProductBlazer,
   trousers: ProductTrousers,
   waistcoat: ProductWaistcoat,
+  shirt: ProductShirt,
 };

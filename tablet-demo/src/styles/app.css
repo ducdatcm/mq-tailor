@@ -50,7 +50,7 @@ button {
   border-radius: 6px;
 }
 .option:focus-visible,
-.product-card:focus-visible,
+.product-pick:focus-visible,
 .mode-card:focus-visible {
   outline-offset: 2px;
   border-radius: var(--radius);
@@ -321,8 +321,36 @@ button {
   border: 2px solid var(--line);
   border-radius: var(--radius);
   overflow: hidden;
-  cursor: pointer;
   box-shadow: var(--shadow);
+}
+/* the picture, name and description of a product: tapping it adds the product to the order */
+.product-pick {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  text-align: left;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+.product-pick:focus-visible {
+  outline-offset: -4px;
+}
+.product-card .qty {
+  justify-content: space-between;
+  padding: 10px 14px 12px;
+  border-top: 1px solid var(--line);
+  background: var(--surface-2);
+}
+.product-card .qty-btn {
+  min-width: 52px;
+  min-height: 52px;
+}
+.product-card .qty-input {
+  width: 76px;
+  min-height: 52px;
 }
 .product-sketch {
   display: block;
@@ -413,14 +441,16 @@ button {
 }
 .garment-tabs {
   display: flex;
+  flex-wrap: wrap;
   gap: 10px;
+  min-width: 0;
 }
 .garment-tab {
   display: inline-flex;
   align-items: center;
   gap: 10px;
   min-height: 48px;
-  padding: 0 20px;
+  padding: 0 16px;
   border-radius: 999px;
   border: 2px solid var(--line-strong);
   background: var(--surface);
@@ -1435,4 +1465,99 @@ svg {
 .setup-info dd {
   margin: 0;
   font-weight: 500;
+}
+
+/* ── Quantity: how many of the product are ordered ── */
+.qty {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px 20px;
+}
+.qty-label {
+  font-weight: 600;
+}
+.qty-controls {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+.qty-btn {
+  min-width: 60px;
+  min-height: 60px;
+  padding: 0;
+  font-size: 1.7rem;
+  line-height: 1;
+}
+.qty-input {
+  width: 92px;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+.qty-hint {
+  margin-top: 8px;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+.qty-pieces {
+  margin-top: 4px;
+  font-weight: 600;
+  color: var(--ink-2);
+}
+
+.start-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px 32px;
+}
+
+/* ── A piece of the order in the summary: tap to open it out ── */
+.summary-unit {
+  display: flex;
+  width: 100%;
+  min-height: 44px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 0 10px;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  color: inherit;
+  text-align: left;
+  background: none;
+  border: 0;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.summary-garment.is-current .summary-unit {
+  color: var(--ink);
+  background: var(--surface-2);
+}
+.summary-count {
+  font-variant-numeric: tabular-nums;
+}
+.unit-context {
+  margin: 4px 0 0;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+.sheet-product {
+  margin-left: 10px;
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: var(--muted);
+}
+.review-order {
+  margin: 6px 0 14px;
+  font-weight: 600;
+  color: var(--ink-2);
+}
+.sheet-thumb-blank {
+  background: none;
+  border-color: transparent;
 }

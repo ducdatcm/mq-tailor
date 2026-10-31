@@ -7,16 +7,34 @@
  * files, and register a sketch (see README).
  */
 
-export type ProductId = 'suit' | 'suit3Trousers' | 'suit3Waistcoat' | 'blazer' | 'trousers' | 'waistcoat';
-/** A garment with its own set of option groups ('trims' is not a garment: the buttons and buttonholes, chosen once for the whole order). */
-export type BaseGarmentId = 'jacket' | 'trousers' | 'waistcoat' | 'trims';
-/** A garment as it appears in a product: 'trousers2' is the second pair of a three-piece, same groups as 'trousers'. */
-export type GarmentId = BaseGarmentId | 'trousers2';
+export type ProductId = 'suit' | 'suit3Trousers' | 'suit3Waistcoat' | 'blazer' | 'trousers' | 'waistcoat' | 'shirt';
+/** A kind of piece with its own set of option groups. */
+export type PieceKind = 'jacket' | 'trousers' | 'waistcoat' | 'shirt';
+/** The pieces, and 'trims' (the buttons and buttonholes, chosen once for the whole order: not a piece). */
+export type BaseGarmentId = PieceKind | 'trims';
+export type GarmentId = BaseGarmentId;
 
-export const GARMENT_IDS: readonly GarmentId[] = ['jacket', 'waistcoat', 'trousers', 'trousers2', 'trims'];
+/** How many of one product an order can hold. 0 means the product is not in the order. */
+export const MIN_QUANTITY = 0;
+export const MAX_QUANTITY = 99;
 
-/** The garment whose option groups apply (the second trousers use the trousers groups). */
-export const baseGarment = (garment: GarmentId): BaseGarmentId => (garment === 'trousers2' ? 'trousers' : garment);
+/** What the order holds: how many of each product. */
+export type Quantities = Partial<Record<ProductId, number>>;
+
+/**
+ * One piece to design. A unit is one jacket, one pair of trousers, one shirt...: an order of
+ * 1 suit and 2 pairs of trousers has three units of trousers. `n` counts the units of the same kind
+ * through the whole order (trousers 1, 2, 3), which is also how the sale talks about them.
+ */
+export interface Unit {
+  /** Stable name: the kind and its number, like 'trousers2'; the trims are 'trims'. */
+  id: string;
+  garment: BaseGarmentId;
+  n: number;
+  /** The product this unit belongs to, and which of that product (1 = the first suit...). */
+  product?: ProductId;
+  copy: number;
+}
 
 export const GROUPS = [
   // ── Jacket (shared by blazer and the jacket of a suit) ──────────────────
@@ -103,6 +121,67 @@ export const GROUPS = [
     options: ['waistcoat.sb2', 'waistcoat.sb4', 'waistcoat.db2', 'waistcoat.db4'],
     preset: 'waistcoat.sb2',
   },
+  // ── Shirt ─────────────────────────────────────────────────────────────────
+  {
+    id: 'sleeve',
+    garment: 'shirt',
+    noSketch: true,
+    options: ['sleeve.long', 'sleeve.short'],
+    preset: 'sleeve.long',
+  },
+  {
+    id: 'collar',
+    garment: 'shirt',
+    noSketch: true,
+    options: [
+      'collar.standardSquare',
+      'collar.pintuck',
+      'collar.buttonDown',
+      'collar.windsor',
+      'collar.eton',
+      'collar.winged',
+      'collar.stand',
+      'collar.cuban',
+    ],
+    preset: 'collar.standardSquare',
+  },
+  {
+    id: 'chestPocket',
+    garment: 'shirt',
+    options: ['chestPocket.none', 'chestPocket.angled', 'chestPocket.rounded', 'chestPocket.square', 'chestPocket.flap'],
+    preset: 'chestPocket.none',
+  },
+  {
+    id: 'placket',
+    garment: 'shirt',
+    noSketch: true,
+    options: ['placket.frenchFront', 'placket.coveredFly', 'placket.pleatedTuxedo', 'placket.frontPlacket'],
+    preset: 'placket.frenchFront',
+  },
+  {
+    // A short sleeve has no cuff: this group is left out once short sleeves are chosen.
+    id: 'shirtCuffs',
+    garment: 'shirt',
+    noSketch: true,
+    hideWhen: { group: 'sleeve', option: 'sleeve.short' },
+    options: [
+      'shirtCuffs.angled',
+      'shirtCuffs.rounded',
+      'shirtCuffs.square',
+      'shirtCuffs.french',
+      'shirtCuffs.roundedFrench',
+      'shirtCuffs.doubleFrench',
+      'shirtCuffs.doubleRoundedFrench',
+    ],
+    preset: 'shirtCuffs.angled',
+  },
+  {
+    id: 'shirtHem',
+    garment: 'shirt',
+    noSketch: true,
+    options: ['shirtHem.sideVents', 'shirtHem.gusset'],
+    preset: 'shirtHem.sideVents',
+  },
   // ── Trims: buttons and buttonholes, one choice for the whole order (no drawings) ──
   {
     id: 'buttonType',
@@ -156,6 +235,9 @@ export type OptionId = (typeof GROUPS)[number]['options'][number];
 
 export type FamilyId = 'single' | 'double';
 
+/** What is chosen on one unit. */
+export type GarmentSelections = Partial<Record<GroupId, OptionId>>;
+
 export interface GroupDef {
   id: GroupId;
   garment: BaseGarmentId;
@@ -165,6 +247,8 @@ export interface GroupDef {
   companionOf?: GroupId;
   /** The options have no drawings: shown as text cards. */
   noSketch?: boolean;
+  /** The group does not apply once this option of another group of the same garment is chosen. */
+  hideWhen?: { group: GroupId; option: OptionId };
   /** Optional split of the options into labelled families (front closure only). */
   families?: readonly { id: FamilyId; options: readonly OptionId[] }[];
 }
@@ -173,33 +257,74 @@ export const GROUP_LIST: readonly GroupDef[] = GROUPS;
 
 export const GROUP_BY_ID = Object.fromEntries(GROUP_LIST.map((g) => [g.id, g])) as Record<GroupId, GroupDef>;
 
-export const PRODUCTS: Record<ProductId, { garments: readonly GarmentId[] }> = {
-  suit: { garments: ['jacket', 'trousers', 'trims'] },
-  suit3Trousers: { garments: ['jacket', 'trousers', 'trousers2', 'trims'] },
-  suit3Waistcoat: { garments: ['jacket', 'waistcoat', 'trousers', 'trims'] },
-  blazer: { garments: ['jacket', 'trims'] },
-  trousers: { garments: ['trousers', 'trims'] },
-  waistcoat: { garments: ['waistcoat', 'trims'] },
+/** The pieces of each product, in the order they are designed (a three-piece suit has two pairs of trousers). */
+export const PRODUCTS: Record<ProductId, { pieces: readonly PieceKind[] }> = {
+  suit: { pieces: ['jacket', 'trousers'] },
+  suit3Trousers: { pieces: ['jacket', 'trousers', 'trousers'] },
+  suit3Waistcoat: { pieces: ['jacket', 'waistcoat', 'trousers'] },
+  blazer: { pieces: ['jacket'] },
+  trousers: { pieces: ['trousers'] },
+  waistcoat: { pieces: ['waistcoat'] },
+  shirt: { pieces: ['shirt'] },
 };
 
+/** Every product the order logic knows. */
+export const ALL_PRODUCT_IDS: readonly ProductId[] = ['suit', 'suit3Trousers', 'suit3Waistcoat', 'blazer', 'trousers', 'waistcoat', 'shirt'];
+
+/**
+ * The products offered on the start screen. The shirt is built (catalog, copy, sheet columns) but
+ * switched off for now: add 'shirt' back here to offer it again.
+ */
 export const PRODUCT_IDS: readonly ProductId[] = ['suit', 'suit3Trousers', 'suit3Waistcoat', 'blazer', 'trousers', 'waistcoat'];
 
-export function groupsFor(garment: GarmentId): readonly GroupDef[] {
-  const base = baseGarment(garment);
-  return GROUP_LIST.filter((g) => g.garment === base);
+export const TRIMS_UNIT: Unit = { id: 'trims', garment: 'trims', n: 1, copy: 1 };
+
+/** How many products the order holds in all. */
+export const totalQuantity = (q: Quantities): number => ALL_PRODUCT_IDS.reduce((sum, p) => sum + (q[p] ?? 0), 0);
+
+/**
+ * Every piece the order needs designed, in order, with the trims last. Pieces of the same kind are
+ * numbered through the whole order: 1 suit and 2 trousers gives trousers 1 (in the suit), 2 and 3.
+ */
+export function unitsFor(q: Quantities): Unit[] {
+  const units: Unit[] = [];
+  const counts: Partial<Record<PieceKind, number>> = {};
+  for (const product of ALL_PRODUCT_IDS) {
+    for (let copy = 1; copy <= (q[product] ?? 0); copy += 1) {
+      for (const garment of PRODUCTS[product].pieces) {
+        const n = (counts[garment] ?? 0) + 1;
+        counts[garment] = n;
+        units.push({ id: `${garment}${n}`, garment, n, product, copy });
+      }
+    }
+  }
+  return units.length > 0 ? [...units, TRIMS_UNIT] : [];
+}
+
+/** False when an option chosen on the same unit takes this group out of the design. */
+export function isGroupShown(group: GroupDef, chosen?: GarmentSelections): boolean {
+  return !group.hideWhen || chosen?.[group.hideWhen.group] !== group.hideWhen.option;
+}
+
+/**
+ * The groups of a kind of piece. Pass what is chosen on the unit so far to leave out the groups that do
+ * not apply (a short-sleeved shirt has no cuffs); without it every group of the kind is returned.
+ */
+export function groupsFor(garment: BaseGarmentId, chosen?: GarmentSelections): readonly GroupDef[] {
+  return GROUP_LIST.filter((g) => g.garment === garment && (!chosen || isGroupShown(g, chosen)));
 }
 
 export interface Step {
-  garment: GarmentId;
+  unit: string;
   group: GroupId;
 }
 
-/** Ordered list of every group that applies to the product. */
-export function stepsFor(product: ProductId): Step[] {
-  return PRODUCTS[product].garments.flatMap((garment) =>
-    groupsFor(garment)
+/** Ordered list of every group that applies to the units (see groupsFor for how `chosen` is used). */
+export function stepsFor(units: readonly Unit[], chosen?: Readonly<Record<string, GarmentSelections>>): Step[] {
+  return units.flatMap((unit) =>
+    groupsFor(unit.garment, chosen?.[unit.id])
       .filter((g) => !g.companionOf)
-      .map((g) => ({ garment, group: g.id })),
+      .map((g) => ({ unit: unit.id, group: g.id })),
   );
 }
 

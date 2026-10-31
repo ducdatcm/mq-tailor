@@ -73,8 +73,8 @@ function Shell() {
     <div className="app">
       <Header onNewSession={requestNewSession} />
       {screen === 'start' ? <StartScreen /> : null}
-      {screen === 'configure' && state.product ? <ConfigureScreen /> : null}
-      {screen === 'review' && state.product ? <ReviewScreen /> : null}
+      {screen === 'configure' && state.units.length > 0 ? <ConfigureScreen /> : null}
+      {screen === 'review' && state.units.length > 0 ? <ReviewScreen /> : null}
       {screen === 'order' ? <OrderScreen /> : null}
       {screen === 'confirmed' ? <ConfirmedScreen onNewSession={requestNewSession} /> : null}
 

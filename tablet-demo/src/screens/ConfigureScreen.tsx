@@ -1,6 +1,6 @@
 import { useEffect, useId, useRef, useState } from 'react';
-import { GROUP_BY_ID, PRODUCTS, groupsFor, stepsFor, type FamilyId, type GroupId, type OptionId } from '../catalog/catalog';
-import { countGarment, countSelected, disabledReason } from '../catalog/rules';
+import { GROUP_BY_ID, groupsFor, stepsFor, type FamilyId, type GroupId, type OptionId } from '../catalog/catalog';
+import { copyableUnits, countSelected, countUnit, disabledReason } from '../catalog/rules';
 import { ChevronIcon } from '../components/icons';
 import { Modal } from '../components/Modal';
 import { OptionCard } from '../components/OptionCard';
@@ -8,24 +8,30 @@ import { Stepper } from '../components/Stepper';
 import { SuggestionModal } from '../components/SuggestionModal';
 import { SummaryPanel } from '../components/SummaryPanel';
 import { fmt } from '../content/copy';
+import { unitName } from '../order/labels';
 import { Sketch } from '../sketches/Sketch';
 import { useStore } from '../state/store';
 
 export function ConfigureScreen() {
   const { state, dispatch, t } = useStore();
-  const product = state.product!;
-  const { garment, group } = state.cursor;
+  const { unit: unitId, group } = state.cursor;
+  const unit = state.units.find((u) => u.id === unitId)!;
+  const mine = state.selections[unit.id] ?? {};
   const def = GROUP_BY_ID[group];
   const copy = t.groups[group];
   // groups chosen on this group's screen (the cuffs screen also asks functional or closed buttons)
-  const companions = groupsFor(garment).filter((g) => g.companionOf === group);
+  const companions = groupsFor(unit.garment, mine).filter((g) => g.companionOf === group);
 
-  const steps = stepsFor(product);
-  const index = steps.findIndex((s) => s.group === group && s.garment === garment);
+  const steps = stepsFor(state.units, state.selections);
+  const index = steps.findIndex((s) => s.group === group && s.unit === unit.id);
   const isFirst = index <= 0;
   const isLast = index === steps.length - 1;
-  const garmentSteps = steps.filter((s) => s.garment === garment);
-  const garmentIndex = garmentSteps.findIndex((s) => s.group === group);
+  const unitSteps = steps.filter((s) => s.unit === unit.id);
+  const unitIndex = unitSteps.findIndex((s) => s.group === group);
+
+  // The earlier units of the same kind this one can copy ("same as the trousers already chosen").
+  const copyable = copyableUnits(state.units, unit);
+  const copying = state.sameAs[unit.id] ?? null;
 
   const [expanded, setExpanded] = useState<ReadonlySet<GroupId>>(new Set());
   const [suggestFor, setSuggestFor] = useState<GroupId | null>(null);
@@ -44,7 +50,7 @@ export function ConfigureScreen() {
     }
     if (contentRef.current) contentRef.current.scrollTop = 0;
     headingRef.current?.focus({ preventScroll: true });
-  }, [group, garment]);
+  }, [group, unitId]);
 
   const isOpen = expanded.has(group);
   const toggleMore = () =>
@@ -55,37 +61,38 @@ export function ConfigureScreen() {
       return next;
     });
 
-  const selected = state.selections[garment][group];
+  const selected = mine[group];
   // Groups with many options are split into families; show the one holding the choice by default.
   const families = def.families;
   const heldBy = families?.find((f) => selected && f.options.includes(selected))?.id;
   const activeFamily = families ? (familyPick[group] ?? heldBy ?? families[0].id) : null;
   const shownOptions = families ? families.find((f) => f.id === activeFamily)!.options : def.options;
-  const anyBlocked = def.options.some((o) => disabledReason(state.selections, garment, group, o));
-  const garments = PRODUCTS[product].garments;
-  const progress = countSelected(product, state.selections);
+  const anyBlocked = def.options.some((o) => disabledReason(state.selections, unit, group, o));
+  const progress = countSelected(state.units, state.selections);
 
   const pending = state.pending;
+  const nameOf = (id: string) => unitName(t, state.units.find((u) => u.id === id)!, state.units);
 
   return (
     <>
       <main className="content configure" ref={contentRef}>
         <div className="configure-main">
           <div className="configure-top">
-            {garments.length > 1 ? (
+            {state.units.length > 1 ? (
               <div className="garment-tabs" role="group" aria-label={t.configure.garmentsLabel}>
-                {garments.map((g) => {
-                  const done = countGarment(g, state.selections);
-                  const active = g === garment;
+                {state.units.map((u) => {
+                  const done = countUnit(u, state.selections);
+                  const active = u.id === unit.id;
                   return (
                     <button
-                      key={g}
+                      key={u.id}
                       type="button"
                       className={`garment-tab${active ? ' is-active' : ''}`}
                       aria-pressed={active}
-                      onClick={() => dispatch({ type: 'switchGarment', garment: g })}
+                      data-unit={u.id}
+                      onClick={() => dispatch({ type: 'switchUnit', unit: u.id })}
                     >
-                      <span>{t.garments[product][g]}</span>
+                      <span>{unitName(t, u, state.units)}</span>
                       <span className="garment-count">
                         {done.done}/{done.total}
                       </span>
@@ -95,27 +102,45 @@ export function ConfigureScreen() {
               </div>
             ) : null}
 
-            <Stepper garment={garment} active={group} />
+            <Stepper unit={unit} active={group} />
           </div>
 
-          {garment === 'trousers2' ? (
-            <div className="same-as" role="group" aria-label={t.configure.sameTrousersTitle}>
-              <span className="same-as-label">{t.configure.sameTrousersLabel}</span>
+          {unit.product ? (
+            <p className="unit-context">
+              {unitName(t, unit, state.units)} · {t.products[unit.product].name}
+              {(state.quantities[unit.product] ?? 0) > 1 ? ` (${unit.copy}/${state.quantities[unit.product]})` : ''}
+            </p>
+          ) : null}
+
+          {copyable.length > 0 ? (
+            <div className="same-as" role="group" aria-label={t.configure.sameAsTitle} data-same-as={unit.id}>
+              <span className="same-as-label">{t.configure.sameAsTitle}</span>
               <div className="family-tabs">
-                {([true, false] as const).map((value) => (
+                {copyable.map((source) => (
                   <button
-                    key={String(value)}
+                    key={source.id}
                     type="button"
-                    className={`family-tab${state.sameTrousers === value ? ' is-active' : ''}`}
-                    aria-pressed={state.sameTrousers === value}
-                    data-same-trousers={value ? 'on' : 'off'}
-                    onClick={() => dispatch({ type: 'setSameTrousers', value })}
+                    className={`family-tab${copying === source.id ? ' is-active' : ''}`}
+                    aria-pressed={copying === source.id}
+                    data-same-as-source={source.id}
+                    onClick={() => dispatch({ type: 'setSameAs', unit: unit.id, source: source.id })}
                   >
-                    {value ? t.configure.sameTrousersOn : t.configure.sameTrousersOff}
+                    {fmt(t.configure.sameAsLike, { name: nameOf(source.id) })}
                   </button>
                 ))}
+                <button
+                  type="button"
+                  className={`family-tab${copying === null ? ' is-active' : ''}`}
+                  aria-pressed={copying === null}
+                  data-same-as-source="none"
+                  onClick={() => dispatch({ type: 'setSameAs', unit: unit.id, source: null })}
+                >
+                  {t.configure.sameAsOwn}
+                </button>
               </div>
-              <p className="same-as-hint">{state.sameTrousers ? t.configure.sameTrousersHintOn : t.configure.sameTrousersHintOff}</p>
+              <p className="same-as-hint">
+                {copying ? fmt(t.configure.sameAsHintOn, { name: nameOf(copying) }) : t.configure.sameAsHintOff}
+              </p>
             </div>
           ) : null}
 
@@ -174,10 +199,10 @@ export function ConfigureScreen() {
               className={`options${def.noSketch ? ' is-plain' : shownOptions.length === 4 ? ' is-compact' : ''}`}
               role="group"
               aria-label={fmt(t.configure.optionsOf, { group: copy.name })}
-              style={{ ['--cols' as string]: def.noSketch ? shownOptions.length : shownOptions.length === 4 ? 2 : Math.min(shownOptions.length, 3) }}
+              style={{ ['--cols' as string]: def.noSketch ? Math.min(shownOptions.length, 4) : shownOptions.length === 4 ? 2 : Math.min(shownOptions.length, 3) }}
             >
               {shownOptions.map((option) => {
-                const reason = disabledReason(state.selections, garment, group, option);
+                const reason = disabledReason(state.selections, unit, group, option);
                 return (
                   <OptionCard
                     key={option}
@@ -185,7 +210,7 @@ export function ConfigureScreen() {
                     selected={selected === option}
                     unavailableReason={reason ? t.lapelRule.disabledReason : null}
                     plain={def.noSketch}
-                    onSelect={() => dispatch({ type: 'select', garment, group, option })}
+                    onSelect={() => dispatch({ type: 'select', unit: unit.id, group, option })}
                     onZoom={() => setZoom(option)}
                   />
                 );
@@ -207,9 +232,9 @@ export function ConfigureScreen() {
                       key={option}
                       option={option}
                       plain
-                      selected={state.selections[garment][c.id] === option}
+                      selected={mine[c.id] === option}
                       unavailableReason={null}
-                      onSelect={() => dispatch({ type: 'select', garment, group: c.id, option })}
+                      onSelect={() => dispatch({ type: 'select', unit: unit.id, group: c.id, option })}
                       onZoom={() => undefined}
                     />
                   ))}
@@ -221,7 +246,7 @@ export function ConfigureScreen() {
               <button
                 type="button"
                 className="btn btn-secondary"
-                onClick={() => dispatch({ type: 'goTo', garment: 'jacket', group: 'closure' })}
+                onClick={() => dispatch({ type: 'goTo', unit: unit.id, group: 'closure' })}
               >
                 {t.configure.changeClosure}
               </button>
@@ -243,7 +268,7 @@ export function ConfigureScreen() {
           {t.configure.back}
         </button>
         <p className="footer-status" role="status">
-          {fmt(t.configure.groupOf, { n: garmentIndex + 1, total: garmentSteps.length })} · {fmt(t.configure.progress, progress)}
+          {fmt(t.configure.groupOf, { n: unitIndex + 1, total: unitSteps.length })} · {fmt(t.configure.progress, progress)}
         </p>
         {state.returnToReview ? (
           <button type="button" className="btn btn-primary btn-large" onClick={() => dispatch({ type: 'backToReview' })}>
@@ -285,9 +310,9 @@ export function ConfigureScreen() {
             <li>
               <span>{t.groups.lapel.name}</span>
               <strong>
-                {state.selections.jacket.lapel ? t.options[state.selections.jacket.lapel].label : t.configure.notSelected}
+                {state.selections[pending.unit]?.lapel ? t.options[state.selections[pending.unit].lapel!].label : t.configure.notSelected}
                 {' → '}
-                {pending.next.jacket.lapel ? t.options[pending.next.jacket.lapel].label : ''}
+                {pending.next[pending.unit]?.lapel ? t.options[pending.next[pending.unit].lapel!].label : ''}
               </strong>
             </li>
           </ul>

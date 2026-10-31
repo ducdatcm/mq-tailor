@@ -1,11 +1,14 @@
-import { PRODUCT_IDS } from '../catalog/catalog';
+import { PRODUCT_IDS, totalQuantity } from '../catalog/catalog';
 import { CheckIcon } from '../components/icons';
+import { QuantityStepper } from '../components/QuantityStepper';
+import { fmt } from '../content/copy';
+import { productList } from '../order/labels';
 import { Sketch } from '../sketches/Sketch';
 import { useStore } from '../state/store';
 
 export function StartScreen() {
   const { state, dispatch, t } = useStore();
-  const ready = state.startProduct !== null;
+  const ready = totalQuantity(state.quantities) > 0;
 
   return (
     <>
@@ -23,28 +26,33 @@ export function StartScreen() {
           </h2>
           <div className="product-grid" role="group" aria-labelledby="start-products">
             {PRODUCT_IDS.map((id) => {
-              const selected = state.startProduct === id;
+              const quantity = state.quantities[id] ?? 0;
+              const selected = quantity > 0;
               return (
-                <button
-                  key={id}
-                  type="button"
-                  className={`product-card${selected ? ' is-selected' : ''}`}
-                  aria-pressed={selected}
-                  data-product={id}
-                  onClick={() => dispatch({ type: 'chooseProduct', product: id })}
-                >
-                  <span className="product-sketch">
-                    <Sketch product={id} />
-                  </span>
-                  <span className="product-name">{t.products[id].name}</span>
-                  <span className="product-desc">{t.products[id].desc}</span>
-                  {selected ? (
-                    <span className="option-badge">
-                      <CheckIcon size={18} />
-                      {t.configure.selected}
+                <div key={id} className={`product-card${selected ? ' is-selected' : ''}`}>
+                  <button
+                    type="button"
+                    className="product-pick"
+                    aria-pressed={selected}
+                    data-product={id}
+                    onClick={() => {
+                      if (!selected) dispatch({ type: 'setQuantity', product: id, value: 1 });
+                    }}
+                  >
+                    <span className="product-sketch">
+                      <Sketch product={id} />
                     </span>
-                  ) : null}
-                </button>
+                    <span className="product-name">{t.products[id].name}</span>
+                    <span className="product-desc">{t.products[id].desc}</span>
+                    {selected ? (
+                      <span className="option-badge">
+                        <CheckIcon size={18} />
+                        {t.configure.selected}
+                      </span>
+                    ) : null}
+                  </button>
+                  <QuantityStepper product={id} />
+                </div>
               );
             })}
           </div>
@@ -82,11 +90,15 @@ export function StartScreen() {
       </main>
 
       <footer className="footer footer-center">
-        {!ready ? (
+        {ready ? (
+          <p className="footer-hint qty-pieces" data-order-list>
+            {fmt(t.start.quantityPieces, { list: productList(t, state.quantities) })}
+          </p>
+        ) : (
           <p className="footer-hint" id="start-hint">
             {t.start.needProduct}
           </p>
-        ) : null}
+        )}
         <button
           type="button"
           className="btn btn-primary btn-large"

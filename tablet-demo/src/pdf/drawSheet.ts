@@ -1,7 +1,10 @@
-import { PRODUCTS, groupsFor, type OptionId } from '../catalog/catalog';
+import { groupsFor, type OptionId, type Unit } from '../catalog/catalog';
 import type { Copy } from '../content/copy';
 import { fmt } from '../content/copy';
 import { formatDateTime } from '../order/format';
+import { productList } from '../order/labels';
+import { orderLines } from '../order/lines';
+import { OPTION_SKETCHES } from '../sketches/registry';
 import type { OrderRecord, Snapshot } from '../state/types';
 
 /**
@@ -114,40 +117,45 @@ export function drawSheet({ t, lang, snap, order, sketches, logo, scale }: Sheet
       ctx.fillRect(MARGIN, 108, pageW - MARGIN * 2, 2);
     }
 
-    // ── order details box: 3 columns x 2 rows
+    // ── order details box: three columns, then the products (with their quantities) on their own row
     const boxX = MARGIN;
     const boxY = 128;
     const boxW = pageW - MARGIN * 2;
     const cellW = (boxW - 32) / 3;
-    const cells: [string, string][] = [
-      [t.pdf.date, formatDateTime(order.confirmedAt)],
-      [t.pdf.orderId, order.orderId],
-      [t.pdf.customer, order.customerName],
-      [t.pdf.phone, order.phone],
-      [t.pdf.product, t.products[snap.product].name],
-      [t.pdf.revision, fmt(t.confirmed.revision, { n: snap.revision })],
+    type Cell = { label: string; value: string; span: number };
+    const grid: Cell[][] = [
+      [
+        { label: t.pdf.date, value: formatDateTime(order.confirmedAt), span: 1 },
+        { label: t.pdf.orderId, value: order.orderId, span: 1 },
+        { label: t.pdf.revision, value: fmt(t.confirmed.revision, { n: snap.revision }), span: 1 },
+      ],
+      [
+        { label: t.pdf.customer, value: order.customerName, span: 1 },
+        { label: t.pdf.phone, value: order.phone, span: 1 },
+      ],
+      [{ label: t.pdf.product, value: productList(t, snap.quantities), span: 3 }],
     ];
     ctx.font = `600 15px ${SANS}`;
-    const rowLines = [0, 1].map((r) =>
-      Math.max(...cells.slice(r * 3, r * 3 + 3).map(([, v]) => wrap(ctx, v, cellW - 12, 2).length)),
-    );
-    const rowH = rowLines.map((n) => 16 + n * 19 + 10);
-    const boxH = 16 + rowH[0] + rowH[1] + 4;
+    const widthOf = (c: Cell) => cellW * c.span - 12;
+    const rowH = grid.map((row) => 16 + Math.max(...row.map((c) => wrap(ctx, c.value, widthOf(c), 2).length)) * 19 + 10);
+    const boxH = 16 + rowH.reduce((a, b) => a + b, 0) + 4;
     if (draw) {
       fill(PAPER_TINT);
       roundRect(ctx, boxX, boxY, boxW, boxH, 8);
       ctx.fill();
     }
     let rowY = boxY + 16;
-    [0, 1].forEach((r) => {
-      cells.slice(r * 3, r * 3 + 3).forEach(([label, value], c) => {
-        const x = boxX + 16 + c * cellW;
+    grid.forEach((row, r) => {
+      let col = 0;
+      row.forEach((cell) => {
+        const x = boxX + 16 + col * cellW;
         ctx.font = `400 10px ${SANS}`;
         fill(MUTED);
-        text(upper(label, lang), x, rowY + 10);
+        text(upper(cell.label, lang), x, rowY + 10);
         ctx.font = `600 15px ${SANS}`;
         fill(INK);
-        wrap(ctx, value, cellW - 12, 2).forEach((l, i) => text(l, x, rowY + 29 + i * 19));
+        wrap(ctx, cell.value, widthOf(cell), 2).forEach((l, i) => text(l, x, rowY + 29 + i * 19));
+        col += cell.span;
       });
       rowY += rowH[r];
     });
@@ -155,16 +163,25 @@ export function drawSheet({ t, lang, snap, order, sketches, logo, scale }: Sheet
     // ── garments
     let y = boxY + boxH + 30;
     const colW = (boxW - 20) / 2;
-    PRODUCTS[snap.product].garments.forEach((garment) => {
+    // One section per piece design, with how many are made; the trims (buttons, buttonholes) last.
+    const trimsUnit = snap.units.find((u) => u.garment === 'trims');
+    const sections: { title: string; unit: Unit }[] = [
+      ...orderLines(snap.units, snap.selections).map((l) => ({
+        title: `${t.garments[l.item]} × ${l.quantity}`,
+        unit: snap.units.find((u) => u.id === l.units[0])!,
+      })),
+      ...(trimsUnit ? [{ title: t.garments.trims, unit: trimsUnit }] : []),
+    ];
+    sections.forEach((section) => {
       ctx.font = `500 17px ${SERIF}`;
       fill(INK);
-      text(t.garments[snap.product][garment], MARGIN, y);
+      text(section.title, MARGIN, y);
       if (draw) {
         ctx.fillStyle = LINE;
         ctx.fillRect(MARGIN, y + 8, boxW, 1);
       }
       y += 22;
-      const groups = groupsFor(garment);
+      const groups = groupsFor(section.unit.garment, snap.selections[section.unit.id]);
       // a row of options that have no drawing (the trims) is shorter
       const rowHeights: number[] = [];
       for (let r = 0; r * 2 < groups.length; r += 1) {
@@ -175,8 +192,9 @@ export function drawSheet({ t, lang, snap, order, sketches, logo, scale }: Sheet
         const x = MARGIN + col * (colW + 20);
         const row = Math.floor(i / 2);
         const top = y + rowHeights.slice(0, row).reduce((a, b) => a + b, 0);
-        const chosen = snap.selections[garment][g.id];
-        if (draw && !g.noSketch) {
+        const chosen = snap.selections[section.unit.id]?.[g.id];
+        // an option with no picture (like "no chest pocket") leaves the picture space empty
+        if (draw && !g.noSketch && !(chosen && !OPTION_SKETCHES[chosen])) {
           ctx.fillStyle = THUMB_BG;
           roundRect(ctx, x, top, THUMB_W, THUMB_H, 6);
           ctx.fill();

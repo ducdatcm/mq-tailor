@@ -5,7 +5,7 @@ import { initialState, reducer } from './reducer';
 import type { Action, State } from './types';
 
 const STORAGE_KEY = 'mq-tablet-demo/v1';
-const STORAGE_VERSION = 3; // 3: trims added; 2: four garments per session (an older saved session lacks those garments)
+const STORAGE_VERSION = 5; // 5: orders of several products, one unit per piece; 4: quantity and shirt added; 3: trims added; 2: four garments per session (an older saved session lacks those garments)
 
 /**
  * Reload-survival is a convenience, not a requirement. Everything is wrapped

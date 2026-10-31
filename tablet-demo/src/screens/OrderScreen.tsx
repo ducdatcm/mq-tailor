@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react';
 import { ChevronIcon } from '../components/icons';
 import { fmt } from '../content/copy';
 import { formatDate } from '../order/format';
+import { productList } from '../order/labels';
 import { validateOrder, type OrderError, type OrderField } from '../order/validate';
 import { useStore } from '../state/store';
 
@@ -47,7 +48,7 @@ export function OrderScreen() {
             {t.order.title}
           </h1>
           <p className="lead">{t.order.intro}</p>
-          <p className="order-summary">{fmt(t.order.summary, { product: t.products[snap.product].name, n: snap.revision })}</p>
+          <p className="order-summary">{fmt(t.order.summary, { list: productList(t, snap.quantities), n: snap.revision })}</p>
 
           <div className="order-date">
             <span className="field-label">{t.order.dateLabel}</span>

@@ -1,4 +1,5 @@
 import { useRef } from 'react';
+import { productList } from '../order/labels';
 import { useStore } from '../state/store';
 import { Logo } from './Logo';
 import type { Lang } from '../state/types';
@@ -9,7 +10,7 @@ interface Props {
 
 export function Header({ onNewSession }: Props) {
   const { state, dispatch, t } = useStore();
-  const inSession = state.screen !== 'start' && state.product;
+  const inSession = state.screen !== 'start' && state.units.length > 0;
 
   const setLang = (lang: Lang) => dispatch({ type: 'setLang', lang });
 
@@ -32,7 +33,7 @@ export function Header({ onNewSession }: Props) {
       <span className="demo-badge">{t.demoBadge}</span>
       <div className="header-spacer" />
       {inSession ? (
-        <span className="header-product">{t.products[state.product!].name}</span>
+        <span className="header-product">{productList(t, state.quantities)}</span>
       ) : null}
       <div className="lang-switch" role="group" aria-label={t.language.label}>
         {(['vi', 'en'] as const).map((lang) => (

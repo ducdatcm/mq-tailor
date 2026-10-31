@@ -1,81 +1,88 @@
 import {
-  GARMENT_IDS,
   GROUP_BY_ID,
-  PRODUCTS,
-  baseGarment,
   groupsFor,
-  type GarmentId,
+  type GarmentSelections,
   type GroupId,
   type OptionId,
-  type ProductId,
   type Step,
+  type Unit,
 } from './catalog';
 
-export type GarmentSelections = Partial<Record<GroupId, OptionId>>;
-export type Selections = Record<GarmentId, GarmentSelections>;
+export type { GarmentSelections };
+/** What is chosen on each unit of the order, by unit id ('jacket1', 'trousers2', 'trims'...). */
+export type Selections = Record<string, GarmentSelections>;
 
-export const emptySelections = (): Selections => ({ jacket: {}, waistcoat: {}, trousers: {}, trousers2: {}, trims: {} });
+export const emptySelections = (units: readonly Unit[] = []): Selections => Object.fromEntries(units.map((u) => [u.id, {}]));
 
 export function cloneSelections(s: Selections): Selections {
-  const out = emptySelections();
-  for (const garment of GARMENT_IDS) out[garment] = { ...s[garment] };
-  return out;
+  return Object.fromEntries(Object.entries(s).map(([id, chosen]) => [id, { ...chosen }]));
 }
 
-/** The one-click "house starting suggestion" for a product. */
-export function presetSelections(product: ProductId): Selections {
-  const out = emptySelections();
-  for (const garment of PRODUCTS[product].garments) {
-    for (const g of groupsFor(garment)) out[garment][g.id] = g.preset;
+/** The one-click "house starting suggestion" for every unit. */
+export function presetSelections(units: readonly Unit[]): Selections {
+  const out = emptySelections(units);
+  for (const unit of units) {
+    for (const g of groupsFor(unit.garment)) out[unit.id][g.id] = g.preset;
   }
   return out;
 }
 
-/** Keep only the garments that belong to the product (what we snapshot). */
-export function relevantSelections(product: ProductId, s: Selections): Selections {
-  const out = emptySelections();
-  for (const garment of PRODUCTS[product].garments) out[garment] = { ...s[garment] };
+/** Keep only the units of the order, and on each the groups that apply (what we snapshot). */
+export function relevantSelections(units: readonly Unit[], s: Selections): Selections {
+  const out = emptySelections(units);
+  for (const unit of units) {
+    const chosen = s[unit.id] ?? {};
+    for (const g of groupsFor(unit.garment, chosen)) {
+      if (chosen[g.id]) out[unit.id][g.id] = chosen[g.id];
+    }
+  }
   return out;
 }
 
-export function missingSteps(product: ProductId, s: Selections): Step[] {
+export function missingSteps(units: readonly Unit[], s: Selections): Step[] {
   const missing: Step[] = [];
-  for (const garment of PRODUCTS[product].garments) {
-    for (const g of groupsFor(garment)) {
-      if (!s[garment][g.id]) missing.push({ garment, group: g.id });
+  for (const unit of units) {
+    const chosen = s[unit.id] ?? {};
+    for (const g of groupsFor(unit.garment, chosen)) {
+      if (!chosen[g.id]) missing.push({ unit: unit.id, group: g.id });
     }
   }
   return missing;
 }
 
-export function selectionsEqual(product: ProductId, a: Selections, b: Selections): boolean {
-  for (const garment of PRODUCTS[product].garments) {
-    for (const g of groupsFor(garment)) {
-      if (a[garment][g.id] !== b[garment][g.id]) return false;
+/** Compares what applies to each design: a group left out of one of them counts as unchosen there. */
+export function selectionsEqual(units: readonly Unit[], a: Selections, b: Selections): boolean {
+  for (const unit of units) {
+    const left = a[unit.id] ?? {};
+    const right = b[unit.id] ?? {};
+    const inA = groupsFor(unit.garment, left);
+    const inB = groupsFor(unit.garment, right);
+    for (const g of groupsFor(unit.garment)) {
+      if ((inA.includes(g) ? left[g.id] : undefined) !== (inB.includes(g) ? right[g.id] : undefined)) return false;
     }
   }
   return true;
 }
 
-export function countSelected(product: ProductId, s: Selections): { done: number; total: number } {
+export function countUnit(unit: Unit, s: Selections): { done: number; total: number } {
+  const chosen = s[unit.id] ?? {};
+  const groups = groupsFor(unit.garment, chosen);
+  return { done: groups.filter((g) => chosen[g.id]).length, total: groups.length };
+}
+
+export function countSelected(units: readonly Unit[], s: Selections): { done: number; total: number } {
   let done = 0;
   let total = 0;
-  for (const garment of PRODUCTS[product].garments) {
-    for (const g of groupsFor(garment)) {
-      total += 1;
-      if (s[garment][g.id]) done += 1;
-    }
+  for (const unit of units) {
+    const c = countUnit(unit, s);
+    done += c.done;
+    total += c.total;
   }
   return { done, total };
 }
 
-export function countGarment(garment: GarmentId, s: Selections): { done: number; total: number } {
-  const groups = groupsFor(garment);
-  return { done: groups.filter((g) => s[garment][g.id]).length, total: groups.length };
-}
-
 export function hasAnySelection(s: Selections): boolean {
-  return GARMENT_IDS.some((garment) => Object.keys(s[garment]).length > 0);
+  return Object.values(s).some((chosen) => Object.keys(chosen).length > 0);
 }
 
 // ── Demo rules ─────────────────────────────────────────────────────────────
@@ -87,12 +94,12 @@ export const isDoubleBreasted = (option: OptionId | undefined): boolean => optio
 
 export type DisabledReason = 'dbNeedsPeak';
 
-export function disabledReason(s: Selections, garment: GarmentId, group: GroupId, option: OptionId): DisabledReason | null {
+export function disabledReason(s: Selections, unit: Unit, group: GroupId, option: OptionId): DisabledReason | null {
   if (
-    garment === 'jacket' &&
+    unit.garment === 'jacket' &&
     group === 'lapel' &&
     (option === 'lapel.notch' || option === 'lapel.shawl') &&
-    isDoubleBreasted(s.jacket.closure)
+    isDoubleBreasted(s[unit.id]?.closure)
   ) {
     return 'dbNeedsPeak';
   }
@@ -109,24 +116,42 @@ export type Resolution =
  * another group without asking: a side effect comes back as `confirm` and is
  * only applied once the user accepts it.
  */
-export function resolveSelection(s: Selections, garment: GarmentId, group: GroupId, option: OptionId): Resolution {
-  if (GROUP_BY_ID[group].garment !== baseGarment(garment) || !GROUP_BY_ID[group].options.includes(option)) {
+export function resolveSelection(s: Selections, unit: Unit, group: GroupId, option: OptionId): Resolution {
+  if (GROUP_BY_ID[group].garment !== unit.garment || !GROUP_BY_ID[group].options.includes(option)) {
     return { kind: 'blocked', reason: 'invalid' };
   }
-  const blocked = disabledReason(s, garment, group, option);
+  const blocked = disabledReason(s, unit, group, option);
   if (blocked) return { kind: 'blocked', reason: blocked };
 
   const next = cloneSelections(s);
-  next[garment][group] = option;
+  next[unit.id] = { ...next[unit.id], [group]: option };
 
   if (
-    garment === 'jacket' &&
+    unit.garment === 'jacket' &&
     group === 'closure' &&
     isDoubleBreasted(option) &&
-    (s.jacket.lapel === 'lapel.notch' || s.jacket.lapel === 'lapel.shawl')
+    (s[unit.id]?.lapel === 'lapel.notch' || s[unit.id]?.lapel === 'lapel.shawl')
   ) {
-    next.jacket.lapel = 'lapel.peak';
+    next[unit.id].lapel = 'lapel.peak';
     return { kind: 'confirm', reason: 'lapelToPeak', selections: next };
   }
   return { kind: 'apply', selections: next };
+}
+
+/**
+ * A unit can copy an earlier unit of the same kind ("same as the trousers already chosen"): the ones
+ * that copy follow what they copy. Walks the units in order, so a chain of copies stays in step.
+ */
+export function syncMirrors(units: readonly Unit[], sameAs: Readonly<Record<string, string | null>>, s: Selections): Selections {
+  const out = cloneSelections(s);
+  for (const unit of units) {
+    const source = sameAs[unit.id];
+    if (source && out[source]) out[unit.id] = { ...out[source] };
+  }
+  return out;
+}
+
+/** The earlier units of the same kind that a unit can copy. */
+export function copyableUnits(units: readonly Unit[], unit: Unit): Unit[] {
+  return units.filter((u) => u.garment === unit.garment && u.n < unit.n);
 }

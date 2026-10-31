@@ -18,10 +18,10 @@ export function SuggestionModal({ group, onClose }: Props) {
   const def = GROUP_BY_ID[group];
   const option = def.preset;
   const copy = t.options[option];
-  // The suggestion is always for the group being viewed, on the garment being configured (the second trousers share the trousers groups).
-  const garment = state.cursor.garment;
-  const isCurrent = state.selections[garment][group] === option;
-  const blocked = disabledReason(state.selections, garment, group, option) !== null;
+  // The suggestion is always for the group being viewed, on the unit being designed.
+  const unit = state.units.find((u) => u.id === state.cursor.unit)!;
+  const isCurrent = state.selections[unit.id]?.[group] === option;
+  const blocked = disabledReason(state.selections, unit, group, option) !== null;
 
   return (
     <Modal title={`${t.suggestion.title}: ${t.groups[group].name}`} onClose={onClose} closeLabel={t.close}>
@@ -50,7 +50,7 @@ export function SuggestionModal({ group, onClose }: Props) {
           disabled={blocked || isCurrent}
           data-autofocus={!blocked && !isCurrent ? '' : undefined}
           onClick={() => {
-            dispatch({ type: 'select', garment, group, option });
+            dispatch({ type: 'select', unit: unit.id, group, option });
             onClose();
           }}
         >

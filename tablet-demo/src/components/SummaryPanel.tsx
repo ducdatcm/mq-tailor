@@ -1,20 +1,21 @@
 import { useId, useState } from 'react';
-import { PRODUCTS, groupsFor } from '../catalog/catalog';
-import { countSelected } from '../catalog/rules';
+import { groupsFor } from '../catalog/catalog';
+import { countSelected, countUnit } from '../catalog/rules';
 import { fmt } from '../content/copy';
+import { unitName, unitPrefix } from '../order/labels';
 import { useStore } from '../state/store';
 import { CheckIcon, ChevronIcon } from './icons';
 
 /**
  * Compact running summary. Always visible on wide tablets; on narrow widths it
  * collapses behind a toggle so it never takes the room the options need.
+ * Only the piece being designed is opened out; the others show how far they are.
  */
 export function SummaryPanel() {
   const { state, dispatch, t } = useStore();
   const [open, setOpen] = useState(false);
   const panelId = useId();
-  const product = state.product!;
-  const { done, total } = countSelected(product, state.selections);
+  const { done, total } = countSelected(state.units, state.selections);
 
   return (
     <aside className={`summary${open ? ' is-open' : ''}`} aria-label={t.configure.summaryTitle}>
@@ -41,40 +42,56 @@ export function SummaryPanel() {
           {t.configure.openReview}
         </button>
 
-        {PRODUCTS[product].garments.map((garment) => (
-          <section key={garment} className="summary-garment">
-            <h3>{t.garments[product][garment]}</h3>
-            <ul>
-              {groupsFor(garment).map((g) => {
-                const chosen = state.selections[garment][g.id];
-                const isActive = state.screen === 'configure' && state.cursor.garment === garment && (state.cursor.group === g.id || state.cursor.group === g.companionOf);
-                // Two pairs of trousers share their group names, so the jump label says which pair.
-                const twoTrousers = PRODUCTS[product].garments.includes('trousers2') && garment !== 'jacket';
-                const jumpName = twoTrousers ? `${t.garments[product][garment]} · ${t.groups[g.id].name}` : t.groups[g.id].name;
-                return (
-                  <li key={g.id}>
-                    <button
-                      type="button"
-                      className={`summary-row${isActive ? ' is-active' : ''}${chosen ? '' : ' is-missing'}`}
-                      aria-current={isActive ? 'step' : undefined}
-                      aria-label={fmt(t.configure.jumpTo, { group: jumpName })}
-                      onClick={() => dispatch({ type: 'goTo', garment, group: g.id })}
-                    >
-                      <span className="summary-mark" aria-hidden="true">
-                        {chosen ? <CheckIcon size={16} /> : null}
-                      </span>
-                      <span className="summary-text">
-                        <span className="summary-group">{t.groups[g.id].name}</span>
-                        <span className="summary-value">{chosen ? t.options[chosen].label : t.configure.notSelected}</span>
-                      </span>
-                    </button>
-                  </li>
-                );
-              })}
-            </ul>
-          </section>
-        ))}
-
+        {state.units.map((unit) => {
+          const name = unitName(t, unit, state.units);
+          const current = state.screen === 'configure' && state.cursor.unit === unit.id;
+          const count = countUnit(unit, state.selections);
+          const selections = state.selections[unit.id] ?? {};
+          return (
+            <section key={unit.id} className={`summary-garment${current ? ' is-current' : ''}`} data-summary-unit={unit.id}>
+              <h3>
+                <button
+                  type="button"
+                  className="summary-unit"
+                  aria-expanded={current}
+                  onClick={() => dispatch({ type: 'switchUnit', unit: unit.id })}
+                >
+                  <span>{name}</span>
+                  <span className="summary-count">
+                    {count.done}/{count.total}
+                  </span>
+                </button>
+              </h3>
+              {current ? (
+                <ul>
+                  {groupsFor(unit.garment, selections).map((g) => {
+                    const chosen = selections[g.id];
+                    const isActive = state.cursor.group === g.id || state.cursor.group === g.companionOf;
+                    return (
+                      <li key={g.id}>
+                        <button
+                          type="button"
+                          className={`summary-row${isActive ? ' is-active' : ''}${chosen ? '' : ' is-missing'}`}
+                          aria-current={isActive ? 'step' : undefined}
+                          aria-label={fmt(t.configure.jumpTo, { group: `${unitPrefix(t, unit, state.units)}${t.groups[g.id].name}` })}
+                          onClick={() => dispatch({ type: 'goTo', unit: unit.id, group: g.id })}
+                        >
+                          <span className="summary-mark" aria-hidden="true">
+                            {chosen ? <CheckIcon size={16} /> : null}
+                          </span>
+                          <span className="summary-text">
+                            <span className="summary-group">{t.groups[g.id].name}</span>
+                            <span className="summary-value">{chosen ? t.options[chosen].label : t.configure.notSelected}</span>
+                          </span>
+                        </button>
+                      </li>
+                    );
+                  })}
+                </ul>
+              ) : null}
+            </section>
+          );
+        })}
       </div>
     </aside>
   );

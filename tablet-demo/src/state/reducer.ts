@@ -1,6 +1,16 @@
-import { GROUP_BY_ID, PRODUCTS, baseGarment, stepsFor, type GarmentId, type ProductId, type Step } from '../catalog/catalog';
+import {
+  GROUP_BY_ID,
+  MAX_QUANTITY,
+  MIN_QUANTITY,
+  groupsFor,
+  stepsFor,
+  unitsFor,
+  type Step,
+  type Unit,
+} from '../catalog/catalog';
 import {
   cloneSelections,
+  copyableUnits,
   emptySelections,
   hasAnySelection,
   missingSteps,
@@ -8,6 +18,7 @@ import {
   relevantSelections,
   resolveSelection,
   selectionsEqual,
+  syncMirrors,
 } from '../catalog/rules';
 import { cleanOrder, isOrderValid } from '../order/validate';
 import type { Action, Cursor, State } from './types';
@@ -16,14 +27,14 @@ export function initialState(lang: State['lang'] = 'vi'): State {
   return {
     lang,
     screen: 'start',
-    startProduct: null,
+    quantities: {},
     startMode: 'manual',
-    product: null,
-    selections: emptySelections(),
-    cursor: { garment: 'jacket', group: 'closure' },
-    lastGroup: { jacket: 'closure', waistcoat: 'waistcoatStyle', trousers: 'pleats', trousers2: 'pleats', trims: 'buttonType' },
+    units: [],
+    selections: {},
+    cursor: { unit: '', group: 'closure' },
+    lastGroup: {},
     returnToReview: false,
-    sameTrousers: false,
+    sameAs: {},
     pending: null,
     confirmed: null,
     order: { orderId: '', customerName: '', phone: '' },
@@ -32,20 +43,28 @@ export function initialState(lang: State['lang'] = 'vi'): State {
   };
 }
 
-function stepIndex(product: ProductId, cursor: Cursor): number {
-  return stepsFor(product).findIndex((s) => s.garment === cursor.garment && s.group === cursor.group);
+const unitOf = (state: State, id: string): Unit | undefined => state.units.find((u) => u.id === id);
+
+function stepIndex(state: State, cursor: Cursor): number {
+  return stepsFor(state.units, state.selections).findIndex((s) => s.unit === cursor.unit && s.group === cursor.group);
 }
 
 function toCursor(step: Step): Cursor {
-  return { garment: step.garment, group: step.group };
+  return { unit: step.unit, group: step.group };
 }
 
-/** Move to a group and remember it as the place to return to for that garment. */
+/** The first group of a unit that has a screen of its own. */
+function firstGroup(state: State, unit: Unit): Cursor['group'] {
+  const groups = groupsFor(unit.garment, state.selections[unit.id]).filter((g) => !g.companionOf);
+  return groups[0].id;
+}
+
+/** Move to a group and remember it as the place to return to for that unit. */
 function moveTo(state: State, cursor: Cursor): State {
   // A group chosen on another group's screen has no screen of its own: go to that screen.
   const parent = GROUP_BY_ID[cursor.group].companionOf;
-  if (parent) cursor = { garment: cursor.garment, group: parent };
-  return { ...state, cursor, lastGroup: { ...state.lastGroup, [cursor.garment]: cursor.group } };
+  if (parent) cursor = { unit: cursor.unit, group: parent };
+  return { ...state, cursor, lastGroup: { ...state.lastGroup, [cursor.unit]: cursor.group } };
 }
 
 /** True when the session holds anything a reset would throw away. */
@@ -54,29 +73,44 @@ export function sessionHasData(state: State): boolean {
   return state.confirmed !== null || hasAnySelection(state.selections) || Boolean(o.orderId || o.customerName || o.phone);
 }
 
+/** Changing a unit's own choices ends its copying; the units that copy it follow the change. */
+function afterChange(state: State, unitId: string, selections: State['selections']): State {
+  const sameAs = state.sameAs[unitId] ? { ...state.sameAs, [unitId]: null } : state.sameAs;
+  return { ...state, sameAs, selections: syncMirrors(state.units, sameAs, selections) };
+}
+
 export function reducer(state: State, action: Action): State {
   switch (action.type) {
     case 'setLang':
       return state.lang === action.lang ? state : { ...state, lang: action.lang };
 
-    case 'chooseProduct':
-      return { ...state, startProduct: action.product };
+    case 'setQuantity': {
+      if (state.screen !== 'start') return state;
+      const value = Math.min(MAX_QUANTITY, Math.max(MIN_QUANTITY, Math.round(action.value) || MIN_QUANTITY));
+      if ((state.quantities[action.product] ?? 0) === value) return state;
+      const quantities = { ...state.quantities };
+      if (value === 0) delete quantities[action.product];
+      else quantities[action.product] = value;
+      return { ...state, quantities };
+    }
 
     case 'chooseMode':
       return { ...state, startMode: action.mode };
 
     case 'start': {
-      if (state.screen !== 'start' || !state.startProduct) return state;
-      const product = state.startProduct;
+      if (state.screen !== 'start') return state;
+      const units = unitsFor(state.quantities);
+      if (units.length === 0) return state;
+      const selections = state.startMode === 'preset' ? presetSelections(units) : emptySelections(units);
       return {
         ...state,
         screen: 'configure',
-        product,
-        selections: state.startMode === 'preset' ? presetSelections(product) : emptySelections(),
-        cursor: toCursor(stepsFor(product)[0]),
-        lastGroup: initialState().lastGroup,
+        units,
+        selections,
+        cursor: toCursor(stepsFor(units)[0]),
+        lastGroup: {},
         returnToReview: false,
-        sameTrousers: false,
+        sameAs: {},
         pending: null,
         confirmed: null,
         order: initialState().order,
@@ -86,95 +120,89 @@ export function reducer(state: State, action: Action): State {
     }
 
     case 'select': {
-      if (!state.product || state.screen !== 'configure') return state;
-      if (!PRODUCTS[state.product].garments.includes(action.garment)) return state;
-      const res = resolveSelection(state.selections, action.garment, action.group, action.option);
+      const unit = unitOf(state, action.unit);
+      if (!unit || state.screen !== 'configure') return state;
+      const res = resolveSelection(state.selections, unit, action.group, action.option);
       if (res.kind === 'blocked') return state;
       if (res.kind === 'confirm') {
         // Do not touch the draft yet: the user must accept or cancel.
         return {
           ...state,
-          pending: {
-            reason: res.reason,
-            garment: action.garment,
-            group: action.group,
-            option: action.option,
-            next: res.selections,
-          },
+          pending: { reason: res.reason, unit: unit.id, group: action.group, option: action.option, next: res.selections },
         };
       }
-      // Second trousers set to "same": the first pair is mirrored; changing the second pair on its own ends the mirroring.
-      if (state.sameTrousers && PRODUCTS[state.product].garments.includes('trousers2')) {
-        if (action.garment === 'trousers') {
-          return { ...state, selections: { ...res.selections, trousers2: { ...res.selections.trousers } } };
-        }
-        if (action.garment === 'trousers2') return { ...state, selections: res.selections, sameTrousers: false };
-      }
-      return { ...state, selections: res.selections };
+      return afterChange(state, unit.id, res.selections);
     }
 
-    case 'setSameTrousers': {
-      if (!state.product || !PRODUCTS[state.product].garments.includes('trousers2')) return state;
-      if (state.sameTrousers === action.value) return state;
-      if (!action.value) return { ...state, sameTrousers: false };
-      return { ...state, sameTrousers: true, selections: { ...state.selections, trousers2: { ...state.selections.trousers } } };
+    case 'setSameAs': {
+      const unit = unitOf(state, action.unit);
+      if (!unit || state.screen !== 'configure') return state;
+      if (action.source === null) return state.sameAs[unit.id] ? { ...state, sameAs: { ...state.sameAs, [unit.id]: null } } : state;
+      if (!copyableUnits(state.units, unit).some((u) => u.id === action.source)) return state;
+      if (state.sameAs[unit.id] === action.source) return state;
+      const sameAs = { ...state.sameAs, [unit.id]: action.source };
+      return { ...state, sameAs, selections: syncMirrors(state.units, sameAs, state.selections) };
     }
 
     case 'acceptPending':
       if (!state.pending) return state;
-      return { ...state, selections: cloneSelections(state.pending.next), pending: null };
+      return { ...afterChange(state, state.pending.unit, cloneSelections(state.pending.next)), pending: null };
 
     case 'cancelPending':
       return state.pending ? { ...state, pending: null } : state;
 
-    case 'goTo':
-      if (!state.product || !PRODUCTS[state.product].garments.includes(action.garment)) return state;
-      if (GROUP_BY_ID[action.group].garment !== baseGarment(action.garment)) return state;
-      return moveTo({ ...state, screen: 'configure' }, { garment: action.garment, group: action.group });
+    case 'goTo': {
+      const unit = unitOf(state, action.unit);
+      if (!unit) return state;
+      if (GROUP_BY_ID[action.group].garment !== unit.garment) return state;
+      if (!groupsFor(unit.garment, state.selections[unit.id]).some((g) => g.id === action.group)) return state;
+      return moveTo({ ...state, screen: 'configure' }, { unit: unit.id, group: action.group });
+    }
 
-    case 'switchGarment': {
-      if (!state.product || !PRODUCTS[state.product].garments.includes(action.garment)) return state;
-      if (state.cursor.garment === action.garment) return state;
-      return moveTo(state, { garment: action.garment, group: state.lastGroup[action.garment] });
+    case 'switchUnit': {
+      const unit = unitOf(state, action.unit);
+      if (!unit || state.cursor.unit === unit.id) return state;
+      const shown = groupsFor(unit.garment, state.selections[unit.id]).map((g) => g.id);
+      const last = state.lastGroup[unit.id];
+      return moveTo(state, { unit: unit.id, group: last && shown.includes(last) ? last : firstGroup(state, unit) });
     }
 
     case 'next': {
-      if (!state.product || state.screen !== 'configure') return state;
-      const steps = stepsFor(state.product);
-      const i = stepIndex(state.product, state.cursor);
+      if (state.units.length === 0 || state.screen !== 'configure') return state;
+      const steps = stepsFor(state.units, state.selections);
+      const i = stepIndex(state, state.cursor);
       if (i >= steps.length - 1) return { ...state, screen: 'review', returnToReview: false };
       return moveTo(state, toCursor(steps[i + 1]));
     }
 
     case 'back': {
-      if (!state.product || state.screen !== 'configure') return state;
-      const steps = stepsFor(state.product);
-      const i = stepIndex(state.product, state.cursor);
+      if (state.units.length === 0 || state.screen !== 'configure') return state;
+      const steps = stepsFor(state.units, state.selections);
+      const i = stepIndex(state, state.cursor);
       if (i <= 0) return state;
       return moveTo(state, toCursor(steps[i - 1]));
     }
 
     case 'openReview':
-      if (!state.product) return state;
+      if (state.units.length === 0) return state;
       return { ...state, screen: 'review', returnToReview: false };
 
     case 'editFromReview':
-      if (!state.product) return state;
-      return moveTo({ ...state, screen: 'configure', returnToReview: true }, { garment: action.garment, group: action.group });
+      if (state.units.length === 0) return state;
+      return moveTo({ ...state, screen: 'configure', returnToReview: true }, { unit: action.unit, group: action.group });
 
     case 'backToReview':
-      if (!state.product) return state;
+      if (state.units.length === 0) return state;
       return { ...state, screen: 'review', returnToReview: false, pending: null };
 
     case 'confirm': {
       // One action, one result: only a complete draft on the review screen can
       // be confirmed, and the screen change makes any queued repeat a no-op.
-      if (state.screen !== 'review' || !state.product) return state;
-      if (missingSteps(state.product, state.selections).length > 0) return state;
-      if (state.confirmed && selectionsEqual(state.product, state.confirmed.selections, state.selections)) {
+      if (state.screen !== 'review' || state.units.length === 0) return state;
+      if (missingSteps(state.units, state.selections).length > 0) return state;
+      if (state.confirmed && selectionsEqual(state.units, state.confirmed.selections, state.selections)) {
         return state;
       }
-      const product = state.product;
       return {
         ...state,
         screen: 'order',
@@ -183,8 +211,9 @@ export function reducer(state: State, action: Action): State {
         confirmed: {
           revision: (state.confirmed?.revision ?? 0) + 1,
           confirmedAt: action.at,
-          product,
-          selections: relevantSelections(product, state.selections),
+          quantities: state.quantities,
+          units: state.units,
+          selections: relevantSelections(state.units, state.selections),
           previousSelections: state.confirmed ? state.confirmed.selections : null,
         },
       };
@@ -228,8 +257,4 @@ export function reducer(state: State, action: Action): State {
     default:
       return state;
   }
-}
-
-export function currentGarments(state: State): readonly GarmentId[] {
-  return state.product ? PRODUCTS[state.product].garments : [];
 }

@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { PRODUCTS, groupsFor } from '../catalog/catalog';
+import { groupsFor } from '../catalog/catalog';
 import { DesignSheet } from '../components/DesignSheet';
 import { CheckIcon } from '../components/icons';
 import { fmt } from '../content/copy';
+import { productList, unitName } from '../order/labels';
 import { createDesignPdf, downloadBlob, pdfFileName } from '../pdf/exportPdf';
 import { useStore } from '../state/store';
 
@@ -14,10 +15,15 @@ export function ConfirmedScreen({ onNewSession }: { onNewSession: () => void }) 
   if (!snap || !order) return null;
 
   const changes = snap.previousSelections
-    ? PRODUCTS[snap.product].garments.flatMap((garment) =>
-        groupsFor(garment)
-          .filter((g) => snap.previousSelections![garment][g.id] !== snap.selections[garment][g.id])
-          .map((g) => ({ group: g.id, before: snap.previousSelections![garment][g.id], after: snap.selections[garment][g.id] })),
+    ? snap.units.flatMap((unit) =>
+        groupsFor(unit.garment, snap.selections[unit.id])
+          .filter((g) => snap.previousSelections![unit.id]?.[g.id] !== snap.selections[unit.id]?.[g.id])
+          .map((g) => ({
+            key: `${unit.id}-${g.id}`,
+            name: snap.units.filter((u) => u.garment === unit.garment).length > 1 ? `${unitName(t, unit, snap.units)} · ${t.groups[g.id].name}` : t.groups[g.id].name,
+            before: snap.previousSelections![unit.id]?.[g.id],
+            after: snap.selections[unit.id]?.[g.id],
+          })),
       )
     : [];
 
@@ -74,6 +80,10 @@ export function ConfirmedScreen({ onNewSession }: { onNewSession: () => void }) 
                 <dt>{t.confirmed.phoneLabel}</dt>
                 <dd>{order.phone}</dd>
               </div>
+              <div>
+                <dt>{t.confirmed.productsLabel}</dt>
+                <dd>{productList(t, snap.quantities)}</dd>
+              </div>
             </dl>
             <p className="confirmed-meta">
               <span className="tag tag-solid">{fmt(t.confirmed.revision, { n: snap.revision })}</span>
@@ -84,8 +94,8 @@ export function ConfirmedScreen({ onNewSession }: { onNewSession: () => void }) 
                 <strong>{fmt(t.confirmed.changesTitle, { n: snap.revision - 1 })}:</strong>
                 <ul>
                   {changes.map((c) => (
-                    <li key={c.group}>
-                      {t.groups[c.group].name}: {c.before ? t.options[c.before].label : t.review.notChosen} → <strong>{c.after ? t.options[c.after].label : t.review.notChosen}</strong>
+                    <li key={c.key}>
+                      {c.name}: {c.before ? t.options[c.before].label : t.review.notChosen} → <strong>{c.after ? t.options[c.after].label : t.review.notChosen}</strong>
                     </li>
                   ))}
                 </ul>
@@ -117,7 +127,7 @@ export function ConfirmedScreen({ onNewSession }: { onNewSession: () => void }) 
           </div>
         </section>
 
-        <DesignSheet product={snap.product} selections={snap.selections} mode="confirmed" previous={snap.previousSelections} />
+        <DesignSheet units={snap.units} selections={snap.selections} mode="confirmed" previous={snap.previousSelections} />
 
         <section className="next-step">
           <h2>{t.confirmed.nextTitle}</h2>

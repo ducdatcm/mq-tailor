@@ -12,10 +12,10 @@ export function Gallery() {
     <main className="gallery">
       <h1>Sketch gallery</h1>
       <p className="gallery-note">Tất cả hình minh họa trong demo. Dùng để duyệt hình, không nằm trong luồng khách hàng.</p>
-      {GROUP_LIST.filter((g) => !g.noSketch).map((g) => (
+      {GROUP_LIST.filter((g) => !g.noSketch && g.garment !== 'shirt').map((g) => (
         <section key={g.id} className="gallery-group">
           <h2>
-            {g.garment === 'jacket' ? 'Áo' : g.garment === 'waistcoat' ? 'Gile' : 'Quần'} · {t.groups[g.id].name}
+            {g.garment === 'jacket' ? 'Áo' : g.garment === 'waistcoat' ? 'Gile' : g.garment === 'shirt' ? 'Sơ mi' : 'Quần'} · {t.groups[g.id].name}
           </h2>
           <div className="gallery-row">
             {g.options.map((o) => (

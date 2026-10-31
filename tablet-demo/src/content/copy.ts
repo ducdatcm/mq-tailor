@@ -1,4 +1,4 @@
-import type { GarmentId, GroupId, OptionId, ProductId } from '../catalog/catalog';
+import type { BaseGarmentId, GroupId, OptionId, ProductId } from '../catalog/catalog';
 
 export interface GroupCopy {
   /** Plain-language name shown as the heading. */
@@ -31,7 +31,8 @@ export interface Copy {
   close: string;
 
   products: Record<ProductId, { name: string; desc: string }>;
-  garments: Record<ProductId, Record<GarmentId, string>>;
+  /** The kinds of piece an order is made of, and the trims. */
+  garments: Record<BaseGarmentId, string>;
   groups: Record<GroupId, GroupCopy>;
   options: Record<OptionId, OptionCopy>;
 
@@ -44,6 +45,11 @@ export interface Copy {
     modePreset: { title: string; desc: string };
     cta: string;
     needProduct: string;
+    quantityLabel: string;
+    quantityMinus: string; // {name}
+    quantityPlus: string; // {name}
+    quantityPieces: string; // {list}
+    quantityEmpty: string;
   };
 
   configure: {
@@ -68,12 +74,11 @@ export interface Copy {
     familyDouble: string;
     unavailable: string;
     changeClosure: string;
-    sameTrousersLabel: string;
-    sameTrousersTitle: string;
-    sameTrousersOn: string;
-    sameTrousersOff: string;
-    sameTrousersHintOn: string;
-    sameTrousersHintOff: string;
+    sameAsTitle: string;
+    sameAsLike: string; // {name}
+    sameAsOwn: string;
+    sameAsHintOn: string; // {name}
+    sameAsHintOff: string; // {name}
     stepDone: string;
     stepTodo: string;
     summaryTitle: string;
@@ -125,6 +130,7 @@ export interface Copy {
     orderLabel: string;
     customerLabel: string;
     phoneLabel: string;
+    productsLabel: string;
     exportPdf: string;
     exporting: string;
     exportFailed: string;
@@ -156,7 +162,7 @@ export interface Copy {
     customer: string;
     phone: string;
     phoneHint: string;
-    summary: string; // {product} {n}
+    summary: string; // {list} {n}
     errorRequired: string;
     errorTooLong: string;
     errorPhone: string;

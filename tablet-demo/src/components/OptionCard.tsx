@@ -1,5 +1,6 @@
 import type { OptionId } from '../catalog/catalog';
 import { fmt } from '../content/copy';
+import { OPTION_SKETCHES } from '../sketches/registry';
 import { Sketch } from '../sketches/Sketch';
 import { useStore } from '../state/store';
 import { CheckIcon, ExpandIcon } from './icons';
@@ -15,8 +16,10 @@ interface Props {
   plain?: boolean;
 }
 
-export function OptionCard({ option, selected, unavailableReason, onSelect, onZoom, plain = false }: Props) {
+export function OptionCard({ option, selected, unavailableReason, onSelect, onZoom, plain: plainProp = false }: Props) {
   const { t } = useStore();
+  // an option with no picture (like "no chest pocket") is a text card
+  const plain = plainProp || !OPTION_SKETCHES[option];
   const copy = t.options[option];
   const disabled = unavailableReason !== null;
 

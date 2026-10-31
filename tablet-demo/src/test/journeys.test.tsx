@@ -1,7 +1,7 @@
 import { act, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, it } from 'vitest';
-import type { OptionId, ProductId } from '../catalog/catalog';
+import { PRODUCT_IDS, type OptionId, type ProductId } from '../catalog/catalog';
 import { App } from '../App';
 import { vi } from '../content/vi';
 import { en } from '../content/en';
@@ -15,6 +15,8 @@ beforeEach(() => {
 const option = (id: OptionId) => document.querySelector<HTMLButtonElement>(`[data-option="${id}"]`)!;
 const product = (id: ProductId) => document.querySelector<HTMLButtonElement>(`[data-product="${id}"]`)!;
 const button = (name: string | RegExp) => screen.getByRole('button', { name });
+/** The tab of one piece of the order ('jacket1', 'trousers2'...). */
+const tab = (id: string) => document.querySelector<HTMLButtonElement>(`[data-unit="${id}"]`)!;
 
 async function begin(user: User, p: ProductId, mode: 'manual' | 'preset' = 'manual') {
   render(<App />);
@@ -47,16 +49,16 @@ describe('A1–A2 products show only their own groups', () => {
   it('A1: a suit has jacket and trousers, configured independently', async () => {
     const user = userEvent.setup();
     await begin(user, 'suit');
-    expect(button(/Áo suit/)).toBeInTheDocument();
-    expect(button(/Quần suit/)).toBeInTheDocument();
+    expect(tab('jacket1')).toBeInTheDocument();
+    expect(tab('trousers1')).toBeInTheDocument();
 
     await pick(user, 'closure.sb1');
-    await user.click(button(/Quần suit/));
+    await user.click(tab('trousers1'));
     expect(option('pleats.flat')).toBeInTheDocument();
     expect(option('closure.sb1')).toBeNull();
     await pick(user, 'pleats.two');
 
-    await user.click(button(/Áo suit/));
+    await user.click(tab('jacket1'));
     expect(option('closure.sb1')).toHaveAttribute('aria-pressed', 'true');
   });
 
@@ -124,7 +126,7 @@ describe('A6 presets', () => {
     const user = userEvent.setup();
     await begin(user, 'suit', 'preset');
     expect(option('closure.sb2')).toHaveAttribute('aria-pressed', 'true');
-    await user.click(button(/Quần suit/));
+    await user.click(tab('trousers1'));
     await user.click(within(screen.getByRole('complementary')).getByRole('button', { name: /Gấu quần/ })); // sidebar jump
     await pick(user, 'hem.turnUp');
     await user.click(within(screen.getByRole('complementary')).getByRole('button', { name: vi.configure.openReview }));
@@ -440,6 +442,96 @@ describe('Start screen', () => {
   it('shows the demo indicator but asks for no personal information', () => {
     render(<App />);
     expect(screen.getByText(vi.demoBadge)).toBeInTheDocument();
-    expect(document.querySelectorAll('input, textarea, select')).toHaveLength(0);
+    // the only fields are the quantity of each product: nothing about the customer is asked here
+    const fields = [...document.querySelectorAll('input, textarea, select')];
+    expect(fields).toHaveLength(PRODUCT_IDS.length);
+    for (const field of fields) expect(field.closest('[data-quantity]')).not.toBeNull();
+  });
+
+  it('has a quantity on every product, starting at none, going up and down', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+    const input = (id: ProductId) => document.querySelector<HTMLInputElement>(`[data-quantity="${id}"] input`)!;
+    const plus = (id: ProductId) => document.querySelector<HTMLButtonElement>(`[data-quantity="${id}"] [data-qty="plus"]`)!;
+    const minus = (id: ProductId) => document.querySelector<HTMLButtonElement>(`[data-quantity="${id}"] [data-qty="minus"]`)!;
+    for (const id of PRODUCT_IDS) expect(input(id).value).toBe('0');
+    expect(button(vi.start.cta)).toBeDisabled();
+    expect(minus('suit').disabled).toBe(true);
+
+    await user.click(plus('suit3Trousers'));
+    await user.click(plus('suit3Trousers'));
+    expect(input('suit3Trousers').value).toBe('2');
+    expect(product('suit3Trousers')).toHaveAttribute('aria-pressed', 'true');
+    expect(button(vi.start.cta)).toBeEnabled();
+    expect(document.querySelector('[data-order-list]')!.textContent).toMatch(/Suit ba mảnh \(1 áo \+ 2 quần\) × 2/);
+
+    // several products in one order, and a product can be taken out again
+    await user.click(product('trousers'));
+    await user.click(plus('trousers'));
+    expect(document.querySelector('[data-order-list]')!.textContent).toMatch(/Quần tây × 2/);
+    await user.click(minus('trousers'));
+    await user.click(minus('trousers'));
+    expect(input('trousers').value).toBe('0');
+    expect(product('trousers')).toHaveAttribute('aria-pressed', 'false');
+  });
+});
+
+describe('an order of several products', () => {
+  const add = (id: ProductId) => document.querySelector<HTMLButtonElement>(`[data-quantity="${id}"] [data-qty="plus"]`)!;
+
+  it('designs every piece; later pieces of a kind can copy the earlier ones', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+    await user.click(add('suit'));
+    await user.click(add('trousers'));
+    await user.click(add('trousers'));
+    await user.click(document.querySelector('[data-mode="preset"]')!);
+    await user.click(button(vi.start.cta));
+
+    // 1 suit + 2 trousers: the suit's trousers are trousers 1, the others are 2 and 3
+    expect([...document.querySelectorAll('[data-unit]')].map((el) => el.getAttribute('data-unit'))).toEqual([
+      'jacket1',
+      'trousers1',
+      'trousers2',
+      'trousers3',
+      'trims',
+    ]);
+
+    await user.click(tab('trousers1'));
+    expect(document.querySelector('[data-same-as]')).toBeNull(); // nothing earlier to copy
+    await pick(user, 'pleats.two');
+
+    await user.click(tab('trousers2'));
+    expect(document.querySelector('[data-same-as="trousers2"]')).not.toBeNull();
+    expect([...document.querySelectorAll('[data-same-as-source]')].map((el) => el.getAttribute('data-same-as-source'))).toEqual(['trousers1', 'none']);
+    expect(option('pleats.two')).toHaveAttribute('aria-pressed', 'false');
+    await user.click(document.querySelector('[data-same-as-source="trousers1"]')!);
+    expect(option('pleats.two')).toHaveAttribute('aria-pressed', 'true');
+
+    await user.click(tab('trousers3'));
+    expect([...document.querySelectorAll('[data-same-as-source]')].map((el) => el.getAttribute('data-same-as-source'))).toEqual(['trousers1', 'trousers2', 'none']);
+    await user.click(document.querySelector('[data-same-as-source="trousers2"]')!);
+    expect(option('pleats.two')).toHaveAttribute('aria-pressed', 'true');
+
+    // choosing on the copying piece ends the copying
+    await pick(user, 'pleats.one');
+    expect(document.querySelector('[data-same-as-source="none"]')).toHaveAttribute('aria-pressed', 'true');
+    await user.click(tab('trousers2'));
+    expect(option('pleats.two')).toHaveAttribute('aria-pressed', 'true');
+  });
+
+  it('the review lists every piece, and the confirmed sheet says what the order holds', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+    await user.click(add('suit'));
+    await user.click(add('trousers'));
+    await user.click(document.querySelector('[data-mode="preset"]')!);
+    await user.click(button(vi.start.cta));
+    await user.click(button(vi.configure.openReview));
+    expect([...document.querySelectorAll('[data-sheet-unit]')].map((el) => el.getAttribute('data-sheet-unit'))).toEqual(['jacket1', 'trousers1', 'trousers2', 'trims']);
+    expect(document.querySelector('[data-order-list]')!.textContent).toMatch(/Suit hai mảnh × 1 · Quần tây × 1/);
+    await user.click(button(vi.review.confirm));
+    await fillAndConfirmOrder(user);
+    expect(screen.getAllByText('Suit hai mảnh × 1 · Quần tây × 1', { exact: false }).length).toBeGreaterThan(0);
   });
 });

@@ -32,7 +32,7 @@ npm run preview      # xem bản build tại http://localhost:4173
 
 ```bash
 npm test             # 92 test (quy tắc, reducer, hành trình người dùng A1–A12 và A14, đơn hàng, dòng gửi bảng tính, tệp PDF, suit ba mảnh, gile, tay áo và nguyên phụ liệu)
-npm run verify       # chạy trình duyệt thật: 6 sản phẩm × 3 kích thước, layout A13, bàn phím A14, chụp ảnh
+npm run verify       # chạy trình duyệt thật: 6 sản phẩm và đơn nhiều sản phẩm × 3 kích thước, layout A13, bàn phím A14, chụp ảnh
 ```
 
 `npm run verify` cần dev server đang chạy (hoặc đặt `DEMO_URL` trỏ tới bản preview) và một trình duyệt Chrome/Edge cài sẵn trên máy (đặt `BROWSER_PATH` nếu ở vị trí khác). Ảnh chụp lưu ở `docs/screenshots/`, kết quả ở `docs/verification-results.json`. Chi tiết đối chiếu A1–A14 và việc cần nhà may duyệt: [`docs/HANDOVER.md`](docs/HANDOVER.md).

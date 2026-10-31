@@ -92,7 +92,7 @@ async function journey(page, vp, product) {
   await freshStart(page);
   const tag = `${vp} ${product}`;
   // Multi-garment products start from the house suggestion; single-garment ones are chosen by hand.
-  const preset = product === 'suit' || product === 'suit3Trousers' || product === 'suit3Waistcoat';
+  const preset = product === 'suit' || product === 'suit3Trousers' || product === 'suit3Waistcoat' || product === 'shirt';
   if (product === 'suit') {
     await checkLayout(page, `${tag} start`);
     await shot(page, vp, '01-start');
@@ -103,6 +103,13 @@ async function journey(page, vp, product) {
     record(`header shows the logo and no tagline ${vp}`, brand.logo && !brand.oldText, JSON.stringify(brand));
   }
   await page.click(`[data-product="${product}"]`);
+  // two of the three-piece suit and of the shirt, to see the quantity reach the order
+  const quantity = product === 'suit3Trousers' || product === 'shirt' ? 2 : 1;
+  if (quantity === 2) await page.click(`[data-quantity="${product}"] [data-qty="plus"]`);
+  if (product === 'suit3Trousers') {
+    const list = await page.textContent('[data-order-list]');
+    record(`the start screen says what the order holds ${vp}`, /Suit ba mảnh \(1 áo \+ 2 quần\) × 2/.test(list ?? ''), list ?? '');
+  }
   if (preset) await page.click('[data-mode="preset"]');
   await page.getByRole('button', { name: 'Bắt đầu tư vấn' }).click();
   await checkLayout(page, `${tag} configure`);
@@ -131,18 +138,34 @@ async function journey(page, vp, product) {
   }
   if (product === 'suit3Trousers') {
     // the second trousers can copy the first
-    await page.locator('.garment-tab').nth(2).click();
-    await page.click('[data-same-trousers="on"]');
+    await page.click('[data-unit="trousers2"]');
+    await page.click('[data-same-as-source="trousers1"]');
     await checkLayout(page, `${tag} configure trousers 2`);
     if (vp === 'tablet-1280x800') await shot(page, vp, '03b-configure-trousers2-same');
     const same = await page.evaluate(() => JSON.parse(sessionStorage.getItem('mq-tablet-demo/v1')).state);
-    record(`second trousers copy the first ${vp}`, same.sameTrousers === true && JSON.stringify(same.selections.trousers) === JSON.stringify(same.selections.trousers2), '');
+    record(`second trousers copy the first ${vp}`, same.sameAs.trousers2 === 'trousers1' && JSON.stringify(same.selections.trousers1) === JSON.stringify(same.selections.trousers2), '');
   }
   if (product === 'waistcoat' || product === 'suit3Waistcoat') {
     if (product === 'suit3Waistcoat') await page.locator('.garment-tab').nth(1).click();
     await checkLayout(page, `${tag} configure waistcoat`);
     if (vp === 'tablet-1280x800') await shot(page, vp, '03c-configure-waistcoat');
     record(`waistcoat shows four options ${vp} ${product}`, (await page.locator('.option').count()) === 4, '');
+  }
+  if (product === 'shirt') {
+    // short sleeves have no cuffs: the step goes away and comes back
+    await page.locator('nav ol button').first().click();
+    const steps = () => page.locator('nav ol li').count();
+    const before = await steps();
+    await page.click('[data-option="sleeve.short"]');
+    const short = await steps();
+    const shortSummary = await page.evaluate(() => document.querySelector('.summary-panel')?.textContent ?? '');
+    await page.click('[data-option="sleeve.long"]');
+    const back = await steps();
+    record(`shirt: short sleeves drop the cuff step ${vp}`, before === 6 && short === 5 && back === 6 && !/Cổ tay áo/.test(shortSummary), JSON.stringify({ before, short, back }));
+    if (vp === 'tablet-1280x800') await shot(page, vp, '03d-configure-shirt');
+    await page.locator('nav ol button').nth(1).click();
+    await checkLayout(page, `${tag} configure collar`);
+    if (vp === 'tablet-1280x800') await shot(page, vp, '03e-configure-collar');
   }
   if (!preset) {
     // the trims (buttons and buttonholes) are chosen by hand too
@@ -171,8 +194,13 @@ async function journey(page, vp, product) {
   // the order row reaches the (mock) spreadsheet, and the design sheet exports as a PDF
   await page.waitForSelector('[data-sheet-status="sent"]', { timeout: 5000 }).catch(() => {});
   const status = await page.getAttribute('[data-sheet-status]', 'data-sheet-status');
-  const row = mock.rows.find((r) => r.orderId === 'MQ-0001' && r.product.length > 0);
+  const row = mock.rows.filter((r) => r.orderId === 'MQ-0001' && r.rows?.length > 0).at(-1);
   record(`order row sent ${tag}`, status === 'sent' && Boolean(row) && row.customerName === 'Nguyễn Văn An', `status=${status}`);
+  if (quantity === 2) {
+    const lines = (row?.rows ?? []).map((r) => `${r.item} × ${r.quantity}`).join(', ');
+    const expected = product === 'shirt' ? 'Sơ mi × 2' : 'Áo × 2, Quần × 4'; // the two three-piece suits are made alike
+    record(`spreadsheet lines carry the quantity ${tag}`, lines === expected, lines);
+  }
   if (product === 'suit' || product === 'suit3Trousers') {
     const [dl] = await Promise.all([page.waitForEvent('download', { timeout: 20000 }), page.click('[data-export-pdf]')]);
     const stream = await dl.createReadStream();
@@ -196,6 +224,57 @@ async function journey(page, vp, product) {
   }
 }
 
+/** An order of several products: 1 suit and 2 trousers, where trousers 2 and 3 are "same as trousers 1". */
+async function mixedOrderJourney(page, vp) {
+  await freshStart(page);
+  const tag = `${vp} mixed order`;
+  await page.click('[data-product="suit"]');
+  await page.click('[data-product="trousers"]');
+  await page.click('[data-quantity="trousers"] [data-qty="plus"]');
+  const list = (await page.textContent('[data-order-list]')) ?? '';
+  record(`start screen: several products with their own quantities ${vp}`, /Suit hai mảnh × 1/.test(list) && /Quần tây × 2/.test(list), list);
+  if (vp === 'tablet-1280x800') await shot(page, vp, '01b-start-order');
+  await checkLayout(page, `${tag} start`);
+  await page.click('[data-mode="preset"]');
+  await page.getByRole('button', { name: 'Bắt đầu tư vấn' }).click();
+  const units = await page.locator('[data-unit]').evaluateAll((els) => els.map((e) => e.getAttribute('data-unit')));
+  record(`every piece is designed: jacket, trousers 1 to 3, trims ${vp}`, units.join(',') === 'jacket1,trousers1,trousers2,trousers3,trims', units.join(','));
+  await checkLayout(page, `${tag} configure`);
+
+  await page.click('[data-unit="trousers1"]');
+  await page.click('[data-option="pleats.two"]');
+  await page.click('[data-unit="trousers2"]');
+  const offered = await page.locator('[data-same-as-source]').evaluateAll((els) => els.map((e) => e.getAttribute('data-same-as-source')));
+  record(`trousers 2 can copy trousers 1 ${vp}`, offered.join(',') === 'trousers1,none', offered.join(','));
+  await page.click('[data-same-as-source="trousers1"]');
+  const copied = await page.getAttribute('[data-option="pleats.two"]', 'aria-pressed');
+  record(`"same as trousers 1" copies the choices ${vp}`, copied === 'true', copied ?? '');
+  if (vp === 'tablet-1280x800') await shot(page, vp, '03f-same-as');
+  await checkLayout(page, `${tag} configure trousers 2`);
+  await page.click('[data-unit="trousers3"]');
+  const offered3 = await page.locator('[data-same-as-source]').evaluateAll((els) => els.map((e) => e.getAttribute('data-same-as-source')));
+  record(`trousers 3 can copy trousers 1 or 2 ${vp}`, offered3.join(',') === 'trousers1,trousers2,none', offered3.join(','));
+  await page.click('[data-same-as-source="trousers2"]');
+
+  const toggle = page.locator('.summary-toggle');
+  if (await toggle.isVisible()) await toggle.click();
+  await page.locator('.summary-panel').getByRole('button', { name: 'Xem lại thiết kế' }).click();
+  if (vp === 'tablet-1280x800') await shot(page, vp, '06c-review-order');
+  await checkLayout(page, `${tag} review`);
+  await page.getByRole('button', { name: 'Xác nhận thiết kế' }).click();
+  await confirmOrder(page, tag, vp);
+  await page.waitForSelector('[data-sheet-status="sent"]', { timeout: 5000 }).catch(() => {});
+  const row = mock.rows.filter((r) => r.orderId === 'MQ-0001' && r.rows?.length > 0).at(-1);
+  const lines = (row?.rows ?? []).map((r) => `${r.item} × ${r.quantity}`).join(', ');
+  record(`spreadsheet: jacket once, the three identical trousers as one line of 3 ${vp}`, lines === 'Áo × 1, Quần × 3', lines);
+  const [dl] = await Promise.all([page.waitForEvent('download', { timeout: 20000 }), page.click('[data-export-pdf]')]);
+  const stream = await dl.createReadStream();
+  const chunks = [];
+  for await (const c of stream) chunks.push(c);
+  const pdf = Buffer.concat(chunks);
+  record(`pdf export of the order ${vp}`, pdf.subarray(0, 5).toString() === '%PDF-' && pdf.length > 50000, `${pdf.length} bytes`);
+}
+
 /** A14: everything below is done with the keyboard only. */
 async function keyboardPass(page, vp) {
   await freshStart(page);
@@ -215,17 +294,14 @@ async function keyboardPass(page, vp) {
   };
 
   // Tab from the page start to the blazer card, using only the keyboard to select.
-  for (let i = 0; i < 6; i += 1) {
+  for (let i = 0; i < 14; i += 1) {
     await press('Tab');
     if (await page.evaluate(() => document.activeElement?.matches('[data-product="blazer"]'))) break;
   }
   await page.keyboard.press('Enter');
-  await press('Tab'); // trousers card
-  await press('Tab'); // waistcoat card
-  await press('Tab'); // manual mode
-  await press('Tab'); // preset mode
+  await page.locator('[data-mode="preset"]').focus(); // the mode cards come after the products
   await page.keyboard.press('Space');
-  await press('Tab'); // start button
+  await press('Tab'); // the start button, next in the footer
   await page.keyboard.press('Enter');
   const heading = await page.getByRole('heading', { level: 1 }).textContent();
   record(`keyboard ${vp} start -> configure`, heading?.includes('Kiểu cài áo'), heading ?? '');
@@ -277,6 +353,7 @@ for (const [vp, size] of Object.entries(VIEWPORTS)) {
   page.on('pageerror', (e) => errors.push(e.message));
   page.on('console', (m) => m.type() === 'error' && errors.push(m.text()));
   for (const product of ['suit', 'suit3Trousers', 'suit3Waistcoat', 'blazer', 'trousers', 'waistcoat']) await journey(page, vp, product);
+  await mixedOrderJourney(page, vp);
   await keyboardPass(page, vp);
   record(`no console errors ${vp}`, errors.length === 0, errors.join(' | '));
   await context.close();

@@ -1,5 +1,5 @@
 import { createRoot } from 'react-dom/client';
-import { PRODUCTS, groupsFor, type OptionId } from '../catalog/catalog';
+import { groupsFor, type OptionId } from '../catalog/catalog';
 import type { Copy } from '../content/copy';
 import { LOGO } from '../brand/logo';
 import { safeFileName } from '../order/format';
@@ -101,9 +101,9 @@ const canvasToJpeg = (canvas: HTMLCanvasElement): Promise<Uint8Array> =>
 /** Draws the design sheet and returns it as a one-page PDF. */
 export async function createDesignPdf(t: Copy, snap: Snapshot, order: OrderRecord, lang = 'vi'): Promise<Blob> {
   const chosen: OptionId[] = [];
-  PRODUCTS[snap.product].garments.forEach((garment) =>
-    groupsFor(garment).forEach((g) => {
-      const o = snap.selections[garment][g.id];
+  snap.units.forEach((unit) =>
+    groupsFor(unit.garment, snap.selections[unit.id]).forEach((g) => {
+      const o = snap.selections[unit.id]?.[g.id];
       if (o && !chosen.includes(o)) chosen.push(o);
     }),
   );

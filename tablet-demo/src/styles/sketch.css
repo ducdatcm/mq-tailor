@@ -118,3 +118,10 @@
   fill: var(--sk-ink);
   fill-rule: evenodd;
 }
+/* top-stitching on shirts: a fine dashed line */
+.sk .stitch {
+  stroke: var(--sk-ink);
+  stroke-width: calc(1.2px * var(--lw));
+  stroke-linecap: round;
+  stroke-dasharray: calc(4.5px * var(--lw)) calc(3.5px * var(--lw));
+}
