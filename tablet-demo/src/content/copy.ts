@@ -30,7 +30,8 @@ export interface Copy {
   newSession: string;
   close: string;
 
-  products: Record<ProductId, { name: string; desc: string }>;
+  /** `name` is used in the order; `title` is the heading of the product card on the start screen. */
+  products: Record<ProductId, { name: string; title: string }>;
   /** The kinds of piece an order is made of, and the trims. */
   garments: Record<BaseGarmentId, string>;
   groups: Record<GroupId, GroupCopy>;

@@ -12,13 +12,13 @@ export const vi: Copy = {
   close: 'Đóng',
 
   products: {
-    suit: { name: 'Suit hai mảnh', desc: 'Một áo và một quần, cấu hình riêng từng món.' },
-    suit3Trousers: { name: 'Suit ba mảnh (1 áo + 2 quần)', desc: 'Một áo và hai quần, cấu hình riêng từng món.' },
-    suit3Waistcoat: { name: 'Suit ba mảnh (1 áo + 1 quần + 1 gile)', desc: 'Một áo, một quần và một gile, cấu hình riêng từng món.' },
-    blazer: { name: 'Blazer', desc: 'Áo khoác dáng suit, mặc riêng với quần khác.' },
-    trousers: { name: 'Quần tây', desc: 'Quần may riêng, chọn từng chi tiết.' },
-    waistcoat: { name: 'Gile', desc: 'Gile (waistcoat) may riêng, mặc kèm hoặc không kèm suit.' },
-    shirt: { name: 'Sơ mi', desc: 'Sơ mi may riêng: tay áo, cổ, túi ngực, nẹp, cổ tay và gấu.' },
+    suit: { name: 'Suit hai mảnh', title: 'Suit 2 mảnh' },
+    suit3Trousers: { name: 'Suit ba mảnh (1 áo + 2 quần)', title: 'Suit 3 mảnh' },
+    suit3Waistcoat: { name: 'Suit ba mảnh (1 áo + 1 quần + 1 gile)', title: 'Suit 3 mảnh' },
+    blazer: { name: 'Blazer', title: 'Blazer / Jacket' },
+    trousers: { name: 'Quần tây', title: 'Quần' },
+    waistcoat: { name: 'Gile', title: 'Gile' },
+    shirt: { name: 'Sơ mi', title: 'Sơ mi' },
   },
 
 

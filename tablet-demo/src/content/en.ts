@@ -12,13 +12,13 @@ export const en: Copy = {
   close: 'Close',
 
   products: {
-    suit: { name: 'Two-piece suit', desc: 'One jacket and one pair of trousers, configured separately.' },
-    suit3Trousers: { name: 'Three-piece suit (jacket + 2 trousers)', desc: 'One jacket and two pairs of trousers, configured separately.' },
-    suit3Waistcoat: { name: 'Three-piece suit (jacket + trousers + waistcoat)', desc: 'One jacket, one pair of trousers and a waistcoat, configured separately.' },
-    blazer: { name: 'Blazer', desc: 'A tailored jacket, worn on its own with other trousers.' },
-    trousers: { name: 'Trousers', desc: 'Made-to-order trousers, detail by detail.' },
-    waistcoat: { name: 'Waistcoat', desc: 'A made-to-order waistcoat, worn with or without a suit.' },
-    shirt: { name: 'Shirt', desc: 'A made-to-order shirt: sleeves, collar, chest pocket, placket, cuffs and hem.' },
+    suit: { name: 'Two-piece suit', title: 'Two-piece suit' },
+    suit3Trousers: { name: 'Three-piece suit (jacket + 2 trousers)', title: 'Three-piece suit' },
+    suit3Waistcoat: { name: 'Three-piece suit (jacket + trousers + waistcoat)', title: 'Three-piece suit' },
+    blazer: { name: 'Blazer', title: 'Blazer / Jacket' },
+    trousers: { name: 'Trousers', title: 'Trousers' },
+    waistcoat: { name: 'Waistcoat', title: 'Waistcoat' },
+    shirt: { name: 'Shirt', title: 'Shirt' },
   },
 
 

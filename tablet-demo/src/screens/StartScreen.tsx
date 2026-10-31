@@ -1,10 +1,18 @@
-import { PRODUCT_IDS, totalQuantity } from '../catalog/catalog';
+import { PRODUCT_IDS, PRODUCTS, totalQuantity, type PieceKind, type ProductId } from '../catalog/catalog';
 import { CheckIcon } from '../components/icons';
 import { QuantityStepper } from '../components/QuantityStepper';
 import { fmt } from '../content/copy';
 import { productList } from '../order/labels';
 import { Sketch } from '../sketches/Sketch';
 import { useStore } from '../state/store';
+
+/** What one of the product is made of, e.g. 1 jacket and 2 trousers. */
+function pieceCounts(id: ProductId) {
+  const counts = new Map<PieceKind, number>();
+  for (const garment of PRODUCTS[id].pieces) counts.set(garment, (counts.get(garment) ?? 0) + 1);
+  // always jacket, trousers, waistcoat, whatever order the pieces are made in
+  return (['jacket', 'trousers', 'waistcoat', 'shirt'] as const).filter((g) => counts.has(g)).map((garment) => ({ garment, count: counts.get(garment)! }));
+}
 
 export function StartScreen() {
   const { state, dispatch, t } = useStore();
@@ -42,7 +50,16 @@ export function StartScreen() {
                     <span className="product-sketch">
                       <Sketch product={id} />
                     </span>
-                    <span className="product-name">{t.products[id].name}</span>
+                    <span className="product-name">{t.products[id].title}</span>
+                    {PRODUCTS[id].pieces.length > 1 ? (
+                      <ul className="product-pieces">
+                        {pieceCounts(id).map(({ garment, count }) => (
+                          <li key={garment}>
+                            {count} x {t.garments[garment]}
+                          </li>
+                        ))}
+                      </ul>
+                    ) : null}
                     {selected ? (
                       <span className="option-badge">
                         <CheckIcon size={18} />
