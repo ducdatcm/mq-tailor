@@ -43,7 +43,6 @@ export function StartScreen() {
                       <Sketch product={id} />
                     </span>
                     <span className="product-name">{t.products[id].name}</span>
-                    <span className="product-desc">{t.products[id].desc}</span>
                     {selected ? (
                       <span className="option-badge">
                         <CheckIcon size={18} />

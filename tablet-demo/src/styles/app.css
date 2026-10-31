@@ -338,19 +338,13 @@ button {
 .product-pick:focus-visible {
   outline-offset: -4px;
 }
-/* one slim row under the description: a small label on the left, a compact stepper on the right */
+/* one slim row under the name: just the compact stepper, centred */
 .product-card .qty {
   flex-wrap: nowrap;
-  justify-content: space-between;
-  gap: 8px;
+  justify-content: center;
   padding: 6px 12px;
   border-top: 1px solid var(--line);
   background: var(--surface-2);
-}
-.product-card .qty-label {
-  font-size: 0.8rem;
-  font-weight: 500;
-  color: var(--muted);
 }
 .product-card .qty-controls {
   gap: 6px;
@@ -377,15 +371,10 @@ button {
   margin: 0 auto;
 }
 .product-name {
-  padding: 12px 16px 0;
+  padding: 12px 16px 14px;
   font-family: var(--font-serif);
   font-size: 1.2rem;
   font-weight: 500;
-}
-.product-desc {
-  padding: 2px 16px 14px;
-  font-size: 0.92rem;
-  color: var(--muted);
 }
 .product-card.is-selected,
 .mode-card.is-selected,
@@ -1487,9 +1476,6 @@ svg {
   align-items: center;
   flex-wrap: wrap;
   gap: 12px 20px;
-}
-.qty-label {
-  font-weight: 600;
 }
 .qty-controls {
   display: inline-flex;

@@ -11,9 +11,6 @@ export function QuantityStepper({ product }: { product: ProductId }) {
 
   return (
     <div className="qty" role="group" aria-label={`${t.start.quantityLabel}: ${name}`} data-quantity={product}>
-      <span className="qty-label" aria-hidden="true">
-        {t.start.quantityLabel}
-      </span>
       <div className="qty-controls">
         <button
           type="button"
