@@ -535,3 +535,13 @@ describe('an order of several products', () => {
     expect(screen.getAllByText('Suit hai mảnh × 1 · Quần tây × 1', { exact: false }).length).toBeGreaterThan(0);
   });
 });
+
+describe('staff setup page', () => {
+  it('hides the secret code as it is typed, so nobody can read it off the screen', () => {
+    window.matchMedia ??= ((q: string) => ({ matches: false, media: q, addEventListener() {}, removeEventListener() {} })) as unknown as typeof window.matchMedia;
+    window.location.hash = '#/setup';
+    render(<App />);
+    const field = document.querySelector<HTMLInputElement>('#setup-token')!;
+    expect(field.type).toBe('password');
+  });
+});

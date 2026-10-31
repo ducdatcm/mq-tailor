@@ -131,8 +131,8 @@ export function SetupScreen() {
           <input
             id="setup-token"
             className="field-input"
-            type="text"
-            autoComplete="off"
+            type="password"
+            autoComplete="new-password"
             autoCapitalize="off"
             spellCheck={false}
             value={token}

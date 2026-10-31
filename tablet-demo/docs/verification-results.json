@@ -47,7 +47,7 @@
   {
     "area": "pdf export tablet-1024x768 suit",
     "ok": true,
-    "detail": "phieu-thiet-ke_MQ-0001_20261031.pdf 255324 bytes"
+    "detail": "phieu-thiet-ke_MQ-0001_20261031.pdf 255325 bytes"
   },
   {
     "area": "layout tablet-1024x768 suit order",
@@ -107,7 +107,7 @@
   {
     "area": "pdf export tablet-1024x768 suit3Trousers",
     "ok": true,
-    "detail": "phieu-thiet-ke_MQ-0001_20261031.pdf 258512 bytes"
+    "detail": "phieu-thiet-ke_MQ-0001_20261031.pdf 258382 bytes"
   },
   {
     "area": "layout tablet-1024x768 suit3Waistcoat configure",
@@ -307,7 +307,7 @@
   {
     "area": "pdf export of the order tablet-1024x768",
     "ok": true,
-    "detail": "258471 bytes"
+    "detail": "258596 bytes"
   },
   {
     "area": "keyboard tablet-1024x768 start -> configure",
@@ -382,7 +382,7 @@
   {
     "area": "pdf export tablet-1280x800 suit",
     "ok": true,
-    "detail": "phieu-thiet-ke_MQ-0001_20261031.pdf 255324 bytes"
+    "detail": "phieu-thiet-ke_MQ-0001_20261031.pdf 255325 bytes"
   },
   {
     "area": "layout tablet-1280x800 suit order",
@@ -442,7 +442,7 @@
   {
     "area": "pdf export tablet-1280x800 suit3Trousers",
     "ok": true,
-    "detail": "phieu-thiet-ke_MQ-0001_20261031.pdf 258512 bytes"
+    "detail": "phieu-thiet-ke_MQ-0001_20261031.pdf 258382 bytes"
   },
   {
     "area": "layout tablet-1280x800 suit3Waistcoat configure",
@@ -642,7 +642,7 @@
   {
     "area": "pdf export of the order tablet-1280x800",
     "ok": true,
-    "detail": "258471 bytes"
+    "detail": "258596 bytes"
   },
   {
     "area": "keyboard tablet-1280x800 start -> configure",
@@ -717,7 +717,7 @@
   {
     "area": "pdf export portrait-768x1024 suit",
     "ok": true,
-    "detail": "phieu-thiet-ke_MQ-0001_20261031.pdf 255324 bytes"
+    "detail": "phieu-thiet-ke_MQ-0001_20261031.pdf 255325 bytes"
   },
   {
     "area": "layout portrait-768x1024 suit order",
@@ -777,7 +777,7 @@
   {
     "area": "pdf export portrait-768x1024 suit3Trousers",
     "ok": true,
-    "detail": "phieu-thiet-ke_MQ-0001_20261031.pdf 258512 bytes"
+    "detail": "phieu-thiet-ke_MQ-0001_20261031.pdf 258382 bytes"
   },
   {
     "area": "layout portrait-768x1024 suit3Waistcoat configure",
@@ -977,7 +977,7 @@
   {
     "area": "pdf export of the order portrait-768x1024",
     "ok": true,
-    "detail": "258522 bytes"
+    "detail": "258596 bytes"
   },
   {
     "area": "keyboard portrait-768x1024 start -> configure",
