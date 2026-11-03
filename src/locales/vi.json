@@ -98,11 +98,16 @@
     "form_message": "Lời Nhắn",
     "form_message_placeholder": "Bạn muốn may gì, và dự kiến cần vào khi nào?",
     "form_submit": "Gửi Liên Hệ",
+    "form_consent_before": "Tôi đồng ý để Nhà May Minh Quang sử dụng họ tên, số điện thoại, email và nội dung tin nhắn của tôi để phản hồi yêu cầu này, theo",
+    "form_consent_link": "Chính Sách Bảo Mật",
+    "form_consent_after": ".",
+    "form_consent_error": "Vui lòng tích vào ô đồng ý về cách chúng tôi sử dụng thông tin của bạn để chúng tôi có thể phản hồi.",
     "form_success": "Cảm ơn bạn — chúng tôi đã nhận được lời nhắn. Chúng tôi sẽ phản hồi sớm nhất có thể.",
     "form_error": "Đã có lỗi khi gửi lời nhắn. Vui lòng thử lại, hoặc liên hệ trực tiếp qua Zalo hoặc điện thoại."
   },
   "footer": {
     "rights": "Đã đăng ký bản quyền.",
+    "privacy": "Chính Sách Bảo Mật",
     "language": "Ngôn Ngữ"
   },
   "placeholder": {

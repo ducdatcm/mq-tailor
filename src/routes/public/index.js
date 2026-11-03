@@ -11,6 +11,7 @@ const peopleController = require('../../controllers/public/peopleController');
 const clothController = require('../../controllers/public/clothController');
 const journalController = require('../../controllers/public/journalController');
 const visitController = require('../../controllers/public/visitController');
+const privacyController = require('../../controllers/public/privacyController');
 
 router.use(localeMiddleware);
 
@@ -25,5 +26,6 @@ router.get('/journal', journalController.list);
 router.get('/journal/:slug', journalController.detail);
 router.get('/visit', visitController.show);
 router.post('/visit/enquiry', visitController.submitEnquiry);
+router.get('/privacy', privacyController.show);
 
 module.exports = router;

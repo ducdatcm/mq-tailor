@@ -61,6 +61,9 @@
     <% if (formError) { %>
       <div class="form-notice form-notice--error"><%= t('visit.form_error') %></div>
     <% } %>
+    <% if (consentError) { %>
+      <div class="form-notice form-notice--error"><%= t('visit.form_consent_error') %></div>
+    <% } %>
 
     <form method="POST" action="/<%= lang %>/visit/enquiry" data-enquiry-form>
       <div class="form-field">
@@ -83,6 +86,10 @@
       <div class="hp-field" aria-hidden="true">
         <label for="website">Website</label>
         <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+      </div>
+      <div class="form-consent">
+        <input type="checkbox" id="consent" name="consent" value="1" required>
+        <label for="consent"><%= t('visit.form_consent_before') %> <a href="/<%= lang %>/privacy" target="_blank" rel="noopener"><%= t('visit.form_consent_link') %></a><%= t('visit.form_consent_after') %></label>
       </div>
       <button type="submit" class="btn"><%= t('visit.form_submit') %></button>
     </form>

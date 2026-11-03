@@ -98,11 +98,16 @@
     "form_message": "Message",
     "form_message_placeholder": "What are you looking to have made, and for when?",
     "form_submit": "Send Enquiry",
+    "form_consent_before": "I agree that Minh Quang Tailoring House may use my name, phone number, email and message to reply to this enquiry, as described in the",
+    "form_consent_link": "Privacy Policy",
+    "form_consent_after": ".",
+    "form_consent_error": "Please tick the box to agree to how we use your details, so we can reply to you.",
     "form_success": "Thank you — your message has reached us. We'll be in touch shortly.",
     "form_error": "Something went wrong sending your message. Please try again, or reach us directly on Zalo or by phone."
   },
   "footer": {
     "rights": "All rights reserved.",
+    "privacy": "Privacy Policy",
     "language": "Language"
   },
   "placeholder": {

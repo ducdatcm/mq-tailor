@@ -1,0 +1,163 @@
+<%
+  var vi = lang === 'vi';
+
+  var copy = vi ? {
+    updated: 'Cập nhật lần cuối',
+    lede: 'Trang này giải thích Nhà May Minh Quang thu thập dữ liệu cá nhân nào qua website này, vì sao, và bạn có những quyền gì.',
+    contactHeading: 'Liên hệ về dữ liệu cá nhân',
+    address: 'Địa chỉ',
+    email: 'Email',
+    phone: 'Điện thoại',
+    sections: [
+      {
+        h: 'Chúng tôi là ai',
+        p: ['Website này do Nhà May Minh Quang, một nhà may gia đình tại Hà Nội, vận hành. Chính sách này chỉ áp dụng cho website. Thông tin bạn trực tiếp cung cấp cho chúng tôi tại cửa hiệu được xử lý riêng.'],
+        contact: true
+      },
+      {
+        h: 'Chúng tôi thu thập gì',
+        p: ['Chỉ những gì bạn tự nhập vào biểu mẫu liên hệ ở trang Ghé Thăm:'],
+        ul: ['Họ tên của bạn;', 'Số điện thoại và/hoặc email (ít nhất một trong hai, để chúng tôi phản hồi);', 'Nội dung tin nhắn bạn viết.'],
+        p2: ['Chúng tôi không yêu cầu thông tin nhạy cảm (như số giấy tờ tùy thân hay tài khoản ngân hàng). Vui lòng không ghi những thông tin này vào tin nhắn.',
+             'Chúng tôi cũng lưu thời điểm bạn đồng ý và phiên bản chính sách bạn đã đồng ý, để có thể chứng minh sự đồng ý khi cần.',
+             'Đơn vị cung cấp dịch vụ lưu trữ website lưu nhật ký máy chủ thông thường (như địa chỉ IP và các trang được truy cập) phục vụ bảo mật và vận hành.']
+      },
+      {
+        h: 'Vì sao chúng tôi sử dụng',
+        p: ['Chúng tôi dùng thông tin của bạn để phản hồi yêu cầu và sắp xếp lịch ghé thăm hoặc thử đồ. Cơ sở xử lý là sự đồng ý của bạn, thể hiện bằng việc tích vào ô đồng ý trên biểu mẫu. Chúng tôi không dùng thông tin của bạn để tiếp thị, không bán và không chuyển cho bên khác sử dụng cho mục đích riêng của họ.']
+      },
+      {
+        h: 'Ai nhận được thông tin',
+        p: ['Chỉ nhân viên phụ trách trả lời yêu cầu, và các đơn vị cung cấp dịch vụ giúp vận hành website:'],
+        ul: ['Hostinger: lưu trữ website và cơ sở dữ liệu;',
+             'Dịch vụ email: gửi cho chúng tôi thông báo khi bạn gửi biểu mẫu (nếu được bật);',
+             'Cloudflare: lưu trữ và phân phối hình ảnh trên website;',
+             'Google: cung cấp phông chữ và bản đồ ở trang Ghé Thăm. Khi các nội dung này tải, Google có thể nhận địa chỉ IP và thông tin trình duyệt của bạn.'],
+        p2: ['Một số đơn vị này có máy chủ ở ngoài Việt Nam, nên thông tin của bạn có thể được xử lý ở nước ngoài. Chúng tôi chỉ dùng họ để vận hành website.']
+      },
+      {
+        h: 'Chúng tôi lưu trong bao lâu',
+        p: ['Chúng tôi giữ yêu cầu của bạn cho đến khi được giải quyết xong và tối đa 24 tháng sau lần liên hệ cuối cùng, sau đó xóa. Bạn có thể yêu cầu xóa sớm hơn.']
+      },
+      {
+        h: 'Cookie và theo dõi',
+        p: ['Website này không đặt cookie cho khách truy cập và không dùng công cụ phân tích hay theo dõi quảng cáo. Chỉ nhân viên đăng nhập để quản lý website mới nhận một cookie giữ phiên đăng nhập. Bản đồ và phông chữ được tải từ Google, và Google có thể đặt cookie riêng hoặc ghi nhận địa chỉ IP khi tải. Nếu sau này thêm công cụ phân tích hoặc tương tự, chúng tôi sẽ xin phép bạn trước và cập nhật chính sách này.']
+      },
+      {
+        h: 'Quyền của bạn',
+        p: ['Theo Luật Bảo vệ dữ liệu cá nhân (Luật số 91/2025/QH15), bạn có quyền:'],
+        ul: ['được biết dữ liệu của bạn được sử dụng như thế nào;', 'xem dữ liệu chúng tôi đang giữ về bạn;', 'chỉnh sửa dữ liệu đó;', 'yêu cầu xóa;', 'hạn chế hoặc phản đối việc chúng tôi sử dụng;', 'rút lại sự đồng ý bất cứ lúc nào;', 'khiếu nại.'],
+        p2: ['Để thực hiện các quyền này, hãy liên hệ chúng tôi theo thông tin ở trên. Chúng tôi sẽ xác nhận đã nhận yêu cầu trong 2 ngày làm việc và cố gắng phản hồi trong: 10 ngày với yêu cầu xem hoặc chỉnh sửa; 15 ngày với yêu cầu rút đồng ý, hạn chế hoặc phản đối; 20 ngày với yêu cầu xóa.',
+             'Việc rút lại sự đồng ý không ảnh hưởng đến những gì chúng tôi đã xử lý trước đó.']
+      },
+      {
+        h: 'Trẻ em',
+        p: ['Website này dành cho người lớn. Nếu bạn là trẻ em, hãy nhờ cha mẹ hoặc người giám hộ gửi yêu cầu giúp bạn.']
+      },
+      {
+        h: 'Bảo mật',
+        p: ['Chúng tôi bảo vệ thông tin của bạn bằng kết nối mã hóa (HTTPS), quyền truy cập có mật khẩu chỉ dành cho nhân viên, và cập nhật bảo mật thường xuyên. Không hệ thống nào an toàn tuyệt đối. Nếu xảy ra sự cố ảnh hưởng đến dữ liệu của bạn, chúng tôi sẽ báo cáo cơ quan có thẩm quyền và thông báo cho bạn theo quy định pháp luật.']
+      },
+      {
+        h: 'Khiếu nại',
+        p: ['Nếu bạn chưa hài lòng với cách chúng tôi xử lý dữ liệu, vui lòng liên hệ chúng tôi trước. Bạn cũng có thể khiếu nại với cơ quan nhà nước chuyên trách về bảo vệ dữ liệu cá nhân tại Việt Nam (hiện thuộc Bộ Công an).']
+      },
+      {
+        h: 'Thay đổi chính sách',
+        p: ['Chúng tôi có thể cập nhật chính sách này. Ngày ở đầu trang cho biết lần cập nhật gần nhất. Nếu thay đổi ảnh hưởng đến cách chúng tôi sử dụng dữ liệu của bạn, chúng tôi sẽ xin đồng ý lại khi pháp luật yêu cầu.']
+      }
+    ]
+  } : {
+    updated: 'Last updated',
+    lede: 'This page explains what personal data Minh Quang Tailoring House collects through this website, why, and what rights you have.',
+    contactHeading: 'Contact for privacy questions',
+    address: 'Address',
+    email: 'Email',
+    phone: 'Phone',
+    sections: [
+      {
+        h: 'Who we are',
+        p: ['This website is run by Minh Quang Tailoring House, a family tailoring house in Hanoi. This policy covers this website only. Details you give us in person at the shop are handled separately.'],
+        contact: true
+      },
+      {
+        h: 'What we collect',
+        p: ['Only what you type into the enquiry form on the Visit page:'],
+        ul: ['Your name;', 'Your phone number and/or email address (at least one, so we can reply);', 'The message you write.'],
+        p2: ['We don’t ask for sensitive information (such as ID numbers or bank details). Please don’t include any in your message.',
+             'We also record the time you agreed and which version of this policy you agreed to, so we can show your consent if asked.',
+             'Our hosting provider keeps standard server logs (such as IP address and the pages requested) for security and to keep the site running.']
+      },
+      {
+        h: 'Why we use it',
+        p: ['We use your details to reply to your enquiry and to arrange a visit or fitting. Our legal basis is your consent, which you give by ticking the box on the form. We don’t use your details for marketing, and we don’t sell them or give them to anyone for their own use.']
+      },
+      {
+        h: 'Who receives it',
+        p: ['Only our staff who answer enquiries, and the service providers we use to run this website:'],
+        ul: ['Hostinger, which hosts the website and its database;',
+             'An email service, which sends us a notification when you submit the form (if enabled);',
+             'Cloudflare, which stores and delivers the photos on this site;',
+             'Google, which provides the fonts and the map on the Visit page. When these load, Google may receive your IP address and browser details.'],
+        p2: ['Some of these providers have servers outside Vietnam, so your information may be processed abroad. We use them only to run this website.']
+      },
+      {
+        h: 'How long we keep it',
+        p: ['We keep your enquiry until it has been dealt with and for up to 24 months after our last contact with you, then delete it. You can ask us to delete it sooner.']
+      },
+      {
+        h: 'Cookies and tracking',
+        p: ['This website doesn’t set cookies for visitors and doesn’t use analytics or advertising trackers. Only staff who log in to manage the site receive a cookie, to keep them signed in. The map and fonts are loaded from Google, which may set its own cookies or record your IP address when they load. If we ever add analytics or similar tools, we will ask for your permission first and update this policy.']
+      },
+      {
+        h: 'Your rights',
+        p: ['Under Vietnam’s Personal Data Protection Law (Law No. 91/2025/QH15), you have the right to:'],
+        ul: ['know how your data is used;', 'see the data we hold about you;', 'correct it;', 'ask us to delete it;', 'restrict or object to how we use it;', 'withdraw your consent at any time;', 'make a complaint.'],
+        p2: ['To use any of these rights, contact us using the details above. We will confirm we received your request within 2 working days and aim to respond within: 10 days to see or correct your data; 15 days to withdraw consent, restrict or object; 20 days to delete.',
+             'Withdrawing your consent doesn’t affect what we did with your data before.']
+      },
+      {
+        h: 'Children',
+        p: ['This website is meant for adults. If you are a child, please ask a parent or guardian to send the enquiry for you.']
+      },
+      {
+        h: 'Security',
+        p: ['We protect your details with an encrypted connection (HTTPS), password-protected access for staff only, and regular security updates. No system is completely secure. If a breach affects your data, we will report it to the authorities and tell you, as the law requires.']
+      },
+      {
+        h: 'Complaints',
+        p: ['If you are unhappy with how we handle your data, please contact us first. You can also complain to the state authority responsible for personal data protection in Vietnam (currently under the Ministry of Public Security).']
+      },
+      {
+        h: 'Changes to this policy',
+        p: ['We may update this policy. The date at the top shows when it last changed. If a change affects how we use your data, we will ask for your consent again where the law requires.']
+      }
+    ]
+  };
+%>
+<section class="section section--alt">
+  <div class="container container--narrow text-center">
+    <h1><%= t('footer.privacy') %></h1>
+    <p class="lede" style="margin-inline:auto;"><%= copy.lede %></p>
+    <p class="text-muted" style="font-size:var(--fs-sm);margin-bottom:0;"><%= copy.updated %>: <%= updated %></p>
+  </div>
+</section>
+
+<section class="section policy">
+  <div class="container container--narrow">
+    <% copy.sections.forEach(function (s) { %>
+      <h2><%= s.h %></h2>
+      <% s.p.forEach(function (para) { %><p><%= para %></p><% }); %>
+      <% if (s.contact) { %>
+        <div class="policy__contact">
+          <strong><%= copy.contactHeading %></strong>
+          <% if (settings && settings.address_line) { %><span><%= copy.address %>: <%= settings.address_line %></span><% } %>
+          <% if (settings && settings.email) { %><span><%= copy.email %>: <a href="mailto:<%= settings.email %>"><%= settings.email %></a></span><% } %>
+          <% if (settings && settings.phone) { %><span><%= copy.phone %>: <%= settings.phone %></span><% } %>
+        </div>
+      <% } %>
+      <% if (s.ul) { %><ul><% s.ul.forEach(function (item) { %><li><%= item %></li><% }); %></ul><% } %>
+      <% if (s.p2) { %><% s.p2.forEach(function (para) { %><p><%= para %></p><% }); %><% } %>
+    <% }); %>
+  </div>
+</section>
