@@ -16,19 +16,19 @@ import type { OrderRecord, Snapshot } from '../state/types';
 export const SHEET_WIDTH = 794;
 const A4_HEIGHT = 1123;
 const MARGIN = 48;
-const INK = '#2b2620';
-const MUTED = '#655d51';
-const LINE = '#d9d0bf';
-const PAPER_TINT = '#f5f1ea';
-const THUMB_BG = '#edeae2';
-const SERIF = "Lora, Georgia, 'Times New Roman', serif";
-const SANS = "Inter, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif";
+const INK = '#1f1b17';
+const MUTED = '#6b6256';
+const LINE = '#e6ded0';
+const PAPER_TINT = '#f6f2eb';
+const THUMB_BG = '#f1ece3';
+const SERIF = "'Cormorant Garamond', Georgia, 'Times New Roman', serif";
+const SANS = "'Be Vietnam Pro', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif";
 
 const THUMB_W = 108;
 const THUMB_H = 81;
 
 /** Fonts the sheet uses, so the canvas does not fall back while a font file is still loading. */
-export const SHEET_FONTS = [`500 24px ${SERIF}`, `500 26px ${SERIF}`, `400 12px ${SANS}`, `600 15px ${SANS}`];
+export const SHEET_FONTS = [`600 26px ${SERIF}`, `600 28px ${SERIF}`, `400 12px ${SANS}`, `600 15px ${SANS}`];
 
 function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number): void {
   ctx.beginPath();
@@ -109,7 +109,7 @@ export function drawSheet({ t, lang, snap, order, sketches, logo, scale }: Sheet
     // ── header
     const logoH = 40;
     if (draw) ctx.drawImage(logo.image, MARGIN, 56, logoH * logo.ratio, logoH);
-    ctx.font = `500 26px ${SERIF}`;
+    ctx.font = `600 28px ${SERIF}`;
     fill(INK);
     text(t.pdf.title, pageW - MARGIN, 88, 'right');
     if (draw) {
@@ -173,7 +173,7 @@ export function drawSheet({ t, lang, snap, order, sketches, logo, scale }: Sheet
       ...(trimsUnit ? [{ title: t.garments.trims, unit: trimsUnit }] : []),
     ];
     sections.forEach((section) => {
-      ctx.font = `500 17px ${SERIF}`;
+      ctx.font = `600 19px ${SERIF}`;
       fill(INK);
       text(section.title, MARGIN, y);
       if (draw) {

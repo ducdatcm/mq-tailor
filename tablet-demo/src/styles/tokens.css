@@ -1,34 +1,51 @@
 :root {
-  /* Warm ivory + charcoal, one restrained accent (matches the Minh Quang site). */
-  --bg: #f5f1ea;
-  --surface: #fffdf9;
-  --surface-2: #efe9dd;
-  --line: #d9d0bf;
-  --line-strong: #b9ae99;
-  --ink: #2b2620;
-  --ink-2: #4f483e;
-  --muted: #655d51;
-  --accent: #7a3b32;
-  --accent-ink: #fffdf9;
-  --accent-soft: #f1e1dc;
-  --ok: #2f5d3f;
+  /* Design system v2 (Figma: "Minh Quang — Tablet Redesign v2"): warm ivory and charcoal carry the
+     interface, oxblood is the one action colour, brass is ornament only (never text on white). */
+  --bg: #f6f2eb; /* canvas */
+  --surface: #ffffff;
+  --surface-2: #f1ece3; /* sunken: sketch ground, tracks, quiet fills */
+  --line: #e6ded0;
+  --line-strong: #d3c8b5;
+  --ink: #1f1b17;
+  --ink-2: #3d362e;
+  --muted: #6b6256;
+  --disabled: #b9af9f;
+  --accent: #7a2e26; /* oxblood */
+  --accent-strong: #62241e;
+  --accent-ink: #ffffff;
+  --accent-soft: #f7ebe7;
+  --accent-border: #eed6cf;
+  --brass: #a8834a;
+  --brass-soft: #f5eee2;
+  --ok: #2f6b47;
+  --ok-soft: #e7f1ea;
+  --danger: #b3361f;
+  --danger-soft: #fbeae6;
   --warn: #8a4b12;
   --warn-soft: #f8ead6;
   --focus: #1d5fa8;
 
-  --sk-ink: #2b2620;
-  --sk-bg: #edeae2;
-  --sk-accent: #7a3b32;
+  --sk-ink: #1f1b17;
+  --sk-bg: #f1ece3;
+  --sk-accent: #7a2e26;
   --sk-mark: #b3aa99;
-  --sk-paper: #fffdf9;
+  --sk-paper: #ffffff;
   --sk-tie: #d6d0c1;
   --sk-shade: #e4ded0;
   --sk-lining: #ecd3cd;
-  --sk-lining-line: #7a3b32;
+  --sk-lining-line: #7a2e26;
 
-  --font-serif: 'Lora', Georgia, 'Times New Roman', serif;
-  --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-serif: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Be Vietnam Pro', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 
-  --radius: 14px;
-  --shadow: 0 1px 2px rgba(43, 38, 32, 0.08), 0 6px 18px rgba(43, 38, 32, 0.06);
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius: 16px;
+  --radius-xl: 20px;
+  --shadow-xs: 0 1px 2px rgba(31, 27, 23, 0.06);
+  --shadow: 0 1px 3px rgba(31, 27, 23, 0.07), 0 1px 2px rgba(31, 27, 23, 0.04);
+  --shadow-md: 0 8px 24px -6px rgba(31, 27, 23, 0.12), 0 2px 6px rgba(31, 27, 23, 0.05);
+  --shadow-lg: 0 24px 56px -16px rgba(31, 27, 23, 0.22);
+  --shadow-up: 0 -8px 24px -12px rgba(31, 27, 23, 0.14);
+  --ring: 0 0 0 4px rgba(122, 46, 38, 0.14);
 }

@@ -143,6 +143,14 @@ Chưa chạy buổi thử có người thật. Khi thử, nên quan sát: khách
 - **Sơ mi: đang tắt, làm lại sau.** Dữ liệu sơ mi vẫn còn trong mã (nhóm tay, cổ áo 8 kiểu có cổ bẹt, túi ngực, nẹp áo, cổ tay áo, gấu áo; chữ tiếng Việt và tiếng Anh; cột bảng tính "Sơ mi"; 4 hình túi ngực trong `src/sketches/shirt.tsx`), nhưng sản phẩm không hiện ở màn hình đầu. Các hình cổ áo, nẹp áo và cổ tay đã thử chưa đạt nên đã bỏ; các mục đó chỉ là thẻ chữ. Để bật lại: thêm `'shirt'` vào `PRODUCT_IDS` trong `src/catalog/catalog.ts`, thêm lại `shirt` vào danh sách trong `scripts/verify.mjs`, và cần hình chuẩn của nhà may cho các mục sơ mi.
 - **Thuật ngữ cần thợ chính duyệt:** "Cổ pintuck" (tên giữ nguyên theo ảnh), "Cổ cánh", "Cổ trụ", "Cổ bẹt" (Cuban), cách dịch các kiểu cổ tay French / Double French, và "Xẻ tà / Đuôi tôm (gusset)": mô tả hiện nay là xẻ tà không đáp, còn đuôi tôm là có miếng đáp tam giác (gusset) ở chỗ xẻ; thợ chính xác nhận cách hiểu này.
 
+## Giao diện v2 (đã làm, theo bản Figma "Minh Quang — Tablet Redesign v2")
+
+- **Màu và chữ:** nền ngà #F6F2EB, chữ than #1F1B17, màu nhấn duy nhất đỏ rượu #7A2E26, màu đồng #A8834A chỉ để trang trí. Tiêu đề lớn dùng Cormorant Garamond, giao diện dùng Be Vietnam Pro (cả hai đóng gói sẵn trong app, chạy offline). Token nằm trong `src/styles/tokens.css`, cùng tên với biến trong Figma.
+- **Đầu trang:** thanh 4 bước Sản phẩm › Thiết kế › Xem lại › Đặt đơn (màn hẹp chỉ ghi tên bước hiện tại), nút Phiên mới, chọn VI/EN.
+- **Màn đầu:** thẻ sản phẩm có tên, các nhãn thành phần ("1 × Áo", "2 × Quần") và bộ số lượng dạng viên tròn; "Cách bắt đầu" chuyển xuống thanh dưới thành nút gạt (Tự chọn chi tiết / Gợi ý nhà may), cạnh nút Bắt đầu tư vấn; thanh dưới ghi "Đơn gồm" bằng các nhãn.
+- **Các màn khác:** thẻ lựa chọn, bảng tóm tắt, phiếu xem lại, biểu mẫu đơn và hộp thoại theo cùng hệ thống (bo góc 12–20, bóng nhẹ, viền mảnh, ô nhập có vòng nhấn đỏ rượu, lỗi màu đỏ riêng).
+- Bản demo HTML và mã dựng lại nằm ở `design/redesign/` (chưa đưa vào git).
+
 ## Chạy trên tablet Android (đã làm, chưa thử trên máy thật)
 
 - Ứng dụng được build vào `tablet-app/` của website (ngoài `public/`, vì Hostinger phát tệp trong `public/` mà không qua mã truy cập) và phục vụ ở `/tablet/` (route `src/routes/tablet.js`, chính sách bảo mật riêng cho phép gửi đơn tới Google Apps Script, không cho công cụ tìm kiếm lập chỉ mục). Cài lên màn hình chính, chạy toàn màn hình, offline sau lần đầu (service worker). Hướng dẫn: `docs/ANDROID-SETUP.md`.

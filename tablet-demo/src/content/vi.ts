@@ -9,6 +9,7 @@ export const vi: Copy = {
   demoBadge: 'Demo trải nghiệm',
   language: { label: 'Ngôn ngữ', vi: 'VI', en: 'EN' },
   newSession: 'Phiên mới',
+  progress: { label: 'Tiến trình', steps: ['Sản phẩm', 'Thiết kế', 'Xem lại', 'Đặt đơn'] },
   close: 'Đóng',
 
   products: {
@@ -384,13 +385,15 @@ export const vi: Copy = {
   },
 
   start: {
+    eyebrow: 'Tư vấn thiết kế',
     title: 'Cùng chọn kiểu dáng với nhà may',
     intro: 'Xem từng chi tiết qua hình vẽ, so sánh và thống nhất thiết kế trước khi sang bước đo.',
     productsLabel: 'Chọn sản phẩm',
+    orderLabel: 'Đơn gồm',
     modeLabel: 'Cách bắt đầu',
     modeManual: { title: 'Tự chọn chi tiết', desc: 'Đi lần lượt từng nhóm, chưa chọn sẵn gì.' },
     modePreset: {
-      title: 'Bắt đầu từ gợi ý nhà may',
+      title: 'Gợi ý nhà may',
       desc: 'Điền sẵn một cấu hình mẫu, sau đó chỉnh từng chi tiết tùy ý.',
     },
     cta: 'Bắt đầu tư vấn',

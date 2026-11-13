@@ -28,6 +28,8 @@ export interface Copy {
   demoBadge: string;
   language: { label: string; vi: string; en: string };
   newSession: string;
+  /** The four stages of a visit, shown in the header. */
+  progress: { label: string; steps: readonly [string, string, string, string] };
   close: string;
 
   /** `name` is used in the order; `title` is the heading of the product card on the start screen. */
@@ -38,9 +40,11 @@ export interface Copy {
   options: Record<OptionId, OptionCopy>;
 
   start: {
+    eyebrow: string;
     title: string;
     intro: string;
     productsLabel: string;
+    orderLabel: string;
     modeLabel: string;
     modeManual: { title: string; desc: string };
     modePreset: { title: string; desc: string };

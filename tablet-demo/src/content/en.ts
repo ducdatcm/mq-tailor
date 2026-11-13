@@ -9,6 +9,7 @@ export const en: Copy = {
   demoBadge: 'Experience demo',
   language: { label: 'Language', vi: 'VI', en: 'EN' },
   newSession: 'New session',
+  progress: { label: 'Progress', steps: ['Products', 'Design', 'Review', 'Order'] },
   close: 'Close',
 
   products: {
@@ -305,13 +306,15 @@ export const en: Copy = {
   },
 
   start: {
+    eyebrow: 'Design consultation',
     title: 'Choose your style together with the tailor',
     intro: 'See each detail as a drawing, compare, and agree on the design before moving on to measuring.',
     productsLabel: 'Choose a product',
+    orderLabel: 'The order',
     modeLabel: 'How to start',
     modeManual: { title: 'Choose each detail', desc: 'Go through every group in turn, with nothing chosen in advance.' },
     modePreset: {
-      title: 'Start with the house suggestion',
+      title: 'House suggestion',
       desc: 'Fills in a sample configuration that you can then change detail by detail.',
     },
     cta: 'Start consultation',

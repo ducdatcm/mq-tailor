@@ -47,7 +47,7 @@
   {
     "area": "pdf export tablet-1024x768 suit",
     "ok": true,
-    "detail": "phieu-thiet-ke_MQ-0001_20261031.pdf 255153 bytes"
+    "detail": "phieu-thiet-ke_MQ-0001_20261113.pdf 259098 bytes"
   },
   {
     "area": "layout tablet-1024x768 suit order",
@@ -62,7 +62,7 @@
   {
     "area": "the start screen says what the order holds tablet-1024x768",
     "ok": true,
-    "detail": "Đơn gồm: Suit ba mảnh (1 áo + 2 quần) × 2"
+    "detail": "Suit ba mảnh (1 áo + 2 quần) × 2"
   },
   {
     "area": "layout tablet-1024x768 suit3Trousers configure",
@@ -107,7 +107,7 @@
   {
     "area": "pdf export tablet-1024x768 suit3Trousers",
     "ok": true,
-    "detail": "phieu-thiet-ke_MQ-0001_20261031.pdf 258245 bytes"
+    "detail": "phieu-thiet-ke_MQ-0001_20261113.pdf 262751 bytes"
   },
   {
     "area": "layout tablet-1024x768 suit3Waistcoat configure",
@@ -252,7 +252,7 @@
   {
     "area": "start screen: several products with their own quantities tablet-1024x768",
     "ok": true,
-    "detail": "Đơn gồm: Suit hai mảnh × 1 · Quần tây × 2"
+    "detail": "Suit hai mảnh × 1 · Quần tây × 2"
   },
   {
     "area": "layout tablet-1024x768 mixed order start",
@@ -307,7 +307,7 @@
   {
     "area": "pdf export of the order tablet-1024x768",
     "ok": true,
-    "detail": "258295 bytes"
+    "detail": "262205 bytes"
   },
   {
     "area": "keyboard tablet-1024x768 start -> configure",
@@ -382,7 +382,7 @@
   {
     "area": "pdf export tablet-1280x800 suit",
     "ok": true,
-    "detail": "phieu-thiet-ke_MQ-0001_20261031.pdf 255153 bytes"
+    "detail": "phieu-thiet-ke_MQ-0001_20261113.pdf 259097 bytes"
   },
   {
     "area": "layout tablet-1280x800 suit order",
@@ -397,7 +397,7 @@
   {
     "area": "the start screen says what the order holds tablet-1280x800",
     "ok": true,
-    "detail": "Đơn gồm: Suit ba mảnh (1 áo + 2 quần) × 2"
+    "detail": "Suit ba mảnh (1 áo + 2 quần) × 2"
   },
   {
     "area": "layout tablet-1280x800 suit3Trousers configure",
@@ -442,7 +442,7 @@
   {
     "area": "pdf export tablet-1280x800 suit3Trousers",
     "ok": true,
-    "detail": "phieu-thiet-ke_MQ-0001_20261031.pdf 258245 bytes"
+    "detail": "phieu-thiet-ke_MQ-0001_20261113.pdf 262751 bytes"
   },
   {
     "area": "layout tablet-1280x800 suit3Waistcoat configure",
@@ -587,7 +587,7 @@
   {
     "area": "start screen: several products with their own quantities tablet-1280x800",
     "ok": true,
-    "detail": "Đơn gồm: Suit hai mảnh × 1 · Quần tây × 2"
+    "detail": "Suit hai mảnh × 1 · Quần tây × 2"
   },
   {
     "area": "layout tablet-1280x800 mixed order start",
@@ -642,7 +642,7 @@
   {
     "area": "pdf export of the order tablet-1280x800",
     "ok": true,
-    "detail": "258295 bytes"
+    "detail": "262183 bytes"
   },
   {
     "area": "keyboard tablet-1280x800 start -> configure",
@@ -717,7 +717,7 @@
   {
     "area": "pdf export portrait-768x1024 suit",
     "ok": true,
-    "detail": "phieu-thiet-ke_MQ-0001_20261031.pdf 255153 bytes"
+    "detail": "phieu-thiet-ke_MQ-0001_20261113.pdf 259028 bytes"
   },
   {
     "area": "layout portrait-768x1024 suit order",
@@ -732,7 +732,7 @@
   {
     "area": "the start screen says what the order holds portrait-768x1024",
     "ok": true,
-    "detail": "Đơn gồm: Suit ba mảnh (1 áo + 2 quần) × 2"
+    "detail": "Suit ba mảnh (1 áo + 2 quần) × 2"
   },
   {
     "area": "layout portrait-768x1024 suit3Trousers configure",
@@ -777,7 +777,7 @@
   {
     "area": "pdf export portrait-768x1024 suit3Trousers",
     "ok": true,
-    "detail": "phieu-thiet-ke_MQ-0001_20261031.pdf 258245 bytes"
+    "detail": "phieu-thiet-ke_MQ-0001_20261113.pdf 262749 bytes"
   },
   {
     "area": "layout portrait-768x1024 suit3Waistcoat configure",
@@ -922,7 +922,7 @@
   {
     "area": "start screen: several products with their own quantities portrait-768x1024",
     "ok": true,
-    "detail": "Đơn gồm: Suit hai mảnh × 1 · Quần tây × 2"
+    "detail": "Suit hai mảnh × 1 · Quần tây × 2"
   },
   {
     "area": "layout portrait-768x1024 mixed order start",
@@ -977,7 +977,7 @@
   {
     "area": "pdf export of the order portrait-768x1024",
     "ok": true,
-    "detail": "258295 bytes"
+    "detail": "262183 bytes"
   },
   {
     "area": "keyboard portrait-768x1024 start -> configure",

@@ -58,3 +58,35 @@ export function EditIcon({ size = 20, className }: IconProps) {
     </svg>
   );
 }
+
+export function ArrowIcon({ size = 18, className, dir = 'right' }: IconProps & { dir?: 'right' | 'left' }) {
+  return (
+    <svg {...base(size)} strokeWidth={2} className={className}>
+      <path d={dir === 'right' ? 'M5 12h14M13 6l6 6-6 6' : 'M19 12H5M11 6l-6 6 6 6'} />
+    </svg>
+  );
+}
+
+export function MinusIcon({ size = 18, className }: IconProps) {
+  return (
+    <svg {...base(size)} className={className}>
+      <path d="M6 12h12" />
+    </svg>
+  );
+}
+
+export function PlusIcon({ size = 18, className }: IconProps) {
+  return (
+    <svg {...base(size)} className={className}>
+      <path d="M6 12h12M12 6v12" />
+    </svg>
+  );
+}
+
+export function SparkleIcon({ size = 18, className }: IconProps) {
+  return (
+    <svg {...base(size)} strokeWidth={1.8} className={className}>
+      <path d="M12 3l2 5.2 5.2 2-5.2 2L12 17.4l-2-5.2-5.2-2 5.2-2z" />
+    </svg>
+  );
+}

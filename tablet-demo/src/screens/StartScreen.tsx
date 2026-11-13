@@ -1,8 +1,7 @@
 import { PRODUCT_IDS, PRODUCTS, totalQuantity, type PieceKind, type ProductId } from '../catalog/catalog';
-import { CheckIcon } from '../components/icons';
+import { ArrowIcon, CheckIcon } from '../components/icons';
 import { QuantityStepper } from '../components/QuantityStepper';
-import { fmt } from '../content/copy';
-import { productList } from '../order/labels';
+import { productCounts } from '../order/lines';
 import { Sketch } from '../sketches/Sketch';
 import { useStore } from '../state/store';
 
@@ -17,14 +16,18 @@ function pieceCounts(id: ProductId) {
 export function StartScreen() {
   const { state, dispatch, t } = useStore();
   const ready = totalQuantity(state.quantities) > 0;
+  const modeCopy = state.startMode === 'preset' ? t.start.modePreset : t.start.modeManual;
 
   return (
     <>
       <main className="content start">
         <div className="start-intro">
-          <h1 tabIndex={-1} data-screen-heading>
-            {t.start.title}
-          </h1>
+          <div className="start-heading">
+            <span className="eyebrow">{t.start.eyebrow}</span>
+            <h1 tabIndex={-1} data-screen-heading>
+              {t.start.title}
+            </h1>
+          </div>
           <p>{t.start.intro}</p>
         </div>
 
@@ -51,80 +54,88 @@ export function StartScreen() {
                       <Sketch product={id} />
                     </span>
                     <span className="product-name">{t.products[id].title}</span>
-                    {PRODUCTS[id].pieces.length > 1 ? (
-                      <ul className="product-pieces">
-                        {pieceCounts(id).map(({ garment, count }) => (
-                          <li key={garment}>
-                            {count} x {t.garments[garment]}
-                          </li>
-                        ))}
-                      </ul>
-                    ) : null}
                     {selected ? (
                       <span className="option-badge">
-                        <CheckIcon size={18} />
+                        <CheckIcon size={16} />
                         {t.configure.selected}
                       </span>
                     ) : null}
                   </button>
-                  <QuantityStepper product={id} />
+                  <div className="product-foot">
+                    <ul className="product-pieces">
+                      {pieceCounts(id).map(({ garment, count }) => (
+                        <li key={garment} className="chip">
+                          <b>{count}</b> × {t.garments[garment]}
+                        </li>
+                      ))}
+                    </ul>
+                    <QuantityStepper product={id} />
+                  </div>
                 </div>
-              );
-            })}
-          </div>
-        </section>
-
-        <section aria-labelledby="start-mode">
-          <h2 id="start-mode" className="eyebrow">
-            {t.start.modeLabel}
-          </h2>
-          <div className="mode-grid" role="group" aria-labelledby="start-mode">
-            {(['manual', 'preset'] as const).map((mode) => {
-              const copy = mode === 'manual' ? t.start.modeManual : t.start.modePreset;
-              const selected = state.startMode === mode;
-              return (
-                <button
-                  key={mode}
-                  type="button"
-                  className={`mode-card${selected ? ' is-selected' : ''}`}
-                  aria-pressed={selected}
-                  data-mode={mode}
-                  onClick={() => dispatch({ type: 'chooseMode', mode })}
-                >
-                  <span className="mode-check" aria-hidden="true">
-                    {selected ? <CheckIcon size={18} /> : null}
-                  </span>
-                  <span className="mode-text">
-                    <span className="mode-title">{copy.title}</span>
-                    <span className="mode-desc">{copy.desc}</span>
-                  </span>
-                </button>
               );
             })}
           </div>
         </section>
       </main>
 
-      <footer className="footer footer-center">
-        {ready ? (
-          <p className="footer-hint qty-pieces" data-order-list>
-            {fmt(t.start.quantityPieces, { list: productList(t, state.quantities) })}
-          </p>
-        ) : (
-          <p className="footer-hint" id="start-hint">
-            {t.start.needProduct}
-          </p>
-        )}
-        <button
-          type="button"
-          className="btn btn-primary btn-large"
-          disabled={!ready}
-          aria-describedby={!ready ? 'start-hint' : undefined}
-          onClick={() => dispatch({ type: 'start' })}
-        >
-          {t.start.cta}
-        </button>
+      <footer className="footer start-footer">
+        <div className="start-order">
+          {ready ? (
+            <>
+              <span className="eyebrow">{t.start.orderLabel}</span>
+              <p className="chips" data-order-list>
+                {productCounts(state.quantities).map(({ product, quantity }, i) => (
+                  <span key={product}>
+                    {i > 0 ? <span hidden> · </span> : null}
+                    <span className="chip chip-strong">
+                      {t.products[product].name} × {quantity}
+                    </span>
+                  </span>
+                ))}
+              </p>
+            </>
+          ) : (
+            <p className="footer-hint" id="start-hint">
+              {t.start.needProduct}
+            </p>
+          )}
+        </div>
+        <div className="start-actions">
+          <span className="footer-hint" id="start-mode">
+            {t.start.modeLabel}
+          </span>
+          <div className="segmented" role="group" aria-labelledby="start-mode" aria-describedby="start-mode-desc">
+            {(['manual', 'preset'] as const).map((mode) => {
+              const copy = mode === 'manual' ? t.start.modeManual : t.start.modePreset;
+              return (
+                <button
+                  key={mode}
+                  type="button"
+                  aria-pressed={state.startMode === mode}
+                  data-mode={mode}
+                  onClick={() => dispatch({ type: 'chooseMode', mode })}
+                >
+                  {copy.title}
+                </button>
+              );
+            })}
+          </div>
+          <span id="start-mode-desc" hidden>
+            {modeCopy.desc}
+          </span>
+          <button
+            type="button"
+            className="btn btn-primary btn-large"
+            disabled={!ready}
+            aria-describedby={!ready ? 'start-hint' : undefined}
+            onClick={() => dispatch({ type: 'start' })}
+          >
+            {t.start.cta}
+            <ArrowIcon />
+          </button>
+        </div>
       </footer>
     </>
   );
 }
+
