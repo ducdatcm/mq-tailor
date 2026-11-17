@@ -14,7 +14,7 @@
     <% if (group.key === 'masters' && group.people.length) { %>
       <% // The Masters get a featured, one-at-a-time layout (matching the
          // homepage's House/Craft/People treatment) instead of a small grid
-         // card — they're the credibility anchor of the page, and a grid
+         // card - they're the credibility anchor of the page, and a grid
          // with only 1-2 entries looks sparse. %>
       <% group.people.forEach(function (person, pi) { %>
         <div class="container split <%= pi % 2 === 1 ? 'split--reverse' : '' %> reveal" <% if (pi > 0) { %>style="margin-top:var(--space-6);"<% } %>>

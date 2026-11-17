@@ -3,7 +3,7 @@
     <div>
       <p class="brand__wordmark" style="color:#fff;margin-bottom:0.75rem;">MINH QUANG</p>
       <p class="text-muted" style="max-width:40ch;">
-        <%= t('meta.site_tagline') %><% if (settings && settings['founding_note_' + lang]) { %> — <%= settings['founding_note_' + lang] %><% } %>.
+        <%= t('meta.site_tagline') %><% if (settings && settings['founding_note_' + lang]) { %> - <%= settings['founding_note_' + lang] %><% } %>.
       </p>
       <%- include('./social-icons') %>
     </div>
@@ -38,9 +38,18 @@
   </div>
 
   <div class="container footer-bottom">
-    <span>&copy; <%= currentYear %> Minh Quang Tailoring House. <%= t('footer.rights') %> · <a href="/<%= lang %>/privacy"><%= t('footer.privacy') %></a></span>
-    <span><%= settings && settings.address_line ? settings.address_line : '' %></span>
+    <span>&copy; <%= currentYear %> <%= companyName %>. <%= t('footer.rights') %></span>
+    <span><a href="/<%= lang %>/privacy"><%= t('footer.privacy') %></a></span>
   </div>
 </footer>
+
+<% if (currentPath.indexOf('/' + lang + '/visit') !== 0) { %>
+<div class="mobile-cta">
+  <a class="btn btn--accent" href="/<%= lang %>/visit#enquiry" data-track="click_book_bar"><%= t('cta.book_an_appointment') %></a>
+  <% if (settings && settings.zalo_url) { %>
+    <a class="btn btn--outline" href="<%= settings.zalo_url %>" target="_blank" rel="noopener" data-track="click_zalo">Zalo</a>
+  <% } %>
+</div>
+<% } %>
 
 <script src="<%= process.env.NODE_ENV === 'production' ? '/js/main.min.js' : '/js/main.js' %>?v=<%= assetVersion %>" defer></script>

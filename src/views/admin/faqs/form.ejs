@@ -1,0 +1,38 @@
+<h1><%= faq ? 'Edit Question' : 'New Question' %></h1>
+
+<form method="POST" action="<%= faq ? '/admin/faqs/' + faq.id + '/edit' : '/admin/faqs/new' %>">
+  <div class="panel">
+    <div class="field-row">
+      <div class="field">
+        <label for="question_en">Question (English)</label>
+        <input type="text" id="question_en" name="question_en" required maxlength="255" value="<%= faq ? faq.question_en : '' %>">
+      </div>
+      <div class="field">
+        <label for="question_vi">Question (Vietnamese)</label>
+        <input type="text" id="question_vi" name="question_vi" maxlength="255" value="<%= faq ? faq.question_vi || '' : '' %>">
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label for="answer_en">Answer (English) - leave a blank line between paragraphs</label>
+        <textarea id="answer_en" name="answer_en"><%= faq ? faq.answer_en || '' : '' %></textarea>
+      </div>
+      <div class="field">
+        <label for="answer_vi">Answer (Vietnamese) - leave a blank line between paragraphs</label>
+        <textarea id="answer_vi" name="answer_vi"><%= faq ? faq.answer_vi || '' : '' %></textarea>
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label for="sort_order">Order (smaller numbers show first)</label>
+        <input type="number" id="sort_order" name="sort_order" value="<%= faq ? faq.sort_order : 0 %>">
+      </div>
+      <div class="field">
+        <label><input type="checkbox" name="active" <%= faq && faq.active ? 'checked' : '' %> style="width:auto;"> Visible on the site</label>
+        <p class="field-hint">Leave unticked while the answer is still a draft.</p>
+      </div>
+    </div>
+  </div>
+  <button type="submit" class="btn">Save</button>
+  <a href="/admin/faqs" class="btn btn--ghost">Cancel</a>
+</form>

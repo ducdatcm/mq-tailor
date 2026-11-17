@@ -14,6 +14,9 @@
     "journal": "Journal",
     "visit": "Visit"
   },
+  "header": {
+    "top_tagline": "A tailoring house in Hanoi, since 1955"
+  },
   "cta": {
     "visit_the_house": "Visit the House",
     "discover_the_house": "Discover the House",
@@ -70,7 +73,7 @@
     "heading": "Cloth",
     "gallery_heading": "Cloth Library",
     "mills_heading": "A Selection of Mills We Work With",
-    "mills_empty": "Our current cloth selection is being catalogued here — ask in person and we'll show you what's on the table."
+    "mills_empty": "Our current cloth selection is being catalogued here - ask in person and we'll show you what's on the table."
   },
   "journal": {
     "heading": "Journal",
@@ -98,12 +101,21 @@
     "form_message": "Message",
     "form_message_placeholder": "What are you looking to have made, and for when?",
     "form_submit": "Send Enquiry",
-    "form_consent_before": "I agree that Minh Quang Tailoring House may use my name, phone number, email and message to reply to this enquiry, as described in the",
+    "form_consent_before": "I agree that Minh Quang Tailoring House may use my name, phone number, email, preferred visit time and message to reply to this enquiry, as described in the",
     "form_consent_link": "Privacy Policy",
     "form_consent_after": ".",
     "form_consent_error": "Please tick the box to agree to how we use your details, so we can reply to you.",
-    "form_success": "Thank you — your message has reached us. We'll be in touch shortly.",
-    "form_error": "Something went wrong sending your message. Please try again, or reach us directly on Zalo or by phone."
+    "form_success": "Thank you - your message has reached us. We'll be in touch shortly.",
+    "form_error": "Something went wrong sending your message. Please try again, or reach us directly on Zalo or by phone.",
+    "form_contact_hint": "Please give at least a phone number or an email so we can reply.",
+    "form_date": "Preferred date (optional)",
+    "form_time": "Preferred time of day",
+    "time_any": "Any time",
+    "time_morning": "Morning",
+    "time_afternoon": "Afternoon",
+    "form_date_hint": "We will confirm the exact time with you. Our opening hours are listed above.",
+    "form_date_error": "Please choose a day we are open, from today onwards.",
+    "faq_heading": "Questions we are often asked"
   },
   "footer": {
     "rights": "All rights reserved.",

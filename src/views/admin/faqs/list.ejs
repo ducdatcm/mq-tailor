@@ -1,0 +1,25 @@
+<div class="admin-topbar">
+  <h1 style="margin:0;">FAQ</h1>
+  <a class="btn" href="/admin/faqs/new">+ New Question</a>
+</div>
+<p style="color:var(--admin-muted);max-width:64ch;">Short questions and answers shown on the Visit page, just above the enquiry form. Only questions marked <strong>Visible</strong> appear on the site; the section is hidden entirely while none are visible. The three starter questions are drafts: replace every <strong>[X]</strong> with your real timings before making them visible.</p>
+
+<table class="admin-table">
+  <thead><tr><th>Question</th><th>Order</th><th>Status</th><th></th></tr></thead>
+  <tbody>
+    <% faqs.forEach(function (f) { %>
+      <tr>
+        <td><%= f.question_en %><% if (f.question_vi) { %><br><span style="color:var(--admin-muted);"><%= f.question_vi %></span><% } %></td>
+        <td><%= f.sort_order %></td>
+        <td><span class="tag <%= f.active ? 'tag--live' : '' %>"><%= f.active ? 'Visible' : 'Hidden' %></span></td>
+        <td>
+          <a href="/admin/faqs/<%= f.id %>/edit">Edit</a>
+          &nbsp;·&nbsp;
+          <form method="POST" action="/admin/faqs/<%= f.id %>/delete" style="display:inline;" onsubmit="return confirm('Remove this question?');">
+            <button type="submit" class="btn--ghost btn" style="padding:0.2rem 0.5rem;font-size:0.8rem;">Delete</button>
+          </form>
+        </td>
+      </tr>
+    <% }); %>
+  </tbody>
+</table>

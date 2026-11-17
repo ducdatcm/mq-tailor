@@ -5,8 +5,8 @@ exports.seed = async function (knex) {
     // --- HOME ---
     {
       page_key: 'home', section_key: 'hero', sort_order: 1,
-      title_en: 'Three generations of tailoring in Hanoi, since 1955.',
-      title_vi: 'Ba thế hệ may đo tại Hà Nội, từ năm 1955.',
+      title_en: 'Three generations of tailoring in Hanoi, *since 1955.*',
+      title_vi: 'Ba thế hệ may đo tại Hà Nội, *từ năm 1955.*',
       body_en: '', body_vi: '',
     },
     {
@@ -24,8 +24,8 @@ exports.seed = async function (knex) {
     {
       page_key: 'home', section_key: 'craft_teaser', sort_order: 4,
       title_en: 'The Process', title_vi: 'Quy Trình',
-      body_en: 'Cutting, fitting, making — most of it still happens by hand, at a table that has seen decades of cloth.',
-      body_vi: 'Cắt, thử, may — phần lớn vẫn làm bằng tay, trên một chiếc bàn đã chứng kiến hàng chục năm vải vóc qua lại.',
+      body_en: 'Cutting, fitting, making - most of it still happens by hand, at a table that has seen decades of cloth.',
+      body_vi: 'Cắt, thử, may - phần lớn vẫn làm bằng tay, trên một chiếc bàn đã chứng kiến hàng chục năm vải vóc qua lại.',
     },
     {
       page_key: 'home', section_key: 'people_teaser', sort_order: 5,
@@ -36,14 +36,14 @@ exports.seed = async function (knex) {
     {
       page_key: 'home', section_key: 'tailoring_teaser', sort_order: 6,
       title_en: 'Tailoring', title_vi: 'May Đo',
-      body_en: 'Suits, jackets, trousers, shirts, and formalwear for weddings — each considered by cloth, silhouette and purpose before anything is cut.',
-      body_vi: 'Suit, áo khoác, quần âu, sơ mi và trang phục lễ cưới — mỗi loại được cân nhắc theo vải, dáng và mục đích trước khi đặt kéo.',
+      body_en: 'Suits, jackets, trousers, shirts, and formalwear for weddings - each considered by cloth, silhouette and purpose before anything is cut.',
+      body_vi: 'Suit, áo khoác, quần âu, sơ mi và trang phục lễ cưới - mỗi loại được cân nhắc theo vải, dáng và mục đích trước khi đặt kéo.',
     },
     {
       page_key: 'home', section_key: 'hanoi_teaser', sort_order: 7,
       title_en: 'Phùng Hưng', title_vi: 'Phùng Hưng',
-      body_en: "Phùng Hưng has been a street of commerce and cloth for longer than the house has been on it. Hanoi is not a backdrop here — it's where the work happens.",
-      body_vi: 'Phùng Hưng đã là một con phố buôn bán và vải vóc từ trước cả khi nhà may có mặt. Hà Nội ở đây không phải phông nền — đó là nơi công việc thực sự diễn ra.',
+      body_en: "Phùng Hưng has been a street of commerce and cloth for longer than the house has been on it. Hanoi is not a backdrop here - it's where the work happens.",
+      body_vi: 'Phùng Hưng đã là một con phố buôn bán và vải vóc từ trước cả khi nhà may có mặt. Hà Nội ở đây không phải phông nền - đó là nơi công việc thực sự diễn ra.',
     },
     {
       page_key: 'home', section_key: 'visit_teaser', sort_order: 8,
@@ -68,36 +68,36 @@ exports.seed = async function (knex) {
     {
       page_key: 'house', section_key: 'phung_hung', sort_order: 3,
       title_en: 'On Phùng Hưng', title_vi: 'Trên Phố Phùng Hưng',
-      body_en: 'Phùng Hưng sits at the edge of the Old Quarter, a street shaped by trade and, for a long stretch of its history, by the railway arches running behind it. Cloth merchants and tailors have worked this stretch of Hanoi for generations — Minh Quang is one house among that continuity, not apart from it.',
-      body_vi: 'Phùng Hưng nằm ở rìa khu phố cổ, một con phố được định hình bởi thương mại và, trong một giai đoạn dài, bởi những vòm cầu đường sắt chạy phía sau. Các thương nhân vải vóc và thợ may đã làm việc trên đoạn phố này của Hà Nội qua nhiều thế hệ — Minh Quang là một trong những nhà may thuộc dòng chảy đó, không tách biệt khỏi nó.',
+      body_en: 'Phùng Hưng sits at the edge of the Old Quarter, a street shaped by trade and, for a long stretch of its history, by the railway arches running behind it. Cloth merchants and tailors have worked this stretch of Hanoi for generations - Minh Quang is one house among that continuity, not apart from it.',
+      body_vi: 'Phùng Hưng nằm ở rìa khu phố cổ, một con phố được định hình bởi thương mại và, trong một giai đoạn dài, bởi những vòm cầu đường sắt chạy phía sau. Các thương nhân vải vóc và thợ may đã làm việc trên đoạn phố này của Hà Nội qua nhiều thế hệ - Minh Quang là một trong những nhà may thuộc dòng chảy đó, không tách biệt khỏi nó.',
     },
     {
       page_key: 'house', section_key: 'philosophy', sort_order: 4,
       title_en: "One Method Doesn't Fit Everyone", title_vi: 'Không Một Công Thức Nào Dành Cho Tất Cả',
-      body_en: "A jacket built for a Hanoi summer is not built the same way as one for a cooler climate, and a suit for a wedding is not cut the same way as one for the office. We don't apply one method to every client — the cloth, the occasion and the person in front of us decide the approach.",
-      body_vi: 'Một chiếc áo khoác may cho mùa hè Hà Nội không được dựng giống như một chiếc cho khí hậu lạnh hơn, và một bộ suit cho đám cưới không được cắt giống như một bộ để đi làm. Chúng tôi không áp dụng một công thức duy nhất cho mọi khách hàng — vải, dịp mặc và chính người đang đứng trước mặt chúng tôi mới là điều quyết định cách làm.',
+      body_en: "A jacket built for a Hanoi summer is not built the same way as one for a cooler climate, and a suit for a wedding is not cut the same way as one for the office. We don't apply one method to every client - the cloth, the occasion and the person in front of us decide the approach.",
+      body_vi: 'Một chiếc áo khoác may cho mùa hè Hà Nội không được dựng giống như một chiếc cho khí hậu lạnh hơn, và một bộ suit cho đám cưới không được cắt giống như một bộ để đi làm. Chúng tôi không áp dụng một công thức duy nhất cho mọi khách hàng - vải, dịp mặc và chính người đang đứng trước mặt chúng tôi mới là điều quyết định cách làm.',
     },
 
     // --- TAILORING ---
     {
       page_key: 'tailoring', section_key: 'intro', sort_order: 1,
       title_en: null, title_vi: null,
-      body_en: 'We make suits, jackets, trousers, shirts and formalwear for weddings. None of it is kept in stock — each piece begins with a conversation about how and where it will be worn.',
-      body_vi: 'Chúng tôi may suit, áo khoác, quần âu, sơ mi và trang phục cho lễ cưới. Không có món nào được may sẵn để bán — mỗi bộ trang phục bắt đầu từ một cuộc trò chuyện về việc nó sẽ được mặc ở đâu và như thế nào.',
+      body_en: 'We make suits, jackets, trousers, shirts and formalwear for weddings. None of it is kept in stock - each piece begins with a conversation about how and where it will be worn.',
+      body_vi: 'Chúng tôi may suit, áo khoác, quần âu, sơ mi và trang phục cho lễ cưới. Không có món nào được may sẵn để bán - mỗi bộ trang phục bắt đầu từ một cuộc trò chuyện về việc nó sẽ được mặc ở đâu và như thế nào.',
     },
 
     // --- OUR GARMENTS ---
     {
       page_key: 'garments', section_key: 'intro', sort_order: 1,
       title_en: null, title_vi: null,
-      body_en: 'A closer look at finished work — suits, shirts and trousers as they come off the cutting table, photographed rather than described. No price list here, just the clothes themselves.',
-      body_vi: 'Một góc nhìn gần hơn về những sản phẩm đã hoàn thiện — suit, sơ mi và quần âu sau khi rời bàn cắt, được ghi lại bằng hình ảnh thay vì lời miêu tả. Ở đây không có bảng giá, chỉ có chính những bộ trang phục.',
+      body_en: 'A closer look at finished work - suits, shirts and trousers as they come off the cutting table, photographed rather than described. No price list here, just the clothes themselves.',
+      body_vi: 'Một góc nhìn gần hơn về những sản phẩm đã hoàn thiện - suit, sơ mi và quần âu sau khi rời bàn cắt, được ghi lại bằng hình ảnh thay vì lời miêu tả. Ở đây không có bảng giá, chỉ có chính những bộ trang phục.',
     },
     {
       page_key: 'tailoring', section_key: 'suits', sort_order: 2,
       title_en: 'Suits', title_vi: 'Suit',
-      body_en: "A suit here is built around how you'll actually wear it — for the office five days a week, or for the handful of occasions a year that call for one. That decision shapes the canvas, the shoulder and the cloth weight before it shapes anything else.",
-      body_vi: 'Một bộ suit ở đây được dựng dựa trên cách bạn thực sự sẽ mặc nó — cho công việc năm ngày một tuần, hay cho vài dịp hiếm hoi trong năm cần đến nó. Quyết định đó ảnh hưởng đến lớp dựng, vai áo và trọng lượng vải trước khi ảnh hưởng đến bất cứ điều gì khác.',
+      body_en: "A suit here is built around how you'll actually wear it - for the office five days a week, or for the handful of occasions a year that call for one. That decision shapes the canvas, the shoulder and the cloth weight before it shapes anything else.",
+      body_vi: 'Một bộ suit ở đây được dựng dựa trên cách bạn thực sự sẽ mặc nó - cho công việc năm ngày một tuần, hay cho vài dịp hiếm hoi trong năm cần đến nó. Quyết định đó ảnh hưởng đến lớp dựng, vai áo và trọng lượng vải trước khi ảnh hưởng đến bất cứ điều gì khác.',
     },
     {
       page_key: 'tailoring', section_key: 'jackets', sort_order: 3,
@@ -108,14 +108,14 @@ exports.seed = async function (knex) {
     {
       page_key: 'tailoring', section_key: 'trousers', sort_order: 4,
       title_en: 'Trousers', title_vi: 'Quần Âu',
-      body_en: 'Trousers are cut to sit and move the way you actually sit and move — at a desk, in a car, on a motorbike. Small adjustments here matter more than they look like they would.',
-      body_vi: 'Quần âu được cắt để ngồi và di chuyển đúng như cách bạn thực sự ngồi và di chuyển — ở bàn làm việc, trong ô tô, trên xe máy. Những điều chỉnh nhỏ ở đây quan trọng hơn vẻ ngoài của chúng.',
+      body_en: 'Trousers are cut to sit and move the way you actually sit and move - at a desk, in a car, on a motorbike. Small adjustments here matter more than they look like they would.',
+      body_vi: 'Quần âu được cắt để ngồi và di chuyển đúng như cách bạn thực sự ngồi và di chuyển - ở bàn làm việc, trong ô tô, trên xe máy. Những điều chỉnh nhỏ ở đây quan trọng hơn vẻ ngoài của chúng.',
     },
     {
       page_key: 'tailoring', section_key: 'shirts', sort_order: 5,
       title_en: 'Shirts', title_vi: 'Sơ Mi',
-      body_en: "Shirting is chosen for Hanoi's climate as much as for the occasion — lighter cottons for the humid months, closer weaves for air-conditioned offices. Collar and cuff are built to hold their shape through repeated washing and ironing.",
-      body_vi: 'Vải sơ mi được chọn theo khí hậu Hà Nội cũng nhiều như theo dịp mặc — cotton mỏng nhẹ cho những tháng oi ả, vải dệt sít hơn cho văn phòng có điều hòa. Cổ áo và măng-sét được dựng để giữ form qua nhiều lần giặt và ủi.',
+      body_en: "Shirting is chosen for Hanoi's climate as much as for the occasion - lighter cottons for the humid months, closer weaves for air-conditioned offices. Collar and cuff are built to hold their shape through repeated washing and ironing.",
+      body_vi: 'Vải sơ mi được chọn theo khí hậu Hà Nội cũng nhiều như theo dịp mặc - cotton mỏng nhẹ cho những tháng oi ả, vải dệt sít hơn cho văn phòng có điều hòa. Cổ áo và măng-sét được dựng để giữ form qua nhiều lần giặt và ủi.',
     },
     {
       page_key: 'tailoring', section_key: 'wedding', sort_order: 6,
@@ -140,44 +140,44 @@ exports.seed = async function (knex) {
     {
       page_key: 'people', section_key: 'masters_intro', sort_order: 2,
       title_en: 'The Masters', title_vi: 'Bậc Thầy',
-      body_en: "Cutting is where a garment's shape is decided, and it's the part of the process that takes longest to learn. The house's cutters carry that judgment — pattern, proportion, and the small adjustments that come from years at the table.",
-      body_vi: 'Cắt là công đoạn quyết định hình dáng của một bộ trang phục, và cũng là phần mất nhiều thời gian nhất để học. Những người thợ cắt của nhà may mang theo khả năng phán đoán đó — về rập, tỷ lệ, và những điều chỉnh nhỏ chỉ có được sau nhiều năm đứng ở bàn cắt.',
+      body_en: "Cutting is where a garment's shape is decided, and it's the part of the process that takes longest to learn. The house's cutters carry that judgment - pattern, proportion, and the small adjustments that come from years at the table.",
+      body_vi: 'Cắt là công đoạn quyết định hình dáng của một bộ trang phục, và cũng là phần mất nhiều thời gian nhất để học. Những người thợ cắt của nhà may mang theo khả năng phán đoán đó - về rập, tỷ lệ, và những điều chỉnh nhỏ chỉ có được sau nhiều năm đứng ở bàn cắt.',
     },
     {
       page_key: 'people', section_key: 'front_of_house_intro', sort_order: 3,
       title_en: 'Front of House', title_vi: 'Đón Tiếp',
-      body_en: 'The first conversation about a new commission usually happens here — measurements, cloth, timelines, and the questions that shape everything that follows.',
-      body_vi: 'Cuộc trò chuyện đầu tiên về một đơn may mới thường bắt đầu ở đây — số đo, vải, thời gian hoàn thành, và những câu hỏi định hình mọi thứ diễn ra sau đó.',
+      body_en: 'The first conversation about a new commission usually happens here - measurements, cloth, timelines, and the questions that shape everything that follows.',
+      body_vi: 'Cuộc trò chuyện đầu tiên về một đơn may mới thường bắt đầu ở đây - số đo, vải, thời gian hoàn thành, và những câu hỏi định hình mọi thứ diễn ra sau đó.',
     },
     {
       page_key: 'people', section_key: 'workshop_intro', sort_order: 4,
       title_en: 'The Workshop Team', title_vi: 'Đội Ngũ Xưởng May',
-      body_en: 'Behind every finished garment is a team most clients never meet — coat makers, trouser makers, pressers and finishers, each responsible for one part of the process done well.',
-      body_vi: 'Đằng sau mỗi bộ trang phục hoàn thiện là một đội ngũ mà phần lớn khách hàng chưa từng gặp — thợ may áo, thợ may quần, thợ là ủi và hoàn thiện, mỗi người phụ trách một phần của quy trình và làm tốt phần việc đó.',
+      body_en: 'Behind every finished garment is a team most clients never meet - coat makers, trouser makers, pressers and finishers, each responsible for one part of the process done well.',
+      body_vi: 'Đằng sau mỗi bộ trang phục hoàn thiện là một đội ngũ mà phần lớn khách hàng chưa từng gặp - thợ may áo, thợ may quần, thợ là ủi và hoàn thiện, mỗi người phụ trách một phần của quy trình và làm tốt phần việc đó.',
     },
 
     // --- THE PROCESS ---
     {
       page_key: 'process', section_key: 'intro', sort_order: 1,
       title_en: null, title_vi: null,
-      body_en: 'From a first conversation to a finished garment you can wear for years — roughly a dozen steps, grouped here into stages. Not every commission needs all of them in the same order, but this is the shape the process usually takes.',
-      body_vi: 'Từ cuộc trò chuyện đầu tiên đến một bộ trang phục hoàn chỉnh bạn có thể mặc trong nhiều năm — khoảng hơn chục bước, được nhóm lại theo từng giai đoạn. Không phải đơn hàng nào cũng cần đủ tất cả các bước theo đúng thứ tự này, nhưng đó là hình dạng chung mà quy trình thường đi qua.',
+      body_en: 'From a first conversation to a finished garment you can wear for years - roughly a dozen steps, grouped here into stages. Not every commission needs all of them in the same order, but this is the shape the process usually takes.',
+      body_vi: 'Từ cuộc trò chuyện đầu tiên đến một bộ trang phục hoàn chỉnh bạn có thể mặc trong nhiều năm - khoảng hơn chục bước, được nhóm lại theo từng giai đoạn. Không phải đơn hàng nào cũng cần đủ tất cả các bước theo đúng thứ tự này, nhưng đó là hình dạng chung mà quy trình thường đi qua.',
     },
 
     // --- CLOTH ---
     {
       page_key: 'cloth', section_key: 'intro', sort_order: 1,
       title_en: null, title_vi: null,
-      body_en: "Our cloth library runs from lightweight tropical wools and linen — suited to Hanoi's climate for most of the year — to fine worsteds, cashmere blends and shirtings sourced from established European mills. We keep a working selection rather than a large one, and we're glad to order in something specific when a client asks.",
-      body_vi: 'Kho vải của chúng tôi trải dài từ len nhiệt đới nhẹ và vải lanh — phù hợp với khí hậu Hà Nội phần lớn thời gian trong năm — đến len worsted cao cấp, cashmere pha và vải sơ mi từ các xưởng dệt lâu đời của châu Âu. Chúng tôi giữ một lựa chọn vừa đủ dùng thay vì một kho hàng đồ sộ, và luôn sẵn lòng đặt riêng một loại vải cụ thể khi khách yêu cầu.',
+      body_en: "Our cloth library runs from lightweight tropical wools and linen - suited to Hanoi's climate for most of the year - to fine worsteds, cashmere blends and shirtings sourced from established European mills. We keep a working selection rather than a large one, and we're glad to order in something specific when a client asks.",
+      body_vi: 'Kho vải của chúng tôi trải dài từ len nhiệt đới nhẹ và vải lanh - phù hợp với khí hậu Hà Nội phần lớn thời gian trong năm - đến len worsted cao cấp, cashmere pha và vải sơ mi từ các xưởng dệt lâu đời của châu Âu. Chúng tôi giữ một lựa chọn vừa đủ dùng thay vì một kho hàng đồ sộ, và luôn sẵn lòng đặt riêng một loại vải cụ thể khi khách yêu cầu.',
     },
 
     // --- VISIT ---
     {
       page_key: 'visit', section_key: 'intro', sort_order: 1,
       title_en: null, title_vi: null,
-      body_en: "The house is easiest to understand in person. Call ahead if you'd like to book a specific time, or come by during opening hours — someone is usually free to talk.",
-      body_vi: 'Cách dễ nhất để hiểu về nhà may là ghé thăm trực tiếp. Gọi trước nếu bạn muốn đặt một khung giờ cụ thể, hoặc ghé qua trong giờ mở cửa — thường sẽ có người rảnh để trò chuyện.',
+      body_en: "The house is easiest to understand in person. Call ahead if you'd like to book a specific time, or come by during opening hours - someone is usually free to talk.",
+      body_vi: 'Cách dễ nhất để hiểu về nhà may là ghé thăm trực tiếp. Gọi trước nếu bạn muốn đặt một khung giờ cụ thể, hoặc ghé qua trong giờ mở cửa - thường sẽ có người rảnh để trò chuyện.',
     },
   ];
 

@@ -16,7 +16,7 @@
         <input type="text" id="description_vi" name="description_vi" value="<%= mill ? mill.description_vi || '' : '' %>">
       </div>
     </div>
-    <p class="field-hint" style="margin-top:-0.5rem;">The Cloth page now shows just the logo in a scrolling strip — this note only appears as a hover tooltip on the logo, not as visible text.</p>
+    <p class="field-hint" style="margin-top:-0.5rem;">The Cloth page now shows just the logo in a scrolling strip - this note only appears as a hover tooltip on the logo, not as visible text.</p>
     <div class="field-row">
       <div class="field">
         <label for="sort_order">Sort order</label>
@@ -29,12 +29,12 @@
     <div class="field">
       <label for="media_id">Logo or reference photo</label>
       <select id="media_id" name="media_id" onchange="document.getElementById('crop-link-mill').style.display = this.value ? 'inline' : 'none'; document.getElementById('crop-link-mill').href = '/admin/media/' + this.value + '/focal-point';">
-        <option value="">— None —</option>
+        <option value="">- None -</option>
         <% media.forEach(function (m) { %>
           <option value="<%= m.id %>" <%= mill && mill.media_id === m.id ? 'selected' : '' %>><%= m.filename %> (<%= m.group %>)</option>
         <% }); %>
       </select>
-      <p class="field-hint">Upload the logo/photo from the <a href="/admin/media">Media Library</a> first (Group "cloth" works well) — it'll show up in this list.
+      <p class="field-hint">Upload the logo/photo from the <a href="/admin/media">Media Library</a> first (Group "cloth" works well) - it'll show up in this list.
         <a
           id="crop-link-mill"
           href="/admin/media/<%= (mill && mill.media_id) || '' %>/focal-point"

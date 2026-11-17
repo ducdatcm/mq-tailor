@@ -1,11 +1,13 @@
 <section class="hero">
   <div class="hero__media">
-    <%- include('../partials/image', { media: content.hero && content.hero.media, alt: content.hero ? content.hero['title_' + lang] : '', eager: true, sizesAttr: '100vw' }) %>
+    <%- include('../partials/image', { media: content.hero && content.hero.media, alt: content.hero ? plainTitle(content.hero['title_' + lang]) : '', eager: true, sizesAttr: '100vw' }) %>
   </div>
   <div class="hero__content container">
     <span class="eyebrow"><%= t('home.hero_eyebrow') %></span>
-    <h1><%= content.hero ? content.hero['title_' + lang] : t('meta.site_tagline') %></h1>
-    <a class="btn" href="/<%= lang %>/visit"><%= t('cta.book_an_appointment') %></a>
+    <h1><%- content.hero ? accentTitle(content.hero['title_' + lang]) : accentTitle(t('meta.site_tagline')) %></h1>
+    <div class="hero__actions">
+      <a class="btn btn--accent" href="/<%= lang %>/visit#enquiry" data-track="click_book_hero"><%= t('cta.book_an_appointment') %></a>
+    </div>
   </div>
 </section>
 
@@ -13,6 +15,7 @@
   <% paragraphs(content.intro && content.intro['body_' + lang]).forEach(function (para) { %>
     <p class="lede" style="margin-inline:auto;max-width:85ch;"><%= para %></p>
   <% }); %>
+  <hr class="stitch">
 </section>
 
 <section class="section section--alt">
@@ -147,7 +150,7 @@
       <% paragraphs(content.visit_teaser['body_' + lang]).forEach(function (para) { %>
         <p class="lede"><%= para %></p>
       <% }); %>
-      <a class="btn" href="/<%= lang %>/visit"><%= t('cta.visit_the_house') %></a>
+      <a class="btn btn--accent" href="/<%= lang %>/visit#enquiry"><%= t('cta.book_an_appointment') %></a>
     </div>
   </section>
 <% } else { %>
@@ -158,7 +161,7 @@
       <% paragraphs(content.visit_teaser && content.visit_teaser['body_' + lang]).forEach(function (para) { %>
         <p class="lede" style="margin-inline:auto;"><%= para %></p>
       <% }); %>
-      <a class="btn" href="/<%= lang %>/visit"><%= t('cta.visit_the_house') %></a>
+      <a class="btn btn--accent" href="/<%= lang %>/visit#enquiry"><%= t('cta.book_an_appointment') %></a>
     </div>
   </section>
 <% } %>

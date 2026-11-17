@@ -1,5 +1,5 @@
 <h1>The Process</h1>
-<p style="color:var(--admin-muted);max-width:70ch;">The 14 steps, their order and their stage groupings are fixed by design — edit the wording and photo for each here. If a photo shows exactly what's happening at one of these steps, attach it below. For a wider workshop shot that isn't tied to one specific step, upload it in <a href="/admin/media">Media Library</a> with Group set to <strong>workshop</strong> instead — it'll appear in the "Our Workshop" gallery at the bottom of the public page.</p>
+<p style="color:var(--admin-muted);max-width:70ch;">The 14 steps, their order and their stage groupings are fixed by design - edit the wording and photo for each here. If a photo shows exactly what's happening at one of these steps, attach it below. For a wider workshop shot that isn't tied to one specific step, upload it in <a href="/admin/media">Media Library</a> with Group set to <strong>workshop</strong> instead - it'll appear in the "Our Workshop" gallery at the bottom of the public page.</p>
 
 <% steps.forEach(function (step, i) { %>
   <% var isNewStage = i === 0 || steps[i - 1].stage_en !== step.stage_en; %>
@@ -21,18 +21,18 @@
       </div>
       <div class="field-row">
         <div class="field">
-          <label>Body (English) — leave a blank line between paragraphs</label>
+          <label>Body (English) - leave a blank line between paragraphs</label>
           <textarea name="body_en"><%= step.body_en || '' %></textarea>
         </div>
         <div class="field">
-          <label>Body (Vietnamese) — leave a blank line between paragraphs</label>
+          <label>Body (Vietnamese) - leave a blank line between paragraphs</label>
           <textarea name="body_vi"><%= step.body_vi || '' %></textarea>
         </div>
       </div>
       <div class="field">
         <label>Image</label>
         <select name="media_id" onchange="document.getElementById('crop-link-<%= step.step_key %>').style.display = this.value ? 'inline' : 'none'; document.getElementById('crop-link-<%= step.step_key %>').href = '/admin/media/' + this.value + '/focal-point';">
-          <option value="">— None (placeholder shown) —</option>
+          <option value="">- None (placeholder shown) -</option>
           <% media.forEach(function (m) { %>
             <option value="<%= m.id %>" <%= step.media_id === m.id ? 'selected' : '' %>><%= m.filename %> (<%= m.group %>)</option>
           <% }); %>

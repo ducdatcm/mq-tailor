@@ -32,11 +32,12 @@ async function sendEnquiryNotification(enquiry) {
       from: process.env.SMTP_FROM || process.env.SMTP_USER,
       to,
       replyTo: enquiry.email || undefined,
-      subject: `New enquiry from ${enquiry.name} — Minh Quang website`,
+      subject: `New enquiry from ${enquiry.name} - Minh Quang website`,
       text: [
         `Name: ${enquiry.name}`,
         `Phone: ${enquiry.phone || '-'}`,
         `Email: ${enquiry.email || '-'}`,
+        `Preferred visit: ${enquiry.preferred_date ? `${enquiry.preferred_date} (${enquiry.preferred_time || 'any'})` : '-'}`,
         `Language: ${enquiry.locale}`,
         `Page: ${enquiry.source_page}`,
         '',

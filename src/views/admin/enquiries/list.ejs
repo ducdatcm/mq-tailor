@@ -8,12 +8,13 @@
 </div>
 
 <table class="admin-table">
-  <thead><tr><th>Name</th><th>Contact</th><th>Message</th><th>Page / Lang</th><th>When</th><th>Status</th></tr></thead>
+  <thead><tr><th>Name</th><th>Contact</th><th>Preferred visit</th><th>Message</th><th>Page / Lang</th><th>When</th><th>Status</th></tr></thead>
   <tbody>
     <% enquiries.forEach(function (e) { %>
       <tr>
         <td><%= e.name %></td>
         <td><%= e.phone || '' %><% if (e.phone && e.email) { %><br><% } %><%= e.email || '' %></td>
+        <td style="white-space:nowrap;"><% if (e.preferred_date) { %><%= new Date(e.preferred_date).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' }) %><br><span style="color:var(--admin-muted);"><%= e.preferred_time || 'any' %></span><% } else { %>-<% } %></td>
         <td style="max-width:280px;"><%= e.message %></td>
         <td><%= e.source_page %> / <%= e.locale %></td>
         <td><%= new Date(e.created_at).toLocaleString() %></td>

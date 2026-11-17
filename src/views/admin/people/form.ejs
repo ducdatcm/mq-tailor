@@ -30,11 +30,11 @@
 
     <div class="field-row">
       <div class="field">
-        <label for="bio_en">Bio (English) — leave a blank line between paragraphs</label>
+        <label for="bio_en">Bio (English) - leave a blank line between paragraphs</label>
         <textarea id="bio_en" name="bio_en"><%= person ? person.bio_en || '' : '' %></textarea>
       </div>
       <div class="field">
-        <label for="bio_vi">Bio (Vietnamese) — leave a blank line between paragraphs</label>
+        <label for="bio_vi">Bio (Vietnamese) - leave a blank line between paragraphs</label>
         <textarea id="bio_vi" name="bio_vi"><%= person ? person.bio_vi || '' : '' %></textarea>
       </div>
     </div>
@@ -43,7 +43,7 @@
       <div class="field">
         <label for="photo_media_id">Photo</label>
         <select id="photo_media_id" name="photo_media_id" onchange="document.getElementById('crop-link-photo').style.display = this.value ? 'inline' : 'none'; document.getElementById('crop-link-photo').href = '/admin/media/' + this.value + '/focal-point';">
-          <option value="">— None (placeholder shown) —</option>
+          <option value="">- None (placeholder shown) -</option>
           <% media.forEach(function (m) { %>
             <option value="<%= m.id %>" <%= person && person.photo_media_id === m.id ? 'selected' : '' %>><%= m.filename %> (<%= m.group %>)</option>
           <% }); %>

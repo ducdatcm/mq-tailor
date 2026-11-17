@@ -1,7 +1,7 @@
 <%
   // Locals expected: settings, t, lang (all already in scope wherever this
   // is included). Renders one circular icon per platform that has a URL
-  // set in Admin > Settings > Contact & Social — blank fields are simply
+  // set in Admin > Settings > Contact & Social - blank fields are simply
   // skipped, so the row only ever shows what the house actually uses.
   var platforms = [
     { key: 'facebook', url: settings && settings.facebook_url, track: 'click_facebook', label: t('cta.follow_facebook') },

@@ -11,7 +11,7 @@
         <td><%= p.title_en %></td>
         <td><%= p.category %></td>
         <td><span class="tag <%= p.status === 'published' ? 'tag--live' : '' %>"><%= p.status %></span></td>
-        <td><%= p.published_at ? new Date(p.published_at).toLocaleDateString() : '—' %></td>
+        <td><%= p.published_at ? new Date(p.published_at).toLocaleDateString() : ' - ' %></td>
         <td>
           <a href="/admin/journal/<%= p.id %>/edit">Edit</a>
           &nbsp;·&nbsp;

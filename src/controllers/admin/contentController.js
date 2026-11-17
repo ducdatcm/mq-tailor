@@ -20,7 +20,7 @@ async function show(req, res, next) {
     const media = await db('media').orderBy('created_at', 'desc');
 
     res.render('admin/content/edit', {
-      title: `Edit Content — ${PAGES[pageKey]}`,
+      title: `Edit Content - ${PAGES[pageKey]}`,
       pageKey,
       pageLabel: PAGES[pageKey],
       pages: PAGES,

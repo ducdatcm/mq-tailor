@@ -121,7 +121,7 @@ function decrypt(buffer, passphrase) {
   try {
     return Buffer.concat([decipher.update(buffer.subarray(header)), decipher.final()]);
   } catch (err) {
-    throw new Error('Could not decrypt the backup — wrong BACKUP_PASSPHRASE, or the file is damaged.');
+    throw new Error('Could not decrypt the backup - wrong BACKUP_PASSPHRASE, or the file is damaged.');
   }
 }
 

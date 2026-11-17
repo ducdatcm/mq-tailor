@@ -9,6 +9,7 @@ const flash = require('connect-flash');
 const helmet = require('helmet');
 
 const { runStartupTasks } = require('./src/config/bootstrap');
+const { COMPANY_LEGAL_NAME } = require('./src/config/company');
 const privateDomainGate = require('./src/middleware/privateDomain');
 const basicAuthGate = require('./src/middleware/basicAuthGate');
 const siteSettingsMiddleware = require('./src/middleware/siteSettings');
@@ -120,6 +121,19 @@ app.use((req, res, next) => {
       .split(/\n\s*\n/)
       .map((p) => p.trim())
       .filter(Boolean);
+  // Headline accent: words wrapped in *asterisks* in an admin title field
+  // render as an italic, warm-beige accent (e.g. "…in Hanoi, *since 1955.*").
+  // The text is HTML-escaped first, so this is safe to output with <%- %>.
+  res.locals.accentTitle = (text) =>
+    String(text || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/\*([^*]+)\*/g, '<em class="accent">$1</em>');
+  // Same title without the asterisks, for alt text and other plain uses.
+  res.locals.plainTitle = (text) => String(text || '').replace(/\*/g, '');
+  res.locals.companyName = COMPANY_LEGAL_NAME;
   next();
 });
 

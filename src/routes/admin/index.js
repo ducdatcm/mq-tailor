@@ -9,6 +9,7 @@ const dashboardController = require('../../controllers/admin/dashboardController
 const journalController = require('../../controllers/admin/journalController');
 const peopleController = require('../../controllers/admin/peopleController');
 const clothController = require('../../controllers/admin/clothController');
+const faqController = require('../../controllers/admin/faqController');
 const mediaController = require('../../controllers/admin/mediaController');
 const settingsController = require('../../controllers/admin/settingsController');
 const contentController = require('../../controllers/admin/contentController');
@@ -58,6 +59,13 @@ router.post('/cloth/new', clothController.create);
 router.get('/cloth/:id/edit', clothController.editForm);
 router.post('/cloth/:id/edit', clothController.update);
 router.post('/cloth/:id/delete', clothController.remove);
+
+router.get('/faqs', faqController.list);
+router.get('/faqs/new', faqController.newForm);
+router.post('/faqs/new', faqController.create);
+router.get('/faqs/:id/edit', faqController.editForm);
+router.post('/faqs/:id/edit', faqController.update);
+router.post('/faqs/:id/delete', faqController.remove);
 
 router.get('/media', mediaController.list);
 router.post('/media/upload', upload.single('image'), mediaController.upload);

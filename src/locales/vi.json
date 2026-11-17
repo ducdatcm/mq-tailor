@@ -14,6 +14,9 @@
     "journal": "Journal",
     "visit": "Ghé Thăm"
   },
+  "header": {
+    "top_tagline": "Một nhà may ở Hà Nội, từ năm 1955"
+  },
   "cta": {
     "visit_the_house": "Ghé Thăm Nhà May",
     "discover_the_house": "Khám Phá Nhà May",
@@ -70,7 +73,7 @@
     "heading": "Vải",
     "gallery_heading": "Thư Viện Vải",
     "mills_heading": "Một Số Xưởng Dệt Chúng Tôi Hợp Tác",
-    "mills_empty": "Danh sách vải hiện có đang được cập nhật tại đây — ghé trực tiếp để xem những gì đang có sẵn trên bàn."
+    "mills_empty": "Danh sách vải hiện có đang được cập nhật tại đây - ghé trực tiếp để xem những gì đang có sẵn trên bàn."
   },
   "journal": {
     "heading": "Journal",
@@ -98,12 +101,21 @@
     "form_message": "Lời Nhắn",
     "form_message_placeholder": "Bạn muốn may gì, và dự kiến cần vào khi nào?",
     "form_submit": "Gửi Liên Hệ",
-    "form_consent_before": "Tôi đồng ý để Nhà May Minh Quang sử dụng họ tên, số điện thoại, email và nội dung tin nhắn của tôi để phản hồi yêu cầu này, theo",
+    "form_consent_before": "Tôi đồng ý để Nhà May Minh Quang sử dụng họ tên, số điện thoại, email, thời gian muốn đến và nội dung tin nhắn của tôi để phản hồi yêu cầu này, theo",
     "form_consent_link": "Chính Sách Bảo Mật",
     "form_consent_after": ".",
     "form_consent_error": "Vui lòng tích vào ô đồng ý về cách chúng tôi sử dụng thông tin của bạn để chúng tôi có thể phản hồi.",
-    "form_success": "Cảm ơn bạn — chúng tôi đã nhận được lời nhắn. Chúng tôi sẽ phản hồi sớm nhất có thể.",
-    "form_error": "Đã có lỗi khi gửi lời nhắn. Vui lòng thử lại, hoặc liên hệ trực tiếp qua Zalo hoặc điện thoại."
+    "form_success": "Cảm ơn bạn - chúng tôi đã nhận được lời nhắn. Chúng tôi sẽ phản hồi sớm nhất có thể.",
+    "form_error": "Đã có lỗi khi gửi lời nhắn. Vui lòng thử lại, hoặc liên hệ trực tiếp qua Zalo hoặc điện thoại.",
+    "form_contact_hint": "Vui lòng để lại ít nhất số điện thoại hoặc email để chúng tôi phản hồi.",
+    "form_date": "Ngày muốn đến (không bắt buộc)",
+    "form_time": "Thời gian trong ngày",
+    "time_any": "Lúc nào cũng được",
+    "time_morning": "Buổi sáng",
+    "time_afternoon": "Buổi chiều",
+    "form_date_hint": "Chúng tôi sẽ xác nhận giờ cụ thể với bạn. Giờ mở cửa có ở phía trên.",
+    "form_date_error": "Vui lòng chọn một ngày nhà may mở cửa, từ hôm nay trở đi.",
+    "faq_heading": "Câu hỏi thường gặp"
   },
   "footer": {
     "rights": "Đã đăng ký bản quyền.",

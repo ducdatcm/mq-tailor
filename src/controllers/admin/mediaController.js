@@ -46,7 +46,7 @@ async function upload(req, res, next) {
       original_path: result.originalPath,
     });
 
-    req.flash('success', 'Image uploaded — original kept in full quality, site copy optimized for speed.');
+    req.flash('success', 'Image uploaded - original kept in full quality, site copy optimized for speed.');
     res.redirect('/admin/media');
   } catch (err) {
     req.flash('error', err.message || 'Upload failed.');
@@ -113,7 +113,7 @@ async function remove(req, res, next) {
         db('site_settings').where({ logo_media_id: row.id }).first(),
       ]);
       if (inUse.some(Boolean)) {
-        req.flash('error', 'This image is still used on a page — remove it there first.');
+        req.flash('error', 'This image is still used on a page - remove it there first.');
         return res.redirect('/admin/media');
       }
 

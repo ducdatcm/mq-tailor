@@ -13,12 +13,18 @@
   --color-warm-grey: #8c8478;
   --color-charcoal: #2b2620;
   --color-ink: #1c1913;
-  --color-accent: #7a3b32; /* restrained cloth-red, used sparingly */
+  --color-accent: #8b2e22; /* lacquer red — the one brand colour, kept for booking actions and small labels */
+  --color-accent-dark: #6f2219;
+  --color-brass: #b08d57; /* hairlines and small details, like the brass on an Old Quarter shop sign */
+  --color-beige: #e8d6b1; /* headline accent on dark photos */
 
   --color-bg: var(--color-paper);
   --color-bg-alt: var(--color-offwhite);
   --color-text: var(--color-ink);
-  --color-text-muted: var(--color-warm-grey);
+  /* Was the warm grey (#8c8478), which only reached ~3.5:1 contrast on the
+     paper background — too faint for paragraph text. This keeps the warmth
+     at ~5.8:1, above the 4.5:1 readability guideline. */
+  --color-text-muted: #6b6257;
   --color-border: var(--color-stone);
   --color-surface: #ffffff;
 
@@ -144,12 +150,23 @@ p {
 
 .eyebrow {
   font-family: var(--font-sans);
-  font-size: var(--fs-sm);
-  letter-spacing: 0.12em;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--color-text-muted);
-  margin: 0 0 var(--space-1);
+  color: var(--color-accent);
+  margin: 0 0 var(--space-2);
   display: block;
+}
+
+/* Stitch line: a dashed brass rule used as a quiet divider. */
+.stitch {
+  height: 2px;
+  width: 120px;
+  border: 0;
+  margin: var(--space-4) auto 0;
+  background: repeating-linear-gradient(90deg, var(--color-brass) 0 7px, transparent 7px 14px);
+  opacity: 0.8;
 }
 
 .lede {
@@ -207,14 +224,40 @@ select:focus-visible {
   .section { padding-block: var(--space-7); }
 }
 
-/* ---------- Header / Nav ---------- */
+/* ---------- Header / Nav ----------
+   Logo on the left followed by the menu (same layout as before). A slim
+   dark bar above carries the house tagline, the language switch and the
+   booking button, so booking is on screen on every page. Below 1100px the
+   menu folds behind the menu button and EN/VI moves next to it. */
 .site-header {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(251, 250, 247, 0.92);
+  background: rgba(251, 250, 247, 0.95);
   backdrop-filter: saturate(140%) blur(6px);
   border-bottom: 1px solid var(--color-border);
+}
+
+.utility-bar {
+  display: none;
+  background: var(--color-ink);
+  color: #cfc6b4;
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+}
+.utility-bar__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  min-height: 40px;
+  max-width: 1600px;
+}
+.utility-bar__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
 }
 
 .site-header__inner {
@@ -222,9 +265,6 @@ select:focus-visible {
   align-items: center;
   padding-block: var(--space-2);
   gap: var(--space-5);
-  /* Wider than the standard .container cap (1200px) — a 9-item nav plus
-     logo and language switch needs more room than the reading-width
-     content container, which is why it was wrapping onto two lines. */
   max-width: 1600px;
 }
 
@@ -243,6 +283,7 @@ select:focus-visible {
   font-size: var(--fs-lg);
   letter-spacing: 0.04em;
   color: var(--color-ink);
+  white-space: nowrap;
 }
 .brand__wordmark small {
   display: block;
@@ -284,22 +325,10 @@ select:focus-visible {
   transform: scaleX(1);
 }
 
-/* Full nav needs ~1100px (nine links + logo + language switch). Below that it
-   overflows, which a portrait large-format tablet (≈1080px wide) hit — so it
-   collapses to the menu button up to 1200px instead of the old 1024px. */
-@media (min-width: 1200px) {
-  .main-nav { display: flex; }
-  .nav-toggle { display: none; }
-}
-
 .header-actions {
   display: flex;
   align-items: center;
   gap: var(--space-2);
-  /* Pushes to the far right, keeping the logo and nav grouped together on
-     the left instead of splitting the header's leftover space evenly
-     into a gap right after the logo (the old justify-content:space-between
-     behaviour). */
   margin-left: auto;
 }
 
@@ -321,6 +350,25 @@ select:focus-visible {
 .lang-switch a[aria-current="true"] {
   background: var(--color-ink);
   color: var(--color-paper);
+}
+/* Compact text version inside the dark top bar */
+.lang-switch--light {
+  border: 0;
+  gap: var(--space-2);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+}
+.lang-switch--light a {
+  min-width: 0;
+  min-height: 32px;
+  padding: 0;
+  color: #cfc6b4;
+  border-bottom: 1px solid transparent;
+}
+.lang-switch--light a[aria-current="true"] {
+  background: none;
+  color: #fff;
+  border-bottom-color: var(--color-brass);
 }
 
 .nav-toggle {
@@ -350,7 +398,22 @@ select:focus-visible {
   display: flex;
   align-items: center;
 }
-@media (min-width: 1200px) {
+.mobile-nav .mobile-nav__book {
+  margin: var(--space-2) var(--space-3);
+  justify-content: center;
+  border: 0;
+  background: var(--color-accent);
+  color: #fff;
+  font-size: 0.8rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+/* Eight links + logo need ~1000px; below 1100px the menu button takes over. */
+@media (min-width: 1100px) {
+  .utility-bar { display: block; }
+  .main-nav { display: flex; }
+  .header-actions { display: none; }
   .mobile-nav { display: none !important; }
 }
 
@@ -360,11 +423,14 @@ select:focus-visible {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  min-height: 44px;
-  padding: 0.75rem 1.5rem;
+  min-height: 48px;
+  padding: 0.75rem 1.75rem;
   font-family: var(--font-sans);
-  font-size: var(--fs-sm);
-  letter-spacing: 0.03em;
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-align: center;
   border: 1px solid var(--color-ink);
   border-radius: var(--radius);
   background: var(--color-ink);
@@ -373,8 +439,8 @@ select:focus-visible {
   transition: background var(--transition-base), color var(--transition-base), border-color var(--transition-base);
 }
 .btn:hover {
-  background: var(--color-accent);
-  border-color: var(--color-accent);
+  background: var(--color-charcoal);
+  border-color: var(--color-charcoal);
   color: #fff;
 }
 .btn--outline {
@@ -385,10 +451,36 @@ select:focus-visible {
   background: var(--color-ink);
   color: var(--color-paper);
 }
+/* Booking actions only — the single place the lacquer red fills a surface. */
+.btn--accent {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: #fff;
+}
+.btn--accent:hover {
+  background: var(--color-accent-dark);
+  border-color: var(--color-accent-dark);
+}
+/* Secondary action on top of a dark photo */
+.btn--ghost-light {
+  background: transparent;
+  border-color: rgba(255, 255, 255, 0.75);
+  color: #fff;
+}
+.btn--ghost-light:hover {
+  background: #fff;
+  border-color: #fff;
+  color: var(--color-ink);
+}
 .btn--sm {
-  min-height: 38px;
-  padding: 0.5rem 1rem;
-  font-size: var(--fs-sm);
+  min-height: 40px;
+  padding: 0.5rem 1.1rem;
+  font-size: 0.72rem;
+}
+.btn--xs {
+  min-height: 30px;
+  padding: 0.3rem 0.9rem;
+  font-size: 0.68rem;
 }
 
 /* ---------- Hero ---------- */
@@ -414,15 +506,37 @@ select:focus-visible {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(28, 25, 19, 0.15) 0%, rgba(28, 25, 19, 0.65) 100%);
+  /* Darker on the left and at the bottom, where the headline and buttons
+     sit, so white text stays readable on any photo. */
+  background:
+    linear-gradient(90deg, rgba(28, 25, 19, 0.7) 0%, rgba(28, 25, 19, 0.35) 50%, rgba(28, 25, 19, 0) 80%),
+    linear-gradient(180deg, rgba(28, 25, 19, 0.1) 0%, rgba(28, 25, 19, 0.6) 100%);
 }
 .hero__content {
   position: relative;
   padding: var(--space-5) var(--space-3) var(--space-6);
   max-width: 900px;
 }
-.hero__content .eyebrow { color: rgba(255,255,255,0.75); }
-.hero__content h1 { color: #fff; }
+.hero__content .eyebrow { color: var(--color-brass); }
+.hero__content h1 {
+  color: #fff;
+  font-weight: 400;
+  line-height: 1.12;
+  margin-bottom: var(--space-4);
+  text-wrap: balance;
+}
+.hero__content h1 .accent {
+  font-style: italic;
+  color: var(--color-beige);
+}
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+@media (min-width: 900px) {
+  .hero__content { padding: var(--space-5) var(--space-6) var(--space-7); }
+}
 
 /* Sub-page intro banner (The House/Tailoring/Cloth/etc.) — same overlay
    treatment as the homepage hero, just shorter, so the heading blends
@@ -493,7 +607,7 @@ select:focus-visible {
   position: relative;
   padding: var(--space-5) var(--space-3);
 }
-.photo-band__content .eyebrow { color: rgba(255,255,255,0.75); }
+.photo-band__content .eyebrow { color: var(--color-beige); }
 .photo-band__content h2 { color: #fff; }
 .photo-band__content .lede { color: rgba(255,255,255,0.95); margin-inline: auto; }
 
@@ -851,6 +965,45 @@ select:focus-visible {
   color: var(--color-text-muted);
   margin-top: 0.35rem;
 }
+.form-hint--tight { margin: calc(var(--space-2) * -1) 0 var(--space-3); }
+/* Two short fields side by side (phone + email, date + time) on wider screens */
+.form-row { display: grid; gap: 0 var(--space-3); }
+@media (min-width: 640px) {
+  .form-row { grid-template-columns: 1fr 1fr; }
+}
+.form-field select { appearance: auto; }
+
+/* FAQ (Visit page) — native <details>, so it opens with keyboard and works without JS */
+.faq h2 { margin-bottom: var(--space-3); }
+.faq-list { border-top: 1px solid var(--color-border); }
+.faq-item { border-bottom: 1px solid var(--color-border); }
+.faq-item summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 56px;
+  padding: var(--space-2) 0;
+  font-family: var(--font-serif);
+  font-size: var(--fs-lg);
+  color: var(--color-ink);
+}
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary::after {
+  content: '+';
+  flex: 0 0 auto;
+  font-family: var(--font-sans);
+  font-size: 1.4rem;
+  line-height: 1;
+  color: var(--color-brass);
+  transition: transform var(--transition-base);
+}
+.faq-item[open] summary::after { transform: rotate(45deg); }
+.faq-item summary:hover { color: var(--color-accent); }
+.faq-answer { padding: 0 0 var(--space-2); color: var(--color-text-muted); }
+.faq-answer p:last-child { margin-bottom: 0; }
 /* Consent tick-box on the enquiry form — its own block, not .form-field,
    so the full-width text-input styling doesn't stretch the checkbox. */
 .form-consent {
@@ -964,6 +1117,11 @@ select:focus-visible {
   padding-block: var(--space-6);
 }
 .site-footer a:hover { color: var(--color-cloth); }
+/* The darker muted tone used on the paper background is too dim on the ink
+   footer — use a lighter warm grey there instead. */
+.site-footer .text-muted,
+.site-footer .hours-table td:last-child { color: #b5ab99; }
+.site-footer .hours-table td { border-bottom-color: rgba(255,255,255,0.12); }
 
 .social-icons {
   display: flex;
@@ -1028,6 +1186,30 @@ select:focus-visible {
   overflow: hidden;
   clip: rect(0 0 0 0);
   white-space: nowrap;
+}
+
+/* ---------- Phone booking bar ----------
+   On phones the header has no room for a booking button, so the two actions
+   that matter most stay within thumb reach at the bottom of the screen.
+   Not shown on the Visit page itself, where the form already is. */
+.mobile-cta { display: none; }
+@media (max-width: 767px) {
+  .mobile-cta {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 90;
+    display: flex;
+    gap: 0.5rem;
+    padding: 0.6rem 0.75rem calc(0.6rem + env(safe-area-inset-bottom, 0px));
+    background: rgba(251, 250, 247, 0.97);
+    border-top: 1px solid var(--color-border);
+    box-shadow: 0 -6px 20px rgba(28, 25, 19, 0.08);
+  }
+  .mobile-cta .btn { flex: 1 1 auto; min-height: 46px; padding-inline: 0.75rem; }
+  .mobile-cta .btn--outline { flex: 0 0 auto; }
+  body:has(.mobile-cta) { padding-bottom: calc(70px + env(safe-area-inset-bottom, 0px)); }
 }
 
 /* ---------- Tablets & large touch screens ----------

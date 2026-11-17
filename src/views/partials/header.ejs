@@ -1,7 +1,6 @@
-
 <%
+  // The logo links home, so "Home" isn't repeated as a menu item.
   var navItems = [
-    { href: '/' + lang + '/', key: 'home' },
     { href: '/' + lang + '/the-house', key: 'house' },
     { href: '/' + lang + '/tailoring', key: 'tailoring' },
     { href: '/' + lang + '/our-garments', key: 'garments' },
@@ -12,14 +11,27 @@
     { href: '/' + lang + '/visit', key: 'visit' },
   ];
   function isCurrent(href) {
-    if (href === '/' + lang + '/') return currentPath === '/' + lang || currentPath === '/' + lang + '/';
     return currentPath.indexOf(href) === 0;
   }
+  var bookHref = '/' + lang + '/visit#enquiry';
 %>
 <a class="skip-link" href="#main">Skip to content</a>
 <header class="site-header">
+  <div class="utility-bar">
+    <div class="container utility-bar__inner">
+      <span class="utility-bar__info"><%= t('header.top_tagline') %></span>
+      <div class="utility-bar__actions">
+        <div class="lang-switch lang-switch--light" role="group" aria-label="<%= t('footer.language') %>">
+          <a href="<%= lang === 'en' ? currentPath : altLangPath %>" aria-current="<%= lang === 'en' ? 'true' : 'false' %>">EN</a>
+          <a href="<%= lang === 'vi' ? currentPath : altLangPath %>" aria-current="<%= lang === 'vi' ? 'true' : 'false' %>">VI</a>
+        </div>
+        <a class="btn btn--accent btn--xs" href="<%= bookHref %>" data-track="click_book_header"><%= t('cta.book_an_appointment') %></a>
+      </div>
+    </div>
+  </div>
+
   <div class="container site-header__inner">
-    <a class="brand" href="/<%= lang %>/">
+    <a class="brand" href="/<%= lang %>/" aria-label="<%= t('meta.site_name') %> - <%= t('nav.home') %>">
       <% if (logo) { %>
         <% var _logoH = (settings && settings.logo_height) ? settings.logo_height : 40; %>
         <img src="<%= logo.src %>" alt="<%= t('meta.site_name') %>" style="height:<%= _logoH %>px;max-height:<%= _logoH %>px;">
@@ -49,5 +61,6 @@
     <% navItems.forEach(function (item) { %>
       <a href="<%= item.href %>" <% if (isCurrent(item.href)) { %>aria-current="page"<% } %>><%= t('nav.' + item.key) %></a>
     <% }); %>
+    <a class="mobile-nav__book" href="<%= bookHref %>" data-track="click_book_menu"><%= t('cta.book_an_appointment') %></a>
   </nav>
 </header>
