@@ -152,6 +152,14 @@ Chưa chạy buổi thử có người thật. Khi thử, nên quan sát: khách
 - **Các màn khác:** thẻ lựa chọn, bảng tóm tắt, phiếu xem lại, biểu mẫu đơn và hộp thoại theo cùng hệ thống (bo góc 12–20, bóng nhẹ, viền mảnh, ô nhập có vòng nhấn đỏ rượu, lỗi màu đỏ riêng).
 - Bản demo HTML và mã dựng lại nằm ở `design/redesign/` (chưa đưa vào git).
 
+## Ảnh thật cho từng lựa chọn (đã làm, chờ tiệm gắn ảnh)
+
+- **Gắn ảnh:** trang quản trị website › Media Library › dưới mỗi ảnh bấm **Tablet choices**, tích các lựa chọn ảnh đó thể hiện (ví dụ Áo › Kiểu ve › Ve nhọn), bấm **Save tablet choices**. Một ảnh có thể gắn nhiều lựa chọn; một lựa chọn có thể có nhiều ảnh. Bộ lọc **On the tablet** liệt kê các ảnh đã gắn. Chú thích (VI/EN) của ảnh hiện dưới ảnh trên tablet.
+- **Trên tablet:** lựa chọn có ảnh mang dấu **"Có ảnh thật"** ở góc hình; bấm phóng to thấy **hình vẽ và ảnh thật cạnh nhau**, vuốt bằng nút ‹ › nếu có nhiều ảnh. Lựa chọn chưa có ảnh vẫn chỉ có hình vẽ.
+- **Offline:** mỗi lần mở app có mạng, tablet lấy danh sách ảnh mới và lưu sẵn ảnh (bản rộng 1200 px) trên máy; mất mạng vẫn xem được. Ảnh bỏ gắn sẽ bị xóa khỏi máy ở lần mở sau.
+- **Kỹ thuật:** `src/photos/optionPhotos.ts` (lấy và lưu), `src/components/OptionZoom.tsx` + `PhotoViewer.tsx` (hiển thị), `public/sw.js` (bộ nhớ `mq-photos`). Phía website: bảng `media_tablet_options`, `src/utils/tabletPhotos.js`, hai đường dẫn `/tablet/api/option-photos` và `/tablet/api/photo/…` trong `src/routes/tablet.js`. Danh sách lựa chọn cho trang quản trị là `tablet-app/options.json`, sinh ra khi `npm run build:site`.
+- **Chưa kiểm tra trên máy thật:** trang quản trị với cơ sở dữ liệu thật, ảnh thật từ R2, và lưu offline trên tablet. Bộ kiểm tra dùng ảnh giả lập.
+
 ## Chạy trên tablet Android (đã làm, chưa thử trên máy thật)
 
 - Ứng dụng được build vào `tablet-app/` của website (ngoài `public/`, vì Hostinger phát tệp trong `public/` mà không qua mã truy cập) và phục vụ ở `/tablet/` (route `src/routes/tablet.js`, chính sách bảo mật riêng cho phép gửi đơn tới Google Apps Script, không cho công cụ tìm kiếm lập chỉ mục). Cài lên màn hình chính, chạy toàn màn hình, offline sau lần đầu (service worker). Hướng dẫn: `docs/ANDROID-SETUP.md`.

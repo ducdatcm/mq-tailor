@@ -9,7 +9,7 @@ interface ModalProps {
   footer?: ReactNode;
   /** alertdialog for confirmations that need an explicit answer. */
   role?: 'dialog' | 'alertdialog';
-  size?: 'normal' | 'wide';
+  size?: 'normal' | 'wide' | 'xl';
   closeLabel: string;
 }
 

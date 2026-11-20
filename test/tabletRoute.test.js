@@ -147,3 +147,96 @@ test('the copy of the app on the site carries no spreadsheet address or secret',
     .join('');
   assert.ok(!/script\.google\.com\/macros\/s\/[A-Za-z0-9_-]{20,}/.test(everything), 'no real Apps Script address in the build');
 });
+
+const photoRow = (option_id, media_id, extra = {}) => ({
+  option_id,
+  media_id,
+  sort: 0,
+  variants: JSON.stringify({ webp: { 480: `https://photos.example.com/${media_id}-480.webp`, 1200: `https://photos.example.com/${media_id}-1200.webp`, 1920: `https://photos.example.com/${media_id}-1920.webp` } }),
+  width: 3000,
+  height: 2000,
+  alt_vi: 'Ve nhọn, vải xám',
+  alt_en: 'Peak lapel, grey cloth',
+  focal_x: 40,
+  focal_y: 30,
+  ...extra,
+});
+
+test('the photos linked to tablet choices are listed for a signed-in tablet', async () => {
+  await withServer(CODE, async (base) => {
+    tablet.setPhotoSource({ rows: async () => [photoRow('lapel.peak', 7), photoRow('lapel.peak', 9), photoRow('pleats.two', 7), photoRow('gone.option', 3)] });
+    try {
+      const locked = await fetch(`${base}/tablet/api/option-photos`);
+      assert.strictEqual(locked.status, 401, 'no access code, no photo list');
+
+      const { cookie } = await signIn(base);
+      const res = await fetch(`${base}/tablet/api/option-photos`, { headers: { cookie } });
+      assert.strictEqual(res.status, 200);
+      assert.match(res.headers.get('cache-control') || '', /no-cache/);
+      const { photos } = await res.json();
+      assert.deepStrictEqual(Object.keys(photos).sort(), ['lapel.peak', 'pleats.two'], 'choices the app no longer offers are left out');
+      assert.strictEqual(photos['lapel.peak'].length, 2);
+      assert.deepStrictEqual(photos['lapel.peak'][0], {
+        id: 7,
+        src: 'api/photo/7/1200.webp',
+        width: 1200,
+        height: 800,
+        altVi: 'Ve nhọn, vải xám',
+        altEn: 'Peak lapel, grey cloth',
+        focalX: 40,
+        focalY: 30,
+      });
+    } finally {
+      tablet.setPhotoSource();
+    }
+  });
+});
+
+test('a linked photo is passed on from the photo store from the tablet address, and kept for good', async () => {
+  await withServer(CODE, async (base) => {
+    const asked = [];
+    tablet.setPhotoSource({
+      url: async (id, width) => (id === 7 && width === 1200 ? 'https://photos.example.com/7-1200.webp' : null),
+      fetch: async (url) => {
+        asked.push(url);
+        return new Response(Buffer.from('RIFF....WEBP'), { status: 200 });
+      },
+    });
+    try {
+      const locked = await fetch(`${base}/tablet/api/photo/7/1200.webp`);
+      assert.strictEqual(locked.status, 401, 'no access code, no photo');
+
+      const { cookie } = await signIn(base);
+      const res = await fetch(`${base}/tablet/api/photo/7/1200.webp`, { headers: { cookie } });
+      assert.strictEqual(res.status, 200);
+      assert.strictEqual(res.headers.get('content-type'), 'image/webp');
+      assert.match(res.headers.get('cache-control') || '', /immutable/);
+      assert.strictEqual(await res.text(), 'RIFF....WEBP');
+      assert.deepStrictEqual(asked, ['https://photos.example.com/7-1200.webp']);
+
+      const other = await fetch(`${base}/tablet/api/photo/8/1200.webp`, { headers: { cookie } });
+      assert.strictEqual(other.status, 404, 'a photo not linked to a tablet choice is not served');
+    } finally {
+      tablet.setPhotoSource();
+    }
+  });
+});
+
+test('the tablet still works when the photo list cannot be read', async () => {
+  await withServer(CODE, async (base) => {
+    tablet.setPhotoSource({
+      rows: async () => {
+        throw new Error('database down');
+      },
+    });
+    try {
+      const { cookie } = await signIn(base);
+      const res = await fetch(`${base}/tablet/api/option-photos`, { headers: { cookie } });
+      assert.strictEqual(res.status, 503);
+      const page = await fetch(`${base}/tablet/`, { headers: { cookie } });
+      assert.strictEqual(page.status, 200);
+    } finally {
+      tablet.setPhotoSource();
+    }
+  });
+});

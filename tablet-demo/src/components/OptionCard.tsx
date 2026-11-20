@@ -3,7 +3,8 @@ import { fmt } from '../content/copy';
 import { OPTION_SKETCHES } from '../sketches/registry';
 import { Sketch } from '../sketches/Sketch';
 import { useStore } from '../state/store';
-import { CheckIcon, ExpandIcon } from './icons';
+import { useOptionPhotos } from '../photos/optionPhotos';
+import { CameraIcon, CheckIcon, ExpandIcon } from './icons';
 
 interface Props {
   option: OptionId;
@@ -22,6 +23,8 @@ export function OptionCard({ option, selected, unavailableReason, onSelect, onZo
   const plain = plainProp || !OPTION_SKETCHES[option];
   const copy = t.options[option];
   const disabled = unavailableReason !== null;
+  // real photos linked to this choice in the website's Media Library (shown when the drawing is enlarged)
+  const hasPhotos = useOptionPhotos(option).length > 0;
 
   return (
     <div className={`option-wrap${selected ? ' is-selected' : ''}${disabled ? ' is-disabled' : ''}`}>
@@ -38,6 +41,12 @@ export function OptionCard({ option, selected, unavailableReason, onSelect, onZo
         {plain ? null : (
           <span className="option-sketch">
             <Sketch option={option} />
+            {hasPhotos ? (
+              <span className="photo-badge" data-has-photos>
+                <CameraIcon size={14} />
+                {t.configure.hasPhotos}
+              </span>
+            ) : null}
           </span>
         )}
         <span className="option-body">

@@ -3,7 +3,7 @@
 // screenshots. Needs the dev server (npm run dev) or DEMO_URL pointing at a build.
 //
 //   node scripts/verify.mjs   -> report + docs/screenshots/* + docs/verification-results.json
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { BASE_URL, VIEWPORTS, launch, newPage } from './browser.mjs';
 import { startMockSheet } from './mock-sheet-server.mjs';
@@ -309,6 +309,36 @@ async function mixedOrderJourney(page, vp) {
   record(`pdf export of the order ${vp}`, pdf.subarray(0, 5).toString() === '%PDF-' && pdf.length > 50000, `${pdf.length} bytes`);
 }
 
+/**
+ * Real photos of the choices: the website (here a stand-in answering the same two addresses) links two
+ * photos to "one-row, two buttons"; the card is marked and the enlarged view shows them beside the drawing.
+ */
+async function photosCheck(page, vp) {
+  const picture = readFileSync(fileURLToPath(new URL('../public/icons/icon-512.png', import.meta.url)));
+  const photo = (id) => ({ id, src: `api/photo/${id}/1200.webp`, width: 1200, height: 900, altVi: `Ảnh mẫu ${id}`, altEn: `Sample ${id}`, focalX: 50, focalY: 50 });
+  await page.route('**/api/option-photos', (route) => route.fulfill({ json: { photos: { 'closure.sb2': [photo(1), photo(2)] } } }));
+  await page.route('**/api/photo/**', (route) => route.fulfill({ body: picture, contentType: 'image/png' }));
+  await freshStart(page);
+  await page.click('[data-product="blazer"]');
+  await page.getByRole('button', { name: 'Bắt đầu tư vấn' }).click();
+  await page.waitForSelector('[data-has-photos]', { timeout: 5000 }).catch(() => {});
+  const marked = await page.locator('[data-has-photos]').count();
+  await page.getByRole('button', { name: /Phóng to hình: Một hàng 2 khuy/ }).click();
+  await page.waitForSelector('[data-photo-viewer] img');
+  const shown = await page.evaluate(() => {
+    const img = document.querySelector('[data-photo-viewer] img');
+    return img && img.complete && img.naturalWidth > 0;
+  });
+  await checkLayout(page, `${vp} photos zoom`);
+  if (vp === 'tablet-1280x800') await shot(page, vp, '04b-real-photos');
+  await page.getByRole('button', { name: 'Ảnh sau' }).click();
+  const second = await page.locator('[data-photo-viewer] img').getAttribute('alt');
+  record(`real photos: the card is marked, the enlarged view shows them beside the drawing ${vp}`, marked === 1 && shown && second === 'Ảnh mẫu 2', JSON.stringify({ marked, shown, second }));
+  await page.keyboard.press('Escape');
+  await page.unroute('**/api/option-photos');
+  await page.unroute('**/api/photo/**');
+}
+
 /** A14: everything below is done with the keyboard only. */
 async function keyboardPass(page, vp) {
   await freshStart(page);
@@ -384,12 +414,15 @@ const mock = await startMockSheet(8787);
 const browser = await launch();
 for (const [vp, size] of Object.entries(VIEWPORTS)) {
   const { page, context } = await newPage(browser, size);
+  // stands in for the website: the dev server has no photo list (the photos check links some)
+  await context.route('**/api/option-photos', (route) => route.fulfill({ json: { photos: {} } }));
   const errors = [];
   await page.route('**/config.json', (r) => r.fulfill({ json: { orderSheetUrl: 'http://localhost:8787/', orderSheetToken: '' } }));
   page.on('pageerror', (e) => errors.push(e.message));
   page.on('console', (m) => m.type() === 'error' && errors.push(m.text()));
   for (const product of ['suit', 'suit3Trousers', 'suit3Waistcoat', 'blazer', 'trousers', 'waistcoat']) await journey(page, vp, product);
   await mixedOrderJourney(page, vp);
+  await photosCheck(page, vp);
   await keyboardPass(page, vp);
   record(`no console errors ${vp}`, errors.length === 0, errors.join(' | '));
   await context.close();

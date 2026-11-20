@@ -67,6 +67,13 @@ export interface Copy {
     selected: string;
     notSelected: string;
     enlarge: string; // {label}
+    /** Real photos of a choice (from the website's Media Library), next to its drawing. */
+    hasPhotos: string;
+    drawing: string;
+    photos: string;
+    photoCount: string; // {n} {total}
+    prevPhoto: string;
+    nextPhoto: string;
     optionsOf: string; // {group}
     familiesLabel: string;
     familySingle: string;

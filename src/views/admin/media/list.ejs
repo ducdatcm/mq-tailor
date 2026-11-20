@@ -31,7 +31,8 @@
 </div>
 
 <div class="field-row" style="margin-bottom:1rem;">
-  <a href="/admin/media" class="pill <%= !activeGroup ? 'active' : '' %>">All</a>
+  <a href="/admin/media" class="pill <%= !activeGroup && !tabletOnly ? 'active' : '' %>">All</a>
+  <a href="/admin/media?tablet=1" class="pill <%= tabletOnly ? 'active' : '' %>">On the tablet</a>
   <% groups.forEach(function (g) { %>
     <a href="/admin/media?group=<%= g %>" class="pill <%= activeGroup === g ? 'active' : '' %>"><%= g %></a>
   <% }); %>
@@ -58,6 +59,8 @@
             &nbsp;·&nbsp;
           <% } %>
           <a href="/admin/media/<%= m.id %>/focal-point" style="font-size:0.75rem;">Focus point</a>
+          &nbsp;·&nbsp;
+          <a href="/admin/media/<%= m.id %>/tablet-options" style="font-size:0.75rem;">Tablet choices<%= tabletCounts[m.id] ? ' (' + tabletCounts[m.id] + ')' : '' %></a>
         </div>
 
         <form method="POST" action="/admin/media/<%= m.id %>/alt" style="margin-top:0.4rem;">

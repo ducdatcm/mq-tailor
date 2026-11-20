@@ -1,0 +1,346 @@
+{
+  "garments": [
+    {
+      "id": "jacket",
+      "name": "Áo",
+      "groups": [
+        {
+          "id": "closure",
+          "name": "Kiểu cài áo",
+          "options": [
+            {
+              "id": "closure.sb1",
+              "label": "Một hàng 1 khuy"
+            },
+            {
+              "id": "closure.sb2",
+              "label": "Một hàng 2 khuy"
+            },
+            {
+              "id": "closure.sb3",
+              "label": "Một hàng 3 khuy"
+            },
+            {
+              "id": "closure.db6x2",
+              "label": "Hai hàng 6×2"
+            },
+            {
+              "id": "closure.db6x1",
+              "label": "Hai hàng 6×1"
+            },
+            {
+              "id": "closure.db4x2",
+              "label": "Hai hàng 4×2"
+            },
+            {
+              "id": "closure.db4x1",
+              "label": "Hai hàng 4×1"
+            }
+          ]
+        },
+        {
+          "id": "lapel",
+          "name": "Kiểu ve",
+          "options": [
+            {
+              "id": "lapel.notch",
+              "label": "Ve notch"
+            },
+            {
+              "id": "lapel.peak",
+              "label": "Ve nhọn"
+            },
+            {
+              "id": "lapel.shawl",
+              "label": "Ve sam"
+            }
+          ]
+        },
+        {
+          "id": "shoulder",
+          "name": "Dáng vai",
+          "options": [
+            {
+              "id": "shoulder.roped",
+              "label": "Vai cuộn"
+            },
+            {
+              "id": "shoulder.natural",
+              "label": "Vai tự nhiên, đệm nhẹ"
+            },
+            {
+              "id": "shoulder.camicia",
+              "label": "Vai sơ-mi"
+            }
+          ]
+        },
+        {
+          "id": "hipPockets",
+          "name": "Túi ngoài",
+          "options": [
+            {
+              "id": "hipPockets.slantedFlap",
+              "label": "Túi nắp xéo"
+            },
+            {
+              "id": "hipPockets.slantedJet",
+              "label": "Túi viền xéo"
+            },
+            {
+              "id": "hipPockets.patch",
+              "label": "Túi ốp"
+            },
+            {
+              "id": "hipPockets.straightFlap",
+              "label": "Túi nắp thẳng"
+            },
+            {
+              "id": "hipPockets.straightJet",
+              "label": "Túi viền thẳng"
+            }
+          ]
+        },
+        {
+          "id": "breastPocket",
+          "name": "Túi ngực",
+          "options": [
+            {
+              "id": "breastPocket.straight",
+              "label": "Túi ngực thẳng"
+            },
+            {
+              "id": "breastPocket.barchetta",
+              "label": "Túi ngực barchetta"
+            },
+            {
+              "id": "breastPocket.patch",
+              "label": "Túi ốp"
+            }
+          ]
+        },
+        {
+          "id": "vents",
+          "name": "Xẻ sau",
+          "options": [
+            {
+              "id": "vents.none",
+              "label": "Không xẻ"
+            },
+            {
+              "id": "vents.single",
+              "label": "Một xẻ"
+            },
+            {
+              "id": "vents.double",
+              "label": "Hai xẻ"
+            }
+          ]
+        },
+        {
+          "id": "cuffs",
+          "name": "Tay áo",
+          "options": [
+            {
+              "id": "cuffs.1",
+              "label": "1 khuy"
+            },
+            {
+              "id": "cuffs.2",
+              "label": "2 khuy"
+            },
+            {
+              "id": "cuffs.3",
+              "label": "3 khuy"
+            },
+            {
+              "id": "cuffs.4",
+              "label": "4 khuy"
+            }
+          ]
+        },
+        {
+          "id": "cuffMode",
+          "name": "Kiểu khuy tay",
+          "options": [
+            {
+              "id": "cuffMode.functional",
+              "label": "Khuy mở"
+            },
+            {
+              "id": "cuffMode.closed",
+              "label": "Khuy đóng"
+            }
+          ]
+        },
+        {
+          "id": "lining",
+          "name": "Lót áo",
+          "options": [
+            {
+              "id": "lining.full",
+              "label": "Lót toàn bộ"
+            },
+            {
+              "id": "lining.half",
+              "label": "Lót nửa áo"
+            },
+            {
+              "id": "lining.quarter",
+              "label": "Lót một phần tư"
+            },
+            {
+              "id": "lining.unlined",
+              "label": "Không lót"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trousers",
+      "name": "Quần",
+      "groups": [
+        {
+          "id": "pleats",
+          "name": "Xếp ly trước",
+          "options": [
+            {
+              "id": "pleats.flat",
+              "label": "Không ly"
+            },
+            {
+              "id": "pleats.one",
+              "label": "Một ly"
+            },
+            {
+              "id": "pleats.two",
+              "label": "Hai ly"
+            }
+          ]
+        },
+        {
+          "id": "waistband",
+          "name": "Chi tiết cạp quần",
+          "options": [
+            {
+              "id": "waistband.beltLoops",
+              "label": "Đỉa thắt lưng"
+            },
+            {
+              "id": "waistband.sideAdjusters",
+              "label": "Khóa sườn"
+            }
+          ]
+        },
+        {
+          "id": "frontPockets",
+          "name": "Túi trước",
+          "options": [
+            {
+              "id": "frontPockets.slanted",
+              "label": "Túi chéo"
+            },
+            {
+              "id": "frontPockets.sideSeam",
+              "label": "Túi dọc"
+            }
+          ]
+        },
+        {
+          "id": "backPockets",
+          "name": "Túi sau",
+          "options": [
+            {
+              "id": "backPockets.oneRight",
+              "label": "Một túi bên phải"
+            },
+            {
+              "id": "backPockets.two",
+              "label": "Hai túi"
+            }
+          ]
+        },
+        {
+          "id": "hem",
+          "name": "Gấu quần",
+          "options": [
+            {
+              "id": "hem.plain",
+              "label": "Gấu thường"
+            },
+            {
+              "id": "hem.turnUp",
+              "label": "Gấu lơ vê"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "waistcoat",
+      "name": "Gile",
+      "groups": [
+        {
+          "id": "waistcoatStyle",
+          "name": "Kiểu gile",
+          "options": [
+            {
+              "id": "waistcoat.sb2",
+              "label": "Một hàng, 2 túi"
+            },
+            {
+              "id": "waistcoat.sb4",
+              "label": "Một hàng, 4 túi"
+            },
+            {
+              "id": "waistcoat.db2",
+              "label": "Hai hàng, 2 túi"
+            },
+            {
+              "id": "waistcoat.db4",
+              "label": "Hai hàng, 4 túi"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trims",
+      "name": "Nguyên phụ liệu",
+      "groups": [
+        {
+          "id": "buttonType",
+          "name": "Loại khuy",
+          "options": [
+            {
+              "id": "buttonType.plastic",
+              "label": "Khuy nhựa (tiêu chuẩn)"
+            },
+            {
+              "id": "buttonType.horn",
+              "label": "Khuy sừng"
+            },
+            {
+              "id": "buttonType.motherOfPearl",
+              "label": "Khuy xà cừ"
+            }
+          ]
+        },
+        {
+          "id": "milanese",
+          "name": "Khuyết Milan",
+          "options": [
+            {
+              "id": "milanese.yes",
+              "label": "Có"
+            },
+            {
+              "id": "milanese.no",
+              "label": "Không"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

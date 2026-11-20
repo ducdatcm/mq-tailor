@@ -90,3 +90,12 @@ export function SparkleIcon({ size = 18, className }: IconProps) {
     </svg>
   );
 }
+
+export function CameraIcon({ size = 16, className }: IconProps) {
+  return (
+    <svg {...base(size)} strokeWidth={2} className={className}>
+      <path d="M4 8h3l1.5-2.5h7L17 8h3v11H4z" />
+      <circle cx="12" cy="13" r="3.5" />
+    </svg>
+  );
+}

@@ -1,6 +1,7 @@
 const db = require('../../config/db');
 const { processAndSaveImage } = require('../../config/upload');
 const { deleteObjectByUrl } = require('../../config/storage');
+const { readTabletOptions } = require('../../utils/tabletPhotos');
 
 // "garments" stays as a general-purpose tag (detail shots reused elsewhere
 // on the site); "product_collection" is the one specific tag that actually
@@ -16,10 +17,17 @@ const GARMENT_CATEGORIES = ['suits_jackets', 'trousers', 'shirts'];
 async function list(req, res, next) {
   try {
     const group = GROUPS.includes(req.query.group) ? req.query.group : null;
+    // ?tablet=1: only the photos linked to choices in the in-store tablet app
+    const tabletOnly = req.query.tablet === '1';
     const query = db('media').orderBy('created_at', 'desc');
     if (group) query.where({ group });
-    const media = await query;
-    res.render('admin/media/list', { title: 'Media Library', media, groups: GROUPS, activeGroup: group });
+    if (tabletOnly) query.whereIn('id', db('media_tablet_options').select('media_id'));
+    const [media, links] = await Promise.all([
+      query,
+      db('media_tablet_options').select('media_id').count({ n: '*' }).groupBy('media_id'),
+    ]);
+    const tabletCounts = Object.fromEntries(links.map((l) => [l.media_id, Number(l.n)]));
+    res.render('admin/media/list', { title: 'Media Library', media, groups: GROUPS, activeGroup: group, tabletOnly, tabletCounts });
   } catch (err) {
     next(err);
   }
@@ -132,4 +140,59 @@ async function remove(req, res, next) {
   }
 }
 
-module.exports = { list, upload, updateAlt, updateGroup, remove, focalPointForm, updateFocalPoint, GROUPS, GARMENT_CATEGORIES };
+/** Which choices of the in-store tablet app this photo shows (see utils/tabletPhotos.js). */
+async function tabletOptionsForm(req, res, next) {
+  try {
+    const item = await db('media').where({ id: req.params.id }).first();
+    if (!item) return res.redirect('/admin/media');
+    const [links, all] = await Promise.all([
+      db('media_tablet_options').where({ media_id: item.id }).select('option_id'),
+      db('media_tablet_options').select('option_id').count({ n: '*' }).groupBy('option_id'),
+    ]);
+    const { garments } = readTabletOptions();
+    res.render('admin/media/tablet-options', {
+      title: 'Tablet choices',
+      item,
+      garments,
+      selected: new Set(links.map((l) => l.option_id)),
+      counts: Object.fromEntries(all.map((r) => [r.option_id, Number(r.n)])),
+    });
+  } catch (err) {
+    next(err);
+  }
+}
+
+async function updateTabletOptions(req, res, next) {
+  try {
+    const item = await db('media').where({ id: req.params.id }).first();
+    if (!item) return res.redirect('/admin/media');
+    const { byId } = readTabletOptions();
+    const sent = [].concat(req.body.options || []).map(String);
+    const chosen = [...new Set(sent)].filter((id) => byId.has(id));
+    await db.transaction(async (trx) => {
+      await trx('media_tablet_options').where({ media_id: item.id }).del();
+      if (chosen.length) await trx('media_tablet_options').insert(chosen.map((option_id) => ({ media_id: item.id, option_id })));
+    });
+    req.flash(
+      'success',
+      chosen.length ? `Photo linked to ${chosen.length} tablet choice${chosen.length === 1 ? '' : 's'}.` : 'Photo no longer used on the tablet.'
+    );
+    res.redirect('/admin/media');
+  } catch (err) {
+    next(err);
+  }
+}
+
+module.exports = {
+  list,
+  upload,
+  updateAlt,
+  updateGroup,
+  remove,
+  focalPointForm,
+  updateFocalPoint,
+  tabletOptionsForm,
+  updateTabletOptions,
+  GROUPS,
+  GARMENT_CATEGORIES,
+};

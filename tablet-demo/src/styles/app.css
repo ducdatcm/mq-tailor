@@ -648,6 +648,7 @@ button {
   border-color: var(--line-strong);
 }
 .option-sketch {
+  position: relative;
   display: block;
   background: var(--sk-bg);
   padding: 6px 6px 0;
@@ -1732,5 +1733,101 @@ svg {
   }
   .header-actions .btn {
     padding: 0 10px;
+  }
+}
+
+/* ── Real photos of a choice (website Media Library), beside the drawing ── */
+.photo-badge {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px 3px 8px;
+  border-radius: 999px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-xs);
+  font-size: 0.62rem;
+  font-weight: 600;
+  color: var(--ink-2);
+}
+.modal-xl {
+  width: min(1120px, 100%);
+}
+.zoom-pair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+  align-items: start;
+}
+.zoom-pair section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+.zoom-pair .zoom-sketch {
+  aspect-ratio: 4 / 3;
+  display: flex;
+  align-items: center;
+}
+.photo-viewer {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.photo-frame {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--surface-2);
+}
+.photo-frame img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.photo-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--ink);
+  box-shadow: var(--shadow);
+  cursor: pointer;
+}
+.photo-prev {
+  left: 10px;
+}
+.photo-next {
+  right: 10px;
+}
+.photo-caption {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 0.78rem;
+  color: var(--ink-2);
+}
+.photo-count {
+  flex: none;
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+}
+@media (max-width: 899px), (orientation: portrait) {
+  .zoom-pair {
+    grid-template-columns: minmax(0, 1fr);
   }
 }

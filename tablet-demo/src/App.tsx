@@ -8,6 +8,7 @@ import { ReviewScreen } from './screens/ReviewScreen';
 import { SetupScreen } from './screens/SetupScreen';
 import { StartScreen } from './screens/StartScreen';
 import { Gallery } from './sketches/Gallery';
+import { refreshOptionPhotos } from './photos/optionPhotos';
 import { flushQueue, sendOrder } from './sheet/client';
 import { buildPayload } from './sheet/payload';
 import { sessionHasData } from './state/reducer';
@@ -42,9 +43,14 @@ function Shell() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sheet, orderRecord?.submissionId]);
 
+  // Queued orders go out, and the real photos of the choices are refreshed, on opening and when the connection is back.
   useEffect(() => {
     void flushQueue();
-    const retry = () => void flushQueue();
+    void refreshOptionPhotos();
+    const retry = () => {
+      void flushQueue();
+      void refreshOptionPhotos();
+    };
     window.addEventListener('online', retry);
     return () => window.removeEventListener('online', retry);
   }, []);

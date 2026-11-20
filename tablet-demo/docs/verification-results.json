@@ -52,7 +52,7 @@
   {
     "area": "pdf export tablet-1024x768 suit",
     "ok": true,
-    "detail": "phieu-thiet-ke_MQ-0001_20261120.pdf 251277 bytes"
+    "detail": "phieu-thiet-ke_MQ-0001_20261121.pdf 250818 bytes"
   },
   {
     "area": "layout tablet-1024x768 suit order",
@@ -117,7 +117,7 @@
   {
     "area": "pdf export tablet-1024x768 suit3Trousers",
     "ok": true,
-    "detail": "phieu-thiet-ke_MQ-0001_20261120.pdf 254959 bytes"
+    "detail": "phieu-thiet-ke_MQ-0001_20261121.pdf 254551 bytes"
   },
   {
     "area": "layout tablet-1024x768 suit3Waistcoat configure",
@@ -322,7 +322,17 @@
   {
     "area": "pdf export of the order tablet-1024x768",
     "ok": true,
-    "detail": "253673 bytes"
+    "detail": "253236 bytes"
+  },
+  {
+    "area": "layout tablet-1024x768 photos zoom",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "real photos: the card is marked, the enlarged view shows them beside the drawing tablet-1024x768",
+    "ok": true,
+    "detail": "{\"marked\":1,\"shown\":true,\"second\":\"Ảnh mẫu 2\"}"
   },
   {
     "area": "keyboard tablet-1024x768 start -> configure",
@@ -402,7 +412,7 @@
   {
     "area": "pdf export tablet-1280x800 suit",
     "ok": true,
-    "detail": "phieu-thiet-ke_MQ-0001_20261120.pdf 251277 bytes"
+    "detail": "phieu-thiet-ke_MQ-0001_20261121.pdf 250818 bytes"
   },
   {
     "area": "layout tablet-1280x800 suit order",
@@ -467,7 +477,7 @@
   {
     "area": "pdf export tablet-1280x800 suit3Trousers",
     "ok": true,
-    "detail": "phieu-thiet-ke_MQ-0001_20261120.pdf 254953 bytes"
+    "detail": "phieu-thiet-ke_MQ-0001_20261121.pdf 254551 bytes"
   },
   {
     "area": "layout tablet-1280x800 suit3Waistcoat configure",
@@ -672,7 +682,17 @@
   {
     "area": "pdf export of the order tablet-1280x800",
     "ok": true,
-    "detail": "253613 bytes"
+    "detail": "253279 bytes"
+  },
+  {
+    "area": "layout tablet-1280x800 photos zoom",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "real photos: the card is marked, the enlarged view shows them beside the drawing tablet-1280x800",
+    "ok": true,
+    "detail": "{\"marked\":1,\"shown\":true,\"second\":\"Ảnh mẫu 2\"}"
   },
   {
     "area": "keyboard tablet-1280x800 start -> configure",
@@ -752,7 +772,7 @@
   {
     "area": "pdf export portrait-768x1024 suit",
     "ok": true,
-    "detail": "phieu-thiet-ke_MQ-0001_20261120.pdf 251313 bytes"
+    "detail": "phieu-thiet-ke_MQ-0001_20261121.pdf 250841 bytes"
   },
   {
     "area": "layout portrait-768x1024 suit order",
@@ -817,7 +837,7 @@
   {
     "area": "pdf export portrait-768x1024 suit3Trousers",
     "ok": true,
-    "detail": "phieu-thiet-ke_MQ-0001_20261120.pdf 254953 bytes"
+    "detail": "phieu-thiet-ke_MQ-0001_20261121.pdf 254587 bytes"
   },
   {
     "area": "layout portrait-768x1024 suit3Waistcoat configure",
@@ -1022,7 +1042,17 @@
   {
     "area": "pdf export of the order portrait-768x1024",
     "ok": true,
-    "detail": "253613 bytes"
+    "detail": "253279 bytes"
+  },
+  {
+    "area": "layout portrait-768x1024 photos zoom",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "real photos: the card is marked, the enlarged view shows them beside the drawing portrait-768x1024",
+    "ok": true,
+    "detail": "{\"marked\":1,\"shown\":true,\"second\":\"Ảnh mẫu 2\"}"
   },
   {
     "area": "keyboard portrait-768x1024 start -> configure",

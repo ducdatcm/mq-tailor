@@ -205,6 +205,14 @@ Set `GA_MEASUREMENT_ID` to your Google Analytics 4 Measurement ID
 (`G-XXXXXXX`) and redeploy/restart. Leave blank to disable analytics
 entirely.
 
+## Real photos on the tablet app
+
+Admin › Media Library › **Tablet choices** (link under each photo) ticks which choices of the in-store tablet app a photo shows (e.g. Áo › Kiểu ve › Ve nhọn). The **On the tablet** filter lists the linked photos. On the tablet, a choice with photos gets a "Có ảnh thật" mark, and enlarging it shows the photos beside the drawing; the tablet keeps copies for offline use and picks up changes the next time it opens online.
+
+- The links live in the `media_tablet_options` table (migration `20260101000030`, applied on boot like the others). Deleting a photo removes its links.
+- The list of choices comes from `tablet-app/options.json`, written by `npm run build:site` in `tablet-demo/`.
+- The tablet reads `/tablet/api/option-photos` and `/tablet/api/photo/<id>/<width>.webp` (the site passes the 1200 px WebP copy on from R2), both behind the tablet access code; only photos linked to a choice are served.
+
 ## Database backups
 
 The database holds everything that is typed into `/admin` (page copy, journal,

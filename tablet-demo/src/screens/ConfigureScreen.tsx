@@ -4,11 +4,11 @@ import { copyableUnits, countSelected, countUnit, disabledReason } from '../cata
 import { ChevronIcon } from '../components/icons';
 import { Modal } from '../components/Modal';
 import { OptionCard } from '../components/OptionCard';
+import { OptionZoom } from '../components/OptionZoom';
 import { Stepper } from '../components/Stepper';
 import { SummaryPanel } from '../components/SummaryPanel';
 import { fmt } from '../content/copy';
 import { unitName } from '../order/labels';
-import { Sketch } from '../sketches/Sketch';
 import { useStore } from '../state/store';
 
 export function ConfigureScreen() {
@@ -277,15 +277,7 @@ export function ConfigureScreen() {
         )}
       </footer>
 
-      {zoom ? (
-        <Modal title={t.options[zoom].label} size="wide" onClose={() => setZoom(null)} closeLabel={t.close}>
-          <div className="zoom-sketch">
-            <Sketch option={zoom} title={t.options[zoom].label} />
-          </div>
-          <p>{t.options[zoom].desc}</p>
-          {copy.note ? <p className="fine-print">{copy.note}</p> : null}
-        </Modal>
-      ) : null}
+      {zoom ? <OptionZoom option={zoom} note={copy.note} onClose={() => setZoom(null)} /> : null}
 
       {pending ? (
         <Modal

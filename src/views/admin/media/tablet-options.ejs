@@ -1,0 +1,47 @@
+<h1>Tablet choices for this photo</h1>
+<p style="color:var(--admin-muted);max-width:65ch;">
+  Tick every choice this photo shows clearly (a close-up of a peak lapel, a pair of pleated trousers...).
+  On the in-store tablet, the photo then appears next to the drawing when that choice is enlarged.
+  A photo can show several choices; close-ups of one detail work best. The caption (VI / EN) is shown under the photo.
+</p>
+
+<%
+  var widths = item.variants && item.variants.webp ? Object.keys(item.variants.webp).map(Number).sort((a,b)=>a-b) : [];
+  var previewSrc = widths.length ? item.variants.webp[widths[Math.min(widths.length - 1, 1)]] : '';
+%>
+<div class="panel" style="display:flex;gap:1.5rem;flex-wrap:wrap;align-items:flex-start;">
+  <img src="<%= previewSrc %>" alt="<%= item.alt_en %>" style="width:280px;max-width:100%;border-radius:4px;">
+  <div style="flex:1;min-width:240px;">
+    <div><strong><%= item.alt_vi || item.alt_en || item.filename %></strong></div>
+    <div style="color:var(--admin-muted);font-size:0.85rem;"><%= item.filename %> · <%= item.width %>×<%= item.height %></div>
+    <p class="field-hint">Linked to <strong><%= selected.size %></strong> choice<%= selected.size === 1 ? '' : 's' %>.</p>
+  </div>
+</div>
+
+<% if (!garments.length) { %>
+  <div class="panel"><p>The list of tablet choices is missing (tablet-app/options.json). Rebuild the tablet app with <code>npm run build:site</code> in tablet-demo/.</p></div>
+<% } else { %>
+<form method="POST" action="/admin/media/<%= item.id %>/tablet-options">
+  <% garments.forEach(function (garment) { %>
+    <div class="panel">
+      <h2 style="margin-top:0;font-size:1.05rem;"><%= garment.name %></h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem 1.5rem;">
+        <% garment.groups.forEach(function (group) { %>
+          <fieldset style="border:0;margin:0;padding:0;">
+            <legend style="font-weight:600;font-size:0.85rem;margin-bottom:0.3rem;"><%= group.name %></legend>
+            <% group.options.forEach(function (option) { %>
+              <label style="display:flex;gap:0.4rem;align-items:center;font-size:0.85rem;padding:0.15rem 0;">
+                <input type="checkbox" name="options" value="<%= option.id %>" <%= selected.has(option.id) ? 'checked' : '' %> style="width:auto;">
+                <%= option.label %>
+                <% if (counts[option.id]) { %><span style="color:var(--admin-muted);font-size:0.75rem;">(<%= counts[option.id] %> photo<%= counts[option.id] === 1 ? '' : 's' %>)</span><% } %>
+              </label>
+            <% }); %>
+          </fieldset>
+        <% }); %>
+      </div>
+    </div>
+  <% }); %>
+  <button type="submit" class="btn">Save tablet choices</button>
+  <a href="/admin/media" class="btn btn--ghost">Cancel</a>
+</form>
+<% } %>

@@ -73,6 +73,8 @@ router.post('/media/:id/alt', mediaController.updateAlt);
 router.post('/media/:id/group', mediaController.updateGroup);
 router.get('/media/:id/focal-point', mediaController.focalPointForm);
 router.post('/media/:id/focal-point', mediaController.updateFocalPoint);
+router.get('/media/:id/tablet-options', mediaController.tabletOptionsForm);
+router.post('/media/:id/tablet-options', mediaController.updateTabletOptions);
 router.post('/media/:id/delete', mediaController.remove);
 
 router.get('/backups', backupController.show);
