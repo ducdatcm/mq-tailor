@@ -1078,35 +1078,6 @@ button {
   border-radius: var(--radius-md);
   padding: 8px;
 }
-.suggestion-card {
-  display: flex;
-  gap: 16px;
-  align-items: center;
-  padding: 12px;
-  background: var(--bg);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-md);
-}
-.suggestion-sketch {
-  flex: none;
-  width: 190px;
-  background: var(--sk-bg);
-  border-radius: 8px;
-}
-.suggestion-text {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  font-size: 0.9rem;
-}
-.suggestion-text strong {
-  font-family: var(--font-sans);
-  font-size: 0.95rem;
-  font-weight: 600;
-}
-.suggestion-why {
-  font-weight: 500;
-}
 .notice {
   font-size: 0.85rem;
   color: var(--warn);
@@ -1679,31 +1650,6 @@ svg {
   font-weight: 600;
   color: var(--accent);
 }
-.segmented {
-  display: inline-flex;
-  gap: 4px;
-  padding: 4px;
-  border-radius: 999px;
-  background: var(--surface-2);
-}
-.segmented button {
-  min-height: 44px;
-  padding: 0 18px;
-  border: 0;
-  border-radius: 999px;
-  background: transparent;
-  color: var(--muted);
-  font-size: 0.78rem;
-  font-weight: 500;
-  white-space: nowrap;
-  cursor: pointer;
-}
-.segmented button[aria-pressed='true'] {
-  background: var(--surface);
-  color: var(--ink);
-  font-weight: 600;
-  box-shadow: var(--shadow);
-}
 .start-footer {
   justify-content: space-between;
   flex-wrap: wrap;
@@ -1759,5 +1705,32 @@ svg {
   /* a tall screen has room for bigger drawings: let the card width decide */
   .product-sketch .sk {
     max-height: none;
+  }
+}
+/* small screens: the progress keeps only its numbered dots so the header fits on one line */
+@media (max-width: 700px) {
+  .header {
+    gap: 10px;
+    padding: 8px 14px;
+  }
+  .brand-logo {
+    height: 28px;
+  }
+  .flow-step .flow-label {
+    display: none;
+  }
+  .flow-step,
+  .flow-step:not(.is-current) {
+    padding: 0 6px;
+  }
+  .flow-step + .flow-step {
+    margin-left: 14px;
+  }
+  .flow-step + .flow-step::before {
+    left: -11px;
+    width: 8px;
+  }
+  .header-actions .btn {
+    padding: 0 10px;
   }
 }

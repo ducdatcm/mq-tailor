@@ -18,7 +18,7 @@ export function cloneSelections(s: Selections): Selections {
   return Object.fromEntries(Object.entries(s).map(([id, chosen]) => [id, { ...chosen }]));
 }
 
-/** The one-click "house starting suggestion" for every unit. */
+/** Every group of every unit set to the house suggestion (each group's preset): a complete design, for tests and fixtures. */
 export function presetSelections(units: readonly Unit[]): Selections {
   const out = emptySelections(units);
   for (const unit of units) {

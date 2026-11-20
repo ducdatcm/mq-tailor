@@ -11,8 +11,6 @@ export interface GroupCopy {
   ask: string;
   /** Optional longer explanation, shown only when expanded. */
   more: string;
-  /** Why the house starting suggestion picks its option (neutral wording). */
-  suggestion: string;
   /** Short note about what the illustration does / does not represent. */
   note?: string;
 }
@@ -45,9 +43,6 @@ export interface Copy {
     intro: string;
     productsLabel: string;
     orderLabel: string;
-    modeLabel: string;
-    modeManual: { title: string; desc: string };
-    modePreset: { title: string; desc: string };
     cta: string;
     needProduct: string;
     quantityLabel: string;
@@ -65,7 +60,6 @@ export interface Copy {
     next: string;
     toReview: string;
     doneBackToReview: string;
-    askHouse: string;
     learnMore: string;
     hideMore: string;
     askLabel: string;
@@ -92,16 +86,6 @@ export interface Copy {
     allDone: string;
     openReview: string;
     jumpTo: string; // {group}
-  };
-
-  suggestion: {
-    title: string;
-    houseLabel: string;
-    disclaimer: string;
-    apply: string;
-    applied: string;
-    decline: string;
-    unavailable: string;
   };
 
   lapelRule: {

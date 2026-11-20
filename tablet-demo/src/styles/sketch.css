@@ -125,3 +125,10 @@
   stroke-linecap: round;
   stroke-dasharray: calc(4.5px * var(--lw)) calc(3.5px * var(--lw));
 }
+/* the fly stitching on the trouser front: a fine, lighter line, as in the supplied drawings */
+.sk .fly {
+  stroke: var(--sk-mark);
+  stroke-width: calc(1.3px * var(--lw));
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}

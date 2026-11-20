@@ -26,7 +26,7 @@ Tablet tải ứng dụng **một lần khi có mạng**, từ đó chạy đư�
 
 ## 3. Thử một đơn
 
-Chọn một sản phẩm → **Gợi ý nhà may** → **Bắt đầu tư vấn** → **Xem lại thiết kế** → **Xác nhận thiết kế** → điền Order ID `THU-001`, tên, số điện thoại → **Xác nhận đơn**. Dòng "Bảng tính" phải báo "Đã ghi đơn vào bảng tính", rồi bấm **Xuất PDF phiếu thiết kế** (file nằm trong thư mục **Tải xuống** của tablet). Xóa dòng thử trong bảng tính trước khi dùng thật.
+Chọn một sản phẩm → **Bắt đầu tư vấn** → chọn một kiểu ở mỗi nhóm (bấm **Tiếp tục**) → **Xem lại thiết kế** → **Xác nhận thiết kế** → điền Order ID `THU-001`, tên, số điện thoại → **Xác nhận đơn**. Dòng "Bảng tính" phải báo "Đã ghi đơn vào bảng tính", rồi bấm **Xuất PDF phiếu thiết kế** (file nằm trong thư mục **Tải xuống** của tablet). Xóa dòng thử trong bảng tính trước khi dùng thật.
 
 ## 4. Chỉnh Android cho dùng ở cửa hàng
 

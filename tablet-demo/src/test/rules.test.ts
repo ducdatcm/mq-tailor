@@ -120,7 +120,7 @@ describe('selection rules', () => {
 describe('session reducer', () => {
   it('manual start preselects nothing; preset start fills everything', () => {
     expect(missingSteps(started('suit').units, started('suit').selections)).toHaveLength(16);
-    const preset = started('suit', 'preset');
+    const preset = started('suit', 'filled');
     expect(missingSteps(preset.units, preset.selections)).toHaveLength(0);
   });
 
@@ -129,7 +129,7 @@ describe('session reducer', () => {
   });
 
   it('confirming is idempotent for repeated actions (rapid clicks)', () => {
-    let s = started('trousers', 'preset');
+    let s = started('trousers', 'filled');
     s = run(s, { type: 'openReview' });
     s = run(s, { type: 'confirm', at: 1 }, { type: 'confirm', at: 2 }, { type: 'confirm', at: 3 });
     expect(s.confirmed?.revision).toBe(1);
@@ -138,7 +138,7 @@ describe('session reducer', () => {
   });
 
   it('refuses to confirm while a group is missing', () => {
-    let s = started('trousers', 'preset');
+    let s = started('trousers', 'filled');
     s = { ...s, selections: { ...s.selections, trousers1: { ...s.selections.trousers1, hem: undefined } } };
     s = run(s, { type: 'openReview' }, { type: 'confirm', at: 1 });
     expect(s.confirmed).toBeNull();
@@ -146,7 +146,7 @@ describe('session reducer', () => {
   });
 
   it('keeps the confirmed snapshot untouched while the draft is edited, then replaces it on reconfirm', () => {
-    let s = started('blazer', 'preset');
+    let s = started('blazer', 'filled');
     s = run(s, { type: 'openReview' }, { type: 'confirm', at: 100 });
     const first = s.confirmed!;
     s = run(s, { type: 'editConfirmed' }, { type: 'editFromReview', unit: 'jacket1', group: 'vents' });
@@ -164,14 +164,14 @@ describe('session reducer', () => {
   });
 
   it('does not allow reconfirming an unchanged design', () => {
-    let s = started('blazer', 'preset');
+    let s = started('blazer', 'filled');
     s = run(s, { type: 'openReview' }, { type: 'confirm', at: 1 }, { type: 'editConfirmed' }, { type: 'confirm', at: 2 });
     expect(s.confirmed?.revision).toBe(1);
     expect(s.screen).toBe('review');
   });
 
   describe('order details', () => {
-    const designConfirmed = () => run(started('blazer', 'preset'), { type: 'openReview' }, { type: 'confirm', at: 1 });
+    const designConfirmed = () => run(started('blazer', 'filled'), { type: 'openReview' }, { type: 'confirm', at: 1 });
     const fill = (s: ReturnType<typeof initialState>) =>
       run(
         s,
@@ -268,7 +268,7 @@ describe('session reducer', () => {
   });
 
   it('reset clears everything but keeps the chosen language', () => {
-    let s = started('suit', 'preset');
+    let s = started('suit', 'filled');
     s = run(s, { type: 'setLang', lang: 'en' }, { type: 'openReview' }, { type: 'confirm', at: 5 }, { type: 'reset' });
     expect(s.lang).toBe('en');
     expect(s.confirmed).toBeNull();
@@ -279,7 +279,7 @@ describe('session reducer', () => {
   });
 
   it('changing language changes nothing else', () => {
-    const s = started('suit', 'preset');
+    const s = started('suit', 'filled');
     const t = run(s, { type: 'setLang', lang: 'en' });
     expect({ ...t, lang: 'vi' }).toEqual(s);
   });

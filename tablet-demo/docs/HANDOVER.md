@@ -20,7 +20,7 @@ Hai lớp kiểm tra, đều chạy lại được:
 | A3 Chọn trong cùng nhóm | Đạt | test "A3": một giá trị được chọn, tóm tắt cập nhật; mỗi lựa chọn có hình riêng (xem sketch bên dưới) |
 | A4 Tiến / lùi / đổi áo–quần | Đạt | test "A4" và test reducer về `lastGroup` |
 | A5 Bỏ thiếu một nhóm | Đạt | test "A5": báo "Còn thiếu N nhóm", liệt kê tên, nút xác nhận bị khóa, bấm tên nhóm mở đúng nhóm |
-| A6 Preset rồi sửa một chi tiết | Đạt | test "A6": chỉ chi tiết sửa đổi; gợi ý "Nhờ nhà may gợi ý" không tự chọn gì cho đến khi bấm Áp dụng |
+| A6 Thiết kế đủ rồi sửa một chi tiết | Đạt | test "A6": chỉ chi tiết sửa đổi thay đổi; phiên mới luôn bắt đầu chưa chọn gì, không còn nút gợi ý của nhà may. |
 | A7 Một hàng/notch → hai hàng khuy | Đạt | test "A7" và test quy tắc: với **cả bốn** kiểu hai hàng (6×2, 6×1, 4×2, 4×1), hộp thoại giải thích đổi ve (từ notch hoặc ve sam sang ve nhọn); Đồng ý cập nhật cả hai, Hủy giữ nguyên cả hai; notch và ve sam bị vô hiệu kèm lý do khi đang hai hàng khuy; về một hàng khuy vẫn giữ ve nhọn |
 | A8 VI/EN giữa luồng | Đạt | test "A8": dịch đủ chữ trên màn hình, `<html lang>` đổi theo, giữ lựa chọn; kiểm tra kiểu của `vi.ts`/`en.ts` buộc hai ngôn ngữ đủ mục |
 | A9 Sửa từ màn hình xem lại | Đạt | test "A9": mở đúng nhóm, nút "Xong, về xem lại", bản tóm tắt đúng |
@@ -30,7 +30,7 @@ Hai lớp kiểm tra, đều chạy lại được:
 | A13 Kích thước tablet | Đạt | `verify`: 1024×768, 1280×800 ngang và 768×1024 dọc — không tràn ngang, mọi nút ≥ 44×44 px, footer cố định không che nội dung cuối trang, ở các màn hình bắt đầu / chọn (cả khi mở "Tìm hiểu thêm") / xem lại / đã xác nhận, cả tiếng Việt và English |
 | A14 Chỉ dùng bàn phím | Đạt | `verify` + test: đi từ màn hình đầu đến xác nhận chỉ bằng Tab/Enter/Space; vòng focus nhìn thấy ở mọi điểm dừng; hộp thoại giữ focus bên trong, Esc đóng và trả focus về nút đã mở; khi đổi màn hình focus chuyển về tiêu đề màn hình mới |
 
-Chạy trọn một lượt cho cả ba sản phẩm: có trong `verify` (suit từ gợi ý nhà may, blazer và quần riêng chọn tay). Kịch bản demo mục 12 của brief (suit từ gợi ý, đổi ve, sửa gấu quần ở màn hình xem lại, xác nhận, sửa lại một chi tiết và xác nhận lần hai, phiên mới với blazer tự chọn) được các test A6, A7, A9, A11, A12 phủ.
+Chạy trọn một lượt cho cả ba sản phẩm: có trong `verify` (mỗi sản phẩm chọn tay từng nhóm của món đầu, các món còn lại được điền trên màn hình). Kịch bản demo mục 12 của brief (suit chọn đủ, đổi ve, sửa gấu quần ở màn hình xem lại, xác nhận, sửa lại một chi tiết và xác nhận lần hai, phiên mới với blazer tự chọn) được các test A6, A7, A9, A11, A12 phủ.
 
 **Kiểm tra bằng mắt tất cả sketch:** đã xem toàn bộ 32 hình lựa chọn và 3 hình sản phẩm trên trang `#/sketches` sau khi chuyển sang dùng hình gốc của nhà may, cùng ảnh chụp màn hình bên dưới.
 
@@ -147,7 +147,8 @@ Chưa chạy buổi thử có người thật. Khi thử, nên quan sát: khách
 
 - **Màu và chữ:** nền ngà #F6F2EB, chữ than #1F1B17, màu nhấn duy nhất đỏ rượu #7A2E26, màu đồng #A8834A chỉ để trang trí. Tiêu đề lớn dùng Cormorant Garamond, giao diện dùng Be Vietnam Pro (cả hai đóng gói sẵn trong app, chạy offline). Token nằm trong `src/styles/tokens.css`, cùng tên với biến trong Figma.
 - **Đầu trang:** thanh 4 bước Sản phẩm › Thiết kế › Xem lại › Đặt đơn (màn hẹp chỉ ghi tên bước hiện tại), nút Phiên mới, chọn VI/EN.
-- **Màn đầu:** thẻ sản phẩm có tên, các nhãn thành phần ("1 × Áo", "2 × Quần") và bộ số lượng dạng viên tròn; "Cách bắt đầu" chuyển xuống thanh dưới thành nút gạt (Tự chọn chi tiết / Gợi ý nhà may), cạnh nút Bắt đầu tư vấn; thanh dưới ghi "Đơn gồm" bằng các nhãn.
+- **Màn đầu:** thẻ sản phẩm có tên, các nhãn thành phần ("1 × Áo", "2 × Quần") và bộ số lượng dạng viên tròn; thanh dưới ghi "Đơn gồm" bằng các nhãn, cạnh nút Bắt đầu tư vấn. **Đã bỏ cách bắt đầu "Gợi ý nhà may"** (theo yêu cầu): mọi phiên bắt đầu chưa chọn gì. **Đã bỏ cả nút "Nhờ nhà may gợi ý" ở từng nhóm.**
+- **Hình quần vẽ lại (vector, theo ảnh nhà may gửi):** xếp ly trước (không ly / một ly / hai ly) và túi sau (một túi bên phải / hai túi) là hình toàn thân quần nhìn trước hoặc sau, trong `src/sketches/trouserViews.tsx`.
 - **Các màn khác:** thẻ lựa chọn, bảng tóm tắt, phiếu xem lại, biểu mẫu đơn và hộp thoại theo cùng hệ thống (bo góc 12–20, bóng nhẹ, viền mảnh, ô nhập có vòng nhấn đỏ rượu, lỗi màu đỏ riêng).
 - Bản demo HTML và mã dựng lại nằm ở `design/redesign/` (chưa đưa vào git).
 

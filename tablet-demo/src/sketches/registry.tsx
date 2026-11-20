@@ -1,8 +1,6 @@
 import type { ComponentType } from 'react';
 import type { OptionId, ProductId } from '../catalog/catalog';
 import {
-  BackPocketOneRight,
-  BackPocketsTwo,
   BreastPocketBarchetta,
   BreastPocketPatch,
   BreastPocketStraight,
@@ -24,9 +22,6 @@ import {
   LiningHalf,
   LiningNone,
   LiningQuarter,
-  PleatsFlat,
-  PleatsOne,
-  PleatsTwo,
   ShoulderCamicia,
   ShoulderNatural,
   ShoulderRoped,
@@ -58,6 +53,7 @@ import {
   ProductShirt,
 } from './shirt';
 import { HemPlain, HemTurnUp } from './trousers';
+import { BackPocketOneRight, BackPocketsTwo, PleatsFlat, PleatsOne, PleatsTwo } from './trouserViews';
 
 /** One drawing per option, keyed by the stable option ID. */
 /** One drawing per option, keyed by the stable option ID. Options of a group marked noSketch have none. */

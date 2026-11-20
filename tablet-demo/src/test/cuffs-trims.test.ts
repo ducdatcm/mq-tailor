@@ -85,7 +85,7 @@ describe('trims: buttons and buttonholes', () => {
   });
 
   it('is its own tab, shared by the whole order', () => {
-    let s = started({ suit3Trousers: 1, blazer: 2 }, 'preset');
+    let s = started({ suit3Trousers: 1, blazer: 2 }, 'filled');
     s = run(s, { type: 'switchUnit', unit: 'trims' });
     expect(s.cursor).toEqual({ unit: 'trims', group: 'buttonType' });
     s = run(s, { type: 'select', unit: 'trims', group: 'buttonType', option: 'buttonType.horn' });

@@ -3,7 +3,6 @@ import type { Selections } from '../catalog/rules';
 
 export type Lang = 'vi' | 'en';
 export type Screen = 'start' | 'configure' | 'review' | 'order' | 'confirmed';
-export type StartMode = 'manual' | 'preset';
 
 export interface Cursor {
   /** The unit being designed ('jacket1', 'trousers2'...). */
@@ -58,7 +57,6 @@ export interface State {
   screen: Screen;
   /** Start screen: how many of each product are in the order (a product at 0 or missing is not in it). */
   quantities: Quantities;
-  startMode: StartMode;
   /** Session: every piece the order needs designed (empty until the session starts). */
   units: Unit[];
   /** Session draft, by unit. */
@@ -82,7 +80,6 @@ export interface State {
 export type Action =
   | { type: 'setLang'; lang: Lang }
   | { type: 'setQuantity'; product: ProductId; value: number }
-  | { type: 'chooseMode'; mode: StartMode }
   | { type: 'start' }
   | { type: 'select'; unit: string; group: GroupId; option: OptionId }
   | { type: 'acceptPending' }

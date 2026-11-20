@@ -5,7 +5,6 @@ import { ChevronIcon } from '../components/icons';
 import { Modal } from '../components/Modal';
 import { OptionCard } from '../components/OptionCard';
 import { Stepper } from '../components/Stepper';
-import { SuggestionModal } from '../components/SuggestionModal';
 import { SummaryPanel } from '../components/SummaryPanel';
 import { fmt } from '../content/copy';
 import { unitName } from '../order/labels';
@@ -34,7 +33,6 @@ export function ConfigureScreen() {
   const copying = state.sameAs[unit.id] ?? null;
 
   const [expanded, setExpanded] = useState<ReadonlySet<GroupId>>(new Set());
-  const [suggestFor, setSuggestFor] = useState<GroupId | null>(null);
   const [zoom, setZoom] = useState<OptionId | null>(null);
   const [familyPick, setFamilyPick] = useState<Partial<Record<GroupId, FamilyId>>>({});
   const moreId = useId();
@@ -151,9 +149,6 @@ export function ConfigureScreen() {
                 {copy.term ? <span className="option-term">{copy.term}</span> : null}
               </h1>
               <div className="group-actions">
-                <button type="button" className="btn btn-secondary" onClick={() => setSuggestFor(group)}>
-                  {t.configure.askHouse}
-                </button>
                 <button
                   type="button"
                   className="btn btn-quiet"
@@ -281,8 +276,6 @@ export function ConfigureScreen() {
           </button>
         )}
       </footer>
-
-      {suggestFor ? <SuggestionModal group={suggestFor} onClose={() => setSuggestFor(null)} /> : null}
 
       {zoom ? (
         <Modal title={t.options[zoom].label} size="wide" onClose={() => setZoom(null)} closeLabel={t.close}>

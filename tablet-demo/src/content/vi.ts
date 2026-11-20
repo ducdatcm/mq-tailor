@@ -33,7 +33,6 @@ export const vi: Copy = {
         'Cách hai thân trước của áo gài vào nhau: một hàng khuy thì gọn, hai hàng khuy thì thân trước rộng và chồng lên nhau.',
       ask: 'Anh/chị thường mặc áo cài khuy hay để mở? Anh/chị muốn dáng áo gọn hay trang trọng hơn?',
       more: 'Với một hàng khuy, hai thân trước gặp nhau ở giữa; số khuy (1, 2 hoặc 3) quyết định vị trí gập của ve. Với hai hàng khuy, hai thân trước chồng lên nhau nên phần ngực được che rộng hơn. Tên gọi như 6×2 hay 4×1 là tổng số khuy × số khuy dùng để cài. Đây là mô tả định hướng thiết kế, thợ may sẽ tư vấn thêm khi đo.',
-      suggestion: 'Mẫu của nhà may chọn một hàng 2 khuy: kiểu cân đối, dùng được cho nhiều dịp.',
     },
     lapel: {
       name: 'Kiểu ve',
@@ -42,7 +41,6 @@ export const vi: Copy = {
         'Hình dạng phần ve áo: ve notch có khấc chữ V giữa ve và cổ áo, ve nhọn có mũi ve hướng lên phía vai, ve sam là một mảnh liền bo tròn.',
       ask: 'Anh/chị thích đường ve kín đáo hay muốn phần ve nổi bật hơn?',
       more: 'Ve notch là kiểu ve quen thuộc trên áo một hàng khuy. Ve nhọn có mũi ve vươn lên, thường đi cùng áo hai hàng khuy. Ve sam (shawl) là một mảnh liền, bo tròn, không có khấc. Trong bộ mẫu này, các kiểu hai hàng khuy chỉ có ve nhọn.',
-      suggestion: 'Mẫu của nhà may chọn ve notch, đi cùng áo một hàng khuy.',
     },
     shoulder: {
       name: 'Dáng vai',
@@ -51,7 +49,6 @@ export const vi: Copy = {
         'Mức đệm và hình dạng đầu vai: vai cuộn có đầu tay áo nhô lên thành đường cuộn, vai tự nhiên đệm nhẹ giữ đường vai gọn và mềm, vai sơ-mi (spalla camicia) tròn và mềm như vai áo sơ mi.',
       ask: 'Anh/chị thích áo mềm, thoải mái hay đường vai rõ và chắc hơn?',
       more: 'Vai cuộn (roped): phần đầu tay áo nhô lên thành một đường cuộn nhẹ trên đỉnh vai. Vai tự nhiên đệm nhẹ: đệm mỏng, đường vai gọn và mềm. Vai sơ-mi (spalla camicia): gần như không đệm, đầu tay áo tròn và mềm như áo sơ mi. Đây là định hướng thiết kế; thợ may sẽ đánh giá thực tế khi đo.',
-      suggestion: 'Mẫu của nhà may chọn vai tự nhiên, đệm nhẹ.',
       note: 'Hình minh họa định hướng thiết kế, không phải phom áo đo riêng cho khách.',
     },
     hipPockets: {
@@ -61,7 +58,6 @@ export const vi: Copy = {
         'Kiểu túi hai bên hông áo: túi nắp hoặc túi viền (có nắp che miệng túi, hay chỉ một đường viền gọn), miệng túi xéo hoặc thẳng, và túi ốp may nổi bên ngoài thân áo.',
       ask: 'Anh/chị có hay bỏ đồ vào túi áo không? Anh/chị muốn áo trang trọng hay thoải mái hơn?',
       more: 'Túi nắp: nắp vải phủ miệng túi, dễ nhận ra. Túi viền: chỉ thấy đường viền nhỏ, gọn. Xéo hay thẳng là hướng của miệng túi: xéo nghiêng nhẹ về phía sau, thẳng nằm ngang. Túi ốp: miếng vải may nổi bên ngoài thân áo, cho vẻ thoải mái hơn.',
-      suggestion: 'Mẫu của nhà may chọn túi nắp thẳng.',
     },
     breastPocket: {
       name: 'Túi ngực',
@@ -70,7 +66,6 @@ export const vi: Copy = {
         'Kiểu túi ở ngực trái của áo: túi thẳng (miệng túi thẳng), barchetta (đáy cong như con thuyền) hoặc túi ốp (miếng vải may nổi bên ngoài).',
       ask: 'Anh/chị có hay cài khăn túi hoặc để đồ ở túi ngực không?',
       more: 'Túi thẳng: miệng túi thẳng, gọn nhất. Barchetta: miệng túi đáy cong, hai đầu hơi nhô lên, là kiểu túi ngực cổ điển. Túi ốp: miếng vải may nổi bên ngoài, cho vẻ thoải mái, hợp áo blazer.',
-      suggestion: 'Mẫu của nhà may chọn túi ngực barchetta.',
     },
     vents: {
       name: 'Xẻ sau',
@@ -78,7 +73,6 @@ export const vi: Copy = {
       difference: 'Đường xẻ ở lai sau của áo: không xẻ, một xẻ giữa lưng hoặc hai xẻ hai bên.',
       ask: 'Anh/chị có hay ngồi nhiều, hoặc đút tay vào túi quần khi mặc áo không?',
       more: 'Không xẻ: lưng áo liền một mạch, dáng gọn nhất. Một xẻ: mở ở giữa lưng, kiểu truyền thống và dễ cử động. Hai xẻ: mở ở hai bên lưng, giúp tà áo thoải mái và rủ đẹp khi ngồi và cử động.',
-      suggestion: 'Mẫu của nhà may chọn hai xẻ.',
       note: 'Hình minh họa nhìn từ phía sau.',
     },
     lining: {
@@ -87,7 +81,6 @@ export const vi: Copy = {
       difference: 'Phạm vi lớp vải lót bên trong áo: lót toàn bộ, lót nửa áo, lót một phần tư hoặc không lót.',
       ask: 'Anh/chị mặc áo chủ yếu vào mùa nào? Anh/chị muốn áo mềm mại, dễ mặc hay nhẹ và thoáng hơn?',
       more: 'Lót toàn bộ phủ kín mặt trong thân. Lót nửa áo phủ phần trên lưng và hai thân trước, để trần phần dưới lưng. Lót một phần tư chỉ phủ phần trên lưng. Không lót thì áo nhẹ và thoáng nhất, đường may bên trong được viền gọn. Mục này chỉ chọn phạm vi lót, chưa nói đến lớp dựng (canvas) bên trong áo.',
-      suggestion: 'Mẫu của nhà may chọn lót toàn bộ.',
       note: 'Sơ đồ chỉ minh họa phạm vi lớp lót, không thể hiện lớp dựng bên trong.',
     },
     pleats: {
@@ -96,7 +89,6 @@ export const vi: Copy = {
       difference: 'Các nếp gấp ở cạp quần phía trước: không ly (Flat front), một ly (One pleat) hoặc hai ly (Two pleats).',
       ask: 'Anh/chị thích mặt trước quần phẳng gọn hay có thêm ly để thoải mái ở phần hông?',
       more: 'Ly xếp là nếp vải gấp ngay dưới cạp quần. Đừng nhầm với đường là (đường ép) chạy dọc giữa ống quần; trong hình, đường là là một nét mảnh chạy dọc ống quần, còn ly là các nếp gấp ở cạp quần.',
-      suggestion: 'Mẫu của nhà may chọn không ly.',
     },
     waistband: {
       name: 'Chi tiết cạp quần',
@@ -105,7 +97,6 @@ export const vi: Copy = {
         'Cách hoàn thiện cạp quần: có đỉa để luồn thắt lưng, hoặc có khóa sườn ở hai bên hông cạp để chỉnh độ vừa.',
       ask: 'Anh/chị quen mặc quần có thắt lưng hay muốn chỉnh cạp bằng khóa sườn?',
       more: 'Đỉa thắt lưng là các quai nhỏ trên cạp để luồn thắt lưng. Khóa sườn là hai khóa ở hai bên hông cạp, dùng để điều chỉnh độ vừa vặn. Độ vừa của cạp sẽ được thợ may xác định khi đo.',
-      suggestion: 'Mẫu của nhà may chọn đỉa thắt lưng.',
     },
     frontPockets: {
       name: 'Túi trước',
@@ -114,7 +105,6 @@ export const vi: Copy = {
         'Hướng miệng túi ở hông: túi chéo chạy xiên từ cạp xuống đường sườn, túi dọc nằm dọc theo đường sườn.',
       ask: 'Anh/chị có hay bỏ đồ vào túi trước không? Anh/chị thích miệng túi dễ thò tay hay kín đáo?',
       more: 'Túi chéo có miệng túi xiên từ cạp xuống phía đường sườn. Túi dọc có miệng túi nằm ngay trên đường sườn nên kín đáo hơn.',
-      suggestion: 'Mẫu của nhà may chọn túi chéo.',
     },
     backPockets: {
       name: 'Túi sau',
@@ -122,7 +112,6 @@ export const vi: Copy = {
       difference: 'Số túi ở mặt sau quần: một túi bên phải hoặc hai túi, mỗi bên một túi.',
       ask: 'Anh/chị có hay để ví ở túi sau không?',
       more: 'Một túi bên phải là bên phải của người mặc. Hai túi có đủ túi ở cả hai bên mặt sau.',
-      suggestion: 'Mẫu của nhà may chọn hai túi.',
       note: 'Hình minh họa nhìn từ phía sau.',
     },
     cuffs: {
@@ -131,7 +120,6 @@ export const vi: Copy = {
       difference: 'Số khuy ở cửa tay áo: từ một đến bốn khuy, xếp thành hàng dọc theo mép tay.',
       ask: 'Anh/chị thích cửa tay áo gọn hay nhiều khuy hơn cho dáng cổ điển?',
       more: 'Cửa tay ít khuy trông gọn và hiện đại hơn; nhiều khuy trông cầu kỳ, truyền thống hơn. Khuy tay mở được hay chỉ để trang trí chọn ở phía dưới và áp dụng cho cả bốn lựa chọn. Đây là mô tả định hướng thiết kế, thợ may sẽ tư vấn thêm khi đo.',
-      suggestion: 'Mẫu của nhà may chọn bốn khuy.',
       note: 'Hình minh họa chỉ vẽ phần cửa tay áo.',
     },
     cuffMode: {
@@ -140,7 +128,6 @@ export const vi: Copy = {
       difference: 'Khuy tay có mở được thật (khuy mở) hoặc chỉ để trang trí (khuy đóng); áp dụng cho cả bốn lựa chọn số khuy.',
       ask: 'Anh/chị có hay xắn hoặc mở cửa tay áo không?',
       more: 'Khuy mở (functional) có khuyết thật nên cài và mở được; kiểu này chỉ khuyến nghị cho sport jacket hoặc blazer. Khuy đóng (closed) được khâu cố định để trang trí, cửa tay không mở được.',
-      suggestion: 'Mẫu của nhà may chọn khuy đóng.',
     },
     buttonType: {
       name: 'Loại khuy',
@@ -148,7 +135,6 @@ export const vi: Copy = {
       difference: 'Chất liệu khuy dùng cho áo và quần: nhựa (tiêu chuẩn), sừng hoặc xà cừ.',
       ask: 'Anh/chị muốn khuy giản dị theo tiêu chuẩn hay chất liệu cao cấp hơn như sừng, xà cừ?',
       more: 'Khuy nhựa là lựa chọn tiêu chuẩn. Khuy sừng và khuy xà cừ có thể phát sinh phụ phí tùy vào dòng vải; thợ may sẽ báo chi phí cụ thể khi chốt vải.',
-      suggestion: 'Mẫu của nhà may chọn khuy nhựa (tiêu chuẩn).',
       note: 'Khuy sừng và xà cừ có thể phát sinh phụ phí tùy vào dòng vải.',
     },
     milanese: {
@@ -157,7 +143,6 @@ export const vi: Copy = {
       difference: 'Có làm khuyết kiểu Milan hay dùng khuyết thông thường.',
       ask: 'Anh/chị có muốn khuyết kiểu Milan, tinh xảo hơn khuyết thông thường?',
       more: 'Khuyết Milan là kiểu khuyết làm tỉ mỉ theo phong cách Milan, đường chỉ mảnh và đều nên nhìn tinh xảo hơn khuyết thông thường. Đây là mô tả định hướng, thợ chính sẽ xác nhận cách làm.',
-      suggestion: 'Mẫu của nhà may chọn không làm khuyết Milan.',
     },
     waistcoatStyle: {
       name: 'Kiểu gile',
@@ -165,7 +150,6 @@ export const vi: Copy = {
       difference: 'Số hàng khuy (một hàng hoặc hai hàng) và số túi (hai túi dưới, hoặc thêm hai túi ngực thành bốn túi).',
       ask: 'Anh/chị muốn gile gọn nhẹ hay trang trọng hơn? Anh/chị có hay để đồ trong túi gile không?',
       more: 'Gile một hàng khuy có ngực hẹp, gọn và dễ mặc; gile hai hàng khuy có hai thân trước chồng lên nhau, cổ ve nên trang trọng hơn. Bản hai túi chỉ có hai túi dưới, bản bốn túi thêm hai túi ngực nhỏ phía trên. Đây là mô tả định hướng thiết kế, thợ may sẽ tư vấn thêm khi đo.',
-      suggestion: 'Mẫu của nhà may chọn gile một hàng khuy, hai túi.',
     },
     sleeve: {
       name: 'Chiều dài tay',
@@ -173,7 +157,6 @@ export const vi: Copy = {
       difference: 'Tay dài che hết cánh tay và có cổ tay áo; tay ngắn kết thúc ở khoảng giữa cánh tay và không có cổ tay áo.',
       ask: 'Anh/chị thường mặc sơ mi trong môi trường nào? Anh/chị thích tay dài hay tay ngắn cho thoáng?',
       more: 'Sơ mi tay dài là kiểu cổ điển, mặc được với áo khoác và cà vạt. Sơ mi tay ngắn thoáng hơn nhưng không có cổ tay áo, nên bước chọn cổ tay áo sẽ được bỏ qua. Chiều dài tay sẽ được thợ may xác định khi đo.',
-      suggestion: 'Mẫu của nhà may chọn tay dài.',
       note: 'Chọn tay ngắn thì không có bước chọn cổ tay áo.',
     },
     collar: {
@@ -182,7 +165,6 @@ export const vi: Copy = {
       difference: 'Hình dạng cổ áo: độ mở và độ dài của hai cánh cổ, đầu cánh cổ nhọn hay bo tròn, có cài khuy hay không, cổ gập hay cổ đứng.',
       ask: 'Anh/chị thường thắt cà vạt hay mở cổ? Anh/chị thích cổ áo gọn, cổ điển hay nổi bật?',
       more: 'Cổ vuông tiêu chuẩn là kiểu phổ biến nhất, hợp nhiều dịp. Cổ pintuck có cánh cổ dài, nhọn và khép gần nhau. Cổ button-down cài hai đầu cánh cổ xuống thân áo, dáng thể thao. Cổ Windsor mở rộng hai cánh, hợp với nút thắt cà vạt lớn. Cổ Eton có đầu cánh cổ bo tròn. Cổ cánh là cổ đứng với hai đầu gập ra như cánh, dùng cho trang phục dạ tiệc. Cổ trụ là cổ đứng, không gập xuống. Cổ bẹt (Cuban) không có chân cổ, hai cánh nằm phẳng và mở sâu xuống ngực, dáng thoải mái. Đây là mô tả định hướng thiết kế, thợ may sẽ tư vấn thêm khi đo.',
-      suggestion: 'Mẫu của nhà may chọn cổ vuông tiêu chuẩn.',
       note: 'Chọn một kiểu cổ; không có hình minh họa.',
     },
     chestPocket: {
@@ -191,7 +173,6 @@ export const vi: Copy = {
       difference: 'Áo có hay không có túi ngực; nếu có thì chọn kiểu đáy túi: đáy nhọn, đáy tròn, vuông hoặc túi có nắp.',
       ask: 'Anh/chị có hay để bút hoặc đồ nhỏ ở túi ngực không?',
       more: 'Sơ mi mặc đi làm, đi tiệc thường không có túi ngực để dáng áo gọn. Túi đáy nhọn có đáy hình chữ V, túi đáy tròn bo hai góc dưới, túi vuông có đáy phẳng, túi có nắp có thêm nắp gập phủ lên miệng túi.',
-      suggestion: 'Mẫu của nhà may chọn không có túi ngực.',
       note: 'Hình minh họa chỉ vẽ phần ngực áo.',
     },
     placket: {
@@ -200,7 +181,6 @@ export const vi: Copy = {
       difference: 'Phần giữa thân trước nơi đặt hàng khuy: nẹp thường, nẹp ẩn che kín khuy, nẹp xếp ly kiểu tuxedo hoặc nẹp trước có dải vải riêng.',
       ask: 'Anh/chị thích mặt trước áo trơn gọn, kín đáo hay trang trọng như áo tuxedo?',
       more: 'Nẹp thường (French front) là kiểu gọn nhất, hàng khuy ngay trên đường gấp thân áo. Nẹp ẩn (fly front) có lớp vải che nên không thấy khuy. Nẹp xếp ly tuxedo có các nếp xếp hai bên hàng khuy, dùng cho áo dạ tiệc. Nẹp trước (front placket) có một dải vải riêng may đè lên thân áo, hai bên đều có đường chỉ.',
-      suggestion: 'Mẫu của nhà may chọn nẹp thường.',
       note: 'Chọn một kiểu nẹp; không có hình minh họa.',
     },
     shirtCuffs: {
@@ -209,7 +189,6 @@ export const vi: Copy = {
       difference: 'Hình dạng cổ tay áo sơ mi: vát góc, bo tròn hay vuông; và kiểu French hoặc Double French với bản cổ tay rộng.',
       ask: 'Anh/chị thích cổ tay gọn hay bản rộng, góc vuông hay bo tròn?',
       more: 'Ba kiểu đầu (vát góc, bo tròn, vuông) khác nhau ở hình góc ngoài của cổ tay. Các kiểu French có bản cổ tay rộng hơn, kiểu Double French gập đôi hai lớp; mỗi kiểu có bản góc vuông hoặc bo tròn. Đây là mô tả định hướng thiết kế, thợ may sẽ tư vấn thêm khi đo.',
-      suggestion: 'Mẫu của nhà may chọn cổ tay vát góc.',
       note: 'Không có hình minh họa. Áo tay ngắn không có bước này.',
     },
     shirtHem: {
@@ -218,7 +197,6 @@ export const vi: Copy = {
       difference: 'Cách làm hai bên gấu áo: xẻ tà ở hai bên sườn, hoặc đuôi tôm có miếng đáp tam giác gia cố chỗ xẻ.',
       ask: 'Anh/chị mặc sơ mi bỏ vào quần hay thả ngoài? Anh/chị có thích gấu áo có thêm chi tiết gia cố ở hai bên sườn không?',
       more: 'Xẻ tà là chỗ hở ở hai bên sườn gấu áo, giúp cử động thoải mái. Đuôi tôm có thêm miếng đáp hình tam giác (gusset) ở chỗ xẻ để chắc và đẹp hơn. Đây là mô tả định hướng thiết kế, thợ chính sẽ xác nhận cách làm.',
-      suggestion: 'Mẫu của nhà may chọn xẻ tà.',
       note: 'Chọn một trong hai cách, không có hình minh họa.',
     },
     hem: {
@@ -227,7 +205,6 @@ export const vi: Copy = {
       difference: 'Phần cuối ống quần: gấu thường kết thúc phẳng, gấu lơ vê gấp lên thành một lớp ngoài ống.',
       ask: 'Anh/chị thích ống quần gọn phẳng hay có gấp lơ vê?',
       more: 'Lơ vê (turn-up) là phần vải gấp lên ở cuối ống quần. Chiều dài ống sẽ được thợ may xác định khi đo.',
-      suggestion: 'Mẫu của nhà may chọn gấu thường.',
     },
   },
 
@@ -390,12 +367,6 @@ export const vi: Copy = {
     intro: 'Xem từng chi tiết qua hình vẽ, so sánh và thống nhất thiết kế trước khi sang bước đo.',
     productsLabel: 'Chọn sản phẩm',
     orderLabel: 'Đơn gồm',
-    modeLabel: 'Cách bắt đầu',
-    modeManual: { title: 'Tự chọn chi tiết', desc: 'Đi lần lượt từng nhóm, chưa chọn sẵn gì.' },
-    modePreset: {
-      title: 'Gợi ý nhà may',
-      desc: 'Điền sẵn một cấu hình mẫu, sau đó chỉnh từng chi tiết tùy ý.',
-    },
     cta: 'Bắt đầu tư vấn',
     needProduct: 'Chọn sản phẩm và số lượng để bắt đầu.',
     quantityLabel: 'Số lượng',
@@ -413,7 +384,6 @@ export const vi: Copy = {
     next: 'Tiếp tục',
     toReview: 'Xem lại thiết kế',
     doneBackToReview: 'Xong, về xem lại',
-    askHouse: 'Nhờ nhà may gợi ý',
     learnMore: 'Tìm hiểu thêm',
     hideMore: 'Thu gọn',
     askLabel: 'Câu hỏi gợi ý cho nhân viên',
@@ -440,16 +410,6 @@ export const vi: Copy = {
     allDone: 'Đã chọn đủ các nhóm',
     openReview: 'Xem lại thiết kế',
     jumpTo: 'Đi tới: {group}',
-  },
-
-  suggestion: {
-    title: 'Gợi ý của nhà may',
-    houseLabel: 'Gợi ý mẫu',
-    disclaimer: 'Đây là gợi ý mẫu, chưa dựa trên vóc dáng hay nhu cầu riêng của khách. Gợi ý chỉ được tính là lựa chọn khi bấm “Áp dụng”.',
-    apply: 'Áp dụng lựa chọn này',
-    applied: 'Đang được chọn',
-    decline: 'Để tôi tự chọn',
-    unavailable: 'Gợi ý này không dùng được với lựa chọn hiện tại.',
   },
 
   lapelRule: {

@@ -32,7 +32,6 @@ export const en: Copy = {
         'How the two fronts of the jacket close: single-breasted is slim and simple, double-breasted has wide fronts that overlap.',
       ask: 'Do you usually wear a jacket buttoned or open? Would you like a cleaner or a more formal look?',
       more: 'On a single-breasted jacket the fronts meet at the centre; the number of buttons (1, 2 or 3) sets where the lapel folds. On a double-breasted jacket the fronts overlap and cover the chest more widely. Names such as 6×2 or 4×1 mean total buttons × buttons that fasten. This describes a design direction — the tailor will advise further at the measuring stage.',
-      suggestion: 'The house sample chooses single-breasted 2 buttons: a balanced style that suits many occasions.',
     },
     lapel: {
       name: 'Lapel',
@@ -40,7 +39,6 @@ export const en: Copy = {
         'The shape of the lapel: a notch lapel has a small V-shaped step between lapel and collar, a peak lapel points up towards the shoulder, a shawl lapel is one rounded piece.',
       ask: 'Do you prefer a quieter lapel line or one that stands out more?',
       more: 'The notch lapel is the familiar choice on single-breasted jackets. The peak lapel rises to a point and is usually paired with double-breasted jackets. A shawl lapel is a single rounded piece with no notch. In this sample range, the double-breasted closures are offered with peak lapels only.',
-      suggestion: 'The house sample chooses the notch lapel, to go with the single-breasted jacket.',
     },
     shoulder: {
       name: 'Shoulder',
@@ -48,7 +46,6 @@ export const en: Copy = {
         'How much padding and shape the shoulder has: roped lets the sleeve head rise into a small roll, natural keeps a neat soft line with light padding, shirt shoulder (spalla camicia) is round and soft like a shirt.',
       ask: 'Do you prefer a soft, relaxed jacket or a clearer, firmer shoulder line?',
       more: 'A roped shoulder lets the sleeve head rise into a small roll above the shoulder line. A natural shoulder has thin padding and a neat, soft line. A shirt shoulder (spalla camicia) has almost no padding and a soft, round sleeve head. This is a design direction; the tailor will assess it in person when measuring.',
-      suggestion: 'The house sample chooses the natural, lightly padded shoulder.',
       note: 'The drawing shows a design direction, not a jacket shaped to the customer.',
     },
     hipPockets: {
@@ -57,7 +54,6 @@ export const en: Copy = {
         'The style of the pockets on the jacket hips: flap or jetted (a flap over the opening, or only a neat welt), with the opening slanted or straight, or a patch sewn on the outside.',
       ask: 'Do you often use the jacket pockets? Would you like the jacket more formal or more relaxed?',
       more: 'Flap: a cloth flap covers the opening and is easy to recognise. Jetted: only a narrow welt is visible, very clean. Slanted pockets tilt slightly towards the back, straight pockets lie level. Patch: a piece of cloth stitched on the outside, a more relaxed look.',
-      suggestion: 'The house sample chooses straight flap pockets.',
     },
     breastPocket: {
       name: 'Chest pocket',
@@ -65,14 +61,12 @@ export const en: Copy = {
         'The pocket on the left chest: straight away (a straight opening), barchetta (a boat-shaped, curved bottom) or patch pocket (a piece of cloth stitched on the outside).',
       ask: 'Do you wear a pocket square or keep things in the chest pocket?',
       more: 'Straight away: a straight, neat opening. Barchetta: a curved-bottom opening with the ends lifted slightly, the classic chest pocket. Patch: a piece of cloth stitched on the outside, a relaxed look that suits a blazer.',
-      suggestion: 'The house sample chooses the barchetta chest pocket.',
     },
     vents: {
       name: 'Back vents',
       difference: 'The slits in the back hem of the jacket: no vent, one vent at the centre back, or two vents at the sides.',
       ask: 'Do you sit a lot, or put your hands in your trouser pockets while wearing the jacket?',
       more: 'No vent: the back is one smooth piece, the cleanest line. A centre vent opens at the middle of the back, traditional and easy to move in. Side (double) vents open at the two sides, letting the jacket drape well when sitting or walking.',
-      suggestion: 'The house sample chooses double vents.',
       note: 'The drawing shows the back of the jacket.',
     },
     lining: {
@@ -80,7 +74,6 @@ export const en: Copy = {
       difference: 'How much of the jacket interior is lined: fully lined, half-lined, quarter-lined or unlined.',
       ask: 'Which season will you wear it in mostly? Do you prefer a smooth, easy feel or a lighter, airier one?',
       more: 'A full lining covers the whole interior of the body. A half lining covers the upper back and both front panels and leaves the lower back bare. A quarter lining covers only the upper back. Unlined is the lightest and airiest, with the inside seams neatly bound. This option only chooses lining coverage — it says nothing about the canvas (interlining) construction.',
-      suggestion: 'The house sample chooses a full lining.',
       note: 'The diagram shows lining coverage only, not the canvas construction.',
     },
     pleats: {
@@ -88,7 +81,6 @@ export const en: Copy = {
       difference: 'The folds at the front waist of the trousers: flat front (no pleats), one pleat or two pleats.',
       ask: 'Do you prefer a smooth flat front, or a little extra room at the hip with pleats?',
       more: 'A pleat is a fold of cloth just below the waistband. Do not confuse it with the pressed crease running down the middle of the leg; in the drawings the crease is one fine line running down the leg, while pleats are the folds at the waist.',
-      suggestion: 'The house sample chooses flat front.',
     },
     waistband: {
       name: 'Waistband fastening details',
@@ -96,7 +88,6 @@ export const en: Copy = {
         'How the waistband is finished: belt loops for a belt, or side adjusters to alter the waist width.',
       ask: 'Do you usually wear trousers with a belt, or would you like side adjusters?',
       more: 'Belt loops are small straps on the waistband for a belt. Side adjusters are two adjustment tabs at the sides of the waistband. The fit of the waist is decided by the tailor when measuring.',
-      suggestion: 'The house sample chooses belt loops.',
     },
     frontPockets: {
       name: 'Front pockets',
@@ -104,14 +95,12 @@ export const en: Copy = {
         'The direction of the pocket opening at the hip: slanted runs diagonally from the waistband down to the side seam, side-seam sits along the seam.',
       ask: 'Do you often use the front pockets? Do you prefer an opening that is easy to reach or a more discreet one?',
       more: 'A slanted pocket has its opening running diagonally from the waistband towards the side seam. A side-seam pocket has its opening right along the side seam, which is more discreet.',
-      suggestion: 'The house sample chooses slanted pockets.',
     },
     backPockets: {
       name: 'Back pockets',
       difference: 'The number of pockets at the back: one pocket on the right, or two pockets, one on each side.',
       ask: 'Do you usually carry a wallet in a back pocket?',
       more: 'One right pocket means the wearer’s right side. Two pockets has a pocket on both sides of the back.',
-      suggestion: 'The house sample chooses two pockets.',
       note: 'The drawing shows the back of the trousers.',
     },
     cuffs: {
@@ -119,7 +108,6 @@ export const en: Copy = {
       difference: 'The number of buttons at the cuff: one to four, in a row along the edge of the sleeve.',
       ask: 'Do you prefer a clean cuff, or more buttons for a classic look?',
       more: 'Fewer buttons look cleaner and more modern; more buttons look more elaborate and traditional. Whether the cuff buttons really open or are only decorative is chosen below and applies to all four options. This describes the design direction; the tailor will advise further when measuring.',
-      suggestion: 'The house sample chooses four buttons.',
       note: 'The drawing shows the end of the sleeve only.',
     },
     cuffMode: {
@@ -127,14 +115,12 @@ export const en: Copy = {
       difference: 'Cuff buttons that really open (functional) or are only decorative (closed); applies to all four button counts.',
       ask: 'Do you tend to roll up or open your cuffs?',
       more: 'Functional buttons have real buttonholes, so the cuff can be opened; this is only recommended for a sport jacket or blazer. Closed buttons are sewn shut for decoration and the cuff does not open.',
-      suggestion: 'The house sample chooses closed buttons.',
     },
     buttonType: {
       name: 'Button type',
       difference: 'The material of the buttons used on the garments: plastic (standard), horn or mother of pearl.',
       ask: 'Do you want standard buttons, or a finer material such as horn or mother of pearl?',
       more: 'Plastic is the standard choice. Horn and mother-of-pearl buttons might carry an additional charge depending on the cloth; the tailor will give the exact cost when the cloth is chosen.',
-      suggestion: 'The house sample chooses plastic (standard) buttons.',
       note: 'Additional charges might apply for horn and mother of pearl, depending on the cloth.',
     },
     milanese: {
@@ -142,14 +128,12 @@ export const en: Copy = {
       difference: 'Whether the buttonholes are made in the Milanese style or the usual way.',
       ask: 'Would you like Milanese buttonholes, a finer finish than the usual ones?',
       more: 'A Milanese buttonhole is carefully made in the Milan style, with fine, even stitching, so it looks more refined than a usual buttonhole. This is a general description; the master tailor will confirm how it is made.',
-      suggestion: 'The house sample chooses no Milanese buttonholes.',
     },
     waistcoatStyle: {
       name: 'Waistcoat style',
       difference: 'The number of rows of buttons (single or double-breasted) and the number of pockets (two lower pockets, or two more small chest pockets for four).',
       ask: 'Do you want the waistcoat slim and light, or more formal? Do you tend to keep things in waistcoat pockets?',
       more: 'A single-breasted waistcoat has a narrow front that is trim and easy to wear; a double-breasted one overlaps the two fronts and has lapels, so it looks more formal. The two-pocket version has only the lower pockets, the four-pocket version adds two small chest pockets above. This describes the design direction; the tailor will advise further when measuring.',
-      suggestion: 'The house sample chooses a single-breasted waistcoat with two pockets.',
     },
     sleeve: {
       name: 'Sleeve length',
@@ -157,7 +141,6 @@ export const en: Copy = {
       difference: 'A long sleeve covers the whole arm and has a cuff; a short sleeve ends around mid-arm and has no cuff.',
       ask: 'Where will you mostly wear the shirt? Would you like long sleeves or short sleeves to keep cool?',
       more: 'A long-sleeved shirt is the classic choice and goes under a jacket and tie. A short-sleeved shirt is cooler but has no cuff, so the cuff step is skipped. The sleeve length is set by the tailor when measuring.',
-      suggestion: 'The house sample uses long sleeves.',
       note: 'Choosing short sleeves removes the cuff step.',
     },
     collar: {
@@ -166,7 +149,6 @@ export const en: Copy = {
       difference: 'The shape of the collar: how far the two points open and how long they are, whether the tips are pointed or rounded, whether they button down, and whether it folds or stands.',
       ask: 'Do you usually wear a tie or an open neck? Would you like a quiet, classic or a stronger collar?',
       more: 'The standard square collar is the most common and suits most occasions. The pintuck collar has long, pointed tips set close together. The button-down collar buttons its tips to the shirt for a sportier look. The Windsor collar opens its points wide for a large tie knot. The Eton collar has rounded tips. The winged collar is a stand collar with the tips folded out like wings, for formal evening dress. The stand collar stands up and does not fold down. The Cuban collar has no collar stand: the two leaves lie flat and open deep onto the chest for a relaxed look. This describes the design direction; the tailor will advise further when measuring.',
-      suggestion: 'The house sample uses the standard square collar.',
       note: 'Choose one collar; there is no drawing.',
     },
     chestPocket: {
@@ -175,7 +157,6 @@ export const en: Copy = {
       difference: 'Whether the shirt has a chest pocket and, if so, its shape: angled, rounded, square or with a flap.',
       ask: 'Do you often keep a pen or small items in a chest pocket?',
       more: 'Dress shirts often have no chest pocket, for a cleaner line. An angled pocket has a V-shaped base, a rounded pocket has both lower corners rounded, a square pocket has a flat base, and a flap pocket has a flap folded over its opening.',
-      suggestion: 'The house sample has no chest pocket.',
       note: 'The drawing shows the chest only.',
     },
     placket: {
@@ -184,7 +165,6 @@ export const en: Copy = {
       difference: 'The strip down the centre front that carries the buttons: a plain French front, a covered fly that hides the buttons, a pleated tuxedo front, or a front placket made from a separate strip.',
       ask: 'Would you like a plain, quiet front, or something more formal like a tuxedo shirt?',
       more: 'The French front is the cleanest: the buttons sit on the fold of the shirt front. The fly front has a layer of cloth over the buttons so they do not show. The pleated tuxedo front has pleats on both sides of the buttons, for evening dress. The front placket is a separate strip sewn onto the front, with stitching on both sides of the buttons.',
-      suggestion: 'The house sample uses the French front.',
       note: 'Choose one placket; there is no drawing.',
     },
     shirtCuffs: {
@@ -193,7 +173,6 @@ export const en: Copy = {
       difference: 'The shape of the shirt cuff: angled, rounded or square, or the wider French and double French cuffs.',
       ask: 'Would you like a neat cuff or a wider one, square or rounded?',
       more: 'The first three (angled, rounded, square) differ in the shape of the outer corner. The French cuffs are wider, and the double French cuff is folded in two layers; each comes with square or rounded corners. This describes the design direction; the tailor will advise further when measuring.',
-      suggestion: 'The house sample uses the angled cuff.',
       note: 'There is no drawing. Short-sleeved shirts skip this step.',
     },
     shirtHem: {
@@ -202,7 +181,6 @@ export const en: Copy = {
       difference: 'How the sides of the shirt hem are finished: side vents, or a gusset, a small triangle of cloth that reinforces the vent.',
       ask: 'Do you wear your shirt tucked in or out? Would you like a reinforced finish at the sides?',
       more: 'Side vents are small openings at the side seams of the hem so the shirt moves easily. The gusset adds a small triangular piece at each vent, which is stronger and neater. This describes the design direction; the master tailor will confirm the construction.',
-      suggestion: 'The house sample uses side vents.',
       note: 'Choose one of the two; there is no drawing.',
     },
     hem: {
@@ -210,7 +188,6 @@ export const en: Copy = {
       difference: 'The bottom of the trouser leg: a plain hem ends flat, a turn-up folds up into a cuff on the outside.',
       ask: 'Do you prefer a clean plain leg or a turn-up?',
       more: 'A turn-up (cuff) is cloth folded up at the bottom of the leg. The leg length is decided by the tailor when measuring.',
-      suggestion: 'The house sample chooses a plain hem.',
     },
   },
 
@@ -311,12 +288,6 @@ export const en: Copy = {
     intro: 'See each detail as a drawing, compare, and agree on the design before moving on to measuring.',
     productsLabel: 'Choose a product',
     orderLabel: 'The order',
-    modeLabel: 'How to start',
-    modeManual: { title: 'Choose each detail', desc: 'Go through every group in turn, with nothing chosen in advance.' },
-    modePreset: {
-      title: 'House suggestion',
-      desc: 'Fills in a sample configuration that you can then change detail by detail.',
-    },
     cta: 'Start consultation',
     needProduct: 'Choose products and quantities to begin.',
     quantityLabel: 'Quantity',
@@ -334,7 +305,6 @@ export const en: Copy = {
     next: 'Continue',
     toReview: 'Review design',
     doneBackToReview: 'Done, back to review',
-    askHouse: 'Ask for a house suggestion',
     learnMore: 'Learn more',
     hideMore: 'Show less',
     askLabel: 'Question for staff to ask',
@@ -361,17 +331,6 @@ export const en: Copy = {
     allDone: 'Every group is chosen',
     openReview: 'Review design',
     jumpTo: 'Go to: {group}',
-  },
-
-  suggestion: {
-    title: 'House suggestion',
-    houseLabel: 'Sample suggestion',
-    disclaimer:
-      'This is a sample suggestion, not based on the customer’s build or needs. It only counts as a choice once you press “Apply”.',
-    apply: 'Apply this option',
-    applied: 'Currently selected',
-    decline: 'I’ll choose myself',
-    unavailable: 'This suggestion is not available with the current selection.',
   },
 
   lapelRule: {

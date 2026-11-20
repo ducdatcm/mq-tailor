@@ -9,11 +9,12 @@ export const run = (state: State, ...actions: Action[]) => actions.reduce(reduce
 export type OrderSpec = ProductId | Quantities;
 export const quantitiesOf = (order: OrderSpec): Quantities => (typeof order === 'string' ? { [order]: 1 } : order);
 
-/** A session started from the start screen, for the given order. */
-export const started = (order: OrderSpec, mode: 'manual' | 'preset' = 'manual'): State => {
+/** A session started from the start screen, for the given order; "filled" sets every group to its house suggestion. */
+export const started = (order: OrderSpec, mode: 'empty' | 'filled' = 'empty'): State => {
   const q = quantitiesOf(order);
   const setQuantities = (Object.keys(q) as ProductId[]).map((product): Action => ({ type: 'setQuantity', product, value: q[product]! }));
-  return run(initialState(), ...setQuantities, { type: 'chooseMode', mode }, { type: 'start' });
+  const s = run(initialState(), ...setQuantities, { type: 'start' });
+  return mode === 'filled' ? { ...s, selections: presetSelections(s.units) } : s;
 };
 
 /** A confirmed design snapshot for an order, filled with the house suggestion. */

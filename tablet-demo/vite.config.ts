@@ -50,5 +50,7 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: ['./src/test/setup.ts'],
     css: false,
+    // journeys that complete a whole order on screen (every group of every piece) take a few seconds in jsdom
+    testTimeout: 20000,
   },
 });

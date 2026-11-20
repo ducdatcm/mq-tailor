@@ -14,7 +14,6 @@ import {
   emptySelections,
   hasAnySelection,
   missingSteps,
-  presetSelections,
   relevantSelections,
   resolveSelection,
   selectionsEqual,
@@ -28,7 +27,6 @@ export function initialState(lang: State['lang'] = 'vi'): State {
     lang,
     screen: 'start',
     quantities: {},
-    startMode: 'manual',
     units: [],
     selections: {},
     cursor: { unit: '', group: 'closure' },
@@ -94,14 +92,11 @@ export function reducer(state: State, action: Action): State {
       return { ...state, quantities };
     }
 
-    case 'chooseMode':
-      return { ...state, startMode: action.mode };
-
     case 'start': {
       if (state.screen !== 'start') return state;
       const units = unitsFor(state.quantities);
       if (units.length === 0) return state;
-      const selections = state.startMode === 'preset' ? presetSelections(units) : emptySelections(units);
+      const selections = emptySelections(units);
       return {
         ...state,
         screen: 'configure',

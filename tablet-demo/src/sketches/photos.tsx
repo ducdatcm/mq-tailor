@@ -162,27 +162,8 @@ export const LiningNone = () => <Photo name="lining-none" />;
 
 /* ── Trousers (waist close-ups) ──────────────────────────────────────────── */
 
-export const PleatsFlat = () => <Photo name="flat" />;
-/**
- * One pleat: the centre line is carried up from the leg to the waistband
- * (a pleat on each side of the fly, as drawn in the supplied reference).
- */
-export const PleatsOne = () => (
-  <Photo name="pleat1">
-    <path d="M185.7 116.4 L182 202.3" className="pen" />
-  </Photo>
-);
-export const PleatsTwo = () => <Photo name="pleat2" />;
 export const WaistbandBeltLoops = () => <Photo name="loops" />;
 export const WaistbandAdjusters = () => <Photo name="adjusters" />;
-export const BackPocketsTwo = () => <Photo name="back2" />;
-
-/** One pocket, on the wearer's right (the right of the picture from behind): the left pocket is painted out. */
-export const BackPocketOneRight = () => (
-  <Photo name="back2">
-    <rect x={57} y={193} width={87} height={30} className="erase" />
-  </Photo>
-);
 
 /* ── Waistcoat ───────────────────────────────────────────────────────────── */
 

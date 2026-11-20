@@ -25,6 +25,11 @@
     "detail": ""
   },
   {
+    "area": "layout tablet-1024x768 suit configure trims",
+    "ok": true,
+    "detail": ""
+  },
+  {
     "area": "layout tablet-1024x768 suit review",
     "ok": true,
     "detail": ""
@@ -47,7 +52,7 @@
   {
     "area": "pdf export tablet-1024x768 suit",
     "ok": true,
-    "detail": "phieu-thiet-ke_MQ-0001_20261113.pdf 259098 bytes"
+    "detail": "phieu-thiet-ke_MQ-0001_20261120.pdf 251277 bytes"
   },
   {
     "area": "layout tablet-1024x768 suit order",
@@ -80,6 +85,11 @@
     "detail": ""
   },
   {
+    "area": "layout tablet-1024x768 suit3Trousers configure trims",
+    "ok": true,
+    "detail": ""
+  },
+  {
     "area": "layout tablet-1024x768 suit3Trousers review",
     "ok": true,
     "detail": ""
@@ -107,7 +117,7 @@
   {
     "area": "pdf export tablet-1024x768 suit3Trousers",
     "ok": true,
-    "detail": "phieu-thiet-ke_MQ-0001_20261113.pdf 262751 bytes"
+    "detail": "phieu-thiet-ke_MQ-0001_20261120.pdf 254959 bytes"
   },
   {
     "area": "layout tablet-1024x768 suit3Waistcoat configure",
@@ -121,6 +131,11 @@
   },
   {
     "area": "waistcoat shows four options tablet-1024x768 suit3Waistcoat",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout tablet-1024x768 suit3Waistcoat configure trims",
     "ok": true,
     "detail": ""
   },
@@ -307,7 +322,7 @@
   {
     "area": "pdf export of the order tablet-1024x768",
     "ok": true,
-    "detail": "262205 bytes"
+    "detail": "253673 bytes"
   },
   {
     "area": "keyboard tablet-1024x768 start -> configure",
@@ -360,6 +375,11 @@
     "detail": ""
   },
   {
+    "area": "layout tablet-1280x800 suit configure trims",
+    "ok": true,
+    "detail": ""
+  },
+  {
     "area": "layout tablet-1280x800 suit review",
     "ok": true,
     "detail": ""
@@ -382,7 +402,7 @@
   {
     "area": "pdf export tablet-1280x800 suit",
     "ok": true,
-    "detail": "phieu-thiet-ke_MQ-0001_20261113.pdf 259097 bytes"
+    "detail": "phieu-thiet-ke_MQ-0001_20261120.pdf 251277 bytes"
   },
   {
     "area": "layout tablet-1280x800 suit order",
@@ -415,6 +435,11 @@
     "detail": ""
   },
   {
+    "area": "layout tablet-1280x800 suit3Trousers configure trims",
+    "ok": true,
+    "detail": ""
+  },
+  {
     "area": "layout tablet-1280x800 suit3Trousers review",
     "ok": true,
     "detail": ""
@@ -442,7 +467,7 @@
   {
     "area": "pdf export tablet-1280x800 suit3Trousers",
     "ok": true,
-    "detail": "phieu-thiet-ke_MQ-0001_20261113.pdf 262751 bytes"
+    "detail": "phieu-thiet-ke_MQ-0001_20261120.pdf 254953 bytes"
   },
   {
     "area": "layout tablet-1280x800 suit3Waistcoat configure",
@@ -456,6 +481,11 @@
   },
   {
     "area": "waistcoat shows four options tablet-1280x800 suit3Waistcoat",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout tablet-1280x800 suit3Waistcoat configure trims",
     "ok": true,
     "detail": ""
   },
@@ -642,7 +672,7 @@
   {
     "area": "pdf export of the order tablet-1280x800",
     "ok": true,
-    "detail": "262183 bytes"
+    "detail": "253613 bytes"
   },
   {
     "area": "keyboard tablet-1280x800 start -> configure",
@@ -695,6 +725,11 @@
     "detail": ""
   },
   {
+    "area": "layout portrait-768x1024 suit configure trims",
+    "ok": true,
+    "detail": ""
+  },
+  {
     "area": "layout portrait-768x1024 suit review",
     "ok": true,
     "detail": ""
@@ -717,7 +752,7 @@
   {
     "area": "pdf export portrait-768x1024 suit",
     "ok": true,
-    "detail": "phieu-thiet-ke_MQ-0001_20261113.pdf 259028 bytes"
+    "detail": "phieu-thiet-ke_MQ-0001_20261120.pdf 251313 bytes"
   },
   {
     "area": "layout portrait-768x1024 suit order",
@@ -750,6 +785,11 @@
     "detail": ""
   },
   {
+    "area": "layout portrait-768x1024 suit3Trousers configure trims",
+    "ok": true,
+    "detail": ""
+  },
+  {
     "area": "layout portrait-768x1024 suit3Trousers review",
     "ok": true,
     "detail": ""
@@ -777,7 +817,7 @@
   {
     "area": "pdf export portrait-768x1024 suit3Trousers",
     "ok": true,
-    "detail": "phieu-thiet-ke_MQ-0001_20261113.pdf 262749 bytes"
+    "detail": "phieu-thiet-ke_MQ-0001_20261120.pdf 254953 bytes"
   },
   {
     "area": "layout portrait-768x1024 suit3Waistcoat configure",
@@ -791,6 +831,11 @@
   },
   {
     "area": "waistcoat shows four options portrait-768x1024 suit3Waistcoat",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout portrait-768x1024 suit3Waistcoat configure trims",
     "ok": true,
     "detail": ""
   },
@@ -977,7 +1022,7 @@
   {
     "area": "pdf export of the order portrait-768x1024",
     "ok": true,
-    "detail": "262183 bytes"
+    "detail": "253613 bytes"
   },
   {
     "area": "keyboard portrait-768x1024 start -> configure",

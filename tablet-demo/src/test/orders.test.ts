@@ -32,7 +32,7 @@ describe('an order of several products', () => {
   });
 
   it('cannot be changed once the design has started', () => {
-    const s = started({ suit: 1, trousers: 2 }, 'preset');
+    const s = started({ suit: 1, trousers: 2 }, 'filled');
     expect(reducer(s, { type: 'setQuantity', product: 'suit', value: 5 })).toBe(s);
   });
 
@@ -98,7 +98,7 @@ describe('"same as the one already chosen"', () => {
   });
 
   it('while on, later changes to the copied piece carry over', () => {
-    let s = started(order, 'preset');
+    let s = started(order, 'filled');
     s = run(s, { type: 'setSameAs', unit: 'trousers2', source: 'trousers1' }, { type: 'setSameAs', unit: 'trousers3', source: 'trousers2' });
     s = pick(s, 'trousers1', 'pleats', 'pleats.one');
     expect(s.selections.trousers2.pleats).toBe('pleats.one');
@@ -107,7 +107,7 @@ describe('"same as the one already chosen"', () => {
   });
 
   it('choosing something on a copying piece ends its copying and keeps the rest', () => {
-    let s = started(order, 'preset');
+    let s = started(order, 'filled');
     s = run(s, { type: 'setSameAs', unit: 'trousers2', source: 'trousers1' });
     s = pick(s, 'trousers1', 'pleats', 'pleats.two');
     s = pick(s, 'trousers2', 'pleats', 'pleats.flat');
@@ -121,7 +121,7 @@ describe('"same as the one already chosen"', () => {
   });
 
   it('a piece can copy a different earlier piece, and "choose separately" keeps what was copied', () => {
-    let s = started(order, 'preset');
+    let s = started(order, 'filled');
     s = pick(pick(s, 'trousers1', 'hem', 'hem.turnUp'), 'trousers2', 'pleats', 'pleats.two');
     s = run(s, { type: 'setSameAs', unit: 'trousers3', source: 'trousers2' });
     expect(s.selections.trousers3.pleats).toBe('pleats.two');
@@ -134,7 +134,7 @@ describe('"same as the one already chosen"', () => {
   });
 
   it('works the same for jackets: 2 blazers can copy each other, and a suit jacket is a jacket too', () => {
-    let s = started({ suit: 1, blazer: 2 }, 'preset');
+    let s = started({ suit: 1, blazer: 2 }, 'filled');
     s = run(s, { type: 'select', unit: 'jacket1', group: 'vents', option: 'vents.none' });
     s = run(s, { type: 'setSameAs', unit: 'jacket3', source: 'jacket1' });
     expect(s.selections.jacket3.vents).toBe('vents.none');
@@ -142,7 +142,7 @@ describe('"same as the one already chosen"', () => {
   });
 
   it('rejects a source that is not an earlier piece of the same kind', () => {
-    const s = started(order, 'preset');
+    const s = started(order, 'filled');
     expect(run(s, { type: 'setSameAs', unit: 'trousers1', source: 'trousers2' })).toBe(s);
     expect(run(s, { type: 'setSameAs', unit: 'trousers2', source: 'jacket1' })).toBe(s);
     expect(run(s, { type: 'setSameAs', unit: 'trousers2', source: 'trousers3' })).toBe(s);
@@ -164,7 +164,7 @@ describe('"same as the one already chosen"', () => {
   });
 
   it('a new session starts without any copying', () => {
-    const s = run(started(order, 'preset'), { type: 'setSameAs', unit: 'trousers2', source: 'trousers1' }, { type: 'reset' });
+    const s = run(started(order, 'filled'), { type: 'setSameAs', unit: 'trousers2', source: 'trousers1' }, { type: 'reset' });
     expect(s.sameAs).toEqual({});
   });
 
@@ -179,7 +179,7 @@ describe('"same as the one already chosen"', () => {
   });
 
   it('is part of what a confirmed design remembers about pieces, not a difference of its own', () => {
-    const s = run(started(order, 'preset'), { type: 'setSameAs', unit: 'trousers2', source: 'trousers1' }, { type: 'openReview' }, { type: 'confirm', at: 1 });
+    const s = run(started(order, 'filled'), { type: 'setSameAs', unit: 'trousers2', source: 'trousers1' }, { type: 'openReview' }, { type: 'confirm', at: 1 });
     expect(s.confirmed?.units).toHaveLength(5);
     expect(selectionsEqual(s.units, s.confirmed!.selections, s.selections)).toBe(true);
   });
@@ -322,7 +322,7 @@ describe('shirt', () => {
   });
 
   it('cannot go to a step that does not apply, and next skips it', () => {
-    let s = started('shirt', 'preset');
+    let s = started('shirt', 'filled');
     s = run(s, { type: 'select', unit: shirtId, group: 'sleeve', option: 'sleeve.short' });
     expect(reducer(s, { type: 'goTo', unit: shirtId, group: 'shirtCuffs' }).cursor.group).not.toBe('shirtCuffs');
     const visited: string[] = [s.cursor.group];

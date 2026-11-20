@@ -1,7 +1,7 @@
 import { act, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, it } from 'vitest';
-import { PRODUCT_IDS, type OptionId, type ProductId } from '../catalog/catalog';
+import { GROUP_BY_ID, PRODUCT_IDS, type GroupId, type OptionId, type ProductId } from '../catalog/catalog';
 import { App } from '../App';
 import { vi } from '../content/vi';
 import { en } from '../content/en';
@@ -18,11 +18,38 @@ const button = (name: string | RegExp) => screen.getByRole('button', { name });
 /** The tab of one piece of the order ('jacket1', 'trousers2'...). */
 const tab = (id: string) => document.querySelector<HTMLButtonElement>(`[data-unit="${id}"]`)!;
 
-async function begin(user: User, p: ProductId, mode: 'manual' | 'preset' = 'manual') {
+async function begin(user: User, p: ProductId, mode: 'empty' | 'filled' = 'empty') {
   render(<App />);
   await user.click(product(p));
-  if (mode === 'preset') await user.click(document.querySelector('[data-mode="preset"]')!);
   await user.click(button(vi.start.cta));
+  if (mode === 'filled') await fillDesign(user);
+}
+
+/**
+ * Choose, on screen as the staff would, the house suggestion in every group of every piece
+ * (the first available option where the suggestion is not offered), then go back to the first group.
+ */
+async function fillDesign(user: User) {
+  const units = [...document.querySelectorAll('[data-unit]')].map((el) => el.getAttribute('data-unit')!);
+  const stepButtons = () => document.querySelectorAll<HTMLButtonElement>(`nav[aria-label="${vi.configure.stepsLabel}"] button`);
+  for (const unit of units) {
+    await user.click(tab(unit));
+    for (let i = 0; i < stepButtons().length; i += 1) {
+      await user.click(stepButtons()[i]);
+      const groups = new Map<GroupId, HTMLButtonElement[]>();
+      for (const b of document.querySelectorAll<HTMLButtonElement>('[data-option]')) {
+        const g = b.dataset.option!.split('.')[0] as GroupId;
+        groups.set(g, [...(groups.get(g) ?? []), b]);
+      }
+      for (const [g, opts] of groups) {
+        if (opts.some((b) => b.getAttribute('aria-pressed') === 'true')) continue;
+        const free = opts.filter((b) => !b.hasAttribute('aria-disabled'));
+        await user.click(free.find((b) => b.dataset.option === GROUP_BY_ID[g].preset) ?? free[0]);
+      }
+    }
+  }
+  await user.click(tab(units[0]));
+  await user.click(stepButtons()[0]);
 }
 
 async function pick(user: User, id: OptionId) {
@@ -121,10 +148,17 @@ describe('A5 missing groups', () => {
   });
 });
 
-describe('A6 presets', () => {
-  it('applying the house suggestion then changing one detail changes only that detail', async () => {
+describe('A6 a complete design', () => {
+  it('the start screen has no house-suggestion start: every session starts empty', async () => {
     const user = userEvent.setup();
-    await begin(user, 'suit', 'preset');
+    await begin(user, 'suit');
+    expect(document.querySelector('[data-mode]')).toBeNull();
+    expect(document.querySelectorAll('[data-option][aria-pressed="true"]')).toHaveLength(0);
+  });
+
+  it('changing one detail of a complete design changes only that detail', async () => {
+    const user = userEvent.setup();
+    await begin(user, 'suit', 'filled');
     expect(option('closure.sb2')).toHaveAttribute('aria-pressed', 'true');
     await user.click(tab('trousers1'));
     await user.click(within(screen.getByRole('complementary')).getByRole('button', { name: /Gấu quần/ })); // sidebar jump
@@ -139,18 +173,11 @@ describe('A6 presets', () => {
     expect(values.backPockets).toBe(vi.options['backPockets.two'].label);
   });
 
-  it('"Nhờ nhà may gợi ý" does not select anything until Apply is pressed', async () => {
+  it('offers no house suggestion button in a group', async () => {
     const user = userEvent.setup();
     await begin(user, 'blazer');
-    await user.click(button(vi.configure.askHouse));
-    const dialog = screen.getByRole('dialog');
-    expect(within(dialog).getByText(vi.options['closure.sb2'].label)).toBeInTheDocument();
-    await user.click(within(dialog).getByRole('button', { name: vi.suggestion.decline }));
-    expect(option('closure.sb2')).toHaveAttribute('aria-pressed', 'false');
-
-    await user.click(button(vi.configure.askHouse));
-    await user.click(within(screen.getByRole('dialog')).getByRole('button', { name: vi.suggestion.apply }));
-    expect(option('closure.sb2')).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.queryByRole('button', { name: 'Nhờ nhà may gợi ý' })).toBeNull();
+    expect(document.querySelectorAll('[data-option][aria-pressed="true"]')).toHaveLength(0);
   });
 });
 
@@ -276,7 +303,7 @@ describe('A8 language', () => {
 describe('A9 edit from review', () => {
   it('opens the right group and returns to an accurate summary', async () => {
     const user = userEvent.setup();
-    await begin(user, 'suit', 'preset');
+    await begin(user, 'suit', 'filled');
     await user.click(button(vi.configure.openReview));
     await user.click(button('Chỉnh sửa: Gấu quần'));
 
@@ -294,7 +321,7 @@ describe('A9 edit from review', () => {
 describe('A10–A11 confirmation and revisions', () => {
   it('A10: rapid repeated clicks give one design confirmation, then the order is confirmed on its own screen', async () => {
     const user = userEvent.setup();
-    await begin(user, 'trousers', 'preset');
+    await begin(user, 'trousers', 'filled');
     await user.click(button(vi.configure.openReview));
     const confirm = button(vi.review.confirm);
     act(() => {
@@ -318,7 +345,7 @@ describe('A10–A11 confirmation and revisions', () => {
 
   it('the order screen explains what is wrong with a phone number and keeps the confirm button off', async () => {
     const user = userEvent.setup();
-    await begin(user, 'trousers', 'preset');
+    await begin(user, 'trousers', 'filled');
     await user.click(button(vi.configure.openReview));
     await user.click(button(vi.review.confirm));
     await user.type(screen.getByLabelText(vi.order.orderId), 'MQ-9');
@@ -331,7 +358,7 @@ describe('A10–A11 confirmation and revisions', () => {
 
   it('A11: editing keeps the old version until reconfirmed, then shows the new one with only that change marked', async () => {
     const user = userEvent.setup();
-    await begin(user, 'blazer', 'preset');
+    await begin(user, 'blazer', 'filled');
     await user.click(button(vi.configure.openReview));
     await user.click(button(vi.review.confirm));
     await fillAndConfirmOrder(user);
@@ -365,7 +392,7 @@ describe('A10–A11 confirmation and revisions', () => {
 describe('A12 new session', () => {
   it('asks before discarding, then starts clean', async () => {
     const user = userEvent.setup();
-    await begin(user, 'blazer', 'preset');
+    await begin(user, 'blazer', 'filled');
     await user.click(button(vi.newSession));
 
     const dialog = screen.getByRole('alertdialog');
@@ -396,7 +423,7 @@ describe('A14 keyboard', () => {
     const user = userEvent.setup();
     await begin(user, 'blazer');
 
-    const ask = button(vi.configure.askHouse);
+    const ask = button(/Phóng to hình: Một hàng 1 khuy/);
     ask.focus();
     await user.keyboard('{Enter}');
     const dialog = screen.getByRole('dialog');
@@ -485,7 +512,6 @@ describe('an order of several products', () => {
     await user.click(add('suit'));
     await user.click(add('trousers'));
     await user.click(add('trousers'));
-    await user.click(document.querySelector('[data-mode="preset"]')!);
     await user.click(button(vi.start.cta));
 
     // 1 suit + 2 trousers: the suit's trousers are trousers 1, the others are 2 and 3
@@ -525,8 +551,8 @@ describe('an order of several products', () => {
     render(<App />);
     await user.click(add('suit'));
     await user.click(add('trousers'));
-    await user.click(document.querySelector('[data-mode="preset"]')!);
     await user.click(button(vi.start.cta));
+    await fillDesign(user);
     await user.click(button(vi.configure.openReview));
     expect([...document.querySelectorAll('[data-sheet-unit]')].map((el) => el.getAttribute('data-sheet-unit'))).toEqual(['jacket1', 'trousers1', 'trousers2', 'trims']);
     expect(document.querySelector('[data-order-list]')!.textContent).toMatch(/Suit hai mảnh × 1 · Quần tây × 1/);

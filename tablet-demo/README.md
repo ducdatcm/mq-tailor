@@ -90,7 +90,7 @@ Xem toàn bộ sketch trên một trang (để duyệt hình): mở `http://loca
 
 **Sửa chữ** (tên nhóm, mô tả, câu hỏi gợi ý cho sale, giải thích thêm, nội dung gợi ý, thông báo): sửa `src/content/vi.ts` và `src/content/en.ts`. Cả hai file cùng kiểu `Copy` nên TypeScript báo lỗi nếu thiếu một mục ở bất kỳ ngôn ngữ nào. Nhãn tiếng Anh phụ trong bản tiếng Việt là trường `term`.
 
-**Đổi cấu hình gợi ý của nhà may**: sửa trường `preset` của từng nhóm trong `src/catalog/catalog.ts`.
+**Cấu hình mẫu của nhà may** (trường `preset` của từng nhóm trong `src/catalog/catalog.ts`): không còn hiện trong ứng dụng, chỉ dùng để điền sẵn thiết kế trong các bài kiểm tra.
 
 **Thêm một lựa chọn vào nhóm có sẵn** (ví dụ thêm "Túi viền cong" vào Túi ngực):
 

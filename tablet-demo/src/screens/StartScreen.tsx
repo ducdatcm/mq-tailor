@@ -16,7 +16,6 @@ function pieceCounts(id: ProductId) {
 export function StartScreen() {
   const { state, dispatch, t } = useStore();
   const ready = totalQuantity(state.quantities) > 0;
-  const modeCopy = state.startMode === 'preset' ? t.start.modePreset : t.start.modeManual;
 
   return (
     <>
@@ -101,28 +100,6 @@ export function StartScreen() {
           )}
         </div>
         <div className="start-actions">
-          <span className="footer-hint" id="start-mode">
-            {t.start.modeLabel}
-          </span>
-          <div className="segmented" role="group" aria-labelledby="start-mode" aria-describedby="start-mode-desc">
-            {(['manual', 'preset'] as const).map((mode) => {
-              const copy = mode === 'manual' ? t.start.modeManual : t.start.modePreset;
-              return (
-                <button
-                  key={mode}
-                  type="button"
-                  aria-pressed={state.startMode === mode}
-                  data-mode={mode}
-                  onClick={() => dispatch({ type: 'chooseMode', mode })}
-                >
-                  {copy.title}
-                </button>
-              );
-            })}
-          </div>
-          <span id="start-mode-desc" hidden>
-            {modeCopy.desc}
-          </span>
           <button
             type="button"
             className="btn btn-primary btn-large"

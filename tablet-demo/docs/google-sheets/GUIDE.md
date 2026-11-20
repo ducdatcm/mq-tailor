@@ -65,7 +65,7 @@ Mã này ngăn người khác tình cờ gửi dữ liệu vào bảng tính n�
 
 ## 6. Thử một đơn
 
-1. Trên tablet: chọn một sản phẩm → **Bắt đầu từ gợi ý nhà may** → **Xem lại thiết kế** → **Xác nhận thiết kế** → điền Order ID `THU-001`, tên, số điện thoại → **Xác nhận đơn**.
+1. Trên tablet: chọn một sản phẩm → **Bắt đầu tư vấn** → chọn một kiểu ở mỗi nhóm (bấm **Tiếp tục**) → **Xem lại thiết kế** → **Xác nhận thiết kế** → điền Order ID `THU-001`, tên, số điện thoại → **Xác nhận đơn**.
 2. Ở màn hình đã xác nhận, dòng **Bảng tính** phải báo "Đã ghi đơn vào bảng tính".
 3. Mở bảng tính: trang **Đơn hàng** có một dòng mới. Số điện thoại giữ nguyên số 0 đầu.
 4. Xóa dòng thử trước khi dùng thật.

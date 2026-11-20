@@ -67,6 +67,43 @@ async function confirmOrder(page, tag, vp, shotName) {
   await page.getByRole('button', { name: 'Xác nhận đơn' }).click();
 }
 
+/** Option ids still to choose on the open screen: for each group shown with nothing chosen, its first available option. */
+const openChoices = (page) =>
+  page.evaluate(() => {
+    const groups = new Map();
+    for (const b of document.querySelectorAll('[data-option]')) {
+      const g = b.dataset.option.split('.')[0];
+      groups.set(g, [...(groups.get(g) ?? []), b]);
+    }
+    return [...groups.values()]
+      .filter((opts) => !opts.some((b) => b.getAttribute('aria-pressed') === 'true'))
+      .map((opts) => opts.find((b) => !b.hasAttribute('aria-disabled'))?.dataset.option)
+      .filter(Boolean);
+  });
+
+/**
+ * Completes every piece of the order on screen, as staff would: a piece with nothing chosen copies
+ * the first earlier piece of its kind when it can; otherwise every empty group gets its first option.
+ */
+async function fillAll(page) {
+  const units = await page.locator('[data-unit]').evaluateAll((els) => els.map((e) => e.getAttribute('data-unit')));
+  for (const unit of units) {
+    await page.click(`[data-unit="${unit}"]`);
+    const count = (await page.textContent(`[data-unit="${unit}"] .garment-count`)) ?? '';
+    const source = page.locator('[data-same-as-source]:not([data-same-as-source="none"])').first();
+    if (count.trim().startsWith('0/') && (await source.count())) {
+      await source.click();
+      continue;
+    }
+    const steps = page.locator('nav ol button');
+    const n = await steps.count();
+    for (let i = 0; i < n; i += 1) {
+      await steps.nth(i).click();
+      for (const id of await openChoices(page)) await page.click(`[data-option="${id}"]`);
+    }
+  }
+}
+
 async function freshStart(page) {
   await page.goto(BASE_URL);
   await page.evaluate(() => sessionStorage.clear());
@@ -91,8 +128,7 @@ async function cuffsScreenOk(page) {
 async function journey(page, vp, product) {
   await freshStart(page);
   const tag = `${vp} ${product}`;
-  // Multi-garment products start from the house suggestion; single-garment ones are chosen by hand.
-  const preset = product === 'suit' || product === 'suit3Trousers' || product === 'suit3Waistcoat' || product === 'shirt';
+  // The first piece is chosen by hand (the second option in every group); the rest is completed on screen before the review.
   if (product === 'suit') {
     await checkLayout(page, `${tag} start`);
     await shot(page, vp, '01-start');
@@ -110,7 +146,6 @@ async function journey(page, vp, product) {
     const list = await page.textContent('[data-order-list]');
     record(`the start screen says what the order holds ${vp}`, /Suit ba mảnh \(1 áo \+ 2 quần\) × 2/.test(list ?? ''), list ?? '');
   }
-  if (preset) await page.click('[data-mode="preset"]');
   await page.getByRole('button', { name: 'Bắt đầu tư vấn' }).click();
   await checkLayout(page, `${tag} configure`);
   if (product === 'suit') await shot(page, vp, '02-configure-closure');
@@ -118,13 +153,11 @@ async function journey(page, vp, product) {
   // Walk every group of the first garment (manual products choose the second option).
   const total = await page.locator('nav ol li').count();
   for (let i = 0; i < total; i += 1) {
-    if (!preset) {
-      const cards = page.locator('.option');
-      await cards.nth(Math.min(1, (await cards.count()) - 1)).click();
-      // a choice made on this screen for the group above (e.g. functional / closed cuff buttons)
-      const shared = page.locator('[data-companion] .option');
-      if (await shared.count()) await shared.nth(1).click();
-    }
+    const cards = page.locator('.option');
+    await cards.nth(Math.min(1, (await cards.count()) - 1)).click();
+    // a choice made on this screen for the group above (e.g. functional / closed cuff buttons)
+    const shared = page.locator('[data-companion] .option');
+    if (await shared.count()) await shared.nth(1).click();
     if (i < total - 1) await page.getByRole('button', { name: 'Tiếp tục' }).click();
   }
   if (product === 'suit') {
@@ -167,7 +200,7 @@ async function journey(page, vp, product) {
     await checkLayout(page, `${tag} configure collar`);
     if (vp === 'tablet-1280x800') await shot(page, vp, '03e-configure-collar');
   }
-  if (!preset) {
+  {
     // the trims (buttons and buttonholes) are chosen by hand too
     await page.locator('.garment-tab').last().click();
     await checkLayout(page, `${tag} configure trims`);
@@ -180,6 +213,7 @@ async function journey(page, vp, product) {
   if (product === 'blazer') {
     record(`cuffs: four button counts and a shared functional / closed choice ${vp}`, await cuffsScreenOk(page), '');
   }
+  await fillAll(page);
   const toggle = page.locator('.summary-toggle');
   if (await toggle.isVisible()) await toggle.click();
   if (product === 'suit') await shot(page, vp, '05-summary');
@@ -235,7 +269,6 @@ async function mixedOrderJourney(page, vp) {
   record(`start screen: several products with their own quantities ${vp}`, /Suit hai mảnh × 1/.test(list) && /Quần tây × 2/.test(list), list);
   if (vp === 'tablet-1280x800') await shot(page, vp, '01b-start-order');
   await checkLayout(page, `${tag} start`);
-  await page.click('[data-mode="preset"]');
   await page.getByRole('button', { name: 'Bắt đầu tư vấn' }).click();
   const units = await page.locator('[data-unit]').evaluateAll((els) => els.map((e) => e.getAttribute('data-unit')));
   record(`every piece is designed: jacket, trousers 1 to 3, trims ${vp}`, units.join(',') === 'jacket1,trousers1,trousers2,trousers3,trims', units.join(','));
@@ -256,6 +289,7 @@ async function mixedOrderJourney(page, vp) {
   record(`trousers 3 can copy trousers 1 or 2 ${vp}`, offered3.join(',') === 'trousers1,trousers2,none', offered3.join(','));
   await page.click('[data-same-as-source="trousers2"]');
 
+  await fillAll(page);
   const toggle = page.locator('.summary-toggle');
   if (await toggle.isVisible()) await toggle.click();
   await page.locator('.summary-panel').getByRole('button', { name: 'Xem lại thiết kế' }).click();
@@ -299,15 +333,13 @@ async function keyboardPass(page, vp) {
     if (await page.evaluate(() => document.activeElement?.matches('[data-product="blazer"]'))) break;
   }
   await page.keyboard.press('Enter');
-  await page.locator('[data-mode="preset"]').focus(); // the mode cards come after the products
-  await page.keyboard.press('Space');
-  await press('Tab'); // the start button, next in the footer
+  await page.getByRole('button', { name: 'Bắt đầu tư vấn' }).focus(); // the start button, in the footer
   await page.keyboard.press('Enter');
   const heading = await page.getByRole('heading', { level: 1 }).textContent();
   record(`keyboard ${vp} start -> configure`, heading?.includes('Kiểu cài áo'), heading ?? '');
 
   // Modal: focus is trapped, Escape closes it, focus returns to the opener.
-  await page.getByRole('button', { name: 'Nhờ nhà may gợi ý' }).focus();
+  await page.getByRole('button', { name: /Phóng to hình/ }).first().focus();
   await page.keyboard.press('Enter');
   let trapped = true;
   for (let i = 0; i < 10; i += 1) {
@@ -315,14 +347,18 @@ async function keyboardPass(page, vp) {
     trapped = trapped && (await page.evaluate(() => !!document.activeElement?.closest('[role="dialog"]')));
   }
   await page.keyboard.press('Escape');
-  const returned = await page.evaluate(() => document.activeElement?.textContent?.includes('Nhờ nhà may gợi ý'));
+  const returned = await page.evaluate(() => !!document.activeElement?.matches('.zoom-btn'));
   record(`keyboard ${vp} modal traps focus, Escape closes, focus returns`, trapped && returned, JSON.stringify({ trapped, returned }));
 
-  // Change a value, move through every group, review, confirm.
-  await page.locator('[data-option="closure.sb1"]').focus();
-  await page.keyboard.press('Space');
-  for (let i = 0; i < 9; i += 1) {
-    await page.getByRole('button', { name: 'Tiếp tục' }).focus();
+  // Choose in every group with the keyboard (Space on an option, Enter on Next), review, confirm.
+  for (let i = 0; i < 30; i += 1) {
+    for (const id of await openChoices(page)) {
+      await page.locator(`[data-option="${id}"]`).focus();
+      await page.keyboard.press('Space');
+    }
+    const next = page.getByRole('button', { name: 'Tiếp tục' });
+    if (!(await next.count())) break;
+    await next.focus();
     await page.keyboard.press('Enter');
   }
   await page.getByRole('button', { name: 'Xem lại thiết kế' }).last().focus();

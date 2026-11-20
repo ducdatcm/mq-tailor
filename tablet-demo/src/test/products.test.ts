@@ -45,7 +45,7 @@ describe('products and their pieces', () => {
     for (const p of ['suit3Trousers', 'suit3Waistcoat', 'waistcoat'] as const) {
       const units = unitsFor({ [p]: 1 });
       expect(missingSteps(units, presetSelections(units))).toHaveLength(0);
-      const preset = started(p, 'preset');
+      const preset = started(p, 'filled');
       expect(missingSteps(preset.units, preset.selections)).toHaveLength(0);
       const manual = started(p);
       expect(missingSteps(manual.units, manual.selections).length).toBeGreaterThanOrEqual(stepsFor(manual.units).length);
@@ -68,7 +68,7 @@ describe('products and their pieces', () => {
   });
 
   it("keeps only the order's own units when snapshotting", () => {
-    const s = started('suit3Waistcoat', 'preset');
+    const s = started('suit3Waistcoat', 'filled');
     const kept = relevantSelections(s.units, s.selections);
     expect(Object.keys(kept).sort()).toEqual(['jacket1', 'trims', 'trousers1', 'waistcoat1']);
     expect(Object.keys(kept.waistcoat1)).toHaveLength(1);
