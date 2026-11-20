@@ -47,7 +47,8 @@ const parse = (v) => (typeof v === 'string' ? JSON.parse(v) : v);
 
 /**
  * Turns joined rows (one per photo-choice link) into what the tablet reads:
- * { photos: { "lapel.peak": [{ id, src, width, height, altVi, altEn, focalX, focalY }, ...] } }.
+ * { photos: { "lapel.peak": [{ id, src, width, height, full: { src, width, height }, altVi, altEn, focalX, focalY }, ...] } }
+ * (`src` up to 1200 px wide for the enlarged view, `full` up to 1920 px for the full-screen zoom).
  * `src` is relative to /tablet/ (see photoPath): the tablet loads photos from its own address.
  * Links to choices the app no longer offers, and photos without a web copy, are left out.
  */
@@ -57,12 +58,14 @@ function buildOptionPhotos(rows, validIds) {
     if (validIds && !validIds.has(row.option_id)) continue;
     const pick = pickWidth(parse(row.variants));
     if (!pick) continue;
-    const height = row.width ? Math.round((pick.width * row.height) / row.width) : null;
+    const heightAt = (w) => (row.width ? Math.round((w * row.height) / row.width) : null);
+    const full = pickWidth(parse(row.variants), 1920); // sharper copy for the full-screen zoom
     (photos[row.option_id] ||= []).push({
       id: row.media_id,
       src: photoPath(row.media_id, pick.width),
       width: pick.width,
-      height,
+      height: heightAt(pick.width),
+      full: { src: photoPath(row.media_id, full.width), width: full.width, height: heightAt(full.width) },
       altVi: row.alt_vi || '',
       altEn: row.alt_en || '',
       focalX: row.focal_x != null ? Number(row.focal_x) : 50,

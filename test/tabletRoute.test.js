@@ -181,6 +181,7 @@ test('the photos linked to tablet choices are listed for a signed-in tablet', as
         src: 'api/photo/7/1200.webp',
         width: 1200,
         height: 800,
+        full: { src: 'api/photo/7/1920.webp', width: 1920, height: 1280 },
         altVi: 'Ve nhọn, vải xám',
         altEn: 'Peak lapel, grey cloth',
         focalX: 40,

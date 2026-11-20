@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { offlinePhotoStatus, refreshOptionPhotos } from '../photos/optionPhotos';
 import { flushQueue, queuedCount } from '../sheet/client';
 import { loadSheetConfig, readLocalSheetConfig, saveLocalSheetConfig } from '../sheet/config';
 
@@ -36,6 +37,19 @@ export function SetupScreen() {
   const [queued, setQueued] = useState(queuedCount());
   const [fileUrl, setFileUrl] = useState<string | null>(null);
   const [info, setInfo] = useState(readDeviceInfo);
+  const [photoStatus, setPhotoStatus] = useState<{ listed: number; saved: number } | null>(null);
+
+  // real photos of the choices: fetch the latest list, then count the files kept on this tablet
+  useEffect(() => {
+    let live = true;
+    void refreshOptionPhotos()
+      .then(() => offlinePhotoStatus())
+      .then((s) => live && setPhotoStatus(s))
+      .catch(() => live && setPhotoStatus({ listed: 0, saved: 0 }));
+    return () => {
+      live = false;
+    };
+  }, []);
 
   useEffect(() => {
     document.title = 'Cài đặt máy — Minh Quang';
@@ -185,6 +199,14 @@ export function SetupScreen() {
           <dd>{info.mode}</dd>
           <dt>Dùng khi mất mạng</dt>
           <dd>{info.offline}</dd>
+          <dt>Ảnh thật đã lưu trên máy</dt>
+          <dd data-photo-status>
+            {photoStatus === null
+              ? 'Đang kiểm tra…'
+              : photoStatus.listed === 0
+                ? 'Chưa có ảnh nào được gắn trong thư viện ảnh của website'
+                : `${photoStatus.saved}/${photoStatus.listed} tệp${photoStatus.saved < photoStatus.listed ? ' (còn thiếu: mở ứng dụng khi có mạng để tải nốt)' : ' — đủ, xem được khi mất mạng'}`}
+          </dd>
           <dt>Màn hình</dt>
           <dd>{info.wake}</dd>
           <dt>Mạng</dt>

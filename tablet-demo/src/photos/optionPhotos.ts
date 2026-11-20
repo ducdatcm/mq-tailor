@@ -17,6 +17,8 @@ export interface OptionPhoto {
   src: string;
   width: number;
   height: number | null;
+  /** a sharper copy (up to 1920 px) for the full-screen zoom */
+  full?: { src: string; width: number; height: number | null };
   altVi: string;
   altEn: string;
   /** where to keep the crop centred, in % of the photo */
@@ -59,8 +61,17 @@ export function useOptionPhotos(option: OptionId | null | undefined): readonly O
 }
 const NONE: readonly OptionPhoto[] = [];
 
-const isPhoto = (p: unknown): p is OptionPhoto =>
-  typeof p === 'object' && p !== null && typeof (p as OptionPhoto).src === 'string' && /^api\/photo\/\d+\/\d+\.webp$/.test((p as OptionPhoto).src);
+const PHOTO_PATH = /^api\/photo\/\d+\/\d+\.webp$/;
+const isPhoto = (p: unknown): p is OptionPhoto => {
+  if (typeof p !== 'object' || p === null) return false;
+  const photo = p as OptionPhoto;
+  const full = photo.full;
+  return (
+    typeof photo.src === 'string' &&
+    PHOTO_PATH.test(photo.src) &&
+    (full === undefined || (typeof full === 'object' && full !== null && typeof full.src === 'string' && PHOTO_PATH.test(full.src)))
+  );
+};
 
 /** Keeps only well-formed entries: a photo list from the network is not trusted blindly. */
 function clean(data: unknown): PhotoMap | null {
@@ -74,14 +85,30 @@ function clean(data: unknown): PhotoMap | null {
   return out;
 }
 
+/** Every file the tablet keeps for a list: each photo and its full-screen copy, as absolute addresses. */
+function photoUrls(map: PhotoMap): Set<string> {
+  const urls = new Set<string>();
+  for (const p of Object.values(map).flat()) {
+    if (!p) continue;
+    urls.add(new URL(p.src, window.location.href).href);
+    if (p.full) urls.add(new URL(p.full.src, window.location.href).href);
+  }
+  return urls;
+}
+
+/** How many of the listed photo files are already kept on this tablet (shown on the setup page). */
+export async function offlinePhotoStatus(): Promise<{ listed: number; saved: number }> {
+  const wanted = photoUrls(photos);
+  if (typeof caches === 'undefined') return { listed: wanted.size, saved: 0 };
+  const cache = await caches.open(PHOTO_CACHE);
+  const have = new Set((await cache.keys()).map((r) => r.url));
+  return { listed: wanted.size, saved: [...wanted].filter((u) => have.has(u)).length };
+}
+
 /** Copies every listed photo into the offline cache (a few at a time) and drops the ones no longer listed. */
 async function keepOffline(map: PhotoMap): Promise<void> {
   if (typeof caches === 'undefined') return;
-  const wanted = new Set(
-    Object.values(map)
-      .flat()
-      .map((p) => new URL(p!.src, window.location.href).href),
-  );
+  const wanted = photoUrls(map);
   const cache = await caches.open(PHOTO_CACHE);
   const have = new Set<string>();
   for (const request of await cache.keys()) {

@@ -74,6 +74,10 @@ export interface Copy {
     photoCount: string; // {n} {total}
     prevPhoto: string;
     nextPhoto: string;
+    openPhoto: string; // {caption}
+    zoomPhoto: string;
+    photoHint: string;
+    photoError: string;
     optionsOf: string; // {group}
     familiesLabel: string;
     familySingle: string;

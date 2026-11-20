@@ -86,4 +86,18 @@ describe('real photos of the choices, from the website Media Library', () => {
     await openClosure(user);
     expect(document.querySelectorAll('[data-has-photos]')).toHaveLength(0);
   });
+
+  it('rejects a full-screen copy that does not come from the website', async () => {
+    vitest.stubGlobal('fetch', vitest.fn(() => json({ photos: { 'lapel.peak': [photo(3, { full: { src: 'https://elsewhere.example/big.jpg', width: 1920, height: 1280 } })], 'lapel.notch': [photo(4, { full: { src: 'api/photo/4/1920.webp', width: 1920, height: 1280 } })] } })));
+    await act(() => refreshOptionPhotos());
+    expect(Object.keys(JSON.parse(localStorage.getItem('mq-tablet-demo/option-photos')!).photos)).toEqual(['lapel.notch']);
+  });
+
+  it('the setup page says how many photo files are kept on the tablet', async () => {
+    vitest.stubGlobal('fetch', vitest.fn(() => json({ photos: {} })));
+    window.matchMedia ??= ((q: string) => ({ matches: false, media: q, addEventListener() {}, removeEventListener() {} })) as unknown as typeof window.matchMedia;
+    window.location.hash = '#/setup';
+    render(<App />);
+    await waitFor(() => expect(document.querySelector('[data-photo-status]')).toHaveTextContent('Chưa có ảnh nào được gắn'));
+  });
 });

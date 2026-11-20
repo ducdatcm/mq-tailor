@@ -211,7 +211,7 @@ Admin › Media Library › **Tablet choices** (link under each photo) ticks whi
 
 - The links live in the `media_tablet_options` table (migration `20260101000030`, applied on boot like the others). Deleting a photo removes its links.
 - The list of choices comes from `tablet-app/options.json`, written by `npm run build:site` in `tablet-demo/`.
-- The tablet reads `/tablet/api/option-photos` and `/tablet/api/photo/<id>/<width>.webp` (the site passes the 1200 px WebP copy on from R2), both behind the tablet access code; only photos linked to a choice are served.
+- The tablet reads `/tablet/api/option-photos` and `/tablet/api/photo/<id>/<width>.webp` (the site passes the 1200 px and 1920 px WebP copies on from R2; the larger one is for the full-screen zoom), both behind the tablet access code; only photos linked to a choice are served.
 
 ## Database backups
 

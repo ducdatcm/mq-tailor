@@ -52,7 +52,7 @@
   {
     "area": "pdf export tablet-1024x768 suit",
     "ok": true,
-    "detail": "phieu-thiet-ke_MQ-0001_20261121.pdf 250818 bytes"
+    "detail": "phieu-thiet-ke_MQ-0001_20261121.pdf 251076 bytes"
   },
   {
     "area": "layout tablet-1024x768 suit order",
@@ -117,7 +117,7 @@
   {
     "area": "pdf export tablet-1024x768 suit3Trousers",
     "ok": true,
-    "detail": "phieu-thiet-ke_MQ-0001_20261121.pdf 254551 bytes"
+    "detail": "phieu-thiet-ke_MQ-0001_20261121.pdf 254754 bytes"
   },
   {
     "area": "layout tablet-1024x768 suit3Waistcoat configure",
@@ -322,7 +322,7 @@
   {
     "area": "pdf export of the order tablet-1024x768",
     "ok": true,
-    "detail": "253236 bytes"
+    "detail": "253455 bytes"
   },
   {
     "area": "layout tablet-1024x768 photos zoom",
@@ -330,9 +330,14 @@
     "detail": ""
   },
   {
-    "area": "real photos: the card is marked, the enlarged view shows them beside the drawing tablet-1024x768",
+    "area": "real photos: the card is marked, the enlarged view shows them whole beside the drawing tablet-1024x768",
     "ok": true,
-    "detail": "{\"marked\":1,\"shown\":true,\"second\":\"Ảnh mẫu 2\"}"
+    "detail": "{\"marked\":1,\"shown\":true,\"second\":\"Ảnh mẫu 2\",\"cropped\":\"contain\",\"shape\":0.96}"
+  },
+  {
+    "area": "real photos: full screen with zoom, Escape returns to the enlarged view tablet-1024x768",
+    "ok": true,
+    "detail": "{\"open\":true,\"src\":\"api/photo/1/1920.webp\",\"zoomButton\":true,\"counter\":\"2 / 2\",\"zoomed\":true,\"back\":true}"
   },
   {
     "area": "keyboard tablet-1024x768 start -> configure",
@@ -412,7 +417,7 @@
   {
     "area": "pdf export tablet-1280x800 suit",
     "ok": true,
-    "detail": "phieu-thiet-ke_MQ-0001_20261121.pdf 250818 bytes"
+    "detail": "phieu-thiet-ke_MQ-0001_20261121.pdf 251076 bytes"
   },
   {
     "area": "layout tablet-1280x800 suit order",
@@ -477,7 +482,7 @@
   {
     "area": "pdf export tablet-1280x800 suit3Trousers",
     "ok": true,
-    "detail": "phieu-thiet-ke_MQ-0001_20261121.pdf 254551 bytes"
+    "detail": "phieu-thiet-ke_MQ-0001_20261121.pdf 254750 bytes"
   },
   {
     "area": "layout tablet-1280x800 suit3Waistcoat configure",
@@ -682,7 +687,7 @@
   {
     "area": "pdf export of the order tablet-1280x800",
     "ok": true,
-    "detail": "253279 bytes"
+    "detail": "253440 bytes"
   },
   {
     "area": "layout tablet-1280x800 photos zoom",
@@ -690,9 +695,14 @@
     "detail": ""
   },
   {
-    "area": "real photos: the card is marked, the enlarged view shows them beside the drawing tablet-1280x800",
+    "area": "real photos: the card is marked, the enlarged view shows them whole beside the drawing tablet-1280x800",
     "ok": true,
-    "detail": "{\"marked\":1,\"shown\":true,\"second\":\"Ảnh mẫu 2\"}"
+    "detail": "{\"marked\":1,\"shown\":true,\"second\":\"Ảnh mẫu 2\",\"cropped\":\"contain\",\"shape\":1.06}"
+  },
+  {
+    "area": "real photos: full screen with zoom, Escape returns to the enlarged view tablet-1280x800",
+    "ok": true,
+    "detail": "{\"open\":true,\"src\":\"api/photo/1/1920.webp\",\"zoomButton\":true,\"counter\":\"2 / 2\",\"zoomed\":true,\"back\":true}"
   },
   {
     "area": "keyboard tablet-1280x800 start -> configure",
@@ -772,7 +782,7 @@
   {
     "area": "pdf export portrait-768x1024 suit",
     "ok": true,
-    "detail": "phieu-thiet-ke_MQ-0001_20261121.pdf 250841 bytes"
+    "detail": "phieu-thiet-ke_MQ-0001_20261121.pdf 251035 bytes"
   },
   {
     "area": "layout portrait-768x1024 suit order",
@@ -837,7 +847,7 @@
   {
     "area": "pdf export portrait-768x1024 suit3Trousers",
     "ok": true,
-    "detail": "phieu-thiet-ke_MQ-0001_20261121.pdf 254587 bytes"
+    "detail": "phieu-thiet-ke_MQ-0001_20261121.pdf 254750 bytes"
   },
   {
     "area": "layout portrait-768x1024 suit3Waistcoat configure",
@@ -1042,7 +1052,7 @@
   {
     "area": "pdf export of the order portrait-768x1024",
     "ok": true,
-    "detail": "253279 bytes"
+    "detail": "253440 bytes"
   },
   {
     "area": "layout portrait-768x1024 photos zoom",
@@ -1050,9 +1060,14 @@
     "detail": ""
   },
   {
-    "area": "real photos: the card is marked, the enlarged view shows them beside the drawing portrait-768x1024",
+    "area": "real photos: the card is marked, the enlarged view shows them whole beside the drawing portrait-768x1024",
     "ok": true,
-    "detail": "{\"marked\":1,\"shown\":true,\"second\":\"Ảnh mẫu 2\"}"
+    "detail": "{\"marked\":1,\"shown\":true,\"second\":\"Ảnh mẫu 2\",\"cropped\":\"contain\",\"shape\":1.07}"
+  },
+  {
+    "area": "real photos: full screen with zoom, Escape returns to the enlarged view portrait-768x1024",
+    "ok": true,
+    "detail": "{\"open\":true,\"src\":\"api/photo/1/1920.webp\",\"zoomButton\":true,\"counter\":\"2 / 2\",\"zoomed\":true,\"back\":true}"
   },
   {
     "area": "keyboard portrait-768x1024 start -> configure",

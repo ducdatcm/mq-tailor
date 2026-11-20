@@ -315,8 +315,9 @@ async function mixedOrderJourney(page, vp) {
  */
 async function photosCheck(page, vp) {
   const picture = readFileSync(fileURLToPath(new URL('../public/icons/icon-512.png', import.meta.url)));
-  const photo = (id) => ({ id, src: `api/photo/${id}/1200.webp`, width: 1200, height: 900, altVi: `Ảnh mẫu ${id}`, altEn: `Sample ${id}`, focalX: 50, focalY: 50 });
-  await page.route('**/api/option-photos', (route) => route.fulfill({ json: { photos: { 'closure.sb2': [photo(1), photo(2)] } } }));
+  // photo 1 is landscape, photo 2 is portrait: each is shown whole, in its own shape
+  const photo = (id, w, h) => ({ id, src: `api/photo/${id}/1200.webp`, width: w, height: h, full: { src: `api/photo/${id}/1920.webp`, width: w * 1.6, height: h * 1.6 }, altVi: `Ảnh mẫu ${id}`, altEn: `Sample ${id}`, focalX: 50, focalY: 50 });
+  await page.route('**/api/option-photos', (route) => route.fulfill({ json: { photos: { 'closure.sb2': [photo(1, 1200, 900), photo(2, 900, 1200)] } } }));
   await page.route('**/api/photo/**', (route) => route.fulfill({ body: picture, contentType: 'image/png' }));
   await freshStart(page);
   await page.click('[data-product="blazer"]');
@@ -331,9 +332,34 @@ async function photosCheck(page, vp) {
   });
   await checkLayout(page, `${vp} photos zoom`);
   if (vp === 'tablet-1280x800') await shot(page, vp, '04b-real-photos');
+  const cropped = await page.evaluate(() => getComputedStyle(document.querySelector('[data-photo-viewer] img')).objectFit);
   await page.getByRole('button', { name: 'Ảnh sau' }).click();
   const second = await page.locator('[data-photo-viewer] img').getAttribute('alt');
-  record(`real photos: the card is marked, the enlarged view shows them beside the drawing ${vp}`, marked === 1 && shown && second === 'Ảnh mẫu 2', JSON.stringify({ marked, shown, second }));
+  const shape = await page.evaluate(() => {
+    const r = document.querySelector('.photo-frame').getBoundingClientRect();
+    return Math.round((r.width / r.height) * 100) / 100;
+  });
+  record(`real photos: the card is marked, the enlarged view shows them whole beside the drawing ${vp}`, marked === 1 && shown && second === 'Ảnh mẫu 2' && cropped === 'contain', JSON.stringify({ marked, shown, second, cropped, shape }));
+
+  // full screen: tap the photo, zoom with a double tap, close with Escape (back to the enlarged view)
+  await page.click('.photo-open');
+  // the sharper 1920 px copy replaces the placeholder once it has loaded
+  await page.waitForSelector('.pswp--open img.pswp__img[src$="1920.webp"]', { timeout: 8000 }).catch(() => {});
+  const full = await page.evaluate(() => ({
+    open: !!document.querySelector('.pswp--open'),
+    src: [...document.querySelectorAll('.pswp--open img.pswp__img')].map((i) => i.getAttribute('src')).find((x) => x.endsWith('1920.webp')) ?? '',
+    zoomButton: !!document.querySelector('.pswp__button--zoom'),
+    counter: document.querySelector('.pswp__counter')?.textContent?.trim() ?? '',
+  }));
+  if (vp === 'tablet-1280x800') await shot(page, vp, '04c-photo-full-screen');
+  // zoom with the button (a mouse here; on the tablet a pinch or a double tap does the same)
+  await page.click('.pswp__button--zoom');
+  await page.waitForTimeout(500);
+  const zoomed = await page.evaluate(() => document.querySelector('.pswp')?.classList.contains('pswp--zoomed-in') ?? false);
+  await page.keyboard.press('Escape');
+  await page.waitForSelector('.pswp', { state: 'detached', timeout: 5000 }).catch(() => {});
+  const back = await page.evaluate(() => !document.querySelector('.pswp') && !!document.querySelector('[data-photo-viewer]'));
+  record(`real photos: full screen with zoom, Escape returns to the enlarged view ${vp}`, full.open && /1920\.webp$/.test(full.src) && full.zoomButton && zoomed && back, JSON.stringify({ ...full, zoomed, back }));
   await page.keyboard.press('Escape');
   await page.unroute('**/api/option-photos');
   await page.unroute('**/api/photo/**');
