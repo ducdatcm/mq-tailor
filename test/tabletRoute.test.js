@@ -196,12 +196,14 @@ test('the photos linked to tablet choices are listed for a signed-in tablet', as
 test('a linked photo is passed on from the photo store from the tablet address, and kept for good', async () => {
   await withServer(CODE, async (base) => {
     const asked = [];
+    const corrected = [];
     tablet.setPhotoSource({
       url: async (id, width) => (id === 7 && width === 1200 ? 'https://photos.example.com/7-1200.webp' : null),
       fetch: async (url) => {
         asked.push(url);
         return new Response(Buffer.from('RIFF....WEBP'), { status: 200 });
       },
+      correct: async (id, body) => corrected.push([id, body.toString()]),
     });
     try {
       const locked = await fetch(`${base}/tablet/api/photo/7/1200.webp`);
@@ -214,6 +216,7 @@ test('a linked photo is passed on from the photo store from the tablet address, 
       assert.match(res.headers.get('cache-control') || '', /immutable/);
       assert.strictEqual(await res.text(), 'RIFF....WEBP');
       assert.deepStrictEqual(asked, ['https://photos.example.com/7-1200.webp']);
+      assert.deepStrictEqual(corrected, [[7, 'RIFF....WEBP']], 'the photo passes by the size check on its way');
 
       const other = await fetch(`${base}/tablet/api/photo/8/1200.webp`, { headers: { cookie } });
       assert.strictEqual(other.status, 404, 'a photo not linked to a tablet choice is not served');
@@ -240,4 +243,20 @@ test('the tablet still works when the photo list cannot be read', async () => {
       tablet.setPhotoSource();
     }
   });
+});
+
+test('an upright phone photo is recorded upright, and an old sideways record is put right', async () => {
+  const sharp = require('sharp');
+  const { processAndSaveImage } = require('../src/config/upload');
+  const storage = require('../src/config/storage');
+  // a photo taken upright, stored 400 × 300 with an EXIF quarter turn (as phones do)
+  const upright = await sharp({ create: { width: 400, height: 300, channels: 3, background: '#888' } }).jpeg().withMetadata({ orientation: 6 }).toBuffer();
+  const put = storage.putObject;
+  storage.putObject = async (key) => `https://photos.example.com/${key}`;
+  try {
+    const saved = await processAndSaveImage(upright, 'portrait.jpg', 'image/jpeg', 'garments');
+    assert.deepStrictEqual([saved.width, saved.height], [300, 400]);
+  } finally {
+    storage.putObject = put;
+  }
 });

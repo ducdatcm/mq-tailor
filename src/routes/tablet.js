@@ -12,12 +12,12 @@ const path = require('path');
 const express = require('express');
 const helmet = require('helmet');
 
-const { buildOptionPhotos, linkedPhotoUrl, loadOptionPhotoRows, readTabletOptions } = require('../utils/tabletPhotos');
+const { buildOptionPhotos, correctStoredSize, linkedPhotoUrl, loadOptionPhotoRows, readTabletOptions } = require('../utils/tabletPhotos');
 
 const router = express.Router();
 
 // Where the photos come from (the Media Library on Cloudflare R2); tests replace these (see setPhotoSource).
-const DEFAULT_SOURCE = { rows: loadOptionPhotoRows, url: linkedPhotoUrl, fetch: (url) => fetch(url) };
+const DEFAULT_SOURCE = { rows: loadOptionPhotoRows, url: linkedPhotoUrl, fetch: (url) => fetch(url), correct: correctStoredSize };
 let source = DEFAULT_SOURCE;
 
 // Deliberately not under public/: Hostinger hands out files in public/ straight from its own web server,
@@ -75,7 +75,10 @@ router.get('/api/photo/:id(\\d+)/:width(\\d+).webp', async (req, res) => {
     if (!upstream.ok) return res.status(502).end();
     res.set('Content-Type', 'image/webp');
     res.set('Cache-Control', 'private, max-age=31536000, immutable');
-    res.send(Buffer.from(await upstream.arrayBuffer()));
+    const body = Buffer.from(await upstream.arrayBuffer());
+    res.send(body);
+    // an older upload may have its size recorded sideways: put it right (after answering, never in the way)
+    Promise.resolve(source.correct(Number(req.params.id), body)).catch((err) => console.error('[tablet] photo size:', err.message));
   } catch (err) {
     console.error('[tablet] photo:', err.message);
     res.status(502).end();

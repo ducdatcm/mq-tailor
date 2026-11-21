@@ -2,7 +2,7 @@ const path = require('path');
 const multer = require('multer');
 const sharp = require('sharp');
 const slugify = require('slugify');
-const { putObject } = require('./storage');
+const storage = require('./storage'); // used as storage.putObject so tests can stand in for the bucket
 
 const RESPONSIVE_WIDTHS = [480, 768, 1200, 1920, 2560];
 
@@ -40,13 +40,16 @@ async function processAndSaveImage(buffer, originalName, mimetype, group = 'othe
   // 1. Master copy — uploaded as-is, no resizing or re-encoding.
   const ext = EXT_BY_MIME[mimetype] || path.extname(originalName) || '.jpg';
   const originalKey = `${group}/originals/${filename}-original${ext}`;
-  const originalPath = await putObject(originalKey, buffer, mimetype);
+  const originalPath = await storage.putObject(originalKey, buffer, mimetype);
 
   // 2. Responsive display variants.
   const image = sharp(buffer).rotate(); // rotate() auto-orients from EXIF
   const meta = await image.metadata();
-  const originalWidth = meta.width || 1920;
-  const originalHeight = meta.height || 1080;
+  // metadata() describes the file as stored: a phone photo taken upright is often stored sideways with an
+  // EXIF orientation of 5-8 (turned a quarter), so its width and height swap once it is turned upright.
+  const turned = (meta.orientation || 1) >= 5;
+  const originalWidth = (turned ? meta.height : meta.width) || 1920;
+  const originalHeight = (turned ? meta.width : meta.height) || 1080;
 
   const widths = RESPONSIVE_WIDTHS.filter((w) => w <= originalWidth);
   if (widths.length === 0) widths.push(originalWidth);
@@ -61,7 +64,7 @@ async function processAndSaveImage(buffer, originalName, mimetype, group = 'othe
         .webp({ quality: 85 })
         .toBuffer();
       const key = `${group}/${filename}-${w}.webp`;
-      variants.webp[w] = await putObject(key, resizedBuffer, 'image/webp');
+      variants.webp[w] = await storage.putObject(key, resizedBuffer, 'image/webp');
     })
   );
 

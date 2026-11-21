@@ -94,6 +94,24 @@ async function linkedPhotoUrl(mediaId, width) {
   return (webp && webp[width]) || null;
 }
 
+/**
+ * Photos uploaded before the upload fix kept the size of the file as stored, so an upright phone photo
+ * (stored sideways with an EXIF turn) is recorded landscape while its web copies are portrait. When one of
+ * its web copies passes through here, the recorded size is turned to match. Returns true when it changed.
+ */
+async function correctStoredSize(mediaId, webpBuffer) {
+  const sharp = require('sharp');
+  const { width, height } = await sharp(webpBuffer).metadata();
+  if (!width || !height) return false;
+  const row = await db('media').where({ id: mediaId }).first('width', 'height');
+  if (!row || !row.width || !row.height) return false;
+  const copyIsPortrait = height > width;
+  const recordIsPortrait = row.height > row.width;
+  if (copyIsPortrait === recordIsPortrait || width === height) return false;
+  await db('media').where({ id: mediaId }).update({ width: row.height, height: row.width });
+  return true;
+}
+
 /** Every photo-choice link with the photo's details, in display order. */
 function loadOptionPhotoRows() {
   return db('media_tablet_options as l')
@@ -102,4 +120,4 @@ function loadOptionPhotoRows() {
     .orderBy([{ column: 'l.option_id' }, { column: 'l.sort' }, { column: 'l.media_id' }]);
 }
 
-module.exports = { readTabletOptions, pickWidth, buildOptionPhotos, loadOptionPhotoRows, linkedPhotoUrl, photoPath };
+module.exports = { readTabletOptions, pickWidth, buildOptionPhotos, loadOptionPhotoRows, linkedPhotoUrl, photoPath, correctStoredSize };
