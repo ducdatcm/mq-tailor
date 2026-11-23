@@ -148,7 +148,7 @@ describe('the Google Sheets script (Code.gs)', () => {
     expect(sheet.grid[1][col('Order ID')]).toBe('A-1');
     expect(sheet.grid[2][col('Mã gửi')]).toBe('second');
     expect(sheet.grid[2][col('Sản phẩm')]).toBe('Sơ mi');
-    expect(sheet.grid[2][col('Kiểu cổ áo')]).toBe('Cổ vuông tiêu chuẩn');
+    expect(sheet.grid[2][col('Kiểu cổ áo')]).toBe('Cổ nhọn');
     expect(sheet.grid[1][col('Kiểu cổ áo')]).toBe('');
   });
 

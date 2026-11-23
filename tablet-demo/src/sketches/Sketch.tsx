@@ -1,4 +1,4 @@
-import type { OptionId, ProductId } from '../catalog/catalog';
+import type { GarmentSelections, OptionId, ProductId } from '../catalog/catalog';
 import { OPTION_SKETCHES, PRODUCT_SKETCHES } from './registry';
 
 interface Props {
@@ -7,10 +7,12 @@ interface Props {
   className?: string;
   /** Accessible name. Omit when a visible label already names the drawing. */
   title?: string;
+  /** The choices made so far on the same piece: a few drawings follow another choice (registry SKETCH_FOLLOWS). */
+  chosen?: GarmentSelections;
 }
 
 /** Renders the drawing for an option or product in the shared 400×300 frame. */
-export function Sketch({ option, product, className, title }: Props) {
+export function Sketch({ option, product, className, title, chosen }: Props) {
   const Drawing = option ? OPTION_SKETCHES[option] : product ? PRODUCT_SKETCHES[product] : null;
   if (!Drawing) return null;
   return (
@@ -23,7 +25,7 @@ export function Sketch({ option, product, className, title }: Props) {
       focusable="false"
       preserveAspectRatio="xMidYMid meet"
     >
-      <Drawing />
+      <Drawing chosen={chosen} />
     </svg>
   );
 }

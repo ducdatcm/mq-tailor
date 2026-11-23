@@ -305,6 +305,168 @@
       ]
     },
     {
+      "id": "shirt",
+      "name": "Sơ mi",
+      "groups": [
+        {
+          "id": "sleeve",
+          "name": "Chiều dài tay",
+          "options": [
+            {
+              "id": "sleeve.long",
+              "label": "Tay dài"
+            },
+            {
+              "id": "sleeve.short",
+              "label": "Tay ngắn"
+            }
+          ]
+        },
+        {
+          "id": "collar",
+          "name": "Kiểu cổ áo",
+          "options": [
+            {
+              "id": "collar.point",
+              "label": "Cổ nhọn"
+            },
+            {
+              "id": "collar.spread",
+              "label": "Cổ mở rộng"
+            },
+            {
+              "id": "collar.cutaway",
+              "label": "Cổ cutaway"
+            },
+            {
+              "id": "collar.cutawayTwoButton",
+              "label": "Cổ cutaway hai khuy"
+            },
+            {
+              "id": "collar.buttonDown",
+              "label": "Cổ button-down"
+            },
+            {
+              "id": "collar.club",
+              "label": "Cổ club"
+            },
+            {
+              "id": "collar.band",
+              "label": "Cổ trụ"
+            },
+            {
+              "id": "collar.cuban",
+              "label": "Cổ bẹt"
+            }
+          ]
+        },
+        {
+          "id": "shirtCuffs",
+          "name": "Cổ tay áo",
+          "options": [
+            {
+              "id": "shirtCuffs.rounded",
+              "label": "Bo tròn"
+            },
+            {
+              "id": "shirtCuffs.angled",
+              "label": "Vát góc"
+            }
+          ]
+        },
+        {
+          "id": "doubleCuff",
+          "name": "Măng sét đúp",
+          "options": [
+            {
+              "id": "doubleCuff.no",
+              "label": "Không"
+            },
+            {
+              "id": "doubleCuff.yes",
+              "label": "Có"
+            }
+          ]
+        },
+        {
+          "id": "placket",
+          "name": "Nẹp áo",
+          "options": [
+            {
+              "id": "placket.frenchFront",
+              "label": "Nẹp thường"
+            },
+            {
+              "id": "placket.frontPlacket",
+              "label": "Nẹp rời"
+            },
+            {
+              "id": "placket.coveredFly",
+              "label": "Nẹp ẩn"
+            },
+            {
+              "id": "placket.pleatedTuxedo",
+              "label": "Nẹp xếp ly tuxedo"
+            }
+          ]
+        },
+        {
+          "id": "chestPocket",
+          "name": "Túi ngực",
+          "options": [
+            {
+              "id": "chestPocket.none",
+              "label": "Không túi"
+            },
+            {
+              "id": "chestPocket.rounded",
+              "label": "Túi bo tròn"
+            },
+            {
+              "id": "chestPocket.pointed",
+              "label": "Túi đáy nhọn"
+            },
+            {
+              "id": "chestPocket.square",
+              "label": "Túi vuông"
+            }
+          ]
+        },
+        {
+          "id": "pocketFlap",
+          "name": "Nắp túi",
+          "options": [
+            {
+              "id": "pocketFlap.plain",
+              "label": "Không nắp"
+            },
+            {
+              "id": "pocketFlap.flap",
+              "label": "Có nắp"
+            },
+            {
+              "id": "pocketFlap.flapButton",
+              "label": "Nắp có khuy"
+            }
+          ]
+        },
+        {
+          "id": "shirtHem",
+          "name": "Vạt áo",
+          "options": [
+            {
+              "id": "shirtHem.straight",
+              "label": "Vạt ngang"
+            },
+            {
+              "id": "shirtHem.rounded",
+              "label": "Vạt đuôi tôm"
+            }
+          ]
+        }
+      ]
+    },
+    {
       "id": "trims",
       "name": "Nguyên phụ liệu",
       "groups": [

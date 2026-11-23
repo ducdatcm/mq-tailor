@@ -121,66 +121,75 @@ export const GROUPS = [
     options: ['waistcoat.sb2', 'waistcoat.sb4', 'waistcoat.db2', 'waistcoat.db4'],
     preset: 'waistcoat.sb2',
   },
-  // ── Shirt ─────────────────────────────────────────────────────────────────
+  // ── Shirt: sleeve, collar, cuffs (long sleeves only), placket, chest pocket, hem ────
   {
     id: 'sleeve',
     garment: 'shirt',
-    noSketch: true,
     options: ['sleeve.long', 'sleeve.short'],
     preset: 'sleeve.long',
   },
   {
     id: 'collar',
     garment: 'shirt',
-    noSketch: true,
     options: [
-      'collar.standardSquare',
-      'collar.pintuck',
+      'collar.point',
+      'collar.spread',
+      'collar.cutaway',
+      'collar.cutawayTwoButton',
       'collar.buttonDown',
-      'collar.windsor',
-      'collar.eton',
-      'collar.winged',
-      'collar.stand',
+      'collar.club',
+      'collar.band',
       'collar.cuban',
     ],
-    preset: 'collar.standardSquare',
+    preset: 'collar.point',
   },
   {
-    id: 'chestPocket',
+    // A short sleeve has no cuff: this group (and the double cuff below) is left out once short sleeves are chosen.
+    id: 'shirtCuffs',
     garment: 'shirt',
-    options: ['chestPocket.none', 'chestPocket.angled', 'chestPocket.rounded', 'chestPocket.square', 'chestPocket.flap'],
-    preset: 'chestPocket.none',
+    hideWhen: { group: 'sleeve', option: 'sleeve.short' },
+    options: ['shirtCuffs.rounded', 'shirtCuffs.angled'],
+    preset: 'shirtCuffs.rounded',
+  },
+  {
+    // Chosen on the cuffs screen: a double (French) cuff, closed with cufflinks. The cuff drawings follow it.
+    id: 'doubleCuff',
+    garment: 'shirt',
+    companionOf: 'shirtCuffs',
+    noSketch: true,
+    hideWhen: { group: 'sleeve', option: 'sleeve.short' },
+    options: ['doubleCuff.no', 'doubleCuff.yes'],
+    preset: 'doubleCuff.no',
   },
   {
     id: 'placket',
     garment: 'shirt',
     noSketch: true,
-    options: ['placket.frenchFront', 'placket.coveredFly', 'placket.pleatedTuxedo', 'placket.frontPlacket'],
+    options: ['placket.frenchFront', 'placket.frontPlacket', 'placket.coveredFly', 'placket.pleatedTuxedo'],
     preset: 'placket.frenchFront',
   },
   {
-    // A short sleeve has no cuff: this group is left out once short sleeves are chosen.
-    id: 'shirtCuffs',
+    // "No pocket" has no drawing (a text card); the three shapes are drawn.
+    id: 'chestPocket',
     garment: 'shirt',
+    options: ['chestPocket.none', 'chestPocket.rounded', 'chestPocket.pointed', 'chestPocket.square'],
+    preset: 'chestPocket.none',
+  },
+  {
+    // Chosen on the pocket screen; the pocket drawings follow it. Left out when there is no pocket.
+    id: 'pocketFlap',
+    garment: 'shirt',
+    companionOf: 'chestPocket',
     noSketch: true,
-    hideWhen: { group: 'sleeve', option: 'sleeve.short' },
-    options: [
-      'shirtCuffs.angled',
-      'shirtCuffs.rounded',
-      'shirtCuffs.square',
-      'shirtCuffs.french',
-      'shirtCuffs.roundedFrench',
-      'shirtCuffs.doubleFrench',
-      'shirtCuffs.doubleRoundedFrench',
-    ],
-    preset: 'shirtCuffs.angled',
+    hideWhen: { group: 'chestPocket', option: 'chestPocket.none' },
+    options: ['pocketFlap.plain', 'pocketFlap.flap', 'pocketFlap.flapButton'],
+    preset: 'pocketFlap.plain',
   },
   {
     id: 'shirtHem',
     garment: 'shirt',
-    noSketch: true,
-    options: ['shirtHem.sideVents', 'shirtHem.gusset'],
-    preset: 'shirtHem.sideVents',
+    options: ['shirtHem.straight', 'shirtHem.rounded'],
+    preset: 'shirtHem.straight',
   },
   // ── Trims: buttons and buttonholes, one choice for the whole order (no drawings) ──
   {
@@ -271,11 +280,8 @@ export const PRODUCTS: Record<ProductId, { pieces: readonly PieceKind[] }> = {
 /** Every product the order logic knows. */
 export const ALL_PRODUCT_IDS: readonly ProductId[] = ['suit', 'suit3Trousers', 'suit3Waistcoat', 'blazer', 'trousers', 'waistcoat', 'shirt'];
 
-/**
- * The products offered on the start screen. The shirt is built (catalog, copy, sheet columns) but
- * switched off for now: add 'shirt' back here to offer it again.
- */
-export const PRODUCT_IDS: readonly ProductId[] = ['suit', 'suit3Trousers', 'suit3Waistcoat', 'blazer', 'trousers', 'waistcoat'];
+/** The products offered on the start screen. */
+export const PRODUCT_IDS: readonly ProductId[] = ['suit', 'suit3Trousers', 'suit3Waistcoat', 'blazer', 'trousers', 'waistcoat', 'shirt'];
 
 export const TRIMS_UNIT: Unit = { id: 'trims', garment: 'trims', n: 1, copy: 1 };
 
@@ -285,6 +291,8 @@ export const totalQuantity = (q: Quantities): number => ALL_PRODUCT_IDS.reduce((
 /**
  * Every piece the order needs designed, in order, with the trims last. Pieces of the same kind are
  * numbered through the whole order: 1 suit and 2 trousers gives trousers 1 (in the suit), 2 and 3.
+ * The trims (buttons and buttonholes of the tailored pieces) come only with a jacket, trousers or
+ * waistcoat: an order of shirts alone has no trims.
  */
 export function unitsFor(q: Quantities): Unit[] {
   const units: Unit[] = [];
@@ -298,7 +306,7 @@ export function unitsFor(q: Quantities): Unit[] {
       }
     }
   }
-  return units.length > 0 ? [...units, TRIMS_UNIT] : [];
+  return units.some((u) => u.garment !== 'shirt') ? [...units, TRIMS_UNIT] : units;
 }
 
 /** False when an option chosen on the same unit takes this group out of the design. */

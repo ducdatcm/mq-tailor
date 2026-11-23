@@ -44,7 +44,7 @@ export function DesignSheet({ units, selections, mode, previous, onEdit }: Props
                       <span className="sheet-thumb sheet-thumb-blank" aria-hidden="true" />
                     ) : (
                       <span className="sheet-thumb">
-                        {chosen ? <Sketch option={chosen} /> : <span className="sheet-thumb-empty">{t.review.notChosen}</span>}
+                        {chosen ? <Sketch option={chosen} chosen={mine} /> : <span className="sheet-thumb-empty">{t.review.notChosen}</span>}
                       </span>
                     )}
                     <span className="sheet-text">

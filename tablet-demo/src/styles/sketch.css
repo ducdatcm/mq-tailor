@@ -118,6 +118,22 @@
   fill: var(--sk-ink);
   fill-rule: evenodd;
 }
+/* the shirt drawings (see shirt.tsx): the stock line art in the app's colours */
+.sk .art-ink {
+  fill: var(--sk-ink);
+}
+.sk .art-paper {
+  fill: var(--sk-paper);
+}
+.sk .art-shade {
+  fill: var(--sk-shade);
+}
+.sk .art-tie {
+  fill: var(--sk-tie);
+}
+.sk .art-mark {
+  fill: var(--sk-mark);
+}
 /* top-stitching on shirts: a fine dashed line */
 .sk .stitch {
   stroke: var(--sk-ink);

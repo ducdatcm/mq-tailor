@@ -1,5 +1,5 @@
 import type { ComponentType } from 'react';
-import type { OptionId, ProductId } from '../catalog/catalog';
+import { groupOfOption, type GarmentSelections, type GroupId, type OptionId, type ProductId } from '../catalog/catalog';
 import {
   BreastPocketBarchetta,
   BreastPocketPatch,
@@ -46,18 +46,35 @@ import {
 } from './pockets';
 import { ProductBlazer, ProductSuit, ProductSuit3Trousers, ProductSuit3Waistcoat, ProductTrousers, ProductWaistcoat } from './products';
 import {
-  PocketAngled,
-  PocketFlap,
+  CollarBand,
+  CollarButtonDown,
+  CollarClub,
+  CollarCuban,
+  CollarCutaway,
+  CollarCutawayTwoButton,
+  CollarPoint,
+  CollarSpread,
+  CuffAngled,
+  CuffRounded,
+  HemRounded,
+  HemStraight,
+  PocketPointed,
   PocketRounded,
   PocketSquare,
   ProductShirt,
+  SleeveLong,
+  SleeveShort,
 } from './shirt';
 import { HemPlain, HemTurnUp } from './trousers';
 import { BackPocketOneRight, BackPocketsTwo, PleatsFlat, PleatsOne, PleatsTwo } from './trouserViews';
 
-/** One drawing per option, keyed by the stable option ID. */
+/** What a drawing is told: the choices made so far on the same piece (some drawings follow another choice). */
+export interface SketchProps {
+  chosen?: GarmentSelections;
+}
+
 /** One drawing per option, keyed by the stable option ID. Options of a group marked noSketch have none. */
-export const OPTION_SKETCHES: Partial<Record<OptionId, ComponentType>> = {
+export const OPTION_SKETCHES: Partial<Record<OptionId, ComponentType<SketchProps>>> = {
   'closure.sb1': ClosureSB1,
   'closure.sb2': ClosureSB2,
   'closure.sb3': ClosureSB3,
@@ -105,11 +122,36 @@ export const OPTION_SKETCHES: Partial<Record<OptionId, ComponentType>> = {
   'backPockets.two': BackPocketsTwo,
   'hem.plain': HemPlain,
   'hem.turnUp': HemTurnUp,
-  'chestPocket.angled': PocketAngled,
+  'sleeve.long': SleeveLong,
+  'sleeve.short': SleeveShort,
+  'collar.point': CollarPoint,
+  'collar.spread': CollarSpread,
+  'collar.cutaway': CollarCutaway,
+  'collar.cutawayTwoButton': CollarCutawayTwoButton,
+  'collar.buttonDown': CollarButtonDown,
+  'collar.club': CollarClub,
+  'collar.band': CollarBand,
+  'collar.cuban': CollarCuban,
+  'shirtCuffs.rounded': CuffRounded,
+  'shirtCuffs.angled': CuffAngled,
   'chestPocket.rounded': PocketRounded,
+  'chestPocket.pointed': PocketPointed,
   'chestPocket.square': PocketSquare,
-  'chestPocket.flap': PocketFlap,
+  'shirtHem.straight': HemStraight,
+  'shirtHem.rounded': HemRounded,
 };
+
+/** Groups whose drawings follow a choice made beside them: the cuffs show the double cuff, the pockets the flap. */
+export const SKETCH_FOLLOWS: Partial<Record<GroupId, GroupId>> = {
+  shirtCuffs: 'doubleCuff',
+  chestPocket: 'pocketFlap',
+};
+
+/** Names the drawing of an option as it looks with these choices (the same name, the same picture). */
+export function sketchKey(option: OptionId, chosen?: GarmentSelections): string {
+  const follows = SKETCH_FOLLOWS[groupOfOption(option)];
+  return follows ? `${option}|${chosen?.[follows] ?? ''}` : option;
+}
 
 export const PRODUCT_SKETCHES: Record<ProductId, ComponentType> = {
   suit: ProductSuit,

@@ -8,7 +8,7 @@ import { orderRecord, run, snapshotOf, started } from './helpers';
 
 describe('products and their pieces', () => {
   it('offers seven products, each with its own pieces', () => {
-    expect(PRODUCT_IDS).toEqual(['suit', 'suit3Trousers', 'suit3Waistcoat', 'blazer', 'trousers', 'waistcoat']);
+    expect(PRODUCT_IDS).toEqual(['suit', 'suit3Trousers', 'suit3Waistcoat', 'blazer', 'trousers', 'waistcoat', 'shirt']);
     expect(PRODUCTS.suit3Trousers.pieces).toEqual(['jacket', 'trousers', 'trousers']);
     expect(PRODUCTS.suit3Waistcoat.pieces).toEqual(['jacket', 'waistcoat', 'trousers']);
     expect(PRODUCTS.waistcoat.pieces).toEqual(['waistcoat']);

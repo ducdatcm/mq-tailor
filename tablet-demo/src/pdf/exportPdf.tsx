@@ -1,8 +1,9 @@
 import { createRoot } from 'react-dom/client';
-import { groupsFor, type OptionId } from '../catalog/catalog';
+import { groupsFor, type GarmentSelections, type OptionId } from '../catalog/catalog';
 import type { Copy } from '../content/copy';
 import { LOGO } from '../brand/logo';
 import { safeFileName } from '../order/format';
+import { sketchKey } from '../sketches/registry';
 import { Sketch } from '../sketches/Sketch';
 import type { OrderRecord, Snapshot } from '../state/types';
 import { SHEET_FONTS, drawSheet } from './drawSheet';
@@ -31,7 +32,8 @@ const nextFrame = () => new Promise<void>((r) => requestAnimationFrame(() => req
  * The sketches are styled by the page's stylesheet, so each is rendered in the page and then written
  * out as a self-contained SVG image (final colours and line widths on every shape).
  */
-async function rasteriseSketches(options: OptionId[]): Promise<Map<OptionId, CanvasImageSource>> {
+async function rasteriseSketches(drawings: Map<string, { option: OptionId; chosen?: GarmentSelections }>): Promise<Map<string, CanvasImageSource>> {
+  const keys = [...drawings.keys()];
   const host = document.createElement('div');
   host.setAttribute('aria-hidden', 'true');
   host.style.cssText = `position:fixed;left:-10000px;top:0;width:${THUMB.w}px;pointer-events:none;`;
@@ -40,18 +42,18 @@ async function rasteriseSketches(options: OptionId[]): Promise<Map<OptionId, Can
   try {
     root.render(
       <>
-        {options.map((o) => (
-          <div key={o} data-option-id={o} style={{ width: THUMB.w }}>
-            <Sketch option={o} />
+        {keys.map((k, i) => (
+          <div key={k} data-sketch-index={i} style={{ width: THUMB.w }}>
+            <Sketch option={drawings.get(k)!.option} chosen={drawings.get(k)!.chosen} />
           </div>
         ))}
       </>,
     );
     await nextFrame();
-    const out = new Map<OptionId, CanvasImageSource>();
+    const out = new Map<string, CanvasImageSource>();
     await Promise.all(
-      options.map(async (o) => {
-        const svg = host.querySelector<SVGSVGElement>(`[data-option-id="${o}"] svg`);
+      keys.map(async (o, i) => {
+        const svg = host.querySelector<SVGSVGElement>(`[data-sketch-index="${i}"] > svg`);
         if (!svg) return;
         const clone = svg.cloneNode(true) as SVGSVGElement;
         const from = [svg, ...Array.from(svg.querySelectorAll('*'))];
@@ -100,18 +102,20 @@ const canvasToJpeg = (canvas: HTMLCanvasElement): Promise<Uint8Array> =>
 
 /** Draws the design sheet and returns it as a one-page PDF. */
 export async function createDesignPdf(t: Copy, snap: Snapshot, order: OrderRecord, lang = 'vi'): Promise<Blob> {
-  const chosen: OptionId[] = [];
-  snap.units.forEach((unit) =>
-    groupsFor(unit.garment, snap.selections[unit.id]).forEach((g) => {
-      const o = snap.selections[unit.id]?.[g.id];
-      if (o && !chosen.includes(o)) chosen.push(o);
-    }),
-  );
+  // each drawing once, as it looks on its piece (a cuff with or without the double cuff...)
+  const drawings = new Map<string, { option: OptionId; chosen?: GarmentSelections }>();
+  snap.units.forEach((unit) => {
+    const mine = snap.selections[unit.id];
+    groupsFor(unit.garment, mine).forEach((g) => {
+      const o = mine?.[g.id];
+      if (o) drawings.set(sketchKey(o, mine), { option: o, chosen: mine });
+    });
+  });
 
   await Promise.all([
     ...SHEET_FONTS.map((f) => document.fonts?.load(f, 'Aàáảãạăắằẳẵặâấầẩẫậđéèẻẽẹêếềểễệíìỉĩịóòỏõọôốồổỗộơớờởỡợúùủũụưứừửữựýỳỷỹỵ')),
   ]).catch(() => undefined);
-  const [sketches, logo] = await Promise.all([rasteriseSketches(chosen), loadLogo()]);
+  const [sketches, logo] = await Promise.all([rasteriseSketches(drawings), loadLogo()]);
   const canvas = drawSheet({ t, lang, snap, order, sketches, logo, scale: SCALE });
   const jpeg = await canvasToJpeg(canvas);
   const pdf = buildImagePdf({

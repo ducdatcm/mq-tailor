@@ -1,12 +1,12 @@
 import { describe, expect, it } from 'vitest';
-import { ALL_PRODUCT_IDS, GROUP_BY_ID, MAX_QUANTITY, PRODUCT_IDS, PRODUCTS, groupsFor, stepsFor, totalQuantity, unitsFor } from '../catalog/catalog';
+import { GROUP_BY_ID, MAX_QUANTITY, PRODUCT_IDS, PRODUCTS, groupsFor, stepsFor, totalQuantity, unitsFor } from '../catalog/catalog';
 import { copyableUnits, countSelected, missingSteps, presetSelections, relevantSelections, selectionsEqual } from '../catalog/rules';
 import { en } from '../content/en';
 import { vi } from '../content/vi';
 import { productList } from '../order/labels';
 import { orderLines, piecesOf } from '../order/lines';
 import { buildPayload } from '../sheet/payload';
-import { OPTION_SKETCHES } from '../sketches/registry';
+import { OPTION_SKETCHES, sketchKey } from '../sketches/registry';
 import { initialState, reducer } from '../state/reducer';
 import { orderRecord, run, snapshotOf, started } from './helpers';
 
@@ -234,10 +234,10 @@ describe('the lines written to the spreadsheet', () => {
     ]);
   });
 
-  it('every line carries the trims once', () => {
+  it('every line of a tailored piece carries the trims once; the shirt line does not', () => {
     const rows = buildPayload(rec, snapshotOf({ suit: 1, shirt: 2 })).rows;
     for (const row of rows) {
-      expect(Object.keys(row.design).filter((k) => k === 'Loại khuy')).toHaveLength(1);
+      expect(Object.keys(row.design).filter((k) => k === 'Loại khuy')).toHaveLength(row.item === 'Sơ mi' ? 0 : 1);
     }
   });
 });
@@ -246,65 +246,84 @@ describe('shirt', () => {
   const shirtUnits = unitsFor({ shirt: 1 });
   const shirtId = 'shirt1';
 
-  it('is a product of one shirt, with the trims', () => {
-    expect(ALL_PRODUCT_IDS).toContain('shirt');
-    expect(PRODUCT_IDS).not.toContain('shirt'); // built but not offered for now
+  it('is offered, as one shirt; an order of shirts alone has no trims step', () => {
+    expect(PRODUCT_IDS).toContain('shirt');
     expect(PRODUCTS.shirt.pieces).toEqual(['shirt']);
-    expect(shirtUnits.map((u) => u.id)).toEqual(['shirt1', 'trims']);
-    expect(groupsFor('shirt').map((g) => g.id)).toEqual(['sleeve', 'collar', 'chestPocket', 'placket', 'shirtCuffs', 'shirtHem']);
+    expect(shirtUnits.map((u) => u.id)).toEqual(['shirt1']);
+    expect(unitsFor({ shirt: 2 }).map((u) => u.id)).toEqual(['shirt1', 'shirt2']);
+    expect(unitsFor({ trousers: 1, shirt: 1 }).map((u) => u.id)).toEqual(['trousers1', 'shirt1', 'trims']);
   });
 
-  it('offers the requested options: eight collars (the Cuban collar included; no imperial or Peter Pan), five pockets, four plackets, seven cuffs, two hems', () => {
+  it('runs sleeve, collar, cuffs (with the double cuff beside them), placket, chest pocket (with its flap), hem', () => {
+    expect(groupsFor('shirt').map((g) => g.id)).toEqual(['sleeve', 'collar', 'shirtCuffs', 'doubleCuff', 'placket', 'chestPocket', 'pocketFlap', 'shirtHem']);
+    expect(GROUP_BY_ID.doubleCuff.companionOf).toBe('shirtCuffs');
+    expect(GROUP_BY_ID.pocketFlap.companionOf).toBe('chestPocket');
+  });
+
+  it('offers eight collars, two cuffs and a double cuff, four plackets, a pocket in three shapes with three flaps, two hems', () => {
     expect(GROUP_BY_ID.sleeve.options).toEqual(['sleeve.long', 'sleeve.short']);
-    expect(GROUP_BY_ID.collar.options).toHaveLength(8);
-    expect(GROUP_BY_ID.collar.options).toContain('collar.cuban');
-    expect(GROUP_BY_ID.collar.options.join(' ')).not.toMatch(/imperial|peterPan/i);
-    expect(GROUP_BY_ID.chestPocket.options).toEqual(['chestPocket.none', 'chestPocket.angled', 'chestPocket.rounded', 'chestPocket.square', 'chestPocket.flap']);
-    expect(GROUP_BY_ID.placket.options).toEqual(['placket.frenchFront', 'placket.coveredFly', 'placket.pleatedTuxedo', 'placket.frontPlacket']);
-    expect(GROUP_BY_ID.shirtCuffs.options).toHaveLength(7);
-    expect(GROUP_BY_ID.shirtHem.options).toEqual(['shirtHem.sideVents', 'shirtHem.gusset']);
+    expect(GROUP_BY_ID.collar.options).toEqual([
+      'collar.point',
+      'collar.spread',
+      'collar.cutaway',
+      'collar.cutawayTwoButton',
+      'collar.buttonDown',
+      'collar.club',
+      'collar.band',
+      'collar.cuban',
+    ]);
+    expect(GROUP_BY_ID.shirtCuffs.options).toEqual(['shirtCuffs.rounded', 'shirtCuffs.angled']);
+    expect(GROUP_BY_ID.doubleCuff.options).toEqual(['doubleCuff.no', 'doubleCuff.yes']);
+    expect(GROUP_BY_ID.placket.options).toEqual(['placket.frenchFront', 'placket.frontPlacket', 'placket.coveredFly', 'placket.pleatedTuxedo']);
+    expect(GROUP_BY_ID.chestPocket.options).toEqual(['chestPocket.none', 'chestPocket.rounded', 'chestPocket.pointed', 'chestPocket.square']);
+    expect(GROUP_BY_ID.pocketFlap.options).toEqual(['pocketFlap.plain', 'pocketFlap.flap', 'pocketFlap.flapButton']);
+    expect(GROUP_BY_ID.shirtHem.options).toEqual(['shirtHem.straight', 'shirtHem.rounded']);
   });
 
-  it('every shirt option has text in both languages, and a picture unless it is a text card', () => {
+  it('no pocket takes the flap away; short sleeves take the double cuff away', () => {
+    const sel = presetSelections(shirtUnits);
+    expect(groupsFor('shirt', sel[shirtId]).map((g) => g.id)).not.toContain('pocketFlap');
+    sel[shirtId].chestPocket = 'chestPocket.square';
+    expect(groupsFor('shirt', sel[shirtId]).map((g) => g.id)).toContain('pocketFlap');
+    sel[shirtId].sleeve = 'sleeve.short';
+    expect(groupsFor('shirt', sel[shirtId]).map((g) => g.id)).not.toContain('doubleCuff');
+  });
+
+  it('the cuff and pocket drawings follow the double cuff and the flap', () => {
+    expect(sketchKey('shirtCuffs.rounded', { doubleCuff: 'doubleCuff.yes' })).not.toBe(sketchKey('shirtCuffs.rounded', { doubleCuff: 'doubleCuff.no' }));
+    expect(sketchKey('chestPocket.square', { pocketFlap: 'pocketFlap.flap' })).toBe('chestPocket.square|pocketFlap.flap');
+    expect(sketchKey('collar.point', { doubleCuff: 'doubleCuff.yes' })).toBe('collar.point');
+  });
+
+  it('every shirt option has text in both languages; every option is drawn except the placket, the companions and "no pocket"', () => {
     for (const g of groupsFor('shirt')) {
       expect(vi.groups[g.id].name).toBeTruthy();
       expect(en.groups[g.id].name).toBeTruthy();
       for (const o of g.options) {
-        if (!g.noSketch && o !== 'chestPocket.none') expect(OPTION_SKETCHES[o], o).toBeDefined();
         expect(vi.options[o].label).toBeTruthy();
         expect(en.options[o].label).toBeTruthy();
+        if (g.noSketch || o === 'chestPocket.none') expect(OPTION_SKETCHES[o], o).toBeUndefined();
+        else expect(OPTION_SKETCHES[o], o).toBeDefined();
       }
     }
+    expect(groupsFor('shirt').filter((g) => g.noSketch).map((g) => g.id)).toEqual(['doubleCuff', 'placket', 'pocketFlap']);
     expect(vi.products.shirt.name).toBe('Sơ mi');
   });
 
-  it('only the chest pockets have drawings; sleeve, collar, placket, cuffs and hem are text cards', () => {
-    expect(GROUP_BY_ID.sleeve.noSketch).toBe(true);
-    for (const id of ['collar', 'placket', 'shirtCuffs', 'shirtHem'] as const) expect(GROUP_BY_ID[id].noSketch, id).toBe(true);
-    for (const o of GROUP_BY_ID.collar.options) expect(OPTION_SKETCHES[o], o).toBeUndefined();
-    expect(OPTION_SKETCHES['shirtHem.gusset']).toBeUndefined();
-    expect(OPTION_SKETCHES['shirtHem.sideVents']).toBeUndefined();
-    expect(OPTION_SKETCHES['chestPocket.none']).toBeUndefined();
-    for (const o of ['chestPocket.angled', 'chestPocket.rounded', 'chestPocket.square', 'chestPocket.flap'] as const) {
-      expect(OPTION_SKETCHES[o]).toBeDefined();
-    }
-  });
-
-  it('the house suggestion fills every step', () => {
+  it('the house presets fill every step', () => {
     expect(missingSteps(shirtUnits, presetSelections(shirtUnits))).toHaveLength(0);
   });
 
   it('short sleeves take the cuff step away, long sleeves bring it back', () => {
     const longSel = presetSelections(shirtUnits);
-    expect(stepsFor(shirtUnits, longSel).map((s) => s.group)).toContain('shirtCuffs');
-    expect(stepsFor(shirtUnits, longSel)).toHaveLength(6 + 2);
+    expect(stepsFor(shirtUnits, longSel).map((s) => s.group)).toEqual(['sleeve', 'collar', 'shirtCuffs', 'placket', 'chestPocket', 'shirtHem']);
     const shortSel = presetSelections(shirtUnits);
     shortSel[shirtId].sleeve = 'sleeve.short';
-    expect(stepsFor(shirtUnits, shortSel).map((s) => s.group)).not.toContain('shirtCuffs');
-    expect(stepsFor(shirtUnits, shortSel)).toHaveLength(5 + 2);
+    expect(stepsFor(shirtUnits, shortSel).map((s) => s.group)).toEqual(['sleeve', 'collar', 'placket', 'chestPocket', 'shirtHem']);
     expect(missingSteps(shirtUnits, shortSel)).toHaveLength(0);
-    expect(countSelected(shirtUnits, shortSel)).toEqual({ done: 7, total: 7 });
+    expect(countSelected(shirtUnits, shortSel)).toEqual({ done: 5, total: 5 });
     expect(relevantSelections(shirtUnits, shortSel)[shirtId].shirtCuffs).toBeUndefined();
+    expect(relevantSelections(shirtUnits, shortSel)[shirtId].doubleCuff).toBeUndefined();
   });
 
   it('before the sleeve is chosen the cuffs are still asked for', () => {
@@ -317,7 +336,8 @@ describe('shirt', () => {
     a[shirtId].sleeve = 'sleeve.short';
     const b = presetSelections(shirtUnits);
     b[shirtId].sleeve = 'sleeve.short';
-    b[shirtId].shirtCuffs = 'shirtCuffs.doubleFrench';
+    b[shirtId].shirtCuffs = 'shirtCuffs.angled';
+    b[shirtId].doubleCuff = 'doubleCuff.yes';
     expect(selectionsEqual(shirtUnits, a, b)).toBe(true);
   });
 
@@ -330,19 +350,22 @@ describe('shirt', () => {
       s = reducer(s, { type: 'next' });
       visited.push(s.cursor.group);
     }
-    expect(visited).toEqual(['sleeve', 'collar', 'chestPocket', 'placket', 'shirtHem']);
+    expect(visited).toEqual(['sleeve', 'collar', 'placket', 'chestPocket', 'shirtHem']);
   });
 
-  it('writes one line: Sơ mi, with its count and only the groups that apply', () => {
+  it('writes one line: Sơ mi, with its count and only the groups that apply, without the trims of the tailored pieces', () => {
     const snap = snapshotOf({ shirt: 2 });
     const p = buildPayload(rec(), snap);
     expect(p.rows).toHaveLength(1);
     expect(p.rows[0]).toMatchObject({ item: 'Sơ mi', quantity: 2 });
-    expect(Object.keys(p.rows[0].design)).toEqual(['Chiều dài tay', 'Kiểu cổ áo', 'Túi ngực', 'Nẹp áo', 'Cổ tay áo', 'Gấu áo', 'Loại khuy', 'Khuyết Milan']);
+    expect(Object.keys(p.rows[0].design)).toEqual(['Chiều dài tay', 'Kiểu cổ áo', 'Cổ tay áo', 'Măng sét đúp', 'Nẹp áo', 'Túi ngực', 'Vạt áo']);
     const short = snapshotOf({ shirt: 1 });
     short.selections.shirt1.sleeve = 'sleeve.short';
     delete short.selections.shirt1.shirtCuffs;
     expect(Object.keys(buildPayload(rec(), short).rows[0].design)).not.toContain('Cổ tay áo');
+    const mixed = buildPayload(rec(), snapshotOf({ trousers: 1, shirt: 1 }));
+    expect(Object.keys(mixed.rows.find((r) => r.item === 'Quần')!.design)).toContain('Loại khuy');
+    expect(Object.keys(mixed.rows.find((r) => r.item === 'Sơ mi')!.design)).not.toContain('Loại khuy');
   });
 });
 

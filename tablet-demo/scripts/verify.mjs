@@ -150,15 +150,16 @@ async function journey(page, vp, product) {
   await checkLayout(page, `${tag} configure`);
   if (product === 'suit') await shot(page, vp, '02-configure-closure');
 
-  // Walk every group of the first garment (manual products choose the second option).
-  const total = await page.locator('nav ol li').count();
-  for (let i = 0; i < total; i += 1) {
+  // Walk every group of the first garment (manual products choose the second option). The steps are
+  // counted again after each choice: a short sleeve takes the shirt's cuff step away.
+  const stepCount = () => page.locator('nav ol li').count();
+  for (let i = 0; i < (await stepCount()); i += 1) {
     const cards = page.locator('.option');
     await cards.nth(Math.min(1, (await cards.count()) - 1)).click();
     // a choice made on this screen for the group above (e.g. functional / closed cuff buttons)
     const shared = page.locator('[data-companion] .option');
     if (await shared.count()) await shared.nth(1).click();
-    if (i < total - 1) await page.getByRole('button', { name: 'Tiếp tục' }).click();
+    if (i < (await stepCount()) - 1) await page.getByRole('button', { name: 'Tiếp tục' }).click();
   }
   if (product === 'suit') {
     await page.locator('.garment-tab').nth(1).click();
@@ -188,6 +189,7 @@ async function journey(page, vp, product) {
     // short sleeves have no cuffs: the step goes away and comes back
     await page.locator('nav ol button').first().click();
     const steps = () => page.locator('nav ol li').count();
+    await page.click('[data-option="sleeve.long"]');
     const before = await steps();
     await page.click('[data-option="sleeve.short"]');
     const short = await steps();
@@ -199,8 +201,39 @@ async function journey(page, vp, product) {
     await page.locator('nav ol button').nth(1).click();
     await checkLayout(page, `${tag} configure collar`);
     if (vp === 'tablet-1280x800') await shot(page, vp, '03e-configure-collar');
+    await page.locator('nav ol button').nth(2).click();
+    await checkLayout(page, `${tag} configure cuffs`);
+    const cuffs = await page.locator('[data-option^="shirtCuffs."]').count();
+    const drawn = await page.locator('[data-option^="shirtCuffs."] svg.sk').count();
+    // the double cuff is chosen beside the cuffs, and the cuff drawings follow it
+    const cuffArt = () => page.locator('[data-option="shirtCuffs.rounded"] svg.sk').innerHTML();
+    await page.click('[data-option="doubleCuff.no"]');
+    const single = await cuffArt();
+    await page.click('[data-option="doubleCuff.yes"]');
+    const double = await cuffArt();
+    record(`shirt: two cuffs, drawn, following the double-cuff choice ${vp}`, cuffs === 2 && drawn === 2 && single !== double, JSON.stringify({ cuffs, drawn, follows: single !== double }));
+    if (vp === 'tablet-1280x800') await shot(page, vp, '03f-configure-cuffs');
+    // the pocket flap is asked only when there is a pocket, and the pocket drawings follow it
+    await page.locator('nav ol button').nth(4).click();
+    await checkLayout(page, `${tag} configure pocket`);
+    await page.click('[data-option="chestPocket.none"]');
+    const flapsWithout = await page.locator('[data-companion="pocketFlap"]').count();
+    await page.click('[data-option="chestPocket.rounded"]');
+    const flapsWith = await page.locator('[data-companion="pocketFlap"]').count();
+    const pocketArt = () => page.locator('[data-option="chestPocket.square"] svg.sk').innerHTML();
+    await page.click('[data-option="pocketFlap.plain"]');
+    const plain = await pocketArt();
+    await page.click('[data-option="pocketFlap.flapButton"]');
+    const buttoned = await pocketArt();
+    record(`shirt: pocket flap only with a pocket, drawings follow it ${vp}`, flapsWithout === 0 && flapsWith === 1 && plain !== buttoned, JSON.stringify({ flapsWithout, flapsWith }));
+    if (vp === 'tablet-1280x800') await shot(page, vp, '03g-configure-pocket');
+    await page.locator('nav ol button').nth(5).click();
+    await checkLayout(page, `${tag} configure hem`);
+    record(`shirt: two hems, drawn ${vp}`, (await page.locator('[data-option^="shirtHem."] svg.sk').count()) === 2, '');
+    // an order of shirts alone has no trims step
+    record(`shirt: no trims step ${vp}`, (await page.locator('[data-unit="trims"]').count()) === 0, '');
   }
-  {
+  if (product !== 'shirt') {
     // the trims (buttons and buttonholes) are chosen by hand too
     await page.locator('.garment-tab').last().click();
     await checkLayout(page, `${tag} configure trims`);
@@ -466,7 +499,7 @@ for (const [vp, size] of Object.entries(VIEWPORTS)) {
   await page.route('**/config.json', (r) => r.fulfill({ json: { orderSheetUrl: 'http://localhost:8787/', orderSheetToken: '' } }));
   page.on('pageerror', (e) => errors.push(e.message));
   page.on('console', (m) => m.type() === 'error' && errors.push(m.text()));
-  for (const product of ['suit', 'suit3Trousers', 'suit3Waistcoat', 'blazer', 'trousers', 'waistcoat']) await journey(page, vp, product);
+  for (const product of ['suit', 'suit3Trousers', 'suit3Waistcoat', 'blazer', 'trousers', 'waistcoat', 'shirt']) await journey(page, vp, product);
   await mixedOrderJourney(page, vp);
   await photosCheck(page, vp);
   await keyboardPass(page, vp);

@@ -44,8 +44,9 @@ export function buildPayload(order: OrderRecord, snap: Snapshot, token = ''): Sh
       }
     };
     chosenOn(unit.id, unit.garment);
-    // The buttons and buttonholes are chosen once and apply to every piece of the order.
-    if (trims) chosenOn(trims.id, 'trims');
+    // The buttons and buttonholes are chosen once and apply to every tailored piece of the order (a shirt
+    // chooses its own buttons).
+    if (trims && unit.garment !== 'shirt') chosenOn(trims.id, 'trims');
     return { item: vi.garments[line.item], quantity: line.quantity, design };
   });
   return {

@@ -1,4 +1,4 @@
-import type { OptionId } from '../catalog/catalog';
+import type { GarmentSelections, OptionId } from '../catalog/catalog';
 import { fmt } from '../content/copy';
 import { OPTION_SKETCHES } from '../sketches/registry';
 import { Sketch } from '../sketches/Sketch';
@@ -15,9 +15,11 @@ interface Props {
   onZoom: () => void;
   /** A text-only card: the option has no drawing, so no drawing area and no enlarge button. */
   plain?: boolean;
+  /** The choices made so far on the piece, for drawings that follow another choice. */
+  chosen?: GarmentSelections;
 }
 
-export function OptionCard({ option, selected, unavailableReason, onSelect, onZoom, plain: plainProp = false }: Props) {
+export function OptionCard({ option, selected, unavailableReason, onSelect, onZoom, plain: plainProp = false, chosen }: Props) {
   const { t } = useStore();
   // an option with no picture (like "no chest pocket") is a text card
   const plain = plainProp || !OPTION_SKETCHES[option];
@@ -40,7 +42,7 @@ export function OptionCard({ option, selected, unavailableReason, onSelect, onZo
       >
         {plain ? null : (
           <span className="option-sketch">
-            <Sketch option={option} />
+            <Sketch option={option} chosen={chosen} />
             {hasPhotos ? (
               <span className="photo-badge" data-has-photos>
                 <CameraIcon size={14} />

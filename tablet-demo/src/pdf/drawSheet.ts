@@ -1,10 +1,10 @@
-import { groupsFor, type OptionId, type Unit } from '../catalog/catalog';
+import { groupsFor, type Unit } from '../catalog/catalog';
 import type { Copy } from '../content/copy';
 import { fmt } from '../content/copy';
 import { formatDateTime } from '../order/format';
 import { productList } from '../order/labels';
 import { orderLines } from '../order/lines';
-import { OPTION_SKETCHES } from '../sketches/registry';
+import { OPTION_SKETCHES, sketchKey } from '../sketches/registry';
 import type { OrderRecord, Snapshot } from '../state/types';
 
 /**
@@ -83,8 +83,8 @@ export interface SheetInput {
   lang: string;
   snap: Snapshot;
   order: OrderRecord;
-  /** The sketch of each chosen option, already rasterised. */
-  sketches: Map<OptionId, CanvasImageSource>;
+  /** The sketch of each chosen option as it looks on its piece, already rasterised (keyed by sketchKey). */
+  sketches: Map<string, CanvasImageSource>;
   /** The brand logo and its width / height, drawn in the header. */
   logo: { image: CanvasImageSource; ratio: number };
   scale: number;
@@ -198,7 +198,7 @@ export function drawSheet({ t, lang, snap, order, sketches, logo, scale }: Sheet
           ctx.fillStyle = THUMB_BG;
           roundRect(ctx, x, top, THUMB_W, THUMB_H, 6);
           ctx.fill();
-          const img = chosen ? sketches.get(chosen) : undefined;
+          const img = chosen ? sketches.get(sketchKey(chosen, snap.selections[section.unit.id])) : undefined;
           if (img) {
             ctx.save();
             roundRect(ctx, x, top, THUMB_W, THUMB_H, 6);

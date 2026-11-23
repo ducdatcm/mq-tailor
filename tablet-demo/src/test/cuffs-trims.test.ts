@@ -56,10 +56,10 @@ describe('jacket cuffs', () => {
 });
 
 describe('trims: buttons and buttonholes', () => {
-  it('every order ends with the trims, with two groups and no drawings', () => {
+  it('every order with a tailored piece ends with the trims, with two groups and no drawings', () => {
     for (const p of PRODUCT_IDS) {
       const units = unitsFor({ [p]: 1 });
-      expect(units[units.length - 1].id).toBe('trims');
+      expect(units[units.length - 1].id === 'trims', p).toBe(p !== 'shirt');
       expect(PRODUCTS[p].pieces).not.toContain('trims');
     }
     expect(groupsFor('trims').map((g) => g.id)).toEqual(['buttonType', 'milanese']);
@@ -74,7 +74,7 @@ describe('trims: buttons and buttonholes', () => {
         else expect(OPTION_SKETCHES[o], o).toBeDefined();
       }
     }
-    expect(GROUP_LIST.filter((g) => g.noSketch).map((g) => g.id)).toEqual(['cuffMode', 'sleeve', 'collar', 'placket', 'shirtCuffs', 'shirtHem', 'buttonType', 'milanese']);
+    expect(GROUP_LIST.filter((g) => g.noSketch).map((g) => g.id)).toEqual(['cuffMode', 'doubleCuff', 'placket', 'pocketFlap', 'buttonType', 'milanese']);
   });
 
   it('warns about extra charges for horn and mother of pearl in both languages', () => {

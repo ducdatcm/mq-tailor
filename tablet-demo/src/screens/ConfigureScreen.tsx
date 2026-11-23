@@ -194,7 +194,8 @@ export function ConfigureScreen() {
               className={`options${def.noSketch ? ' is-plain' : shownOptions.length === 4 ? ' is-compact' : ''}`}
               role="group"
               aria-label={fmt(t.configure.optionsOf, { group: copy.name })}
-              style={{ ['--cols' as string]: def.noSketch ? Math.min(shownOptions.length, 4) : shownOptions.length === 4 ? 2 : Math.min(shownOptions.length, 3) }}
+              // four options sit two by two (text cards too: four in a row leaves their names too narrow)
+              style={{ ['--cols' as string]: shownOptions.length === 4 ? 2 : Math.min(shownOptions.length, 3) }}
             >
               {shownOptions.map((option) => {
                 const reason = disabledReason(state.selections, unit, group, option);
@@ -205,6 +206,7 @@ export function ConfigureScreen() {
                     selected={selected === option}
                     unavailableReason={reason ? t.lapelRule.disabledReason : null}
                     plain={def.noSketch}
+                    chosen={mine}
                     onSelect={() => dispatch({ type: 'select', unit: unit.id, group, option })}
                     onZoom={() => setZoom(option)}
                   />
@@ -277,7 +279,7 @@ export function ConfigureScreen() {
         )}
       </footer>
 
-      {zoom ? <OptionZoom option={zoom} note={copy.note} onClose={() => setZoom(null)} /> : null}
+      {zoom ? <OptionZoom option={zoom} note={copy.note} chosen={mine} onClose={() => setZoom(null)} /> : null}
 
       {pending ? (
         <Modal

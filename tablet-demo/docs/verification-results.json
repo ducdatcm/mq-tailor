@@ -52,7 +52,7 @@
   {
     "area": "pdf export tablet-1024x768 suit",
     "ok": true,
-    "detail": "phieu-thiet-ke_MQ-0001_20261121.pdf 250832 bytes"
+    "detail": "phieu-thiet-ke_MQ-0001_20261123.pdf 251076 bytes"
   },
   {
     "area": "layout tablet-1024x768 suit order",
@@ -117,7 +117,7 @@
   {
     "area": "pdf export tablet-1024x768 suit3Trousers",
     "ok": true,
-    "detail": "phieu-thiet-ke_MQ-0001_20261121.pdf 254544 bytes"
+    "detail": "phieu-thiet-ke_MQ-0001_20261123.pdf 254768 bytes"
   },
   {
     "area": "layout tablet-1024x768 suit3Waistcoat configure",
@@ -265,6 +265,81 @@
     "detail": "status=sent"
   },
   {
+    "area": "layout tablet-1024x768 shirt configure",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "shirt: short sleeves drop the cuff step tablet-1024x768",
+    "ok": true,
+    "detail": "{\"before\":6,\"short\":5,\"back\":6}"
+  },
+  {
+    "area": "layout tablet-1024x768 shirt configure collar",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout tablet-1024x768 shirt configure cuffs",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "shirt: two cuffs, drawn, following the double-cuff choice tablet-1024x768",
+    "ok": true,
+    "detail": "{\"cuffs\":2,\"drawn\":2,\"follows\":true}"
+  },
+  {
+    "area": "layout tablet-1024x768 shirt configure pocket",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "shirt: pocket flap only with a pocket, drawings follow it tablet-1024x768",
+    "ok": true,
+    "detail": "{\"flapsWithout\":0,\"flapsWith\":1}"
+  },
+  {
+    "area": "layout tablet-1024x768 shirt configure hem",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "shirt: two hems, drawn tablet-1024x768",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "shirt: no trims step tablet-1024x768",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout tablet-1024x768 shirt review",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout tablet-1024x768 shirt order",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout tablet-1024x768 shirt confirmed",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "order row sent tablet-1024x768 shirt",
+    "ok": true,
+    "detail": "status=sent"
+  },
+  {
+    "area": "spreadsheet lines carry the quantity tablet-1024x768 shirt",
+    "ok": true,
+    "detail": "Sơ mi × 2"
+  },
+  {
     "area": "start screen: several products with their own quantities tablet-1024x768",
     "ok": true,
     "detail": "Suit hai mảnh × 1 · Quần tây × 2"
@@ -322,7 +397,7 @@
   {
     "area": "pdf export of the order tablet-1024x768",
     "ok": true,
-    "detail": "253225 bytes"
+    "detail": "253342 bytes"
   },
   {
     "area": "layout tablet-1024x768 photos zoom",
@@ -417,7 +492,7 @@
   {
     "area": "pdf export tablet-1280x800 suit",
     "ok": true,
-    "detail": "phieu-thiet-ke_MQ-0001_20261121.pdf 250832 bytes"
+    "detail": "phieu-thiet-ke_MQ-0001_20261123.pdf 250965 bytes"
   },
   {
     "area": "layout tablet-1280x800 suit order",
@@ -482,7 +557,7 @@
   {
     "area": "pdf export tablet-1280x800 suit3Trousers",
     "ok": true,
-    "detail": "phieu-thiet-ke_MQ-0001_20261121.pdf 254572 bytes"
+    "detail": "phieu-thiet-ke_MQ-0001_20261123.pdf 254708 bytes"
   },
   {
     "area": "layout tablet-1280x800 suit3Waistcoat configure",
@@ -630,6 +705,81 @@
     "detail": "status=sent"
   },
   {
+    "area": "layout tablet-1280x800 shirt configure",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "shirt: short sleeves drop the cuff step tablet-1280x800",
+    "ok": true,
+    "detail": "{\"before\":6,\"short\":5,\"back\":6}"
+  },
+  {
+    "area": "layout tablet-1280x800 shirt configure collar",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout tablet-1280x800 shirt configure cuffs",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "shirt: two cuffs, drawn, following the double-cuff choice tablet-1280x800",
+    "ok": true,
+    "detail": "{\"cuffs\":2,\"drawn\":2,\"follows\":true}"
+  },
+  {
+    "area": "layout tablet-1280x800 shirt configure pocket",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "shirt: pocket flap only with a pocket, drawings follow it tablet-1280x800",
+    "ok": true,
+    "detail": "{\"flapsWithout\":0,\"flapsWith\":1}"
+  },
+  {
+    "area": "layout tablet-1280x800 shirt configure hem",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "shirt: two hems, drawn tablet-1280x800",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "shirt: no trims step tablet-1280x800",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout tablet-1280x800 shirt review",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout tablet-1280x800 shirt order",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout tablet-1280x800 shirt confirmed",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "order row sent tablet-1280x800 shirt",
+    "ok": true,
+    "detail": "status=sent"
+  },
+  {
+    "area": "spreadsheet lines carry the quantity tablet-1280x800 shirt",
+    "ok": true,
+    "detail": "Sơ mi × 2"
+  },
+  {
     "area": "start screen: several products with their own quantities tablet-1280x800",
     "ok": true,
     "detail": "Suit hai mảnh × 1 · Quần tây × 2"
@@ -687,7 +837,7 @@
   {
     "area": "pdf export of the order tablet-1280x800",
     "ok": true,
-    "detail": "253246 bytes"
+    "detail": "253342 bytes"
   },
   {
     "area": "layout tablet-1280x800 photos zoom",
@@ -782,7 +932,7 @@
   {
     "area": "pdf export portrait-768x1024 suit",
     "ok": true,
-    "detail": "phieu-thiet-ke_MQ-0001_20261121.pdf 250809 bytes"
+    "detail": "phieu-thiet-ke_MQ-0001_20261123.pdf 251134 bytes"
   },
   {
     "area": "layout portrait-768x1024 suit order",
@@ -847,7 +997,7 @@
   {
     "area": "pdf export portrait-768x1024 suit3Trousers",
     "ok": true,
-    "detail": "phieu-thiet-ke_MQ-0001_20261121.pdf 254572 bytes"
+    "detail": "phieu-thiet-ke_MQ-0001_20261123.pdf 254732 bytes"
   },
   {
     "area": "layout portrait-768x1024 suit3Waistcoat configure",
@@ -995,6 +1145,81 @@
     "detail": "status=sent"
   },
   {
+    "area": "layout portrait-768x1024 shirt configure",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "shirt: short sleeves drop the cuff step portrait-768x1024",
+    "ok": true,
+    "detail": "{\"before\":6,\"short\":5,\"back\":6}"
+  },
+  {
+    "area": "layout portrait-768x1024 shirt configure collar",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout portrait-768x1024 shirt configure cuffs",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "shirt: two cuffs, drawn, following the double-cuff choice portrait-768x1024",
+    "ok": true,
+    "detail": "{\"cuffs\":2,\"drawn\":2,\"follows\":true}"
+  },
+  {
+    "area": "layout portrait-768x1024 shirt configure pocket",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "shirt: pocket flap only with a pocket, drawings follow it portrait-768x1024",
+    "ok": true,
+    "detail": "{\"flapsWithout\":0,\"flapsWith\":1}"
+  },
+  {
+    "area": "layout portrait-768x1024 shirt configure hem",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "shirt: two hems, drawn portrait-768x1024",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "shirt: no trims step portrait-768x1024",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout portrait-768x1024 shirt review",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout portrait-768x1024 shirt order",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "layout portrait-768x1024 shirt confirmed",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "area": "order row sent portrait-768x1024 shirt",
+    "ok": true,
+    "detail": "status=sent"
+  },
+  {
+    "area": "spreadsheet lines carry the quantity portrait-768x1024 shirt",
+    "ok": true,
+    "detail": "Sơ mi × 2"
+  },
+  {
     "area": "start screen: several products with their own quantities portrait-768x1024",
     "ok": true,
     "detail": "Suit hai mảnh × 1 · Quần tây × 2"
@@ -1052,7 +1277,7 @@
   {
     "area": "pdf export of the order portrait-768x1024",
     "ok": true,
-    "detail": "253246 bytes"
+    "detail": "253408 bytes"
   },
   {
     "area": "layout portrait-768x1024 photos zoom",
