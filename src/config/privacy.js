@@ -5,7 +5,7 @@
  * form submission, so we can show later which wording a visitor agreed to.
  * Change it (YYYY-MM-DD) whenever the policy's meaning changes.
  */
-const PRIVACY_POLICY_VERSION = '2026-11-17';
+const PRIVACY_POLICY_VERSION = '2026-11-25';
 
 /** "3 November 2026" (en) or "03/11/2026" (vi) for display. */
 function formatPolicyDate(lang) {

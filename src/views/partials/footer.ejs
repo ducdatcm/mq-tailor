@@ -39,9 +39,14 @@
 
   <div class="container footer-bottom">
     <span>&copy; <%= currentYear %> <%= companyName %>. <%= t('footer.rights') %></span>
-    <span><a href="/<%= lang %>/privacy"><%= t('footer.privacy') %></a></span>
+    <span>
+      <a href="/<%= lang %>/privacy"><%= t('footer.privacy') %></a>
+      <% if (gaId) { %> · <button type="button" class="footer-link-btn" data-consent-open><%= t('consent.settings') %></button><% } %>
+    </span>
   </div>
 </footer>
+
+<%- include('./consent') %>
 
 <% if (currentPath.indexOf('/' + lang + '/visit') !== 0) { %>
 <div class="mobile-cta">

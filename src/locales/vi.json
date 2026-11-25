@@ -127,5 +127,13 @@
     "heading": "Không Tìm Thấy Trang",
     "body": "Trang bạn đang tìm không tồn tại, hoặc đã được chuyển đi.",
     "back_home": "Về Trang Chủ"
+  },
+  "consent": {
+    "title": "Cookie",
+    "text": "Nếu bạn đồng ý, chúng tôi dùng cookie Google Analytics để biết khách xem website như thế nào, ví dụ những trang nào được đọc. Không có gì được tải cho đến khi bạn chọn.",
+    "link": "Chính sách bảo mật",
+    "accept": "Đồng ý",
+    "decline": "Từ chối",
+    "settings": "Cài đặt cookie"
   }
 }

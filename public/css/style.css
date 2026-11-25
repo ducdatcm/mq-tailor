@@ -1188,6 +1188,49 @@ select:focus-visible {
   white-space: nowrap;
 }
 
+/* ---------- Cookie consent banner ----------
+   Small card in the corner rather than a page-blocking wall; Accept and
+   Decline are the same size, so saying no is as easy as saying yes. */
+.consent {
+  position: fixed;
+  left: var(--space-2);
+  bottom: var(--space-2);
+  z-index: 110;
+  width: min(420px, calc(100vw - 2 * var(--space-2)));
+  padding: var(--space-3);
+  background: var(--color-paper);
+  border: 1px solid var(--color-border);
+  border-top: 3px solid var(--color-brass);
+  box-shadow: 0 12px 40px rgba(28, 25, 19, 0.18);
+}
+.consent__title {
+  font-family: var(--font-serif);
+  font-size: var(--fs-lg);
+  color: var(--color-ink);
+  margin: 0 0 var(--space-1);
+}
+.consent__text {
+  font-size: var(--fs-sm);
+  color: var(--color-text-muted);
+  margin: 0 0 var(--space-2);
+}
+.consent__text a { text-decoration: underline; }
+.consent__actions { display: flex; gap: 0.5rem; }
+.consent__actions .btn { flex: 1 1 0; }
+.footer-link-btn {
+  background: none;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+.footer-link-btn:hover { color: var(--color-cloth); }
+@media (max-width: 767px) {
+  /* sit above the phone booking bar */
+  .consent { bottom: calc(80px + env(safe-area-inset-bottom, 0px)); left: 0.75rem; width: calc(100vw - 1.5rem); }
+}
+
 /* ---------- Phone booking bar ----------
    On phones the header has no room for a booking button, so the two actions
    that matter most stay within thumb reach at the bottom of the screen.

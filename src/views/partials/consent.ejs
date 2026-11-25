@@ -1,0 +1,15 @@
+<%
+  // Cookie consent for Google Analytics. Rendered only when a GA id is set in
+  // Site Settings — with no analytics there is nothing to ask about. Analytics
+  // never loads until the visitor presses Accept (logic in public/js/main.js).
+%>
+<% if (gaId) { %>
+<div class="consent" data-consent data-ga-id="<%= gaId %>" role="dialog" aria-labelledby="consent-title" aria-describedby="consent-text" hidden>
+  <p class="consent__title" id="consent-title"><%= t('consent.title') %></p>
+  <p class="consent__text" id="consent-text"><%= t('consent.text') %> <a href="/<%= lang %>/privacy"><%= t('consent.link') %></a></p>
+  <div class="consent__actions">
+    <button type="button" class="btn btn--sm" data-consent-accept><%= t('consent.accept') %></button>
+    <button type="button" class="btn btn--sm btn--outline" data-consent-decline><%= t('consent.decline') %></button>
+  </div>
+</div>
+<% } %>

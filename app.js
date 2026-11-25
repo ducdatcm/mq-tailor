@@ -63,11 +63,12 @@ app.use(
     contentSecurityPolicy: {
       directives: {
         defaultSrc: ["'self'"],
-        imgSrc: ["'self'", 'data:', r2Origin].filter(Boolean),
+        // Google Analytics only loads after cookie consent (see partials/consent.ejs).
+        imgSrc: ["'self'", 'data:', r2Origin, 'https://*.google-analytics.com', 'https://www.googletagmanager.com'].filter(Boolean),
         fontSrc: ["'self'", 'https://fonts.gstatic.com'],
         styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
         scriptSrc: ["'self'", "'unsafe-inline'", 'https://www.googletagmanager.com'],
-        connectSrc: ["'self'", 'https://www.google-analytics.com'],
+        connectSrc: ["'self'", 'https://*.google-analytics.com', 'https://*.analytics.google.com', 'https://www.googletagmanager.com'],
         frameSrc: ["'self'", 'https://www.google.com'], // map embed
       },
     },
@@ -109,7 +110,9 @@ app.use(siteSettingsMiddleware);
 
 // Global template locals that don't depend on request state.
 app.use((req, res, next) => {
-  res.locals.gaId = (res.locals.settings && res.locals.settings.ga_measurement_id) || null;
+  // Only a well-formed GA4 id (G-XXXXXXX) is ever written into the page.
+  const gaRaw = ((res.locals.settings && res.locals.settings.ga_measurement_id) || '').trim().toUpperCase();
+  res.locals.gaId = /^G-[A-Z0-9]{4,20}$/.test(gaRaw) ? gaRaw : null;
   res.locals.currentYear = new Date().getFullYear();
   // Admin textareas store multi-paragraph body text as plain text with a
   // blank line between paragraphs (same convention as the Journal body

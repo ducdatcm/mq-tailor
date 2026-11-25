@@ -127,5 +127,13 @@
     "heading": "Page Not Found",
     "body": "The page you're looking for doesn't exist, or has moved.",
     "back_home": "Back to Home"
+  },
+  "consent": {
+    "title": "Cookies",
+    "text": "With your permission, we use Google Analytics cookies to see how visitors use this site, such as which pages are read. Nothing is loaded until you choose.",
+    "link": "Privacy Policy",
+    "accept": "Accept",
+    "decline": "Decline",
+    "settings": "Cookie settings"
   }
 }
