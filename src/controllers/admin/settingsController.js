@@ -70,6 +70,7 @@ async function update(req, res, next) {
         tiktok_url: b.tiktok_url || null,
         youtube_url: b.youtube_url || null,
         pinterest_url: b.pinterest_url || null,
+        google_business_url: /^https:\/\//.test((b.google_business_url || '').trim()) ? b.google_business_url.trim() : null,
         email: b.email || null,
         founding_note_en: b.founding_note_en || null,
         founding_note_vi: b.founding_note_vi || null,

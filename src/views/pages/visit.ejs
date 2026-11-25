@@ -6,7 +6,7 @@
       <h2 style="font-size:var(--fs-xl);"><%= t('visit.contact_label') %></h2>
       <ul class="contact-list">
         <% if (settings && settings.address_line) { %>
-          <li><a href="https://www.google.com/maps/search/?api=1&query=<%= encodeURIComponent(settings.address_line) %>" target="_blank" rel="noopener" data-track="click_map"><%= settings.address_line %> - <%= t('cta.get_directions') %></a></li>
+          <li><a href="<%= settings.google_business_url || ('https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(settings.address_line)) %>" target="_blank" rel="noopener" data-track="click_map"><%= settings.address_line %> - <%= t('cta.get_directions') %></a></li>
         <% } %>
         <% if (settings && settings.phone) { %>
           <li><a href="tel:<%= settings.phone.replace(/\s+/g, '') %>" data-track="click_phone"><%= t('cta.call') %> - <%= settings.phone %></a></li>

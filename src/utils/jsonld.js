@@ -33,7 +33,8 @@ function buildLocalBusinessJsonLd(settings, baseUrl) {
     telephone: settings.phone || undefined,
     email: settings.email || undefined,
     url: baseUrl || undefined,
-    sameAs: [settings.instagram_url, settings.zalo_url].filter(Boolean),
+    sameAs: [settings.google_business_url, settings.facebook_url, settings.instagram_url, settings.zalo_url].filter(Boolean),
+    hasMap: settings.google_business_url || undefined,
     openingHours: openingHours.length ? openingHours : undefined,
   };
 }

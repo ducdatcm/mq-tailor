@@ -138,7 +138,12 @@ app.use((req, res, next) => {
 });
 
 app.use('/', sitemapRouter);
-app.get('/', (req, res) => res.redirect(302, '/en/'));
+// Keep the query string (e.g. utm_source=google from the Google Business
+// Profile link) when sending visitors on to the default language.
+app.get('/', (req, res) => {
+  const q = req.originalUrl.indexOf('?');
+  res.redirect(302, '/en/' + (q === -1 ? '' : req.originalUrl.slice(q)));
+});
 app.use('/:lang(en|vi)', publicRouter);
 app.use('/admin', adminRouter);
 

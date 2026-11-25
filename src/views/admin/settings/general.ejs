@@ -94,6 +94,11 @@
         <input type="text" id="pinterest_url" name="pinterest_url" value="<%= settings ? settings.pinterest_url || '' : '' %>">
       </div>
     </div>
+    <div class="field">
+      <label for="google_business_url">Google Business Profile link</label>
+      <input type="text" id="google_business_url" name="google_business_url" placeholder="https://maps.app.goo.gl/..." value="<%= settings ? settings.google_business_url || '' : '' %>">
+      <p class="field-hint">In Google Maps, open your shop's listing, tap Share and copy the link. Once set, every "Get Directions" link on the site opens your listing (with your reviews and photos) instead of a plain address search.</p>
+    </div>
   </div>
 
   <div class="panel">
