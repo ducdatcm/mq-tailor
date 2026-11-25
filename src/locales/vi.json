@@ -94,7 +94,6 @@
     "closed": "Đóng Cửa",
     "contact_label": "Liên Hệ",
     "form_heading": "Gửi Liên Hệ",
-    "form_intro": "Muốn liên hệ trước bằng tin nhắn? Gửi vài thông tin và chúng tôi sẽ phản hồi sớm nhất.",
     "form_name": "Họ Tên",
     "form_phone": "Số Điện Thoại",
     "form_email": "Email",
@@ -113,7 +112,6 @@
     "time_any": "Lúc nào cũng được",
     "time_morning": "Buổi sáng",
     "time_afternoon": "Buổi chiều",
-    "form_date_hint": "Chúng tôi sẽ xác nhận giờ cụ thể với bạn. Giờ mở cửa có ở phía trên.",
     "form_date_error": "Vui lòng chọn một ngày nhà may mở cửa, từ hôm nay trở đi.",
     "faq_heading": "Câu hỏi thường gặp"
   },

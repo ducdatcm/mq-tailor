@@ -71,8 +71,7 @@
 
 <section class="section section--alt" id="enquiry" data-enquiry-form-section>
   <div class="container container--narrow reveal">
-    <h2><%= t('visit.form_heading') %></h2>
-    <p class="text-muted"><%= t('visit.form_intro') %></p>
+    <h2 style="margin-bottom:var(--space-4);"><%= t('visit.form_heading') %></h2>
 
     <% if (formSuccess) { %>
       <div class="form-notice form-notice--success" role="status"><%= t('visit.form_success') %></div>
@@ -107,7 +106,7 @@
       <div class="form-row">
         <div class="form-field">
           <label for="preferred_date"><%= t('visit.form_date') %></label>
-          <input type="date" id="preferred_date" name="preferred_date" min="<%= minDate %>" aria-describedby="date-hint">
+          <input type="date" id="preferred_date" name="preferred_date" min="<%= minDate %>">
         </div>
         <div class="form-field">
           <label for="preferred_time"><%= t('visit.form_time') %></label>
@@ -118,7 +117,6 @@
           </select>
         </div>
       </div>
-      <p class="form-hint form-hint--tight" id="date-hint"><%= t('visit.form_date_hint') %></p>
 
       <div class="form-field">
         <label for="message"><%= t('visit.form_message') %></label>

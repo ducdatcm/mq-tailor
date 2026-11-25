@@ -94,7 +94,6 @@
     "closed": "Closed",
     "contact_label": "Contact",
     "form_heading": "Make an Enquiry",
-    "form_intro": "Prefer to write first? Send a few details and we'll get back to you.",
     "form_name": "Name",
     "form_phone": "Phone",
     "form_email": "Email",
@@ -113,7 +112,6 @@
     "time_any": "Any time",
     "time_morning": "Morning",
     "time_afternoon": "Afternoon",
-    "form_date_hint": "We will confirm the exact time with you. Our opening hours are listed above.",
     "form_date_error": "Please choose a day we are open, from today onwards.",
     "faq_heading": "Questions we are often asked"
   },
