@@ -63,6 +63,7 @@ async function confirmOrder(page, tag, vp, shotName) {
     await page.fill('#order-orderId', 'MQ-0001');
     await page.fill('#order-customerName', 'Nguyễn Văn An');
     await page.fill('#order-phone', '0912 345 678');
+    await page.fill('#order-note', 'Thêu tên ở cổ tay');
   }
   await page.getByRole('button', { name: 'Xác nhận đơn' }).click();
 }
@@ -263,6 +264,7 @@ async function journey(page, vp, product) {
   const status = await page.getAttribute('[data-sheet-status]', 'data-sheet-status');
   const row = mock.rows.filter((r) => r.orderId === 'MQ-0001' && r.rows?.length > 0).at(-1);
   record(`order row sent ${tag}`, status === 'sent' && Boolean(row) && row.customerName === 'Nguyễn Văn An', `status=${status}`);
+  record(`the sale's note goes with the order and shows once confirmed ${tag}`, row?.note === 'Thêu tên ở cổ tay' && (await page.locator('.order-fact-note dd').innerText()) === 'Thêu tên ở cổ tay', row?.note);
   if (quantity === 2) {
     const lines = (row?.rows ?? []).map((r) => `${r.item} × ${r.quantity}`).join(', ');
     const expected = product === 'shirt' ? 'Sơ mi × 2' : 'Áo × 2, Quần × 4'; // the two three-piece suits are made alike

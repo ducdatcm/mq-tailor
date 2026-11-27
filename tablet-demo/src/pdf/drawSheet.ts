@@ -122,7 +122,7 @@ export function drawSheet({ t, lang, snap, order, sketches, logo, scale }: Sheet
     const boxY = 128;
     const boxW = pageW - MARGIN * 2;
     const cellW = (boxW - 32) / 3;
-    type Cell = { label: string; value: string; span: number };
+    type Cell = { label: string; value: string; span: number; lines?: number };
     const grid: Cell[][] = [
       [
         { label: t.pdf.date, value: formatDateTime(order.confirmedAt), span: 1 },
@@ -134,10 +134,12 @@ export function drawSheet({ t, lang, snap, order, sketches, logo, scale }: Sheet
         { label: t.pdf.phone, value: order.phone, span: 1 },
       ],
       [{ label: t.pdf.product, value: productList(t, snap.quantities), span: 3 }],
+      // the sale's note, when there is one: three lines at most, so the sheet stays one page
+      ...(order.note ? [[{ label: t.pdf.note, value: order.note.replace(/\n/g, ' · '), span: 3, lines: 3 }]] : []),
     ];
     ctx.font = `600 15px ${SANS}`;
     const widthOf = (c: Cell) => cellW * c.span - 12;
-    const rowH = grid.map((row) => 16 + Math.max(...row.map((c) => wrap(ctx, c.value, widthOf(c), 2).length)) * 19 + 10);
+    const rowH = grid.map((row) => 16 + Math.max(...row.map((c) => wrap(ctx, c.value, widthOf(c), c.lines ?? 2).length)) * 19 + 10);
     const boxH = 16 + rowH.reduce((a, b) => a + b, 0) + 4;
     if (draw) {
       fill(PAPER_TINT);
@@ -154,7 +156,7 @@ export function drawSheet({ t, lang, snap, order, sketches, logo, scale }: Sheet
         text(upper(cell.label, lang), x, rowY + 10);
         ctx.font = `600 15px ${SANS}`;
         fill(INK);
-        wrap(ctx, cell.value, widthOf(cell), 2).forEach((l, i) => text(l, x, rowY + 29 + i * 19));
+        wrap(ctx, cell.value, widthOf(cell), cell.lines ?? 2).forEach((l, i) => text(l, x, rowY + 29 + i * 19));
         col += cell.span;
       });
       rowY += rowH[r];

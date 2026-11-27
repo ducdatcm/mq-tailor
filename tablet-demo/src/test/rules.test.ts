@@ -195,6 +195,7 @@ describe('session reducer', () => {
         orderId: 'MQ-0001',
         customerName: 'Nguyễn Văn A',
         phone: '0912 345 678',
+        note: '',
         revision: 1,
         confirmedAt: 2,
         submissionId: 'a',
@@ -233,7 +234,7 @@ describe('session reducer', () => {
     it('reset wipes the customer details', () => {
       let s = fill(designConfirmed());
       s = run(s, { type: 'confirmOrder', at: 2, submissionId: 'a' }, { type: 'reset' });
-      expect(s.order).toEqual({ orderId: '', customerName: '', phone: '' });
+      expect(s.order).toEqual({ orderId: '', customerName: '', phone: '', note: '' });
       expect(s.orderRecord).toBeNull();
     });
   });

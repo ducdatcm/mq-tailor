@@ -9,7 +9,7 @@ import type { OrderRecord, Snapshot } from '../state/types';
 import { snapshotOf } from './helpers';
 
 describe('order validation', () => {
-  const ok = { orderId: 'MQ-1', customerName: 'Lan', phone: '0912 345 678' };
+  const ok = { orderId: 'MQ-1', customerName: 'Lan', phone: '0912 345 678', note: '' };
 
   it('accepts a normal order and common phone formats', () => {
     expect(isOrderValid(ok)).toBe(true);
@@ -19,7 +19,7 @@ describe('order validation', () => {
   });
 
   it('asks for each missing field, ignoring blanks made of spaces', () => {
-    expect(validateOrder({ orderId: ' ', customerName: '', phone: '  ' })).toEqual({
+    expect(validateOrder({ orderId: ' ', customerName: '', phone: '  ', note: '' })).toEqual({
       orderId: 'required',
       customerName: 'required',
       phone: 'required',
@@ -35,13 +35,20 @@ describe('order validation', () => {
   it('limits the length of each field', () => {
     expect(validateOrder({ ...ok, orderId: 'x'.repeat(41) }).orderId).toBe('tooLong');
     expect(validateOrder({ ...ok, customerName: 'x'.repeat(81) }).customerName).toBe('tooLong');
+    expect(validateOrder({ ...ok, note: 'x'.repeat(501) }).note).toBe('tooLong');
+  });
+
+  it('the note is optional', () => {
+    expect(validateOrder({ ...ok, note: '' })).toEqual({});
+    expect(validateOrder({ ...ok, note: 'Thêu tên ở cổ tay' })).toEqual({});
   });
 
   it('tidies spacing before saving', () => {
-    expect(cleanOrder({ orderId: '  A 1 ', customerName: ' Trần   Thị  B ', phone: ' 0912   345 ' })).toEqual({
+    expect(cleanOrder({ orderId: '  A 1 ', customerName: ' Trần   Thị  B ', phone: ' 0912   345 ', note: '  Thêu   tên \n\n  Lấy trước 20/12  ' })).toEqual({
       orderId: 'A 1',
       customerName: 'Trần Thị B',
       phone: '0912 345',
+      note: 'Thêu tên\nLấy trước 20/12',
     });
   });
 });
@@ -64,6 +71,7 @@ const order: OrderRecord = {
   orderId: 'MQ-1',
   customerName: 'Nguyễn Văn A',
   phone: '0912345678',
+  note: '',
   revision: 2,
   confirmedAt: new Date(2026, 10, 3, 9, 5).getTime(),
   submissionId: 'sub-1',

@@ -3,7 +3,9 @@ import type { OrderForm } from '../state/types';
 export type OrderField = keyof OrderForm;
 export type OrderError = 'required' | 'tooLong' | 'phoneInvalid';
 
-const LIMITS: Record<OrderField, number> = { orderId: 40, customerName: 80, phone: 20 };
+export const NOTE_MAX = 500;
+const LIMITS: Record<OrderField, number> = { orderId: 40, customerName: 80, phone: 20, note: NOTE_MAX };
+const REQUIRED: OrderField[] = ['orderId', 'customerName', 'phone'];
 
 /** Digits in a phone number, ignoring spaces, dots, dashes, brackets and a leading +. */
 export function phoneDigits(phone: string): string {
@@ -15,6 +17,12 @@ export function cleanOrder(form: OrderForm): OrderForm {
     orderId: form.orderId.trim(),
     customerName: form.customerName.trim().replace(/\s+/g, ' '),
     phone: form.phone.trim().replace(/\s+/g, ' '),
+    // keep the line breaks, drop blank lines and the spaces at the ends of each line
+    note: (form.note ?? '')
+      .split('\n')
+      .map((l) => l.trim().replace(/\s+/g, ' '))
+      .filter(Boolean)
+      .join('\n'),
   };
 }
 
@@ -23,7 +31,9 @@ export function validateOrder(form: OrderForm): Partial<Record<OrderField, Order
   const f = cleanOrder(form);
   const errors: Partial<Record<OrderField, OrderError>> = {};
   (Object.keys(LIMITS) as OrderField[]).forEach((k) => {
-    if (!f[k]) errors[k] = 'required';
+    if (!f[k]) {
+      if (REQUIRED.includes(k)) errors[k] = 'required';
+    }
     else if (f[k].length > LIMITS[k]) errors[k] = 'tooLong';
   });
   if (!errors.phone) {

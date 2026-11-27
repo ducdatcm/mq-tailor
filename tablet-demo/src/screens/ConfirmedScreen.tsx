@@ -84,6 +84,12 @@ export function ConfirmedScreen({ onNewSession }: { onNewSession: () => void }) 
                 <dt>{t.confirmed.productsLabel}</dt>
                 <dd>{productList(t, snap.quantities)}</dd>
               </div>
+              {order.note ? (
+                <div className="order-fact-note">
+                  <dt>{t.confirmed.noteLabel}</dt>
+                  <dd>{order.note}</dd>
+                </div>
+              ) : null}
             </dl>
             <p className="confirmed-meta">
               <span className="tag tag-solid">{fmt(t.confirmed.revision, { n: snap.revision })}</span>

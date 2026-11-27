@@ -95,7 +95,7 @@ export function SetupScreen() {
         res.ok && /^OK\b/.test(text) && /\bv3\b/.test(text)
           ? { kind: 'ok', text: 'Kết nối được: bảng tính trả lời "' + text + '". Nhớ bấm Lưu.' }
           : res.ok && /^OK\b/.test(text)
-            ? { kind: 'bad', text: 'Kết nối được, nhưng Apps Script là bản cũ (chưa có bảng mẫu mới: Sản phẩm, Số lượng). Dán lại Code.gs mới rồi triển khai phiên bản mới: xem mục “Cập nhật” trong docs/google-sheets/GUIDE.md.' }
+            ? { kind: 'bad', text: 'Kết nối được, nhưng Apps Script là bản cũ (chưa có bảng mẫu mới chia cột theo Áo, Gile, Quần, Sơ mi). Dán lại Code.gs mới rồi triển khai phiên bản mới: xem mục “Cập nhật” trong docs/google-sheets/GUIDE.md.' }
             : { kind: 'bad', text: 'Địa chỉ có trả lời nhưng không đúng như mong đợi. Kiểm tra lại địa chỉ ứng dụng web (kết thúc bằng /exec).' },
       );
     } catch {

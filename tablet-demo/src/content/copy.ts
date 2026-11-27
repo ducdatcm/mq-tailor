@@ -130,6 +130,7 @@ export interface Copy {
     orderLabel: string;
     customerLabel: string;
     phoneLabel: string;
+    noteLabel: string;
     productsLabel: string;
     exportPdf: string;
     exporting: string;
@@ -162,6 +163,9 @@ export interface Copy {
     customer: string;
     phone: string;
     phoneHint: string;
+    note: string;
+    noteHint: string;
+    noteCount: string; // {n} {max}
     summary: string; // {list} {n}
     errorRequired: string;
     errorTooLong: string;
@@ -178,6 +182,7 @@ export interface Copy {
     orderId: string;
     customer: string;
     phone: string;
+    note: string;
     product: string;
     revision: string;
     footer: string;

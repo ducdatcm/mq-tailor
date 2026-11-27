@@ -35,7 +35,7 @@ export function initialState(lang: State['lang'] = 'vi'): State {
     sameAs: {},
     pending: null,
     confirmed: null,
-    order: { orderId: '', customerName: '', phone: '' },
+    order: { orderId: '', customerName: '', phone: '', note: '' },
     orderRecord: null,
     sheet: 'idle',
   };

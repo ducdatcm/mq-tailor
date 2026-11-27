@@ -1280,6 +1280,19 @@ button {
   font-size: 0.78rem;
   color: var(--muted);
 }
+.field-textarea {
+  min-height: 120px;
+  padding: 12px 16px;
+  line-height: 1.5;
+  resize: vertical;
+}
+.field-count {
+  align-self: flex-end;
+  margin-top: -4px;
+  font-size: 0.72rem;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
 .field-error {
   font-size: 0.74rem;
   font-weight: 500;
@@ -1307,6 +1320,14 @@ button {
   margin: 0;
   font-size: 1.1rem;
   font-weight: 600;
+}
+.order-facts .order-fact-note {
+  flex-basis: 100%;
+}
+.order-fact-note dd {
+  font-size: 0.95rem;
+  font-weight: 400;
+  white-space: pre-line;
 }
 .export-panel {
   display: flex;

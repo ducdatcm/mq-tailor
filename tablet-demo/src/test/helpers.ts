@@ -38,5 +38,6 @@ export const orderRecord = (overrides: Partial<OrderRecord> = {}): OrderRecord =
   revision: 1,
   confirmedAt: new Date(2026, 9, 30, 10, 0).getTime(),
   submissionId: 'sub-9',
+  note: '',
   ...overrides,
 });

@@ -38,6 +38,8 @@ export interface OrderForm {
   orderId: string;
   customerName: string;
   phone: string;
+  /** Special requests, free text; may be empty. */
+  note: string;
 }
 
 /** An order confirmed on the order screen, for one revision of the design. */

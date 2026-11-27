@@ -3,7 +3,7 @@ import { ChevronIcon } from '../components/icons';
 import { fmt } from '../content/copy';
 import { formatDate } from '../order/format';
 import { productList } from '../order/labels';
-import { validateOrder, type OrderError, type OrderField } from '../order/validate';
+import { NOTE_MAX, validateOrder, type OrderError, type OrderField } from '../order/validate';
 import { useStore } from '../state/store';
 
 /** A new id for one order confirmation (the spreadsheet uses it to ignore repeats). */
@@ -91,6 +91,29 @@ export function OrderScreen() {
               </div>
             );
           })}
+
+          <div className={`field${errors.note ? ' has-error' : ''}`}>
+            <label htmlFor="order-note" className="field-label">
+              {t.order.note}
+            </label>
+            <textarea
+              id="order-note"
+              className="field-input field-textarea"
+              name="note"
+              rows={4}
+              maxLength={NOTE_MAX}
+              autoComplete="off"
+              value={state.order.note ?? ''}
+              aria-describedby="order-note-hint order-note-count"
+              onChange={(e) => dispatch({ type: 'setOrderField', field: 'note', value: e.target.value })}
+            />
+            <p id="order-note-hint" className="field-hint">
+              {t.order.noteHint}
+            </p>
+            <p id="order-note-count" className="field-count" aria-live="polite">
+              {fmt(t.order.noteCount, { n: (state.order.note ?? '').length, max: NOTE_MAX })}
+            </p>
+          </div>
 
           <p className="fine-print">{t.order.dataNote}</p>
         </form>

@@ -2,7 +2,13 @@
 
 Mỗi khi nhân viên bấm **Xác nhận đơn**, ứng dụng gửi đơn vào bảng tính Google của tiệm, **mỗi loại món một dòng**. Các cột, từ trái sang phải:
 
-**Ngày › Order ID › Tên khách › Số điện thoại › Sản phẩm › Số lượng**, rồi mỗi lựa chọn thiết kế một cột (Kiểu cài áo, Kiểu ve, Xếp ly trước, Kiểu cổ áo...), và cuối cùng hai cột kỹ thuật **Lần xác nhận** và **Mã gửi**. Cột "Sản phẩm" ghi loại món: Áo, Quần, Gile hoặc Sơ mi.
+Bảng có **hai hàng tiêu đề**. Hàng 1 là các dải nhóm có màu, hàng 2 là tên cột:
+
+| ĐƠN HÀNG | ÁO | GILE | QUẦN | NGUYÊN PHỤ LIỆU | SƠ MI | GHI NHẬN |
+|---|---|---|---|---|---|---|
+| Ngày, Order ID, Tên khách, Số điện thoại, Sản phẩm, Số lượng, Ghi chú | Kiểu cài áo, Kiểu ve, Dáng vai, Túi ngoài, Túi ngực, Xẻ sau, Tay áo, Kiểu khuy tay, Lót áo | Kiểu gile | Xếp ly trước, Chi tiết cạp quần, Túi trước, Túi sau, Gấu quần | Loại khuy, Khuyết Milan | Chiều dài tay, Kiểu cổ áo, Cổ tay áo, Măng sét đúp, Nẹp áo, Túi ngực, Nắp túi, Vạt áo | Lần xác nhận, Mã gửi |
+
+Cột "Sản phẩm" ghi loại món: Áo, Gile, Quần hoặc Sơ mi. Cột **Ghi chú** là yêu cầu đặc biệt sale điền ở bước cuối trước khi xác nhận đơn (không bắt buộc, tối đa 500 ký tự). Ghi chú được chép vào mọi dòng của đơn, để lọc theo món nào cũng thấy. Mỗi dòng chỉ điền vào dải của món đó, và dải ấy được tô màu nhạt để dễ nhìn. Áo, gile và quần điền thêm dải **NGUYÊN PHỤ LIỆU**, vì khuy được chọn một lần cho cả đơn. Sơ mi không có dải này. Hai cột cùng tên "Túi ngực" nằm ở hai dải khác nhau: một cột là túi ngực áo vest, một cột là túi ngực sơ mi. Toàn bộ cột được tạo ngay từ đơn đầu tiên, theo đúng thứ tự trên, dù đơn đó chỉ có một món.
 
 Một đơn có thể gồm nhiều sản phẩm, mỗi sản phẩm một số lượng riêng. Ví dụ đơn A gồm 1 suit hai mảnh và 2 quần tây (ba quần tất cả):
 - cả ba quần chọn giống nhau: 2 dòng — *Áo, SL 1* và *Quần, SL 3*;
@@ -72,13 +78,13 @@ Mã này ngăn người khác tình cờ gửi dữ liệu vào bảng tính n�
 
 ## Cập nhật mã khi ứng dụng có bản mới (đã làm bước 1–6 trước đây)
 
-Bản ứng dụng có **nhiều sản phẩm trong một đơn và bảng mẫu mới** cần mã Apps Script mới (`Code.gs`). Nếu vẫn dùng mã cũ, các đơn mới sẽ thiếu cột thiết kế hoặc không tách dòng theo món. Làm như sau, chỉ mất vài phút và địa chỉ ứng dụng web không đổi:
+Bản ứng dụng có **sơ mi và bảng mẫu chia dải Áo › Gile › Quần › Nguyên phụ liệu › Sơ mi** cần mã Apps Script mới (`Code.gs` v4). Nếu vẫn dùng mã cũ (v3), túi ngực áo vest và túi ngực sơ mi bị ghi chung một cột. Làm như sau, chỉ mất vài phút và địa chỉ ứng dụng web không đổi:
 
 1. Mở bảng tính → **Tiện ích mở rộng → Apps Script**.
 2. Xóa toàn bộ mã cũ trong tệp `Code.gs`, dán toàn bộ nội dung tệp `docs/google-sheets/Code.gs` mới. Bấm **Lưu**.
 3. **Triển khai → Quản lý triển khai → biểu tượng bút chì → Phiên bản: Phiên bản mới → Triển khai.**
-4. Trên mỗi tablet: trang **Cài đặt máy này** (chạm 5 lần vào logo) → **Kiểm tra kết nối**. Phải thấy chữ "OK v3". Nếu báo "Apps Script là bản cũ" thì bước 3 chưa xong.
-5. **Để có đúng bảng mẫu** (Ngày, Order ID, Tên khách, Số điện thoại, Sản phẩm, Số lượng, ...): đổi tên trang **Đơn hàng** cũ (ví dụ "Đơn hàng cũ", hoặc xóa nếu chỉ là đơn thử). Đơn tiếp theo sẽ tự tạo trang **Đơn hàng** mới với cột đúng thứ tự. Nếu giữ trang cũ, mã chỉ thêm các cột còn thiếu (Sản phẩm, Số lượng) vào bên phải, không đổi thứ tự cột cũ.
+4. Trên mỗi tablet: trang **Cài đặt máy này** (chạm 5 lần vào logo) → **Kiểm tra kết nối**. Phải thấy chữ "OK v4". Nếu báo "Apps Script là bản cũ" thì bước 3 chưa xong.
+5. Không cần làm gì với trang cũ. Ở đơn đầu tiên sau khi cập nhật, mã tự đổi tên trang **Đơn hàng** kiểu cũ (một hàng tiêu đề) thành **Đơn hàng (mẫu cũ)**, giữ nguyên dữ liệu, rồi tạo trang **Đơn hàng** mới theo mẫu hai hàng tiêu đề. Đơn nào đã có trong trang cũ thì không bị ghi lại lần nữa. Nếu muốn chép các đơn cũ sang mẫu mới, phải chép tay. Nếu trang cũ chỉ có đơn thử thì có thể xóa.
 
 Làm bước 1–3 **trước** khi đưa bản ứng dụng mới lên tablet: mã mới vẫn nhận được đơn của bản ứng dụng cũ.
 
@@ -89,14 +95,16 @@ Làm bước 1–3 **trước** khi đưa bản ứng dụng mới lên tablet: 
 | "Chưa kết nối bảng tính" | `orderSheetUrl` trong `config.json` còn trống, hoặc tablet chưa tải lại trang. |
 | "Chưa ghi được vào bảng tính (có thể mất mạng)" | Mất mạng; sai địa chỉ; `orderSheetToken` không trùng `SECRET`; hoặc quyền truy cập chưa chọn "Bất kỳ ai". Đơn vẫn được giữ trên tablet, bấm **Gửi lại** sau khi sửa. |
 | Đơn không tách dòng, hoặc thiếu cột thiết kế | Apps Script còn là mã cũ. Làm mục "Cập nhật mã" ở trên. |
-| Cột mới "Tay áo", "Kiểu khuy tay", "Loại khuy", "Khuyết Milan" | Tự thêm vào bảng tính ở đơn đầu tiên có các lựa chọn này; các dòng cũ để trống ở những cột đó. |
+| Túi ngực áo vest và sơ mi chung một cột | Apps Script còn là bản v3. Làm mục "Cập nhật mã" ở trên. |
+| Ứng dụng có thêm lựa chọn mới | Cột mới tự được chèn vào cuối dải của món đó. Các dòng cũ để trống ở cột này. |
 | Nhiều quần trong một đơn | Các quần chọn giống nhau gộp thành một dòng "Quần" với số lượng cộng lại; quần chọn khác nhau là các dòng riêng, mỗi dòng có kiểu riêng. |
-| Có dòng nhưng thiếu cột thiết kế | Cột tự thêm theo tên nhóm. Nếu bạn đổi tên cột đã có, mã sẽ tạo cột mới. Đừng đổi tên các cột tiêu đề. |
+| Có dòng nhưng thiếu cột thiết kế | Cột được nhận theo dải (hàng 1) và tên (hàng 2). Nếu đổi tên một cột hoặc một dải, mã sẽ tạo cột mới. Đừng đổi tên hai hàng tiêu đề. |
 | Sửa mã Apps Script mà không thấy đổi | Phải triển khai lại: **Triển khai → Quản lý triển khai → Chỉnh sửa → Phiên bản mới**. |
 
 ## Ghi chú kỹ thuật
 
-- Cột được ghép theo **tên tiêu đề**, nên bạn có thể thêm cột của riêng mình ở bên phải (ví dụ "Ghi chú"). Mã chỉ điền các cột nó biết.
+- Cột được ghép theo **dải + tên tiêu đề**, nên bạn có thể thêm cột của riêng mình ở bên phải (ví dụ "Người nhận" ở hàng 2). Mã chỉ điền các cột nó biết và không di chuyển cột bạn thêm.
+- Để lọc: chọn hàng 2 → **Dữ liệu → Tạo bộ lọc**, rồi lọc theo "Order ID" hoặc "Sản phẩm".
 - Mỗi lần xác nhận đơn có một mã gửi riêng (cột "Mã gửi"). Nếu một đơn đến hai lần (mạng chập chờn), bảng tính chỉ lưu một dòng.
 - Khi khách đổi thiết kế rồi xác nhận lại, các dòng mới được thêm với "Lần xác nhận" tăng lên. Các dòng cũ không bị sửa.
 - Một đơn có nhiều dòng được ghi cùng lúc, cùng một "Mã gửi". Đơn đến hai lần thì không dòng nào bị ghi lại.
