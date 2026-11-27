@@ -61,3 +61,12 @@ export function loadSheetConfig(): Promise<SheetConfig> {
 export function resetSheetConfig(): void {
   cached = null;
 }
+
+/** The oldest Apps Script (Code.gs) this app works with: v4 groups the columns by piece. */
+export const MIN_SCRIPT_VERSION = 4;
+
+/** Whether the web app's answer ("OK v5 - ...") comes from a script recent enough for this app. */
+export function isCurrentScript(answer: string): boolean {
+  const m = /^OK\b.*?\bv(\d+)\b/.exec(answer.trim());
+  return Boolean(m) && Number(m![1]) >= MIN_SCRIPT_VERSION;
+}

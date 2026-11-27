@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { offlinePhotoStatus, refreshOptionPhotos } from '../photos/optionPhotos';
 import { flushQueue, queuedCount } from '../sheet/client';
-import { loadSheetConfig, readLocalSheetConfig, saveLocalSheetConfig } from '../sheet/config';
+import { isCurrentScript, loadSheetConfig, readLocalSheetConfig, saveLocalSheetConfig } from '../sheet/config';
 
 /**
  * Staff-only page for this tablet (open with #/setup, or tap the logo five times): where orders are
@@ -92,7 +92,7 @@ export function SetupScreen() {
       const res = await fetch(address, { signal: ctl.signal, redirect: 'follow' });
       const text = (await res.text()).trim();
       setNotice(
-        res.ok && /^OK\b/.test(text) && /\bv3\b/.test(text)
+        res.ok && isCurrentScript(text)
           ? { kind: 'ok', text: 'Kết nối được: bảng tính trả lời "' + text + '". Nhớ bấm Lưu.' }
           : res.ok && /^OK\b/.test(text)
             ? { kind: 'bad', text: 'Kết nối được, nhưng Apps Script là bản cũ (chưa có bảng mẫu mới chia cột theo Áo, Gile, Quần, Sơ mi). Dán lại Code.gs mới rồi triển khai phiên bản mới: xem mục “Cập nhật” trong docs/google-sheets/GUIDE.md.' }

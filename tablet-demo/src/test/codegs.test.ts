@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { vi } from '../content/vi';
+import { isCurrentScript } from '../sheet/config';
 import { buildPayload, sheetLayout } from '../sheet/payload';
 import { orderRecord, snapshotOf } from './helpers';
 
@@ -43,12 +44,23 @@ class FakeSheet {
     this.frozen = n;
   }
   setColumnWidths() {}
+  /** Moves whole columns, data and all, like Google Sheets: `dest` is the 1-based column they go before. */
+  moveColumns(range: { col: number; cols: number }, dest: number) {
+    const width = this.getLastColumn();
+    for (const row of this.grid) {
+      while (row.length < width) row.push('');
+      const moved = row.splice(range.col - 1, range.cols);
+      row.splice(dest > range.col ? dest - 1 - range.cols : dest - 1, 0, ...moved);
+    }
+  }
   setRowHeight() {}
   setColumnWidth() {}
   getRange(row: number, col: number, rows = 1, cols = 1) {
     const sheet = this;
     const at = `${row}:${col}:${rows}:${cols}`;
     return {
+      col,
+      cols,
       getValue: () => sheet.grid[row - 1]?.[col - 1] ?? '',
       getValues: () => Array.from({ length: rows }, (_, r) => Array.from({ length: cols }, (_, c) => sheet.grid[row - 1 + r]?.[col - 1 + c] ?? '')),
       setValues: (values: unknown[][]) => {
@@ -138,18 +150,25 @@ function loadScript(properties: Record<string, string> = {}, existing: FakeSheet
 }
 
 const payloadFor = (spec: Parameters<typeof snapshotOf>[0], overrides = {}) => buildPayload(orderRecord(overrides), snapshotOf(spec));
-const BANDS = ['ĐƠN HÀNG', 'ÁO', 'GILE', 'QUẦN', 'NGUYÊN PHỤ LIỆU', 'SƠ MI', 'GHI NHẬN'];
+const BANDS = ['ĐƠN HÀNG', 'ÁO', 'GILE', 'QUẦN', 'SƠ MI', 'NGUYÊN PHỤ LIỆU', 'GHI NHẬN'];
+/** A spreadsheet column letter (0 -> A, 30 -> AE). */
+const letter = (i: number): string => (i >= 26 ? letter(Math.floor(i / 26) - 1) : '') + String.fromCharCode(65 + (i % 26));
 
-describe('the Google Sheets script (Code.gs v4)', () => {
-  it('says which version it is, for the setup page', () => {
-    expect(loadScript().script.doGet().text).toMatch(/^OK v4\b/);
+describe('the Google Sheets script (Code.gs v5)', () => {
+  it('says which version it is, and the setup page takes v4 and later', () => {
+    const answer = loadScript().script.doGet().text;
+    expect(answer).toMatch(/^OK v5\b/);
+    expect(isCurrentScript(answer)).toBe(true);
+    expect(isCurrentScript('OK v4 - Minh Quang order sheet is running.')).toBe(true);
+    expect(isCurrentScript('OK v3 - Minh Quang order sheet is running.')).toBe(false);
+    expect(isCurrentScript('<html>Sign in</html>')).toBe(false);
   });
 
   it('knows the same layout as the app, for orders from an older app', () => {
     expect(loadScript().script.DEFAULT_LAYOUT).toEqual(sheetLayout());
   });
 
-  it('lays out two header rows: the bands ĐƠN HÀNG › ÁO › GILE › QUẦN › NGUYÊN PHỤ LIỆU › SƠ MI › GHI NHẬN, the names below', () => {
+  it('lays out two header rows: the bands ĐƠN HÀNG › ÁO › GILE › QUẦN › SƠ MI › NGUYÊN PHỤ LIỆU › GHI NHẬN, the names below', () => {
     const { post, orders, col } = loadScript();
     expect(post(payloadFor('suit'))).toEqual({ ok: true, rows: 2 });
     const sheet = orders();
@@ -160,7 +179,10 @@ describe('the Google Sheets script (Code.gs v4)', () => {
     // every column of every band is there from the first order, whatever was ordered
     const all = sheetLayout().reduce((n, s) => n + s.columns.length, 0);
     expect(names).toHaveLength(7 + all + 2);
-    expect(col('SƠ MI', 'Kiểu cổ áo')).toBeGreaterThan(col('NGUYÊN PHỤ LIỆU', 'Khuyết Milan'));
+    // the shirt in W–AD, the trims in AE–AF
+    expect([letter(col('SƠ MI', 'Chiều dài tay')), letter(col('SƠ MI', 'Vạt áo'))]).toEqual(['W', 'AD']);
+    expect([letter(col('NGUYÊN PHỤ LIỆU', 'Loại khuy')), letter(col('NGUYÊN PHỤ LIỆU', 'Khuyết Milan'))]).toEqual(['AE', 'AF']);
+    expect([letter(col('GHI NHẬN', 'Lần xác nhận')), letter(col('GHI NHẬN', 'Mã gửi'))]).toEqual(['AG', 'AH']);
     expect(col('GILE', 'Kiểu gile')).toBeGreaterThan(col('ÁO', 'Lót áo'));
     expect(col('QUẦN', 'Xếp ly trước')).toBeGreaterThan(col('GILE', 'Kiểu gile'));
     expect(sheet.frozen).toBe(2);
@@ -208,6 +230,43 @@ describe('the Google Sheets script (Code.gs v4)', () => {
     post(payloadFor('trousers', { submissionId: 'no-note', orderId: 'MQ-10' }));
     const rows = orders().grid.slice(2) as string[][];
     expect(rows.map((r) => r[col('ĐƠN HÀNG', 'Ghi chú')])).toEqual(['Thêu tên ở cổ tay\nLấy trước 20/12', 'Thêu tên ở cổ tay\nLấy trước 20/12', 'Thêu tên ở cổ tay\nLấy trước 20/12', '']);
+  });
+
+  it('a tab laid out by v4 (trims before the shirt) has its columns moved, data and all; an older app does not move them back', () => {
+    // lay a tab out the v4 way: the app's old order of bands
+    const { post, orders, col } = loadScript();
+    const v4 = payloadFor({ blazer: 1, shirt: 1 }, { submissionId: 'v4' });
+    post(v4);
+    const sheet = orders();
+    const v4Order = ['ĐƠN HÀNG', 'ÁO', 'GILE', 'QUẦN', 'NGUYÊN PHỤ LIỆU', 'SƠ MI', 'GHI NHẬN'];
+    const byBand = (band: string) => sheet.grid.map((row) => (row as unknown[]).filter((_, c) => bandAt(c) === band));
+    const bandAt = (c: number) => {
+      let current = '';
+      for (let i = 0; i <= c; i++) if ((sheet.grid[0] as string[])[i]) current = (sheet.grid[0] as string[])[i];
+      return current;
+    };
+    sheet.grid = sheet.grid.map((row) => v4Order.flatMap((band) => (row as unknown[]).filter((_, c) => bandAt(c) === band)));
+    // the merged band cells: only the first of each band keeps its name
+    sheet.grid[0] = (sheet.grid[0] as string[]).map((v, i, all) => (i > 0 && all[i - 1] === v ? '' : v));
+    expect(col('NGUYÊN PHỤ LIỆU', 'Loại khuy')).toBeLessThan(col('SƠ MI', 'Chiều dài tay'));
+    const jacketTrims = (sheet.grid[2] as string[])[col('NGUYÊN PHỤ LIỆU', 'Loại khuy')];
+
+    // an older app sends its layout in the v4 order; the tab follows this script's order all the same
+    const older = payloadFor({ blazer: 1, shirt: 1 }, { submissionId: 'older' });
+    older.layout = v4Order.flatMap((band) => older.layout.filter((x) => x.name === band));
+    expect(post(older)).toEqual({ ok: true, rows: 2 });
+
+    expect((sheet.grid[0] as string[]).filter(Boolean)).toEqual(BANDS);
+    expect(letter(col('SƠ MI', 'Chiều dài tay'))).toBe('W');
+    expect(letter(col('NGUYÊN PHỤ LIỆU', 'Loại khuy'))).toBe('AE');
+    // the first order's cells moved with their columns
+    const [, , jacket, shirt, jacket2] = sheet.grid as string[][];
+    expect(jacket[col('NGUYÊN PHỤ LIỆU', 'Loại khuy')]).toBe(jacketTrims);
+    expect(jacket[col('ÁO', 'Túi ngực')]).toBe(vi.options['breastPocket.barchetta'].label);
+    expect(shirt[col('SƠ MI', 'Túi ngực')]).toBe('Không túi');
+    expect(shirt[col('NGUYÊN PHỤ LIỆU', 'Loại khuy')]).toBe('');
+    expect(jacket2[col('NGUYÊN PHỤ LIỆU', 'Loại khuy')]).toBe(jacketTrims);
+    expect(byBand('SƠ MI')[4].every((v) => v === '')).toBe(true); // the second jacket fills no shirt cell
   });
 
   it('an order delivered twice is stored once', () => {

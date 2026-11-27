@@ -4,9 +4,9 @@ Mỗi khi nhân viên bấm **Xác nhận đơn**, ứng dụng gửi đơn vào
 
 Bảng có **hai hàng tiêu đề**. Hàng 1 là các dải nhóm có màu, hàng 2 là tên cột:
 
-| ĐƠN HÀNG | ÁO | GILE | QUẦN | NGUYÊN PHỤ LIỆU | SƠ MI | GHI NHẬN |
+| ĐƠN HÀNG (A–G) | ÁO (H–P) | GILE (Q) | QUẦN (R–V) | SƠ MI (W–AD) | NGUYÊN PHỤ LIỆU (AE–AF) | GHI NHẬN (AG–AH) |
 |---|---|---|---|---|---|---|
-| Ngày, Order ID, Tên khách, Số điện thoại, Sản phẩm, Số lượng, Ghi chú | Kiểu cài áo, Kiểu ve, Dáng vai, Túi ngoài, Túi ngực, Xẻ sau, Tay áo, Kiểu khuy tay, Lót áo | Kiểu gile | Xếp ly trước, Chi tiết cạp quần, Túi trước, Túi sau, Gấu quần | Loại khuy, Khuyết Milan | Chiều dài tay, Kiểu cổ áo, Cổ tay áo, Măng sét đúp, Nẹp áo, Túi ngực, Nắp túi, Vạt áo | Lần xác nhận, Mã gửi |
+| Ngày, Order ID, Tên khách, Số điện thoại, Sản phẩm, Số lượng, Ghi chú | Kiểu cài áo, Kiểu ve, Dáng vai, Túi ngoài, Túi ngực, Xẻ sau, Tay áo, Kiểu khuy tay, Lót áo | Kiểu gile | Xếp ly trước, Chi tiết cạp quần, Túi trước, Túi sau, Gấu quần | Chiều dài tay, Kiểu cổ áo, Cổ tay áo, Măng sét đúp, Nẹp áo, Túi ngực, Nắp túi, Vạt áo | Loại khuy, Khuyết Milan | Lần xác nhận, Mã gửi |
 
 Cột "Sản phẩm" ghi loại món: Áo, Gile, Quần hoặc Sơ mi. Cột **Ghi chú** là yêu cầu đặc biệt sale điền ở bước cuối trước khi xác nhận đơn (không bắt buộc, tối đa 500 ký tự). Ghi chú được chép vào mọi dòng của đơn, để lọc theo món nào cũng thấy. Mỗi dòng chỉ điền vào dải của món đó, và dải ấy được tô màu nhạt để dễ nhìn. Áo, gile và quần điền thêm dải **NGUYÊN PHỤ LIỆU**, vì khuy được chọn một lần cho cả đơn. Sơ mi không có dải này. Hai cột cùng tên "Túi ngực" nằm ở hai dải khác nhau: một cột là túi ngực áo vest, một cột là túi ngực sơ mi. Toàn bộ cột được tạo ngay từ đơn đầu tiên, theo đúng thứ tự trên, dù đơn đó chỉ có một món.
 
@@ -78,13 +78,13 @@ Mã này ngăn người khác tình cờ gửi dữ liệu vào bảng tính n�
 
 ## Cập nhật mã khi ứng dụng có bản mới (đã làm bước 1–6 trước đây)
 
-Bản ứng dụng có **sơ mi và bảng mẫu chia dải Áo › Gile › Quần › Nguyên phụ liệu › Sơ mi** cần mã Apps Script mới (`Code.gs` v4). Nếu vẫn dùng mã cũ (v3), túi ngực áo vest và túi ngực sơ mi bị ghi chung một cột. Làm như sau, chỉ mất vài phút và địa chỉ ứng dụng web không đổi:
+Bản ứng dụng có **sơ mi và bảng mẫu chia dải Áo › Gile › Quần › Sơ mi › Nguyên phụ liệu** cần mã Apps Script mới (`Code.gs` v5). Nếu vẫn dùng mã v3, túi ngực áo vest và túi ngực sơ mi bị ghi chung một cột. Nếu dùng mã v4, dải Nguyên phụ liệu nằm trước dải Sơ mi. Làm như sau, chỉ mất vài phút và địa chỉ ứng dụng web không đổi:
 
 1. Mở bảng tính → **Tiện ích mở rộng → Apps Script**.
 2. Xóa toàn bộ mã cũ trong tệp `Code.gs`, dán toàn bộ nội dung tệp `docs/google-sheets/Code.gs` mới. Bấm **Lưu**.
 3. **Triển khai → Quản lý triển khai → biểu tượng bút chì → Phiên bản: Phiên bản mới → Triển khai.**
-4. Trên mỗi tablet: trang **Cài đặt máy này** (chạm 5 lần vào logo) → **Kiểm tra kết nối**. Phải thấy chữ "OK v4". Nếu báo "Apps Script là bản cũ" thì bước 3 chưa xong.
-5. Không cần làm gì với trang cũ. Ở đơn đầu tiên sau khi cập nhật, mã tự đổi tên trang **Đơn hàng** kiểu cũ (một hàng tiêu đề) thành **Đơn hàng (mẫu cũ)**, giữ nguyên dữ liệu, rồi tạo trang **Đơn hàng** mới theo mẫu hai hàng tiêu đề. Đơn nào đã có trong trang cũ thì không bị ghi lại lần nữa. Nếu muốn chép các đơn cũ sang mẫu mới, phải chép tay. Nếu trang cũ chỉ có đơn thử thì có thể xóa.
+4. Trên mỗi tablet: trang **Cài đặt máy này** (chạm 5 lần vào logo) → **Kiểm tra kết nối**. Phải thấy chữ "OK v5". Nếu báo "Apps Script là bản cũ" thì bước 3 chưa xong.
+5. Không cần làm gì với trang cũ. Ở đơn đầu tiên sau khi cập nhật, mã tự đổi tên trang **Đơn hàng** kiểu cũ (một hàng tiêu đề) thành **Đơn hàng (mẫu cũ)**, giữ nguyên dữ liệu, rồi tạo trang **Đơn hàng** mới theo mẫu hai hàng tiêu đề. Đơn nào đã có trong trang cũ thì không bị ghi lại lần nữa. Nếu muốn chép các đơn cũ sang mẫu mới, phải chép tay. Nếu trang cũ chỉ có đơn thử thì có thể xóa. Trang **Đơn hàng** đã theo mẫu v4 (hai hàng tiêu đề, Nguyên phụ liệu trước Sơ mi) thì được giữ: ở đơn đầu tiên sau khi cập nhật, mã tự chuyển 2 cột Nguyên phụ liệu sang AE–AF và dời 8 cột Sơ mi sang W–AD, dữ liệu đã có chuyển theo cột.
 
 Làm bước 1–3 **trước** khi đưa bản ứng dụng mới lên tablet: mã mới vẫn nhận được đơn của bản ứng dụng cũ.
 

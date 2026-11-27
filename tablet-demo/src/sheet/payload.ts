@@ -7,11 +7,11 @@ import type { OrderRecord, Snapshot } from '../state/types';
 
 /**
  * The spreadsheet groups its design columns under one band per kind of piece, in this order:
- * ÁO › GILE › QUẦN › NGUYÊN PHỤ LIỆU (buttons and buttonholes of the tailored pieces) › SƠ MI.
+ * ÁO › GILE › QUẦN › SƠ MI › NGUYÊN PHỤ LIỆU (buttons and buttonholes of the tailored pieces).
  * A column is named by its band and its own name, so the jacket's "Túi ngực" and the shirt's "Túi ngực"
  * are two columns.
  */
-export const SHEET_SECTION_ORDER: readonly BaseGarmentId[] = ['jacket', 'waistcoat', 'trousers', 'trims', 'shirt'];
+export const SHEET_SECTION_ORDER: readonly BaseGarmentId[] = ['jacket', 'waistcoat', 'trousers', 'shirt', 'trims'];
 
 /** The band a kind of piece is written under ("ÁO", "SƠ MI", "NGUYÊN PHỤ LIỆU"...). */
 export const sectionName = (garment: BaseGarmentId) => vi.garments[garment].toUpperCase();

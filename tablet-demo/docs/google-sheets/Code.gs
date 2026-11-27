@@ -1,5 +1,5 @@
 /**
- * Minh Quang tablet app -> Google Sheets (v4).
+ * Minh Quang tablet app -> Google Sheets (v5).
  *
  * Receives one order from the tablet app and adds it to this spreadsheet, one line per kind of piece
  * and design: "Áo", "Gile", "Quần" or "Sơ mi", with how many of it are made. Two pairs of trousers made
@@ -7,8 +7,11 @@
  *
  * The tab has two header rows. Row 1 holds coloured bands, row 2 the column names:
  *
- *   ĐƠN HÀNG                     | ÁO ...  | GILE | QUẦN ... | NGUYÊN PHỤ LIỆU | SƠ MI ... | GHI NHẬN
- *   Ngày, Order ID, ..., Số lượng, Ghi chú | Kiểu cài áo ... Túi ngực ... | ... | Túi ngực, Nắp túi, Vạt áo | Lần xác nhận, Mã gửi
+ *   ĐƠN HÀNG (A–G) | ÁO (H–P) | GILE (Q) | QUẦN (R–V) | SƠ MI (W–AD) | NGUYÊN PHỤ LIỆU (AE–AF) | GHI NHẬN (AG–AH)
+ *   Ngày, Order ID, ..., Số lượng, Ghi chú | Kiểu cài áo ... Túi ngực ... | ... | Túi ngực, Nắp túi, Vạt áo | Loại khuy, Khuyết Milan | Lần xác nhận, Mã gửi
+ *
+ * The order of the bands is this script's (DEFAULT_LAYOUT): a tab laid out by an older version has its
+ * columns moved into this order, data and all, on the next order.
  *
  * A line fills only the band of its piece (and, for a jacket, waistcoat or trousers, the trims band:
  * the buttons are chosen once for the whole order), so the jacket's "Túi ngực" and the shirt's
@@ -33,14 +36,14 @@ const ID_HEADER = 'Mã gửi';
 const RECORD_COLUMNS = [VERSION_HEADER, ID_HEADER];
 
 const TRIMS_BAND = 'NGUYÊN PHỤ LIỆU';
-// The design columns, band by band, for an order sent by an older app (the app now sends its own
-// layout with every order, and any column it adds is put in its band).
+// The design columns, band by band, in the order they stand in the tab. A column the app sends that is
+// not here is added at the end of its band.
 const DEFAULT_LAYOUT = [
   { name: 'ÁO', columns: ['Kiểu cài áo', 'Kiểu ve', 'Dáng vai', 'Túi ngoài', 'Túi ngực', 'Xẻ sau', 'Tay áo', 'Kiểu khuy tay', 'Lót áo'] },
   { name: 'GILE', columns: ['Kiểu gile'] },
   { name: 'QUẦN', columns: ['Xếp ly trước', 'Chi tiết cạp quần', 'Túi trước', 'Túi sau', 'Gấu quần'] },
-  { name: TRIMS_BAND, columns: ['Loại khuy', 'Khuyết Milan'] },
   { name: 'SƠ MI', columns: ['Chiều dài tay', 'Kiểu cổ áo', 'Cổ tay áo', 'Măng sét đúp', 'Nẹp áo', 'Túi ngực', 'Nắp túi', 'Vạt áo'] },
+  { name: TRIMS_BAND, columns: ['Loại khuy', 'Khuyết Milan'] },
 ];
 // "Sản phẩm" -> band, for an order sent by an older app.
 const ITEM_BANDS = { 'Áo': 'ÁO', 'Gile': 'GILE', 'Quần': 'QUẦN', 'Sơ mi': 'SƠ MI' };
@@ -63,10 +66,10 @@ const DATE_FORMAT = 'dd/MM/yyyy HH:mm';
 
 /**
  * Open the web app URL in a browser: "OK" means the script is deployed. The app's setup page also
- * looks for "v4", so it can tell this version from an older one.
+ * looks for the version (v4 or later), so it can tell it from an older one.
  */
 function doGet() {
-  return ContentService.createTextOutput('OK v4 - Minh Quang order sheet is running.');
+  return ContentService.createTextOutput('OK v5 - Minh Quang order sheet is running.');
 }
 
 function doPost(e) {
@@ -179,21 +182,30 @@ function nameOf(k) {
   return k.slice(k.indexOf('|') + 1);
 }
 
-/** The columns an order needs, in order: the order's, each band of the layout, then the record's. */
+/**
+ * The columns an order needs, in order: the order's, each band of DEFAULT_LAYOUT, then the record's.
+ * A column the app's layout or a line has and DEFAULT_LAYOUT does not goes at the end of its band.
+ */
 function wantedKeys(layout, lines) {
   const keys = ORDER_COLUMNS.map(function (n) { return key(ORDER_BAND, n); });
-  layout.forEach(function (section) {
+  DEFAULT_LAYOUT.forEach(function (section) {
     section.columns.forEach(function (n) { keys.push(key(section.name, n)); });
   });
-  // a column a line has but the layout does not: at the end of its band
+  const extra = [];
+  layout.forEach(function (section) {
+    section.columns.forEach(function (n) { extra.push(key(section.name, n)); });
+  });
   lines.forEach(function (line) {
-    Object.keys(line.cells).forEach(function (k) {
+    Object.keys(line.cells).forEach(function (k) { extra.push(k); });
+  });
+  extra.forEach(function (k) {
+    {
       if (keys.indexOf(k) !== -1) return;
       let at = -1;
       keys.forEach(function (other, i) { if (bandOf(other) === bandOf(k)) at = i; });
       if (at === -1) keys.push(k);
       else keys.splice(at + 1, 0, k);
-    });
+    }
   });
   RECORD_COLUMNS.forEach(function (n) { keys.push(key(RECORD_BAND, n)); });
   return keys;
@@ -215,19 +227,33 @@ function readKeys(sheet) {
 }
 
 /**
- * Lays out the header on the first order, and adds any column not there yet, inside its band (after
- * the column that comes before it), so the rows already written stay in line. Columns added by hand
- * are left where they are.
+ * Lays out the header on the first order, adds any column not there yet inside its band (after the
+ * column that comes before it), and moves a column that stands before the one it should follow (a tab
+ * laid out by an older version), with its data, so the rows already written stay in line. Columns
+ * added by hand are left where they are.
  */
 function ensureHeaders(sheet, wanted) {
   const keys = readKeys(sheet);
   const fresh = keys.length === 0;
   let changed = fresh;
+  let unmerged = fresh;
   let prev = -1;
   wanted.forEach(function (k) {
     const at = keys.indexOf(k);
-    if (at !== -1) {
+    if (at !== -1 && at > prev) {
       prev = at;
+      return;
+    }
+    if (at !== -1) {
+      // a merged band cannot be cut: undo the merges once, writeHeaders merges again
+      if (!unmerged) {
+        sheet.getRange(1, 1, 1, sheet.getLastColumn()).breakApart();
+        unmerged = true;
+      }
+      sheet.moveColumns(sheet.getRange(1, at + 1, 1, 1), prev + 2);
+      keys.splice(at, 1);
+      keys.splice(prev, 0, k);
+      changed = true;
       return;
     }
     const col = prev + 2; // 1-based column right after the previous wanted one
