@@ -181,7 +181,6 @@ export interface Copy {
     date: string;
     orderId: string;
     customer: string;
-    phone: string;
     note: string;
     product: string;
     revision: string;

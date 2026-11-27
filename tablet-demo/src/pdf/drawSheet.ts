@@ -117,7 +117,7 @@ export function drawSheet({ t, lang, snap, order, sketches, logo, scale }: Sheet
       ctx.fillRect(MARGIN, 108, pageW - MARGIN * 2, 2);
     }
 
-    // ── order details box: three columns, then the products (with their quantities) on their own row
+    // ── order details box: date, order id and revision; then the customer and the products; then the note
     const boxX = MARGIN;
     const boxY = 128;
     const boxW = pageW - MARGIN * 2;
@@ -129,11 +129,11 @@ export function drawSheet({ t, lang, snap, order, sketches, logo, scale }: Sheet
         { label: t.pdf.orderId, value: order.orderId, span: 1 },
         { label: t.pdf.revision, value: fmt(t.confirmed.revision, { n: snap.revision }), span: 1 },
       ],
+      // no phone number: the sheet goes to the workshop, which has no need of it
       [
         { label: t.pdf.customer, value: order.customerName, span: 1 },
-        { label: t.pdf.phone, value: order.phone, span: 1 },
+        { label: t.pdf.product, value: productList(t, snap.quantities), span: 2 },
       ],
-      [{ label: t.pdf.product, value: productList(t, snap.quantities), span: 3 }],
       // the sale's note, when there is one: three lines at most, so the sheet stays one page
       ...(order.note ? [[{ label: t.pdf.note, value: order.note.replace(/\n/g, ' · '), span: 3, lines: 3 }]] : []),
     ];

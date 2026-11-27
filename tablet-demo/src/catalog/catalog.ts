@@ -134,6 +134,8 @@ export const GROUPS = [
     options: [
       'collar.point',
       'collar.spread',
+      // the ids stay as first named (photos in the website's library are linked to them):
+      // collar.cutaway is the wing collar, collar.cutawayTwoButton the two-button spread collar
       'collar.cutaway',
       'collar.cutawayTwoButton',
       'collar.buttonDown',
